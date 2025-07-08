@@ -1,0 +1,6 @@
+@SportLinkerBackend_HostAddress = http://localhost:5171
+
+GET {{SportLinkerBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
