@@ -1,3 +1,5 @@
+import "./button.css";
+
 const Button = ({ text, style, width }) => {
   const buttonType = {
     loginButton: "loginButton",
