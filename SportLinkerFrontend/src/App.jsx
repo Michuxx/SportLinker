@@ -1,6 +1,6 @@
 import "./App.css";
-import Header from "./components/header/Header";
-import WelcomeBanner from "./components/welcomeBanner/welcomeBanner";
+import Header from "./components/headerSection/Header";
+import WelcomeBanner from "./components/bannerSection/welcomeBanner";
 
 function App() {
   return (

@@ -1,6 +1,6 @@
 .banner {
   width: 100%;
-  background-image: linear-gradient(to bottom right, #3b82f6, #4f46e5, #6d28d9);
+  background-image: linear-gradient(to bottom right, #2e73e0, #463cf7, #7e00e6);
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -11,7 +11,7 @@
   justify-content: center;
   flex-direction: column;
   width: 50rem;
-  margin-top: 160px;
+  margin-top: 120px;
 }
 
 .banner-headline h1 {
@@ -48,7 +48,9 @@
 
 .banner-features-wrapper {
   display: flex;
-  justify-content: space-around;
+  margin: auto;
+  gap: 10px;
+  justify-content: center;
   margin-top: 32px;
   margin-bottom: 80px;
 }
