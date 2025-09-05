@@ -11,9 +11,20 @@
   font-weight: normal;
 }
 
+@font-face {
+  font-family: "Poppins-Medium";
+  src: local("Poppins-Medium"),
+    url(/fonts/Poppins-Medium.ttf) format("truetype");
+  font-weight: normal;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins";
+}
+
+.container {
+  background-color: rgb(249 250 251);
 }
