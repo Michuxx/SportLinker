@@ -1,0 +1,29 @@
+.feature-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 30%;
+}
+
+.feature-wrapper .icon {
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  background-color: rgb(255 255 255);
+  opacity: 0.2;
+}
+
+.feature-title h3 {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: #fff;
+  font-family: "Poppins-SemiBold";
+}
+
+.feature-description p {
+  text-align: center;
+  color: rgb(219 234 254);
+}

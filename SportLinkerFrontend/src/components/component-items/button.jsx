@@ -3,6 +3,8 @@ import "./button.css";
 const Button = ({ text, style, width }) => {
   const buttonType = {
     loginButton: "loginButton",
+    createOfferButton: "createOfferButton",
+    outlineButton: "outlineButton",
   };
 
   const buttonStyle = buttonType[style];

@@ -4,6 +4,13 @@
   font-weight: normal;
 }
 
+@font-face {
+  font-family: "Poppins-SemiBold";
+  src: local("Poppins-SemiBold"),
+    url(/fonts/Poppins-SemiBold.ttf) format("truetype");
+  font-weight: normal;
+}
+
 * {
   margin: 0;
   padding: 0;
