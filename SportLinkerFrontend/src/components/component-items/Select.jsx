@@ -1,8 +1,12 @@
 import "./select.css";
 
-const Select = () => {
+const Select = ({ width }) => {
   return (
-    <select name="sport" className="standard-select">
+    <select
+      name="sport"
+      className="standard-select"
+      style={{ width: `${width}%` }}
+    >
       <option value="Wszystkie" selected>
         Wszystkie
       </option>

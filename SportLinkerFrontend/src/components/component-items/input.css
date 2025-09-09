@@ -1,10 +1,3 @@
-.input-field-wrapper p {
-  font-size: 0.875rem;
-  color: rgb(75 85 99);
-  margin-bottom: 5px;
-  line-height: 1.25rem;
-}
-
 .input-wrapper {
   position: relative;
 }
@@ -17,15 +10,12 @@
   left: 0.75rem;
 }
 
-.input-wrapper input {
+.standard-input {
+  padding: 0.625rem 1rem 0.625rem 1rem;
   border-radius: 0.5rem;
   border: 1px rgb(209 213 219) solid;
 }
 
 .standard-input-with-icon {
   padding: 0.625rem 1rem 0.625rem 2.5rem;
-}
-
-.standard-input {
-  padding: 0.625rem 1rem 0.625rem 1rem;
 }

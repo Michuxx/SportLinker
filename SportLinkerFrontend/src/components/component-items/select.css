@@ -1,4 +1,10 @@
-.standrad-select {
+.standard-select {
   border-radius: 0.5rem;
   border: 1px rgb(209 213 219) solid;
+  padding: 0.625rem 1rem 0.625rem 1rem;
+  text-transform: none;
+}
+
+.standard-select:focus {
+  border: 2px #3b82f6 solid;
 }

@@ -1,5 +1,4 @@
-import Input from "./Input";
-import "./input.css";
+import "./inputField.css";
 
 const InputField = ({ label, children }) => {
   return (

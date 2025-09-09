@@ -16,13 +16,14 @@ const OfferFilter = () => {
             placeholder="Szukaj w ofertach..."
             type="text"
             icon={searchIcon}
+            width={97}
           />
         </InputField>
         <InputField label="Sport">
-          <Select />
+          <Select width={97} />
         </InputField>
         <InputField label="Lokalizacja">
-          <Input placeholder="np. Warszawa" type="text" />
+          <Input placeholder="np. Warszawa" type="text" width={97} />
         </InputField>
       </div>
     </div>
