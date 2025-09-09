@@ -1,7 +1,7 @@
 import OfferFilter from "./offerFilter/OfferFilter";
-import "./offerSection.css";
+import "./offerFilterSection.css";
 
-const OfferSection = ({ children }) => {
+const OfferFilterSection = ({ children }) => {
   return (
     <section>
       <div className="offer-section-headline">
@@ -13,4 +13,4 @@ const OfferSection = ({ children }) => {
   );
 };
 
-export default OfferSection;
+export default OfferFilterSection;

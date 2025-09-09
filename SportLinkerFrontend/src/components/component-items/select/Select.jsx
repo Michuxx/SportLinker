@@ -7,7 +7,7 @@ const Select = ({ width }) => {
       className="standard-select"
       style={{ width: `${width}%` }}
     >
-      <option value="Wszystkie" selected>
+      <option value="Wszystkie" defaultValue>
         Wszystkie
       </option>
       <option value="Badminton">Badminton</option>

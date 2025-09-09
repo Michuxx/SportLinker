@@ -1,4 +1,4 @@
-import Button from "../component-items/button.jsx";
+import Button from "../component-items/button/button.jsx";
 import "./header.css";
 
 const Header = () => {

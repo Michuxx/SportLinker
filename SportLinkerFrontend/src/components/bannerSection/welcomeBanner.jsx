@@ -1,5 +1,5 @@
 import "./welcomeBanner.css";
-import Button from "../component-items/button";
+import Button from "../component-items/button/button";
 import Feature from "./Feature";
 
 const WelcomeBanner = () => {

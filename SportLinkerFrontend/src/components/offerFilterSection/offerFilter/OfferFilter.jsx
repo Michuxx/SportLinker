@@ -1,6 +1,6 @@
-import Input from "../../component-items/Input";
-import InputField from "../../component-items/InputField";
-import Select from "../../component-items/Select";
+import Input from "../../component-items/input/Input";
+import InputField from "../../component-items/inputField/InputField";
+import Select from "../../component-items/select/Select";
 import "./offerFilter.css";
 import searchIcon from "/search-icon.svg";
 
