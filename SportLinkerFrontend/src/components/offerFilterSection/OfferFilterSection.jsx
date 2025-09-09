@@ -4,7 +4,7 @@ import "./offerFilterSection.css";
 const OfferFilterSection = ({ children }) => {
   return (
     <section>
-      <div className="offer-section-headline">
+      <div className="offer-filter-section-headline">
         <h1>Dostępne oferty</h1>
         <p>Znajdź idealnych partnerów do sportu w swojej okolicy</p>
       </div>

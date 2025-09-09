@@ -8,14 +8,14 @@ section {
   margin-bottom: 3rem;
 }
 
-.offer-section-headline h1 {
+.offer-filter-section-headline h1 {
   font-family: "Poppins-SemiBold";
   color: rgb(17 24 39);
   font-size: 1.875rem;
   line-height: 2.25rem;
 }
 
-.offer-section-headline p {
+.offer-filter-section-headline p {
   color: rgb(75 85 99);
   margin-top: 0.5rem;
 }
