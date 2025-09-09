@@ -1,3 +1,4 @@
+import OfferFilter from "./offerFilter/OfferFilter";
 import "./offerSection.css";
 
 const OfferSection = ({ children }) => {
@@ -7,7 +8,7 @@ const OfferSection = ({ children }) => {
         <h1>Dostępne oferty</h1>
         <p>Znajdź idealnych partnerów do sportu w swojej okolicy</p>
       </div>
-      {children}
+      <OfferFilter />
     </section>
   );
 };
