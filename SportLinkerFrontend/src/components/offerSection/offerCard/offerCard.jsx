@@ -11,13 +11,22 @@ const OfferCard = ({
   maxPeople,
   author,
 }) => {
+  const levelStyles = {
+    Początkujący: "beginner",
+    "Średnio-zaawansowany": "intermediate",
+    Zaawansowany: "expert",
+    "Dowolny poziom": "any",
+  };
+
+  const levelStyle = levelStyles[level] || "";
+
   return (
     <div className="offer-card-wrapper">
       <div className="offer-card-headline-wrapper">
         <h3>{title}</h3>
         <div className="offer-card-blocks">
           <span className="sport">{sport}</span>
-          <span className="level">{level}</span>
+          <span className={levelStyle}>{level}</span>
         </div>
       </div>
       <p className="description">{description}</p>

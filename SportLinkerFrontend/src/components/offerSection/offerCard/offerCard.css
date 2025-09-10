@@ -7,3 +7,39 @@
   border: 1px solid #e5e7eb;
   padding: 1.5rem;
 }
+
+.offer-card-headline-wrapper h3 {
+  font-size: 1.2rem;
+  font-family: "Poppins-Medium";
+  margin-bottom: 0.5rem;
+  line-height: 1.75rem;
+}
+
+.offer-card-blocks {
+  display: flex;
+  gap: 5px;
+}
+
+.offer-card-blocks span {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+  border-radius: 99999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sport {
+  background-color: rgb(219 234 254);
+  color: rgb(30 64 175);
+}
+
+.beginner {
+  background-color: rgb(220 252 231);
+  color: rgb(22 101 52);
+}
+
+.intermediate {
+  color: rgb(133 77 14);
+  background-color: rgb(254 249 195);
+}
