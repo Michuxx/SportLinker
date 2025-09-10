@@ -1,13 +1,9 @@
 import OfferFilter from "./offerFilter/OfferFilter";
 import "./offerFilterSection.css";
 
-const OfferFilterSection = ({ children }) => {
+const OfferFilterSection = () => {
   return (
     <section>
-      <div className="offer-filter-section-headline">
-        <h1>Dostępne oferty</h1>
-        <p>Znajdź idealnych partnerów do sportu w swojej okolicy</p>
-      </div>
       <OfferFilter />
     </section>
   );

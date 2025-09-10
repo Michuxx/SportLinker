@@ -1,0 +1,21 @@
+.offer-section-wrapper {
+  max-width: 80rem;
+  margin: auto;
+  min-height: 1000px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.offer-section-headline h1 {
+  font-family: "Poppins-SemiBold";
+  color: rgb(17 24 39);
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.offer-section-headline p {
+  color: rgb(75 85 99);
+  margin-top: 0.5rem;
+}
