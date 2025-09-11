@@ -10,7 +10,7 @@ const ModalBackground = ({ children, closeModal }) => {
           style="modalCloseButton"
           onClick={closeModal}
           Icon={<MdClose className="close-icon" />}
-        />
+        ></Button>
         {children}
       </div>
     </div>

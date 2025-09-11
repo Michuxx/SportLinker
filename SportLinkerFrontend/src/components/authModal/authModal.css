@@ -1,2 +1,8 @@
 .auth-modal-wrapper {
 }
+
+.login-switcher {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}

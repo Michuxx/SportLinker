@@ -19,8 +19,12 @@ const WelcomeBanner = () => {
         </p>
       </div>
       <div className="banner-btn-section">
-        <Button text="Utwórz ofertę" style="createOfferButton" width={45} />
-        <Button text="Przeglądaj oferty" style="outlineButton" width={45} />
+        <Button style="createOfferButton" width={45}>
+          Utwórz ofertę
+        </Button>
+        <Button style="outlineButton" width={45}>
+          Przeglądaj oferty
+        </Button>
       </div>
       <div className="banner-features-wrapper">
         <Feature

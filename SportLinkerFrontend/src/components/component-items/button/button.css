@@ -15,3 +15,14 @@ button {
   background-color: #fff;
   border: none;
 }
+
+.loginSwitchButton {
+  background-color: #fff;
+  border: none;
+  color: rgb(37 99 235);
+}
+
+.loginSwitchButton:hover {
+  color: rgb(24, 65, 153);
+  text-decoration: underline;
+}

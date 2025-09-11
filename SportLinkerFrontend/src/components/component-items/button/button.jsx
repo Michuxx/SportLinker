@@ -1,11 +1,12 @@
 import "./button.css";
 
-const Button = ({ text, style, width, onClick, Icon }) => {
+const Button = ({ children, style, width, onClick, Icon }) => {
   const buttonType = {
     loginButton: "loginButton",
     createOfferButton: "createOfferButton",
     outlineButton: "outlineButton",
     modalCloseButton: "modalCloseButton",
+    loginSwitchButton: "loginSwitchButton",
   };
 
   const buttonStyle = buttonType[style];
@@ -17,7 +18,7 @@ const Button = ({ text, style, width, onClick, Icon }) => {
       onClick={onClick}
     >
       {Icon || ""}
-      {text || ""}
+      {children || ""}
     </button>
   );
 };
