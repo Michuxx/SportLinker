@@ -1,6 +1,6 @@
 import "./button.css";
 
-const Button = ({ text, style, width }) => {
+const Button = ({ text, style, width, onClick }) => {
   const buttonType = {
     loginButton: "loginButton",
     createOfferButton: "createOfferButton",
@@ -10,7 +10,11 @@ const Button = ({ text, style, width }) => {
   const buttonStyle = buttonType[style];
 
   return (
-    <button className={buttonStyle} style={{ width: `${width}%` }}>
+    <button
+      className={buttonStyle}
+      style={{ width: `${width}%` }}
+      onClick={onClick}
+    >
       {text}
     </button>
   );
