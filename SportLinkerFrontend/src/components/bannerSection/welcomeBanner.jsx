@@ -1,6 +1,9 @@
 import "./welcomeBanner.css";
 import Button from "../component-items/button/button";
 import Feature from "./Feature";
+import { GoPeople } from "react-icons/go";
+import { LuTrophy } from "react-icons/lu";
+import { IoLocationOutline } from "react-icons/io5";
 
 const WelcomeBanner = () => {
   return (
@@ -21,14 +24,17 @@ const WelcomeBanner = () => {
       </div>
       <div className="banner-features-wrapper">
         <Feature
+          Icon={<GoPeople size="32px" color="white" />}
           title="Społeczność"
           description="Poznaj nowych ludzi z podobnymi zainteresowaniami sportowymi"
         />
         <Feature
+          Icon={<LuTrophy size="32px" color="white" />}
           title="Różne poziomy"
           description="Od początkujących po zaawansowanych - każdy znajdzie coś dla siebie"
         />
         <Feature
+          Icon={<IoLocationOutline size="32px" color="white" />}
           title="Lokalne spotkania"
           description="Znajdź aktywności sportowe w swojej okolicy"
         />

@@ -1,11 +1,9 @@
 import "./feature.css";
 
-const Feature = ({ icon, title, description }) => {
+const Feature = ({ Icon, title, description }) => {
   return (
     <div className="feature-wrapper">
-      <div className="icon">
-        <img src={icon} alt="icon" />
-      </div>
+      <div className="icon">{Icon}</div>
       <div className="feature-title">
         <h3>{title}</h3>
       </div>

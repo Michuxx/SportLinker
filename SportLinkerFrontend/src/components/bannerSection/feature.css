@@ -12,8 +12,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 1rem;
-  background-color: rgb(255 255 255);
-  opacity: 0.2;
+  background-color: rgba(255, 255, 255, 0.288);
 }
 
 .feature-title h3 {
@@ -21,6 +20,7 @@
   margin-bottom: 8px;
   color: #fff;
   font-family: "Poppins-Medium";
+  text-align: center;
 }
 
 .feature-description p {

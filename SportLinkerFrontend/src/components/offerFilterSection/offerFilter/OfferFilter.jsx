@@ -3,11 +3,13 @@ import InputField from "../../component-items/inputField/InputField";
 import Select from "../../component-items/select/Select";
 import "./offerFilter.css";
 import searchIcon from "/search-icon.svg";
+import { LuFilter } from "react-icons/lu";
 
 const OfferFilter = () => {
   return (
     <div className="filter-wrapper">
       <div className="filter-headline">
+        <LuFilter color="#3b82f6" size="24px" />
         <h3>Filtruj oferty</h3>
       </div>
       <div className="filter-input-wrapper">

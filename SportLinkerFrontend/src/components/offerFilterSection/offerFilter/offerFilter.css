@@ -9,6 +9,9 @@
 
 .filter-headline {
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .filter-headline h3 {
