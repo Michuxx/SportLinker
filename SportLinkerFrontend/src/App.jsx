@@ -14,7 +14,7 @@ function App() {
       <WelcomeBanner />
       <OfferSection />
       {isModalOpen && (
-        <ModalBackground>
+        <ModalBackground closeModal={() => setIsModalOpen(false)}>
           <AuthModal />
         </ModalBackground>
       )}

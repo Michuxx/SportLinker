@@ -5,3 +5,13 @@ button {
 .loginButton {
   padding: 5px;
 }
+
+.modalCloseButton {
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  top: 1rem;
+  right: 1rem;
+  background-color: #fff;
+  border: none;
+}

@@ -1,7 +1,20 @@
+import Button from "../button/button";
 import "./modalBackground.css";
+import { MdClose } from "react-icons/md";
 
-const ModalBackground = ({ children }) => {
-  return <div className="modal-background">{children}</div>;
+const ModalBackground = ({ children, closeModal }) => {
+  return (
+    <div className="modal-background-wrapper">
+      <div className="modal-background">
+        <Button
+          style="modalCloseButton"
+          onClick={closeModal}
+          Icon={<MdClose className="close-icon" />}
+        />
+        {children}
+      </div>
+    </div>
+  );
 };
 
 export default ModalBackground;
