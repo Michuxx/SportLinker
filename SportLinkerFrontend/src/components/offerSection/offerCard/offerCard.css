@@ -1,6 +1,7 @@
 .offer-card-wrapper {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   background-color: #fff;
   border-radius: 0.75rem;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -37,9 +38,58 @@
 .beginner {
   background-color: rgb(220 252 231);
   color: rgb(22 101 52);
+  display: flex;
+  gap: 5px;
 }
 
 .intermediate {
   color: rgb(133 77 14);
   background-color: rgb(254 249 195);
+  display: flex;
+  gap: 5px;
+}
+
+.expert {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  display: flex;
+  gap: 5px;
+}
+
+.any {
+  background-color: rgb(243 244 246);
+  color: rgb(31 41 55);
+  display: flex;
+  gap: 5px;
+}
+
+.description {
+  color: rgb(55 65 81);
+  line-height: 1.625;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+}
+
+.offer-card-info {
+  margin-bottom: 1rem;
+}
+
+.offer-card-info div {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  gap: 10px;
+}
+
+.offer-card-info div p {
+  color: rgb(55 65 81);
+  font-size: 0.875rem;
+}
+
+.author {
+  padding-top: 1rem;
+  border-top: 1px rgb(243 244 246) solid;
+  color: rgb(107 114 128);
+  font-size: 0.875rem;
 }

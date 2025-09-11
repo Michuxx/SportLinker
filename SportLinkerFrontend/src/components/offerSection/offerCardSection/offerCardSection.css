@@ -10,3 +10,9 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+@media screen and (max-width: 728px) {
+  .offer-card-section-wrapper {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
