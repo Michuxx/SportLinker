@@ -1,11 +1,11 @@
 import "./welcomeBanner.css";
-import Button from "../component-items/button/Button";
 import Feature from "./Feature";
 import { GoPeople } from "react-icons/go";
 import { LuTrophy } from "react-icons/lu";
 import { IoLocationOutline } from "react-icons/io5";
 import { IoPlayOutline } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
+import Button from "../component-items/button/button";
 
 const WelcomeBanner = ({ handleClick }) => {
   return (

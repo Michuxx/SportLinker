@@ -9,7 +9,7 @@ const Header = ({ openModal }) => {
         <div className="btn-section">
           <Button
             style="loginButton"
-            width={50}
+            width={60}
             onClick={() => openModal((e) => !e)}
           >
             Zaloguj się

@@ -40,7 +40,8 @@
 
 .banner-btn-section {
   display: flex;
-  margin-top: 16px;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
   width: 40rem;
   align-items: center;
   justify-content: space-evenly;
