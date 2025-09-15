@@ -26,3 +26,33 @@ button {
   color: rgb(24, 65, 153);
   text-decoration: underline;
 }
+
+.createOfferButton {
+  background-color: #fff;
+  border: none;
+  padding: 1rem 2rem 1rem 2rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: rgb(37 99 235);
+  gap: 5px;
+  font-family: "Poppins-SemiBold";
+}
+
+.outlineButton {
+  gap: 5px;
+  font-family: "Poppins-SemiBold";
+  padding: 1rem 2rem 1rem 2rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  border: 2px #fff solid;
+  background-color: transparent;
+  color: #fff;
+}

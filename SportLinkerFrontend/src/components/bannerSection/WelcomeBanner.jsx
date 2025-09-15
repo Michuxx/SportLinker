@@ -4,6 +4,8 @@ import Feature from "./Feature";
 import { GoPeople } from "react-icons/go";
 import { LuTrophy } from "react-icons/lu";
 import { IoLocationOutline } from "react-icons/io5";
+import { IoPlayOutline } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa6";
 
 const WelcomeBanner = () => {
   return (
@@ -19,10 +21,18 @@ const WelcomeBanner = () => {
         </p>
       </div>
       <div className="banner-btn-section">
-        <Button style="createOfferButton" width={45}>
+        <Button
+          style="createOfferButton"
+          width={40}
+          Icon={<FaPlus size="24px" />}
+        >
           Utwórz ofertę
         </Button>
-        <Button style="outlineButton" width={45}>
+        <Button
+          style="outlineButton"
+          width={50}
+          Icon={<IoPlayOutline size="28px" />}
+        >
           Przeglądaj oferty
         </Button>
       </div>
