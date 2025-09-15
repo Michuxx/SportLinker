@@ -1,7 +1,7 @@
 import "./App.css";
 import Header from "./components/headerSection/Header";
 import WelcomeBanner from "./components/bannerSection/welcomeBanner";
-import OfferSection from "./components/offerSection/offerSection";
+import OfferSection from "./components/offerSection/OfferSection";
 import ModalBackground from "./components/component-items/modal/ModalBackground";
 import AuthModal from "./components/authModal/AuthModal";
 import { useState } from "react";

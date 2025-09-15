@@ -1,5 +1,5 @@
 import "./welcomeBanner.css";
-import Button from "../component-items/button/button";
+import Button from "../component-items/button/Button";
 import Feature from "./Feature";
 import { GoPeople } from "react-icons/go";
 import { LuTrophy } from "react-icons/lu";

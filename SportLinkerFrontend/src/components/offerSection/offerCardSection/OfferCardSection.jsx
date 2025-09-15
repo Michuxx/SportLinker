@@ -1,5 +1,5 @@
 import "./offerCardSection.css";
-import OfferCard from "../offerCard/offerCard";
+import OfferCard from "../offerCard/OfferCard";
 
 const OfferCardSection = () => {
   return (
