@@ -3,7 +3,7 @@ import OfferCard from "../offerCard/OfferCard";
 
 const OfferCardSection = () => {
   return (
-    <section className="offer-card-section-wrapper">
+    <section className="offer-card-section-wrapper" id="offers">
       <OfferCard
         title="Poszukuję partnera do tenisa"
         sport="Tenis"

@@ -7,11 +7,14 @@ import AuthModal from "./components/authModal/AuthModal";
 import { useState } from "react";
 
 function App() {
+  const handleScrollToOffers = () => {
+    document.getElementById("offers")?.scrollIntoView({ behavior: "smooth" });
+  };
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="container">
       <Header openModal={setIsModalOpen} />
-      <WelcomeBanner />
+      <WelcomeBanner handleClick={handleScrollToOffers} />
       <OfferSection />
       {isModalOpen && (
         <ModalBackground closeModal={() => setIsModalOpen(false)}>

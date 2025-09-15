@@ -7,7 +7,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { IoPlayOutline } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
 
-const WelcomeBanner = () => {
+const WelcomeBanner = ({ handleClick }) => {
   return (
     <div className="banner">
       <div className="banner-headline">
@@ -32,6 +32,7 @@ const WelcomeBanner = () => {
           style="outlineButton"
           width={50}
           Icon={<IoPlayOutline size="28px" />}
+          onClick={handleClick}
         >
           Przeglądaj oferty
         </Button>
