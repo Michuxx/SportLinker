@@ -3,7 +3,7 @@ import "./input.css";
 const Input = ({ placeholder, type, icon, width }) => {
   return icon ? (
     <div className="input-wrapper">
-      <img src={icon} alt={`${placeholder} icon`} />
+      <span>{icon}</span>
       <input
         className="standard-input standard-input-with-icon"
         type={type}

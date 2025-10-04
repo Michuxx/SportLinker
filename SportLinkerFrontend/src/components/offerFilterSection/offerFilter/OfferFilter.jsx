@@ -2,7 +2,7 @@ import Input from "../../component-items/input/Input";
 import InputField from "../../component-items/inputField/InputField";
 import Select from "../../component-items/select/Select";
 import "./offerFilter.css";
-import searchIcon from "/search-icon.svg";
+import { IoSearchOutline } from "react-icons/io5";
 import { LuFilter } from "react-icons/lu";
 
 const OfferFilter = () => {
@@ -17,7 +17,7 @@ const OfferFilter = () => {
           <Input
             placeholder="Szukaj w ofertach..."
             type="text"
-            icon={searchIcon}
+            icon={<IoSearchOutline color="rgb(156 163 175)" size="20px" />}
             width={97}
           />
         </InputField>

@@ -2,6 +2,7 @@ import "./button.css";
 
 const Button = ({ children, style, width, onClick, Icon }) => {
   const buttonType = {
+    loginModalButton: "loginModalButton",
     loginButton: "loginButton",
     createOfferButton: "createOfferButton",
     outlineButton: "outlineButton",

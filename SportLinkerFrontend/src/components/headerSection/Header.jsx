@@ -8,7 +8,7 @@ const Header = ({ openModal }) => {
         <div className="header-logo">SportLinker</div>
         <div className="btn-section">
           <Button
-            style="loginButton"
+            style="loginModalButton"
             width={60}
             onClick={() => openModal((e) => !e)}
           >
