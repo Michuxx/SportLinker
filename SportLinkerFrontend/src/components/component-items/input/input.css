@@ -19,3 +19,7 @@
 .standard-input-with-icon {
   padding: 0.625rem 1rem 0.625rem 2.5rem;
 }
+
+.input-error {
+  border: 1px red solid;
+}

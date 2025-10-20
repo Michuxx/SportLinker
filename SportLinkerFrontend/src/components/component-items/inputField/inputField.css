@@ -1,5 +1,5 @@
 .input-field-wrapper {
-  width: 100%;  
+  width: 100%;
   margin-top: 1rem;
 }
 
@@ -8,4 +8,9 @@
   color: rgb(75 85 99);
   margin-bottom: 5px;
   line-height: 1.25rem;
+}
+
+.input-field-wrapper span {
+  font-size: 0.875rem;
+  color: red;
 }
