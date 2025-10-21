@@ -8,6 +8,7 @@ const Input = ({
   conditionalClass,
   onChange,
   value,
+  name,
 }) => {
   return icon ? (
     <div className="input-wrapper">
@@ -22,6 +23,7 @@ const Input = ({
         style={{ width: `${width}%` }}
         onChange={onChange}
         value={value}
+        name={name}
       />
     </div>
   ) : (
@@ -32,6 +34,7 @@ const Input = ({
       style={{ width: `${width}%` }}
       onChange={onChange}
       value={value}
+      name={name}
     />
   );
 };
