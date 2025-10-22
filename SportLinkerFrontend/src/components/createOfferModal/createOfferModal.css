@@ -13,3 +13,8 @@
   margin-top: 0.25rem;
   color: rgb(75 85 99);
 }
+
+.offer-modal-select-wrapper {
+  display: flex;
+  gap: 1rem;
+}

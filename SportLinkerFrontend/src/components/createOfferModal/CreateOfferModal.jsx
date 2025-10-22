@@ -12,23 +12,25 @@ const CreateOfferModal = () => {
         <h2>Utwórz nową ofertę</h2>
         <p>Znajdź partnerów do swojego ulubionego sportu</p>
       </div>
-      <InputField label="Sport">
-        <Select
-          width={100}
-          options={SPORT_OFFERS}
-          defaultValue="none"
-          defaultText="Wybierz Sport"
-        />
-      </InputField>
-      <InputField label="Poziom umiejętności">
-        <Select
-          width={100}
-          options={LEVEL}
-          defaultValue="any"
-          defaultText="Dowolny poziom"
-          icon={<LuTrophy color="rgb(156, 163, 175)" size={20} />}
-        />
-      </InputField>
+      <div className="offer-modal-select-wrapper">
+        <InputField label="Sport">
+          <Select
+            width={100}
+            options={SPORT_OFFERS}
+            defaultValue="none"
+            defaultText="Wybierz Sport"
+          />
+        </InputField>
+        <InputField label="Poziom umiejętności">
+          <Select
+            width={100}
+            options={LEVEL}
+            defaultValue="any"
+            defaultText="Dowolny poziom"
+            icon={<LuTrophy color="rgb(156, 163, 175)" size={20} />}
+          />
+        </InputField>
+      </div>
     </div>
   );
 };
