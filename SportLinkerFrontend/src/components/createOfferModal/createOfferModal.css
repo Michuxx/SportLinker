@@ -1,10 +1,10 @@
 .offer-modal-header {
-  padding-top: 1rem;
+  margin-top: 2rem;
   margin-bottom: 1.5rem;
 }
 
 .offer-modal-header h2 {
-  font-family: "Poppins-SemiBold";
+  font-family: "Poppins-Medium";
   font-size: 1.5rem;
   line-height: 2rem;
 }
@@ -17,4 +17,16 @@
 .offer-modal-select-wrapper {
   display: flex;
   gap: 1rem;
+}
+
+.offer-modal-date-wrapper {
+  display: flex;
+  gap: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .offer-modal-select-wrapper,
+  .offer-modal-date-wrapper {
+    display: block;
+  }
 }

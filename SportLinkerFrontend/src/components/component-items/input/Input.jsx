@@ -9,6 +9,8 @@ const Input = ({
   onChange,
   value,
   name,
+  min,
+  max,
 }) => {
   return icon ? (
     <div className="input-wrapper">
@@ -24,6 +26,8 @@ const Input = ({
         onChange={onChange}
         value={value}
         name={name}
+        min={min}
+        max={max}
       />
     </div>
   ) : (
@@ -35,6 +39,8 @@ const Input = ({
       onChange={onChange}
       value={value}
       name={name}
+      min={min}
+      max={max}
     />
   );
 };
