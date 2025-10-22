@@ -4,6 +4,7 @@ import Select from "../../component-items/select/Select";
 import "./offerFilter.css";
 import { IoSearchOutline } from "react-icons/io5";
 import { LuFilter } from "react-icons/lu";
+import { SPORT_OFFERS } from "../../../assets/SPORT_OFFERS.js";
 
 const OfferFilter = () => {
   return (
@@ -22,7 +23,12 @@ const OfferFilter = () => {
           />
         </InputField>
         <InputField label="Sport">
-          <Select width={97} />
+          <Select
+            width={97}
+            options={SPORT_OFFERS}
+            defaultValue="all"
+            defaultText="Wszystkie"
+          />
         </InputField>
         <InputField label="Lokalizacja">
           <Input placeholder="np. Warszawa" type="text" width={97} />
