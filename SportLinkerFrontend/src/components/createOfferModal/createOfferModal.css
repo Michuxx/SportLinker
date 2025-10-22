@@ -1,0 +1,20 @@
+.offer-modal-header {
+  padding-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.offer-modal-header h2 {
+  font-family: "Poppins-SemiBold";
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.offer-modal-header p {
+  margin-top: 0.25rem;
+  color: rgb(75 85 99);
+}
+
+.offer-modal-select-wrapper {
+  display: flex;
+  gap: 1rem;
+}
