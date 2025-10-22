@@ -58,7 +58,9 @@ const Login = () => {
 
   return (
     <div className="login-wrapper">
-      <Logo />
+      <div className="login-logo">
+        <Logo />
+      </div>
       <h2>Zaloguj się do SportLinker</h2>
       <InputField label="Email" error={errors.email}>
         <Input

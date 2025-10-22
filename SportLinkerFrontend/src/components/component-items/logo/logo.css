@@ -1,10 +1,17 @@
 .logo-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-logo {
+  gap: 1rem;
 }
 
 .logo-wrapper img {
-    width: 12rem;
+  width: 5rem;
+}
 
+.logotype-wrapper img {
+  height: 7rem;
 }

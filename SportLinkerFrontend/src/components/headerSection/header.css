@@ -4,7 +4,6 @@ header {
   justify-content: center;
   align-items: center;
   padding: 20px;
-  /* background-color: rgb(249 250 251); */
 }
 
 .header-wrapper {
@@ -15,7 +14,13 @@ header {
 }
 
 .btn-section {
-  width: 16rem;
+  width: 20rem;
   display: flex;
+  align-items: center;
   gap: 10px;
+}
+
+.header-logo {
+  width: 5rem;
+  display: flex;
 }

@@ -74,7 +74,9 @@ const Register = () => {
 
   return (
     <div className="register-wrapper">
-      <Logo />
+      <div className="register-logo">
+        <Logo />
+      </div>
       <h2>Utwórz konto w SportLinker</h2>
       <InputField label="Imię i nazwisko" error={errors.name}>
         <Input

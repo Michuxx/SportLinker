@@ -1,6 +1,6 @@
 import "./button.css";
 
-const Button = ({ children, style, width, onClick, Icon }) => {
+const Button = ({ children, style, width, height, onClick, Icon }) => {
   const buttonType = {
     loginModalButton: "loginModalButton",
     loginButton: "loginButton",
@@ -15,7 +15,7 @@ const Button = ({ children, style, width, onClick, Icon }) => {
   return (
     <button
       className={buttonStyle}
-      style={{ width: `${width}%` }}
+      style={{ width: `${width}%`, height: `${height}%` }}
       onClick={onClick}
     >
       {Icon || ""}
