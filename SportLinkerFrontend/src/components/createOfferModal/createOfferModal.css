@@ -24,6 +24,12 @@
   gap: 1rem;
 }
 
+.radio-btn-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
 @media screen and (max-width: 768px) {
   .offer-modal-select-wrapper,
   .offer-modal-date-wrapper {

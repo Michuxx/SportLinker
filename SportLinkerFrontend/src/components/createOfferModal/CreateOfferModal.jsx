@@ -10,6 +10,8 @@ import { CiCalendar } from "react-icons/ci";
 import { GoPeople } from "react-icons/go";
 import Input from "../component-items/input/Input.jsx";
 import Textarea from "../component-items/textarea/Textarea.jsx";
+import { CREATE_OFFER_VALUES } from "../../assets/CREATE_OFFER_VALUES.js";
+import RadioButton from "../component-items/radio/RadioButton.jsx";
 
 const CreateOfferModal = () => {
   return (
@@ -76,6 +78,9 @@ const CreateOfferModal = () => {
             max={30}
           />
         </InputField>
+      </div>
+      <div className="radio-btn-wrapper">
+        <RadioButton data={CREATE_OFFER_VALUES} name="application" />
       </div>
     </div>
   );
