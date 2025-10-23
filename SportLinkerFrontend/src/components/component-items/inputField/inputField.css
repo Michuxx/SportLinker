@@ -14,3 +14,8 @@
   font-size: 0.875rem;
   color: red;
 }
+
+.input-info-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}

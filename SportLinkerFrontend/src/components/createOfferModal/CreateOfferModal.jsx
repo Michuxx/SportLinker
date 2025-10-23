@@ -8,6 +8,7 @@ import { GrNotes } from "react-icons/gr";
 import { GrLocation } from "react-icons/gr";
 import { CiCalendar } from "react-icons/ci";
 import { GoPeople } from "react-icons/go";
+import { MdInfoOutline } from "react-icons/md";
 import Input from "../component-items/input/Input.jsx";
 import Textarea from "../component-items/textarea/Textarea.jsx";
 import { CREATE_OFFER_VALUES } from "../../assets/CREATE_OFFER_VALUES.js";
@@ -79,9 +80,22 @@ const CreateOfferModal = () => {
           />
         </InputField>
       </div>
-      <div className="radio-btn-wrapper">
-        <RadioButton data={CREATE_OFFER_VALUES} name="application" />
-      </div>
+      <InputField
+        label="Tryb aplikacji"
+        tooltipDirection="right"
+        tooltipText={
+          <>
+            W Trybie aplikacji <b>Zamkniętym</b> - wysyłana jest prośba o
+            dołączenie do oferty.
+            <br />W trybie <b>Otwartym</b> każdy może dołączyć bez pytania
+          </>
+        }
+        tooltipIcon={<MdInfoOutline size={20} />}
+      >
+        <div className="radio-btn-wrapper">
+          <RadioButton data={CREATE_OFFER_VALUES} name="application" />
+        </div>
+      </InputField>
     </div>
   );
 };

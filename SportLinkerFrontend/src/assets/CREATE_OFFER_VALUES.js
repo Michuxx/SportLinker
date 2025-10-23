@@ -2,11 +2,11 @@ export const CREATE_OFFER_VALUES = [
   {
     id: "1",
     value: "closed",
-    text: "Zamknięta",
+    text: "Zamknięty",
   },
   {
     id: "2",
     value: "open",
-    text: "Otwarta",
+    text: "Otwarty",
   },
 ];
