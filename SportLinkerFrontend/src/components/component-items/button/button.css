@@ -6,8 +6,7 @@ button {
   margin-top: 1rem;
   border-radius: 0.5rem;
   padding: 0.7rem 1.2rem;
-  transition: 
-    background 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+  transition: background 0.22s cubic-bezier(0.4, 0, 0.2, 1),
     color 0.22s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
@@ -23,7 +22,8 @@ button {
   transform: translateY(-2px) scale(1.01);
 }
 
-.loginButton, .loginModalButton {
+.loginButton,
+.loginModalButton {
   background: linear-gradient(to right, #3b82f6, #4f46e5);
   color: #fff;
   font-size: 1rem;
@@ -69,7 +69,7 @@ button {
   text-decoration: underline;
 }
 
-.createOfferButton {
+.createOfferModalButton {
   background-color: #fff;
   border: none;
   padding: 1rem 2rem 1rem 2rem;
@@ -84,7 +84,7 @@ button {
   font-family: "Poppins-SemiBold";
 }
 
-.createOfferButton:hover {
+.createOfferModalButton:hover {
   background: #fff;
   color: #2563eb;
   box-shadow: 0 8px 32px 0 rgba(37, 99, 235, 0.18);
@@ -117,4 +117,33 @@ button {
   letter-spacing: 1px;
   transform: translateY(-2px) scale(1.05) rotate(1deg);
   transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.createOfferButton {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.createOfferButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(79, 70, 229, 0.4);
+  background: linear-gradient(135deg, #5b53f2, #8b5cf6);
+}
+
+.createOfferButton:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.2);
 }

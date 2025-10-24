@@ -13,6 +13,7 @@ import Input from "../component-items/input/Input.jsx";
 import Textarea from "../component-items/textarea/Textarea.jsx";
 import { CREATE_OFFER_VALUES } from "../../assets/CREATE_OFFER_VALUES.js";
 import RadioButton from "../component-items/radio/RadioButton.jsx";
+import Button from "../component-items/button/button.jsx";
 
 const CreateOfferModal = () => {
   return (
@@ -82,12 +83,12 @@ const CreateOfferModal = () => {
       </div>
       <InputField
         label="Tryb aplikacji"
-        tooltipDirection="right"
+        tooltipDirection="top"
         tooltipText={
           <>
-            W Trybie aplikacji <b>Zamkniętym</b> - wysyłana jest prośba o
-            dołączenie do oferty.
-            <br />W trybie <b>Otwartym</b> każdy może dołączyć bez pytania
+            <b>Zamknięty</b> - wysyłana jest prośba o dołączenie do oferty.
+            <br />
+            <b>Otwarty</b> - każdy może dołączyć bez pytania
           </>
         }
         tooltipIcon={<MdInfoOutline size={20} />}
@@ -96,6 +97,9 @@ const CreateOfferModal = () => {
           <RadioButton data={CREATE_OFFER_VALUES} name="application" />
         </div>
       </InputField>
+      <Button style="createOfferButton" width={100}>
+        Dodaj ofertę
+      </Button>
     </div>
   );
 };

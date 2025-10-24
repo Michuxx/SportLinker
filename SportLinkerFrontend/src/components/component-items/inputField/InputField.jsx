@@ -1,5 +1,6 @@
-import Tooltip from "../tooltip/Tooltip";
 import "./inputField.css";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
 const InputField = ({
   label,
@@ -14,11 +15,9 @@ const InputField = ({
       <div className="input-info-wrapper">
         <p>{label}</p>
         {tooltipDirection && tooltipText && (
-          <Tooltip
-            direction={tooltipDirection}
-            text={tooltipText}
-            icon={tooltipIcon}
-          />
+          <Tippy content={tooltipText} placement={tooltipDirection}>
+            {tooltipIcon}
+          </Tippy>
         )}
       </div>
       {children}

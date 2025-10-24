@@ -23,7 +23,7 @@
   height: 20px;
   border: 2px solid #5c6bc0;
   border-radius: 50%;
-  transition: all 0.08s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 
 .custom-radio input[type="radio"]:checked + label::before {
@@ -32,10 +32,7 @@
   box-shadow: inset 0 0 0 4px #fff;
 }
 
-.custom-radio input[type="radio"]:hover + label::before {
+.custom-radio input[type="radio"]:not(:checked):hover + label::before {
+  border-color: #3949ab;
   background-color: #e8eaf6;
-}
-
-.custom-radio input[type="radio"]:focus + label::before {
-  box-shadow: 0 0 0 3px rgba(92, 107, 192, 0.5);
 }

@@ -27,7 +27,7 @@ const WelcomeBanner = ({ handleClick }) => {
       </div>
       <div className="banner-btn-section">
         <Button
-          style="createOfferButton"
+          style="createOfferModalButton"
           width={40}
           Icon={<FaPlus size="24px" />}
           onClick={() => setIsModalOpen((e) => !e)}

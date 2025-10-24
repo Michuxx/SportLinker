@@ -4,10 +4,11 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
   const buttonType = {
     loginModalButton: "loginModalButton",
     loginButton: "loginButton",
-    createOfferButton: "createOfferButton",
+    createOfferModalButton: "createOfferModalButton",
     outlineButton: "outlineButton",
     modalCloseButton: "modalCloseButton",
     loginSwitchButton: "loginSwitchButton",
+    createOfferButton: "createOfferButton",
   };
 
   const buttonStyle = buttonType[style];
