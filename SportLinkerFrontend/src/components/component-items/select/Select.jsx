@@ -7,17 +7,20 @@ const Select = ({
   defaultText,
   icon,
   conditionalClass,
+  onChange,
+  name,
 }) => {
   return icon ? (
     <div className="select-wrapper">
       <span>{icon}</span>
       <select
-        name="sport"
+        name={name}
         className={
           `standard-select standard-select-with-icon ` +
           (conditionalClass && `select-error`)
         }
         style={{ width: `${width}%` }}
+        onChange={onChange}
       >
         <option value={defaultValue}>{defaultText}</option>
         {options.map((opt, index) => (
@@ -29,9 +32,10 @@ const Select = ({
     </div>
   ) : (
     <select
-      name="sport"
+      name={name}
       className={`standard-select ` + (conditionalClass && `select-error`)}
       style={{ width: `${width}%` }}
+      onChange={onChange}
     >
       <option value={defaultValue}>{defaultText}</option>
       {options.map((opt, index) => (

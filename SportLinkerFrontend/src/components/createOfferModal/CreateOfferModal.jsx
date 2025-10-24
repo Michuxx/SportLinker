@@ -14,8 +14,27 @@ import Textarea from "../component-items/textarea/Textarea.jsx";
 import { CREATE_OFFER_VALUES } from "../../assets/CREATE_OFFER_VALUES.js";
 import RadioButton from "../component-items/radio/RadioButton.jsx";
 import Button from "../component-items/button/button.jsx";
+import { useState } from "react";
 
 const CreateOfferModal = () => {
+  const [offerData, setOfferData] = useState({
+    sport: "none",
+    level: "any",
+    title: "",
+    description: "",
+    localization: "",
+    date: "",
+    time: "",
+    players: 2,
+    mode: "open",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setOfferData((prev) => ({ ...prev, [name]: value }));
+    console.log(offerData);
+  };
+
   return (
     <div className="offer-modal-wrapper">
       <div className="offer-modal-header">
@@ -29,6 +48,8 @@ const CreateOfferModal = () => {
             options={SPORT_OFFERS}
             defaultValue="none"
             defaultText="Wybierz Sport"
+            onChange={(e) => handleChange(e)}
+            name="sport"
           />
         </InputField>
         <InputField label="Poziom umiejętności">
@@ -38,6 +59,8 @@ const CreateOfferModal = () => {
             defaultValue="any"
             defaultText="Dowolny poziom"
             icon={<LuTrophy color="rgb(156, 163, 175)" size={20} />}
+            onChange={(e) => handleChange(e)}
+            name="level"
           />
         </InputField>
       </div>
@@ -46,11 +69,20 @@ const CreateOfferModal = () => {
           placeholder="np. Poszukuję partnera do tenisa"
           type="text"
           icon={<GrNotes color="rgb(156, 163, 175)" size={20} />}
+          onChange={(e) => handleChange(e)}
+          name="title"
           width={100}
+          value={offerData.title}
         />
       </InputField>
       <InputField label="Opis">
-        <Textarea placeholder="Opisz szczegóły swojej oferty..." width={100} />
+        <Textarea
+          placeholder="Opisz szczegóły swojej oferty..."
+          width={100}
+          onChange={(e) => handleChange(e)}
+          name="description"
+          value={offerData.description}
+        />
       </InputField>
       <InputField label="Lokalizacja">
         <Input
@@ -58,6 +90,9 @@ const CreateOfferModal = () => {
           type="text"
           icon={<GrLocation color="rgb(156, 163, 175)" size={20} />}
           width={100}
+          onChange={(e) => handleChange(e)}
+          name="localization"
+          value={offerData.localization}
         />
       </InputField>
       <div className="offer-modal-date-wrapper">
@@ -66,10 +101,19 @@ const CreateOfferModal = () => {
             type="date"
             icon={<CiCalendar color="rgb(156, 163, 175)" size={20} />}
             width={100}
+            onChange={(e) => handleChange(e)}
+            name="date"
+            value={offerData.date}
           />
         </InputField>
         <InputField label="Godzina">
-          <Input type="time" width={100} />
+          <Input
+            type="time"
+            width={100}
+            onChange={(e) => handleChange(e)}
+            name="time"
+            value={offerData.time}
+          />
         </InputField>
         <InputField label="Max graczy">
           <Input
@@ -78,6 +122,9 @@ const CreateOfferModal = () => {
             width={100}
             min={2}
             max={30}
+            onChange={(e) => handleChange(e)}
+            name="players"
+            value={offerData.players}
           />
         </InputField>
       </div>
@@ -94,7 +141,12 @@ const CreateOfferModal = () => {
         tooltipIcon={<MdInfoOutline size={20} />}
       >
         <div className="radio-btn-wrapper">
-          <RadioButton data={CREATE_OFFER_VALUES} name="application" />
+          <RadioButton
+            data={CREATE_OFFER_VALUES}
+            name="mode"
+            onChange={(e) => handleChange(e)}
+            value={offerData.mode}
+          />
         </div>
       </InputField>
       <Button style="createOfferButton" width={100}>
