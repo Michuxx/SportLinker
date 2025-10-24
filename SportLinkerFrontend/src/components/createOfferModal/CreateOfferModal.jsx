@@ -29,10 +29,133 @@ const CreateOfferModal = () => {
     mode: "open",
   });
 
+  const [errors, setErrors] = useState({
+    sport: "",
+    title: "",
+    description: "",
+    localization: "",
+    date: "",
+    time: "",
+    players: "",
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setOfferData((prev) => ({ ...prev, [name]: value }));
-    console.log(offerData);
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  };
+
+  const sportValidation = () => {
+    if (offerData.sport === "none") {
+      setErrors((prev) => ({ ...prev, sport: "Wybierz sport" }));
+      return false;
+    }
+    return true;
+  };
+
+  const titleValidation = () => {
+    if (offerData.title === "") {
+      setErrors((prev) => ({ ...prev, title: "Tytuł nie może być pusty" }));
+      return false;
+    } else if (offerData.title.length > 50) {
+      setErrors((prev) => ({
+        ...prev,
+        title: "Tytuł nie może mieć więcej niż 50 znaków",
+      }));
+      return false;
+    }
+    return true;
+  };
+
+  const localizationValidation = () => {
+    if (offerData.localization === "") {
+      setErrors((prev) => ({
+        ...prev,
+        localization: "Lokalizacja nie może być pusta",
+      }));
+      return false;
+    }
+    return true;
+  };
+
+  const dateValidation = () => {
+    if (offerData.date === "") {
+      setErrors((prev) => ({
+        ...prev,
+        date: "data nie może być pusta",
+      }));
+      return false;
+    }
+    return true;
+  };
+
+  const timeValidation = () => {
+    if (offerData.time === "") {
+      setErrors((prev) => ({
+        ...prev,
+        time: "godzina spotkania nie może być pusta",
+      }));
+      return false;
+    }
+    return true;
+  };
+
+  const descriptionValidation = () => {
+    if (offerData.description === "") {
+      setErrors((prev) => ({
+        ...prev,
+        description: "Opis nie może być pusty",
+      }));
+      return false;
+    } else if (offerData.description.length > 180) {
+      setErrors((prev) => ({
+        ...prev,
+        description: "Opis nie może mieć więcej niż 180 znaków",
+      }));
+      return false;
+    }
+    return true;
+  };
+
+  const playersValidation = () => {
+    const playersAmount = parseInt(offerData.players);
+
+    if (playersAmount < 2) {
+      setErrors((prev) => ({
+        ...prev,
+        players: "Musi być conajmniej 2 graczy",
+      }));
+    } else if (isNaN(playersAmount)) {
+      setErrors((prev) => ({
+        ...prev,
+        players: "Nieprawidłowa ilość graczy",
+      }));
+    }
+  };
+
+  const handleSubmit = () => {
+    const validatedSport = sportValidation();
+    const validatedtitle = titleValidation();
+    const validatedDescription = descriptionValidation();
+    const validatedLocalization = localizationValidation();
+    const validatedDate = dateValidation();
+    const validatedTime = timeValidation();
+    const validatedPlayers = playersValidation();
+
+    if (
+      validatedSport &&
+      validatedtitle &&
+      validatedDescription &&
+      validatedLocalization &&
+      validatedDate &&
+      validatedTime &&
+      validatedPlayers
+    ) {
+      console.log("Stworzono!");
+    }
   };
 
   return (
@@ -42,7 +165,7 @@ const CreateOfferModal = () => {
         <p>Znajdź partnerów do swojego ulubionego sportu</p>
       </div>
       <div className="offer-modal-select-wrapper">
-        <InputField label="Sport">
+        <InputField label="Sport" error={errors.sport}>
           <Select
             width={100}
             options={SPORT_OFFERS}
@@ -50,6 +173,7 @@ const CreateOfferModal = () => {
             defaultText="Wybierz Sport"
             onChange={(e) => handleChange(e)}
             name="sport"
+            conditionalClass={errors.sport}
           />
         </InputField>
         <InputField label="Poziom umiejętności">
@@ -64,7 +188,7 @@ const CreateOfferModal = () => {
           />
         </InputField>
       </div>
-      <InputField label="Tytuł oferty">
+      <InputField label="Tytuł oferty" error={errors.title}>
         <Input
           placeholder="np. Poszukuję partnera do tenisa"
           type="text"
@@ -73,18 +197,20 @@ const CreateOfferModal = () => {
           name="title"
           width={100}
           value={offerData.title}
+          conditionalClass={errors.title}
         />
       </InputField>
-      <InputField label="Opis">
+      <InputField label="Opis" error={errors.description}>
         <Textarea
           placeholder="Opisz szczegóły swojej oferty..."
           width={100}
           onChange={(e) => handleChange(e)}
           name="description"
           value={offerData.description}
+          conditionalClass={errors.description}
         />
       </InputField>
-      <InputField label="Lokalizacja">
+      <InputField label="Lokalizacja" error={errors.localization}>
         <Input
           placeholder="np. Warszawa, Centrum"
           type="text"
@@ -93,10 +219,11 @@ const CreateOfferModal = () => {
           onChange={(e) => handleChange(e)}
           name="localization"
           value={offerData.localization}
+          conditionalClass={errors.localization}
         />
       </InputField>
       <div className="offer-modal-date-wrapper">
-        <InputField label="Data">
+        <InputField label="Data" error={errors.date}>
           <Input
             type="date"
             icon={<CiCalendar color="rgb(156, 163, 175)" size={20} />}
@@ -104,18 +231,20 @@ const CreateOfferModal = () => {
             onChange={(e) => handleChange(e)}
             name="date"
             value={offerData.date}
+            conditionalClass={errors.date}
           />
         </InputField>
-        <InputField label="Godzina">
+        <InputField label="Godzina" error={errors.time}>
           <Input
             type="time"
             width={100}
             onChange={(e) => handleChange(e)}
             name="time"
             value={offerData.time}
+            conditionalClass={errors.time}
           />
         </InputField>
-        <InputField label="Max graczy">
+        <InputField label="Max graczy" error={errors.players}>
           <Input
             type="number"
             icon={<GoPeople color="rgb(156, 163, 175)" size={20} />}
@@ -125,6 +254,7 @@ const CreateOfferModal = () => {
             onChange={(e) => handleChange(e)}
             name="players"
             value={offerData.players}
+            conditionalClass={errors.players}
           />
         </InputField>
       </div>
@@ -149,7 +279,7 @@ const CreateOfferModal = () => {
           />
         </div>
       </InputField>
-      <Button style="createOfferButton" width={100}>
+      <Button style="createOfferButton" width={100} onClick={handleSubmit}>
         Dodaj ofertę
       </Button>
     </div>
