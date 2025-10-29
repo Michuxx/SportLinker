@@ -23,4 +23,5 @@ header {
 .header-logo {
   width: 5rem;
   display: flex;
+  cursor: pointer;
 }

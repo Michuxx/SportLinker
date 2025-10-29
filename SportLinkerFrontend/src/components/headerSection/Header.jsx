@@ -1,13 +1,16 @@
+import { useNavigate } from "react-router";
 import Button from "../component-items/button/button.jsx";
 import Logo from "../component-items/logo/Logo.jsx";
 import Logotype from "../component-items/logo/Logotype.jsx";
 import "./header.css";
 
 const Header = ({ openModal }) => {
+  let navigate = useNavigate();
+
   return (
     <header>
       <div className="header-wrapper">
-        <div className="header-logo">
+        <div className="header-logo" onClick={() => navigate("/")}>
           <Logo />
           <Logotype />
         </div>
