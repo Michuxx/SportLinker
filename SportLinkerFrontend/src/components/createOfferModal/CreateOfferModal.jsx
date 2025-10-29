@@ -82,10 +82,17 @@ const CreateOfferModal = () => {
   };
 
   const dateValidation = () => {
+    let todaysDate = new Date().toLocaleDateString("en-CA");
     if (offerData.date === "") {
       setErrors((prev) => ({
         ...prev,
         date: "data nie może być pusta",
+      }));
+      return false;
+    } else if (offerData.date < todaysDate) {
+      setErrors((prev) => ({
+        ...prev,
+        date: "data nie może być wcześniejsza niż dziś",
       }));
       return false;
     }
@@ -93,10 +100,18 @@ const CreateOfferModal = () => {
   };
 
   const timeValidation = () => {
+    let todaysDate = new Date().toLocaleDateString("en-CA");
+    let todaysTime = new Date().toLocaleTimeString("pl-PL");
     if (offerData.time === "") {
       setErrors((prev) => ({
         ...prev,
         time: "godzina spotkania nie może być pusta",
+      }));
+      return false;
+    } else if (offerData.date === todaysDate && offerData.time < todaysTime) {
+      setErrors((prev) => ({
+        ...prev,
+        time: "godzina spotkania nie może być wcześniejsza niż dziś",
       }));
       return false;
     }
