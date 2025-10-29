@@ -122,18 +122,20 @@ const CreateOfferModal = () => {
 
   const playersValidation = () => {
     const playersAmount = parseInt(offerData.players);
-
     if (playersAmount < 2) {
       setErrors((prev) => ({
         ...prev,
         players: "Musi być conajmniej 2 graczy",
       }));
+      return false;
     } else if (isNaN(playersAmount)) {
       setErrors((prev) => ({
         ...prev,
         players: "Nieprawidłowa ilość graczy",
       }));
+      return false;
     }
+    return true;
   };
 
   const handleSubmit = () => {
