@@ -10,6 +10,8 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     loginSwitchButton: "loginSwitchButton",
     createOfferButton: "createOfferButton",
     dropDownButton: "dropDownButton",
+    classicDropdownOptionButton: "classicDropdownOptionButton",
+    logoutDropdownOptionButton: "logoutDropdownOptionButton",
   };
 
   const buttonStyle = buttonType[style];

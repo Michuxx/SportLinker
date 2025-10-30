@@ -4,8 +4,8 @@ import Button from "../button/button";
 const Dropdown = ({ options }) => {
   return (
     <div className="dropdown-wrapper">
-      {options.map((option) => (
-        <div className="option-wrapper" key={option.index}>
+      {options.map((option, index) => (
+        <div className="option-wrapper" key={index}>
           <Button
             style={option.style}
             width={100}
@@ -14,7 +14,7 @@ const Dropdown = ({ options }) => {
           >
             {option.text}
           </Button>
-          <hr />
+          {index < options.length - 1 && <hr />}
         </div>
       ))}
     </div>

@@ -162,3 +162,29 @@ button {
   background-color: #e5e7eb;
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.classicDropdownOptionButton {
+  border: none;
+  color: rgb(55 65 81);
+  text-align: left;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: #fff;
+}
+
+.classicDropdownOptionButton:hover {
+  background-color: #e5e7eb;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logoutDropdownOptionButton {
+  border: none;
+  color: rgb(220 38 38);
+  text-align: left;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: #fff;
+}
+
+.logoutDropdownOptionButton:hover {
+  background-color: #fee2e2;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}

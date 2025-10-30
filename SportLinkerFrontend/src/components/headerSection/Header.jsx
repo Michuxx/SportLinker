@@ -18,17 +18,17 @@ const Header = ({ openModal }) => {
 
   const userDropdown = [
     {
-      style: "classicDropdownButton",
+      style: "classicDropdownOptionButton",
       onClick: () => changeLocation("/profile"),
       text: "Mój profil",
     },
     {
-      style: "classicDropdownButton",
+      style: "classicDropdownOptionButton",
       onClick: () => changeLocation("/profile"),
       text: "Ustawienia",
     },
     {
-      style: "logoutDropdownButton",
+      style: "logoutDropdownOptionButton",
       onClick: () => changeLocation("/"),
       text: "Wyloguj się",
     },

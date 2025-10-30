@@ -1,0 +1,14 @@
+.option-wrapper hr {
+  border-color: rgba(243, 244, 246, 0.342);
+  margin: 0.25rem 0.25rem;
+  border-top-width: 1px;
+}
+
+.dropdown-wrapper {
+  padding: 0.5rem 0 0.5rem;
+  width: 12rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  border: 1px rgb(226, 226, 226) solid;
+}
