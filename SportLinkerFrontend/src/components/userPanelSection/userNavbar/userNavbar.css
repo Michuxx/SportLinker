@@ -1,0 +1,5 @@
+.user-navbar-wrapper {
+  display: flex;
+  width: 100%;
+  border: 1px #e5e7eb solid;
+}
