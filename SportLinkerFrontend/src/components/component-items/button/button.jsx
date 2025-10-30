@@ -9,6 +9,7 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     modalCloseButton: "modalCloseButton",
     loginSwitchButton: "loginSwitchButton",
     createOfferButton: "createOfferButton",
+    dropDownButton: "dropDownButton",
   };
 
   const buttonStyle = buttonType[style];
