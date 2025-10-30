@@ -8,6 +8,7 @@ import "./header.css";
 import { useState } from "react";
 import Dropdown from "../component-items/dropdown/Dropdown.jsx";
 import ModalBackground from "../component-items/modal/ModalBackground.jsx";
+import AuthModal from "../authModal/AuthModal.jsx";
 
 const Header = () => {
   let navigate = useNavigate();
@@ -21,7 +22,7 @@ const Header = () => {
   const userDropdown = [
     {
       style: "classicDropdownOptionButton",
-      onClick: () => changeLocation("/profile"),
+      onClick: () => changeLocation("/profile/userInfo"),
       text: "Mój profil",
     },
     {

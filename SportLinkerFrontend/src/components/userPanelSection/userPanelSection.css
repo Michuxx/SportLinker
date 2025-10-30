@@ -7,3 +7,15 @@
   margin-top: 3rem;
   margin-bottom: 3rem;
 }
+
+.nav-user-menu-option {
+  padding: 1rem;
+}
+
+.inactive-nav-user-menu-option {
+  background-color: red;
+}
+
+.active-nav-user-menu-option {
+  background-color: green;
+}

@@ -2,4 +2,6 @@
   display: flex;
   width: 100%;
   border: 1px #e5e7eb solid;
+  background-color: #fff;
+  border-radius: 0.5rem;
 }
