@@ -7,10 +7,12 @@ import { LuUser } from "react-icons/lu";
 import "./header.css";
 import { useState } from "react";
 import Dropdown from "../component-items/dropdown/Dropdown.jsx";
+import ModalBackground from "../component-items/modal/ModalBackground.jsx";
 
-const Header = ({ openModal }) => {
+const Header = () => {
   let navigate = useNavigate();
   const [isOpenUserDropdown, setIsOpenUserDropdown] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const changeLocation = (url) => {
     navigate(url);
@@ -46,7 +48,7 @@ const Header = ({ openModal }) => {
             style="loginModalButton"
             width={60}
             height={50}
-            onClick={() => openModal((e) => !e)}
+            onClick={() => setIsLoginModalOpen((e) => !e)}
           >
             Zaloguj się
           </Button>
@@ -66,6 +68,11 @@ const Header = ({ openModal }) => {
           )}
         </div>
       </div>
+      {isLoginModalOpen && (
+        <ModalBackground closeModal={() => setIsLoginModalOpen(false)}>
+          <AuthModal />
+        </ModalBackground>
+      )}
     </header>
   );
 };

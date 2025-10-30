@@ -31,6 +31,7 @@
   font-family: "Poppins";
 }
 
-.container {
-  background-color: rgb(249 250 251);
+.container,
+.profile-container {
+  background-color: rgba(249, 250, 251, 1);
 }
