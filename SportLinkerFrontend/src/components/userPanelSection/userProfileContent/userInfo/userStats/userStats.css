@@ -1,0 +1,47 @@
+.user-stats-wrapper {
+  margin-top: 1.5rem;
+}
+
+.user-stats-card-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  gap: 1rem;
+}
+
+.user-card-wrapper {
+  padding: 1rem;
+  width: 33.3%;
+  text-align: center;
+}
+
+.user-card-wrapper span {
+  font-family: Poppins-SemiBold;
+  font-size: 1.5rem;
+}
+
+.user-card-wrapper:nth-child(1) {
+  background-color: rgb(239 246 255);
+}
+
+.user-card-wrapper:nth-child(1) span {
+  color: rgb(37 99 235);
+}
+.user-card-wrapper:nth-child(2) {
+  background-color: rgb(238 242 255);
+}
+
+.user-card-wrapper:nth-child(2) span {
+  color: rgb(79 70 229);
+}
+.user-card-wrapper:nth-child(3) {
+  background-color: rgb(250 245 255);
+}
+
+.user-card-wrapper:nth-child(3) span {
+  color: rgb(147 51 234);
+}
+
+.user-card-wrapper p {
+  color: rgb(75 85 99);
+}
