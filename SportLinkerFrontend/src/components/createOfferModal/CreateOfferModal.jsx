@@ -249,6 +249,7 @@ const CreateOfferModal = () => {
             name="date"
             value={offerData.date}
             conditionalClass={errors.date}
+            min={new Date().toISOString().split("T")[0]}
           />
         </InputField>
         <InputField label="Godzina" error={errors.time}>
