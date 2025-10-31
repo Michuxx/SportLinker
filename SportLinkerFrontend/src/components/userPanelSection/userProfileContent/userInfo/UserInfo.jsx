@@ -1,7 +1,8 @@
 import "./userInfo.css";
-import UserHeader from "./UserHeader";
+import UserHeader from "./userHeader/UserHeader";
 import { useState } from "react";
-import UserDetailed from "./UserDetailed";
+import UserDetailed from "./userDetailed/UserDetailed";
+import UserStats from "./userStats/UserStats";
 
 const UserInfo = () => {
   const [userInfo, seUserInfo] = useState({
@@ -11,6 +12,9 @@ const UserInfo = () => {
     location: null,
     favouriteSport: null,
     aboutMe: null,
+    createdOffers: 0,
+    joinedOffers: 0,
+    invitations: 0,
   });
 
   return (
@@ -21,6 +25,11 @@ const UserInfo = () => {
         location={userInfo.location}
         sport={userInfo.favouriteSport}
         aboutMe={userInfo.aboutMe}
+      />
+      <UserStats
+        createdOffers={userInfo.createdOffers}
+        joinedOffers={userInfo.joinedOffers}
+        invitations={userInfo.invitations}
       />
     </div>
   );

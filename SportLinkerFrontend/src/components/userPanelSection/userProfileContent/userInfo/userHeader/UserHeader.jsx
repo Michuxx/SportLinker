@@ -1,7 +1,7 @@
 import "./userHeader.css";
 import { LuUser } from "react-icons/lu";
 import { FiMail } from "react-icons/fi";
-import Button from "../../../component-items/button/button";
+import Button from "../../../../component-items/button/button";
 import { FaRegAddressCard } from "react-icons/fa6";
 
 const UserHeader = ({ name, mail }) => {
