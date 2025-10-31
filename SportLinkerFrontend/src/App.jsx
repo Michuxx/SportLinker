@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
 import Home from "./components/Pages/Home";
 import Profile from "./components/Pages/Profile";
-import UserInvitations from "./components/userPanelSection/userProfileContent/Userinvitations";
+import UserInvitations from "./components/userPanelSection/userProfileContent/userInvitations/Userinvitations";
 import UserOffers from "./components/userPanelSection/userProfileContent/UserOffers";
 import UserInfo from "./components/userPanelSection/userProfileContent/UserInfo";
 
@@ -20,3 +20,4 @@ function App() {
 }
 
 export default App;
+1;
