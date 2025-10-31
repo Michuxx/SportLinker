@@ -1,7 +1,6 @@
 .user-panel-section-wrapper {
   max-width: 80rem;
   margin: auto;
-  min-height: 1000px;
   padding-left: 2rem;
   padding-right: 2rem;
   margin-top: 3rem;
@@ -9,13 +8,31 @@
 }
 
 .nav-user-menu-option {
-  padding: 1rem;
+  padding: 1rem 1.5rem 1rem 1.5rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .inactive-nav-user-menu-option {
-  background-color: red;
+  background-color: #fff;
+  color: rgb(75 85 99);
+}
+
+.inactive-nav-user-menu-option:hover {
+  color: rgb(37 99 235);
+  background-color: #f9fafb;
 }
 
 .active-nav-user-menu-option {
-  background-color: green;
+  background-color: rgb(239 246 255);
+  color: rgb(37 99 235);
+  border-bottom: 2px rgb(37 99 235) solid;
+}
+
+.user-menu-option-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 }

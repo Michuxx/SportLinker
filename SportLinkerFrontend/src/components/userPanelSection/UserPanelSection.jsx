@@ -3,6 +3,9 @@ import PageTitle from "../pageTitle/PageTitle";
 import UserNavbar from "./userNavbar/UserNavbar";
 import UserProfileContent from "./userProfileContent/UserProfileContent";
 import "./userPanelSection.css";
+import { LuUser } from "react-icons/lu";
+import { GrNotes } from "react-icons/gr";
+import { FiMail } from "react-icons/fi";
 
 const UserPanelSection = () => {
   return (
@@ -22,7 +25,10 @@ const UserPanelSection = () => {
             }`
           }
         >
-          UserInfo
+          <div className="user-menu-option-wrapper">
+            <LuUser size={24} />
+            Mój profil
+          </div>
         </NavLink>
         <NavLink
           to="userOffers"
@@ -34,7 +40,10 @@ const UserPanelSection = () => {
             }`
           }
         >
-          userOffers
+          <div className="user-menu-option-wrapper">
+            <GrNotes size={24} />
+            Moje oferty
+          </div>
         </NavLink>
         <NavLink
           to="userInvitations"
@@ -46,7 +55,10 @@ const UserPanelSection = () => {
             }`
           }
         >
-          userInvitations
+          <div className="user-menu-option-wrapper">
+            <FiMail size={24} />
+            Zaproszenia do ofert
+          </div>
         </NavLink>
       </UserNavbar>
       <UserProfileContent>
