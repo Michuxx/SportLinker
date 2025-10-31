@@ -2,7 +2,7 @@ import "./welcomeBanner.css";
 import Feature from "./Feature";
 import { GoPeople } from "react-icons/go";
 import { LuTrophy } from "react-icons/lu";
-import { IoLocationOutline } from "react-icons/io5";
+import { GrLocation } from "react-icons/gr";
 import { IoPlayOutline } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
 import Button from "../component-items/button/button";
@@ -55,7 +55,7 @@ const WelcomeBanner = ({ handleClick }) => {
           description="Od początkujących po zaawansowanych - każdy znajdzie coś dla siebie"
         />
         <Feature
-          Icon={<IoLocationOutline size="32px" color="white" />}
+          Icon={<GrLocation size="32px" color="white" />}
           title="Lokalne spotkania"
           description="Znajdź aktywności sportowe w swojej okolicy"
         />

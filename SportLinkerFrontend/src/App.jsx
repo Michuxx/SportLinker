@@ -3,7 +3,7 @@ import Home from "./components/Pages/Home";
 import Profile from "./components/Pages/Profile";
 import UserInvitations from "./components/userPanelSection/userProfileContent/userInvitations/Userinvitations";
 import UserOffers from "./components/userPanelSection/userProfileContent/UserOffers";
-import UserInfo from "./components/userPanelSection/userProfileContent/UserInfo";
+import UserInfo from "./components/userPanelSection/userProfileContent/userInfo/UserInfo";
 
 function App() {
   return (
