@@ -13,6 +13,8 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     classicDropdownOptionButton: "classicDropdownOptionButton",
     logoutDropdownOptionButton: "logoutDropdownOptionButton",
     classicBlueButton: "classicBlueButton",
+    classicGreenButton: "classicGreenButton",
+    classicGreyButton: "classicGreyButton",
   };
 
   const buttonStyle = buttonType[style];

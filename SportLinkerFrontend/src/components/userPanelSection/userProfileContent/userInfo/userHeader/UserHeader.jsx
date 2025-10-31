@@ -3,8 +3,17 @@ import { LuUser } from "react-icons/lu";
 import { FiMail } from "react-icons/fi";
 import Button from "../../../../component-items/button/button";
 import { FaRegAddressCard } from "react-icons/fa6";
+import { MdClose } from "react-icons/md";
+import { FiSave } from "react-icons/fi";
 
-const UserHeader = ({ name, mail }) => {
+const UserHeader = ({
+  name,
+  mail,
+  isEditing,
+  setIsEditing,
+  editData,
+  cancelHandle,
+}) => {
   return (
     <div className="user-header-wrapper">
       <div className="user-header-info-wrapper">
@@ -21,12 +30,28 @@ const UserHeader = ({ name, mail }) => {
           </div>
         </div>
         <div className="user-header-btn-wrapper">
-          <Button
-            style="classicBlueButton"
-            Icon={<FaRegAddressCard size={16} />}
-          >
-            Edytuj
-          </Button>
+          {isEditing ? (
+            <div className="user-btn-edit-wrapper">
+              <Button style="classicGreenButton" Icon={<FiSave size={20} />}>
+                Zapisz
+              </Button>
+              <Button
+                style="classicGreyButton"
+                Icon={<MdClose size={20} />}
+                onClick={cancelHandle}
+              >
+                Anuluj
+              </Button>
+            </div>
+          ) : (
+            <Button
+              onClick={setIsEditing}
+              style="classicBlueButton"
+              Icon={<FaRegAddressCard size={16} />}
+            >
+              Edytuj
+            </Button>
+          )}
         </div>
       </div>
     </div>

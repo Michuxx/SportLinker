@@ -17,14 +17,44 @@ const UserInfo = () => {
     invitations: 0,
   });
 
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [editData, setEditData] = useState({
+    name: "John Snow",
+    mail: "John@example.pl",
+    location: null,
+    favouriteSport: null,
+    aboutMe: null,
+  });
+
+  const cancelHandle = () => {
+    setEditData({
+      name: userInfo.name,
+      mail: userInfo.mail,
+      location: userInfo.location,
+      favouriteSport: userInfo.favouriteSport,
+      aboutMe: userInfo.aboutMe,
+    });
+    setIsEditing(false);
+  };
+
   return (
     <div className="user-info-wrapper">
-      <UserHeader name={userInfo.name} mail={userInfo.mail} />
+      <UserHeader
+        name={userInfo.name}
+        mail={userInfo.mail}
+        editData={editData}
+        isEditing={isEditing}
+        setIsEditing={() => setIsEditing((e) => !e)}
+        cancelHandle={cancelHandle}
+      />
       <UserDetailed
         creationDate={userInfo.created}
         location={userInfo.location}
         sport={userInfo.favouriteSport}
         aboutMe={userInfo.aboutMe}
+        editData={editData}
+        isEditing={isEditing}
       />
       <UserStats
         createdOffers={userInfo.createdOffers}

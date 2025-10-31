@@ -6,7 +6,14 @@ import { CiCalendar } from "react-icons/ci";
 import { LuTrophy } from "react-icons/lu";
 import UserDetailedDescription from "./userDetailedDescription";
 
-const UserDetailed = ({ creationDate, location, sport, aboutMe }) => {
+const UserDetailed = ({
+  creationDate,
+  location,
+  sport,
+  aboutMe,
+  editData,
+  isEditing,
+}) => {
   const [parsedUserData, setParsedUserData] = useState({
     dateCreation: creationDate,
     localization: location ? location : "Nie podano lokalizacji",
