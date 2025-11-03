@@ -5,6 +5,8 @@ import { GrLocation } from "react-icons/gr";
 import { CiCalendar } from "react-icons/ci";
 import { LuTrophy } from "react-icons/lu";
 import UserDetailedDescription from "./userDetailedDescription";
+import UserDetailedSport from "./UserDetailedSport";
+import { SPORT_OFFERS } from "../../../../../assets/SPORT_OFFERS";
 
 const UserDetailed = ({
   creationDate,
@@ -15,14 +17,15 @@ const UserDetailed = ({
   isEditing,
   onChange,
 }) => {
-  const [parsedUserData, setParsedUserData] = useState({
-    dateCreation: creationDate,
-    localization: location ? location : "Nie podano lokalizacji",
-    favouriteSport: sport ? sport : "brak",
-    about: aboutMe
-      ? aboutMe
-      : `Brak opisu. Kliknij "Edytuj", aby dodać informacje o sobie`,
-  });
+  const dateCreationText = `Dołączył: ${creationDate}`;
+
+  const localizationText = location ? location : "Nie podano lokalizacji";
+
+  const favouriteSportText = `Ulubiony sport: ${sport ? sport : "brak"}`;
+
+  const aboutText = aboutMe
+    ? aboutMe
+    : `Brak opisu. Kliknij "Edytuj", aby dodać informacje o sobie`;
 
   return (
     <div className="user-detailed-wrapper">
@@ -30,26 +33,33 @@ const UserDetailed = ({
         <h3>Informacje podstawowe</h3>
         <UserDetailedMeta
           icon={<CiCalendar size={24} color="rgb(59 130 246)" />}
-          text={`Dołączył: ${parsedUserData.dateCreation}`}
+          text={dateCreationText}
         />
         <UserDetailedMeta
           icon={<GrLocation size={24} color="rgb(59 130 246)" />}
-          text={parsedUserData.localization}
+          text={localizationText}
           isEditing={isEditing}
           editData={editData.location}
           name="location"
           onChange={onChange}
           placeholder="Nie podawaj dokładnej lokalizacji"
         />
-        <UserDetailedMeta
+        <UserDetailedSport
           icon={<LuTrophy size={24} color="rgb(59 130 246)" />}
-          text={`Ulubiony sport: ${parsedUserData.favouriteSport}`}
+          text={favouriteSportText}
+          isEditing={isEditing}
+          name="favouriteSport"
+          onChange={onChange}
+          defaultValue="none"
+          defaultText="Brak"
+          options={SPORT_OFFERS}
+          prevValue={editData.favouriteSport}
         />
       </div>
       <div className="user-detailed-section">
         <h3>O mnie</h3>
         <UserDetailedDescription
-          text={parsedUserData.about}
+          text={aboutText}
           isEditing={isEditing}
           editData={editData.aboutMe}
           name="aboutMe"

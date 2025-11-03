@@ -15,6 +15,7 @@ const UserHeader = ({
   editData,
   cancelHandle,
   onChange,
+  handleSave,
 }) => {
   return (
     <div className="user-header-wrapper">
@@ -42,7 +43,7 @@ const UserHeader = ({
                 <EditInput
                   value={editData.mail}
                   size={1}
-                  type="mail"
+                  type="email"
                   name="mail"
                   width={70}
                   onChange={(e) => onChange(e)}
@@ -56,7 +57,11 @@ const UserHeader = ({
         <div className="user-header-btn-wrapper">
           {isEditing ? (
             <div className="user-btn-edit-wrapper">
-              <Button style="classicGreenButton" Icon={<FiSave size={20} />}>
+              <Button
+                style="classicGreenButton"
+                Icon={<FiSave size={20} />}
+                onClick={handleSave}
+              >
                 Zapisz
               </Button>
               <Button

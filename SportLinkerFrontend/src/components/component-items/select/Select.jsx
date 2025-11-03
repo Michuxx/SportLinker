@@ -9,6 +9,7 @@ const Select = ({
   conditionalClass,
   onChange,
   name,
+  value,
 }) => {
   return icon ? (
     <div className="select-wrapper">
@@ -21,6 +22,7 @@ const Select = ({
         }
         style={{ width: `${width}%` }}
         onChange={onChange}
+        value={value || defaultValue}
       >
         <option value={defaultValue}>{defaultText}</option>
         {options.map((opt, index) => (
@@ -36,6 +38,7 @@ const Select = ({
       className={`standard-select ` + (conditionalClass && `select-error`)}
       style={{ width: `${width}%` }}
       onChange={onChange}
+      value={value || defaultValue}
     >
       <option value={defaultValue}>{defaultText}</option>
       {options.map((opt, index) => (

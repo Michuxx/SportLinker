@@ -191,6 +191,7 @@ const CreateOfferModal = () => {
             onChange={(e) => handleChange(e)}
             name="sport"
             conditionalClass={errors.sport}
+            value={offerData.sport}
           />
         </InputField>
         <InputField label="Poziom umiejętności">
@@ -202,6 +203,7 @@ const CreateOfferModal = () => {
             icon={<LuTrophy color="rgb(156, 163, 175)" size={20} />}
             onChange={(e) => handleChange(e)}
             name="level"
+            value={offerData.level}
           />
         </InputField>
       </div>

@@ -5,11 +5,11 @@ import UserDetailed from "./userDetailed/UserDetailed";
 import UserStats from "./userStats/UserStats";
 
 const UserInfo = () => {
-  const [userInfo, seUserInfo] = useState({
+  const [userInfo, setUserInfo] = useState({
     name: "John Snow",
     mail: "John@example.pl",
     created: "30.10.2025",
-    location: null,
+    location: "",
     favouriteSport: null,
     aboutMe: "",
     createdOffers: 0,
@@ -20,11 +20,11 @@ const UserInfo = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const [editData, setEditData] = useState({
-    name: "John Snow",
-    mail: "John@example.pl",
-    location: null,
-    favouriteSport: null,
-    aboutMe: "",
+    name: userInfo.name,
+    mail: userInfo.mail,
+    location: userInfo.location,
+    favouriteSport: userInfo.favouriteSport,
+    aboutMe: userInfo.aboutMe,
   });
 
   const cancelHandle = () => {
@@ -43,6 +43,14 @@ const UserInfo = () => {
     setEditData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSaveData = () => {
+    setUserInfo((prev) => ({
+      ...prev,
+      ...editData,
+    }));
+    setIsEditing(false);
+  };
+
   return (
     <div className="user-info-wrapper">
       <UserHeader
@@ -53,6 +61,7 @@ const UserInfo = () => {
         onChange={handleChangeEditData}
         setIsEditing={() => setIsEditing((e) => !e)}
         cancelHandle={cancelHandle}
+        handleSave={handleSaveData}
       />
       <UserDetailed
         onChange={handleChangeEditData}
