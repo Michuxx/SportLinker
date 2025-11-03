@@ -158,6 +158,7 @@ button {
   text-align: left;
   padding: 0.5rem 1rem 0.5rem 1rem;
   background-color: #fff;
+  border-radius: 0;
 }
 
 .classicDropdownOptionButton:hover {
@@ -170,6 +171,7 @@ button {
   text-align: left;
   padding: 0.5rem 1rem 0.5rem 1rem;
   background-color: #fff;
+  border-radius: 0;
 }
 
 .logoutDropdownOptionButton:hover {

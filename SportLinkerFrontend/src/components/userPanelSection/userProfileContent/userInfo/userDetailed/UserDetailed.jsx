@@ -13,6 +13,7 @@ const UserDetailed = ({
   aboutMe,
   editData,
   isEditing,
+  onChange,
 }) => {
   const [parsedUserData, setParsedUserData] = useState({
     dateCreation: creationDate,
@@ -34,6 +35,11 @@ const UserDetailed = ({
         <UserDetailedMeta
           icon={<GrLocation size={24} color="rgb(59 130 246)" />}
           text={parsedUserData.localization}
+          isEditing={isEditing}
+          editData={editData.location}
+          name="location"
+          onChange={onChange}
+          placeholder="Nie podawaj dokładnej lokalizacji"
         />
         <UserDetailedMeta
           icon={<LuTrophy size={24} color="rgb(59 130 246)" />}
@@ -42,7 +48,14 @@ const UserDetailed = ({
       </div>
       <div className="user-detailed-section">
         <h3>O mnie</h3>
-        <UserDetailedDescription text={parsedUserData.about} />
+        <UserDetailedDescription
+          text={parsedUserData.about}
+          isEditing={isEditing}
+          editData={editData.aboutMe}
+          name="aboutMe"
+          onChange={onChange}
+          placeholder="Napisz coś o sobie :)"
+        />
       </div>
     </div>
   );

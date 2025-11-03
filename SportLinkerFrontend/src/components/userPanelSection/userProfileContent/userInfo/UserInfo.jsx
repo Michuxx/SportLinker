@@ -11,7 +11,7 @@ const UserInfo = () => {
     created: "30.10.2025",
     location: null,
     favouriteSport: null,
-    aboutMe: null,
+    aboutMe: "",
     createdOffers: 0,
     joinedOffers: 0,
     invitations: 0,
@@ -24,7 +24,7 @@ const UserInfo = () => {
     mail: "John@example.pl",
     location: null,
     favouriteSport: null,
-    aboutMe: null,
+    aboutMe: "",
   });
 
   const cancelHandle = () => {
@@ -38,6 +38,11 @@ const UserInfo = () => {
     setIsEditing(false);
   };
 
+  const handleChangeEditData = (e) => {
+    const { name, value } = e.target;
+    setEditData((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <div className="user-info-wrapper">
       <UserHeader
@@ -45,10 +50,12 @@ const UserInfo = () => {
         mail={userInfo.mail}
         editData={editData}
         isEditing={isEditing}
+        onChange={handleChangeEditData}
         setIsEditing={() => setIsEditing((e) => !e)}
         cancelHandle={cancelHandle}
       />
       <UserDetailed
+        onChange={handleChangeEditData}
         creationDate={userInfo.created}
         location={userInfo.location}
         sport={userInfo.favouriteSport}

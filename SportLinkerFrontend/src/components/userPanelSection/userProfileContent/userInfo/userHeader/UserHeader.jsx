@@ -5,6 +5,7 @@ import Button from "../../../../component-items/button/button";
 import { FaRegAddressCard } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 import { FiSave } from "react-icons/fi";
+import EditInput from "../../../../component-items/input/EditInput";
 
 const UserHeader = ({
   name,
@@ -13,6 +14,7 @@ const UserHeader = ({
   setIsEditing,
   editData,
   cancelHandle,
+  onChange,
 }) => {
   return (
     <div className="user-header-wrapper">
@@ -22,10 +24,32 @@ const UserHeader = ({
             <LuUser size={36} color="white" />
           </div>
           <div className="user-header-info">
-            <h1>{name}</h1>
+            {isEditing ? (
+              <EditInput
+                value={editData.name}
+                size={2}
+                type="text"
+                name="name"
+                width={70}
+                onChange={(e) => onChange(e)}
+              />
+            ) : (
+              <h1>{name}</h1>
+            )}
             <div className="user-header-mail">
               <FiMail />
-              <p>{mail}</p>
+              {isEditing ? (
+                <EditInput
+                  value={editData.mail}
+                  size={1}
+                  type="mail"
+                  name="mail"
+                  width={70}
+                  onChange={(e) => onChange(e)}
+                />
+              ) : (
+                <p>{mail}</p>
+              )}
             </div>
           </div>
         </div>
