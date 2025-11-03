@@ -6,16 +6,18 @@ import { FaRegAddressCard } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 import { FiSave } from "react-icons/fi";
 import EditInput from "../../../../component-items/input/EditInput";
+import InputField from "../../../../component-items/inputField/InputField";
 
 const UserHeader = ({
   name,
-  mail,
+  email,
   isEditing,
   setIsEditing,
   editData,
   cancelHandle,
   onChange,
   handleSave,
+  error,
 }) => {
   return (
     <div className="user-header-wrapper">
@@ -26,30 +28,36 @@ const UserHeader = ({
           </div>
           <div className="user-header-info">
             {isEditing ? (
-              <EditInput
-                value={editData.name}
-                size={2}
-                type="text"
-                name="name"
-                width={70}
-                onChange={(e) => onChange(e)}
-              />
+              <InputField error={error.name}>
+                <EditInput
+                  value={editData.name}
+                  size={2}
+                  type="text"
+                  name="name"
+                  width={70}
+                  onChange={(e) => onChange(e)}
+                  conditionalClass={error.name}
+                />
+              </InputField>
             ) : (
               <h1>{name}</h1>
             )}
-            <div className="user-header-mail">
+            <div className="user-header-email">
               <FiMail />
               {isEditing ? (
-                <EditInput
-                  value={editData.mail}
-                  size={1}
-                  type="email"
-                  name="mail"
-                  width={70}
-                  onChange={(e) => onChange(e)}
-                />
+                <InputField error={error.email}>
+                  <EditInput
+                    value={editData.email}
+                    size={1}
+                    type="email"
+                    name="email"
+                    width={70}
+                    onChange={(e) => onChange(e)}
+                    conditionalClass={error.email}
+                  />
+                </InputField>
               ) : (
-                <p>{mail}</p>
+                <p>{email}</p>
               )}
             </div>
           </div>

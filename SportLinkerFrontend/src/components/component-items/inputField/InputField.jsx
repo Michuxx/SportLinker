@@ -13,7 +13,7 @@ const InputField = ({
   return (
     <div className="input-field-wrapper">
       <div className="input-info-wrapper">
-        <p>{label}</p>
+        {label && <p>{label}</p>}
         {tooltipDirection && tooltipText && (
           <Tippy content={tooltipText} placement={tooltipDirection}>
             {tooltipIcon}

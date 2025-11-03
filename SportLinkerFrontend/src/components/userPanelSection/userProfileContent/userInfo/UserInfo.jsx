@@ -7,7 +7,7 @@ import UserStats from "./userStats/UserStats";
 const UserInfo = () => {
   const [userInfo, setUserInfo] = useState({
     name: "John Snow",
-    mail: "John@example.pl",
+    email: "John@example.pl",
     created: "30.10.2025",
     location: "",
     favouriteSport: null,
@@ -17,11 +17,18 @@ const UserInfo = () => {
     invitations: 0,
   });
 
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+  });
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
   const [isEditing, setIsEditing] = useState(false);
 
   const [editData, setEditData] = useState({
     name: userInfo.name,
-    mail: userInfo.mail,
+    email: userInfo.email,
     location: userInfo.location,
     favouriteSport: userInfo.favouriteSport,
     aboutMe: userInfo.aboutMe,
@@ -30,7 +37,7 @@ const UserInfo = () => {
   const cancelHandle = () => {
     setEditData({
       name: userInfo.name,
-      mail: userInfo.mail,
+      email: userInfo.email,
       location: userInfo.location,
       favouriteSport: userInfo.favouriteSport,
       aboutMe: userInfo.aboutMe,
@@ -38,30 +45,59 @@ const UserInfo = () => {
     setIsEditing(false);
   };
 
+  const emailValidation = () => {
+    if (editData.email.length === 0 || !emailRegex.test(editData.email)) {
+      setErrors((prev) => ({
+        ...prev,
+        email: "Email jest nieprawidłowy lub pusty",
+      }));
+      return false;
+    }
+    return true;
+  };
+
+  const nameValidation = () => {
+    if (editData.name.length === 0) {
+      setErrors((prev) => ({
+        ...prev,
+        name: "Imię i nazwisko nie może być puste",
+      }));
+      return false;
+    }
+    return true;
+  };
+
   const handleChangeEditData = (e) => {
     const { name, value } = e.target;
     setEditData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSaveData = () => {
-    setUserInfo((prev) => ({
-      ...prev,
-      ...editData,
-    }));
-    setIsEditing(false);
+    const validatedEmail = emailValidation();
+    const validatedName = nameValidation();
+
+    if (validatedEmail && validatedName) {
+      setUserInfo((prev) => ({
+        ...prev,
+        ...editData,
+      }));
+      setIsEditing(false);
+    }
   };
 
   return (
     <div className="user-info-wrapper">
       <UserHeader
         name={userInfo.name}
-        mail={userInfo.mail}
+        email={userInfo.email}
         editData={editData}
         isEditing={isEditing}
         onChange={handleChangeEditData}
         setIsEditing={() => setIsEditing((e) => !e)}
         cancelHandle={cancelHandle}
         handleSave={handleSaveData}
+        error={errors}
       />
       <UserDetailed
         onChange={handleChangeEditData}

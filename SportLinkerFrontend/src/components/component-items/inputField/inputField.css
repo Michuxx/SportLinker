@@ -1,6 +1,8 @@
 .input-field-wrapper {
   width: 100%;
   margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .input-field-wrapper p {
