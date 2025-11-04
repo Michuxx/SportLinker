@@ -3,6 +3,7 @@ import Button from "../../../../component-items/button/button";
 import ModalBackground from "../../../../component-items/modal/ModalBackground";
 import NullComponent from "../../../../component-items/nullComponent/NullComponent";
 import CreateOfferModal from "../../../../createOfferModal/CreateOfferModal";
+import "./nullOffers.css";
 
 const NullOffers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
