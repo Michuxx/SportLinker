@@ -213,3 +213,13 @@ button {
 .classicGreyButton:hover {
   background-color: rgb(75 85 99);
 }
+
+.deleteButton {
+  width: 1rem;
+  height: 1rem;
+  color: rgb(220 38 38);
+}
+
+.deleteButton:hover {
+  background-color: rgb(254 242 242);
+}

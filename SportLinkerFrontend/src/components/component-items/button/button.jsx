@@ -16,6 +16,7 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     classicGreenButton: "classicGreenButton",
     classicGreyButton: "classicGreyButton",
     gradientButton: "gradientButton",
+    deleteButton: "deleteButton",
   };
 
   const buttonStyle = buttonType[style];

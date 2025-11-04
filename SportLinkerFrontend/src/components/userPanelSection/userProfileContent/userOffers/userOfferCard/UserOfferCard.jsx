@@ -1,4 +1,3 @@
-import OfferCardAuthor from "../../../../offerSection/offerCard/OfferCardAuthor";
 import OfferCardBlock from "../../../../offerSection/offerCard/OfferCardBlock";
 import OfferCardDate from "../../../../offerSection/offerCard/OfferCardDate";
 import OfferCardDescription from "../../../../offerSection/offerCard/OfferCardDescription";
@@ -6,6 +5,8 @@ import OfferCardLocation from "../../../../offerSection/offerCard/OfferCardLocat
 import OfferCardPeople from "../../../../offerSection/offerCard/OfferCardPeople";
 import "./userOfferCard.css";
 import { LuTrophy } from "react-icons/lu";
+import Button from "../../../../component-items/button/button";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const UserOfferCard = ({
   title,
@@ -45,6 +46,12 @@ const UserOfferCard = ({
           availabilityClass={availabilityArr[0]}
           availabilityText={availabilityArr[1]}
         />
+        <div className="user-offer-card-btn-wrapper">
+          <Button
+            style="deleteButton"
+            Icon={<FaRegTrashAlt size={20} />}
+          ></Button>
+        </div>
       </div>
       <h3>{title}</h3>
       <OfferCardDescription text={description} />
