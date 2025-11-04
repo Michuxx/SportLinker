@@ -1,8 +1,12 @@
+import { useState } from "react";
 import Button from "../../../../component-items/button/button";
+import ModalBackground from "../../../../component-items/modal/ModalBackground";
 import NullComponent from "../../../../component-items/nullComponent/NullComponent";
-import "./nullOffers.css";
+import CreateOfferModal from "../../../../createOfferModal/CreateOfferModal";
 
 const NullOffers = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="null-offers-wrapper">
       <NullComponent
@@ -10,10 +14,19 @@ const NullOffers = () => {
         text="Nie utworzyłeś jeszcze żadnych ofert sportowych"
         icon="🏃‍♂️"
       >
-        <Button style="gradientButton" width={20}>
+        <Button
+          style="gradientButton"
+          width={20}
+          onClick={(e) => setIsModalOpen((e) => !e)}
+        >
           Utwórz ofertę
         </Button>
       </NullComponent>
+      {isModalOpen && (
+        <ModalBackground closeModal={() => setIsModalOpen(false)}>
+          <CreateOfferModal />
+        </ModalBackground>
+      )}
     </div>
   );
 };

@@ -4,6 +4,12 @@
   gap: 5px;
 }
 
+.edit-input-wrapper span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .edit-input {
   border: none;
   border-bottom: 2px rgb(59 130 246) solid;

@@ -12,7 +12,7 @@ const UserDetailedMeta = ({
 }) => {
   return (
     <div className="user-detailed-meta-wrapper">
-      {icon}
+      <span>{icon}</span>
       {isEditing ? (
         <EditInput
           value={editData}

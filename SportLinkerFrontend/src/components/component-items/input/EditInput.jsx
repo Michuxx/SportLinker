@@ -15,7 +15,7 @@ const EditInput = ({
 }) => {
   return (
     <div className="edit-input-wrapper">
-      {icon && <div>{icon}</div>}
+      {icon && <span>{icon}</span>}
       <input
         className={`edit-input ` + (conditionalClass && `edit-input-error`)}
         type={type}

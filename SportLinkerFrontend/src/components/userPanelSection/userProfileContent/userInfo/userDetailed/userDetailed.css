@@ -5,6 +5,12 @@
   margin-bottom: 0.75rem;
 }
 
+.user-detailed-meta-wrapper span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .user-detailed-wrapper {
   display: flex;
   border-bottom: 1px rgb(243 244 246) solid;

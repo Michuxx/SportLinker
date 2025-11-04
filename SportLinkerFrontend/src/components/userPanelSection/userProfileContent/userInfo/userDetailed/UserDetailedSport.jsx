@@ -14,7 +14,7 @@ const UserDetailedSport = ({
 }) => {
   return (
     <div className="user-detailed-meta-wrapper">
-      {icon}
+      <span>{icon}</span>
       {isEditing ? (
         <Select
           onChange={(e) => onChange(e)}

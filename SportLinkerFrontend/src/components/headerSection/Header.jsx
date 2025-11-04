@@ -9,6 +9,7 @@ import { useState } from "react";
 import Dropdown from "../component-items/dropdown/Dropdown.jsx";
 import ModalBackground from "../component-items/modal/ModalBackground.jsx";
 import AuthModal from "../authModal/AuthModal.jsx";
+import { LuLogIn } from "react-icons/lu";
 
 const Header = () => {
   let navigate = useNavigate();
@@ -47,8 +48,9 @@ const Header = () => {
         <div className="btn-section">
           <Button
             style="loginModalButton"
-            width={60}
+            width={80}
             height={50}
+            Icon={<LuLogIn size={24} />}
             onClick={() => setIsLoginModalOpen((e) => !e)}
           >
             Zaloguj się
