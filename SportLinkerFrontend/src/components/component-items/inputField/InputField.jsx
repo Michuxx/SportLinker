@@ -20,8 +20,10 @@ const InputField = ({
           </Tippy>
         )}
       </div>
-      {children}
-      {error && <span>{error}</span>}
+      <span>
+        {children}
+        {error && <span>{error}</span>}
+      </span>
     </div>
   );
 };

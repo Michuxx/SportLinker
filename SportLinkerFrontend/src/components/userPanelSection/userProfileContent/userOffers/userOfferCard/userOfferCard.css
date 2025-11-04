@@ -1,0 +1,23 @@
+.user-offer-card-wrapper {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  border: 1px rgb(243 244 246) solid;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.user-offer-card-wrapper h3 {
+  margin-top: 1rem;
+}
+
+.user-offer-card-info-wrapper {
+  display: flex;
+  margin-top: 2rem;
+}
+
+.user-offer-card-info-wrapper div {
+  display: flex;
+  gap: 5px;
+  width: 40%;
+}

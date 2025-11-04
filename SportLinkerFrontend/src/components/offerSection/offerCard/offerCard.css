@@ -63,6 +63,16 @@
   gap: 5px;
 }
 
+.open {
+  background-color: #b2ebf2;
+  color: #006064;
+}
+
+.closed {
+  background-color: #efebe9;
+  color: #5d4037;
+}
+
 .description {
   color: rgb(55 65 81);
   line-height: 1.625;

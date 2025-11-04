@@ -1,8 +1,11 @@
 import "./offerCard.css";
-import { CiCalendar } from "react-icons/ci";
-import { IoLocationOutline } from "react-icons/io5";
 import { LuTrophy } from "react-icons/lu";
-import { GoPeople } from "react-icons/go";
+import OfferCardBlock from "./OfferCardBlock.jsx";
+import OfferCardDescription from "./OfferCardDescription.jsx";
+import OfferCardAuthor from "./OfferCardAuthor.jsx";
+import OfferCardDate from "./OfferCardDate.jsx";
+import OfferCardLocation from "./OfferCardLocation.jsx";
+import OfferCardPeople from "./OfferCardPeople.jsx";
 
 const OfferCard = ({
   title,
@@ -15,45 +18,33 @@ const OfferCard = ({
   maxPeople,
   author,
 }) => {
-  const levelStyles = {
+  const levelMap = {
     easy: ["beginner", "Początkujący"],
     mid: ["intermediate", "Średnio-zaawansowany"],
     expert: ["expert", "Zaawansowany"],
     any: ["any", "Dowolny poziom"],
   };
 
-  const levelStyle = levelStyles[level] || "";
+  const levelArr = levelMap[level] || "";
 
   return (
     <div className="offer-card-wrapper">
       <div className="offer-card-headline-wrapper">
         <h3>{title}</h3>
-        <div className="offer-card-blocks">
-          <span className="sport">{sport}</span>
-          <span className={levelStyle[0]}>
-            <LuTrophy />
-            {levelStyle[1]}
-          </span>
-        </div>
+        <OfferCardBlock
+          levelStyle={levelArr[0]}
+          sport={sport}
+          levelText={levelArr[1]}
+          icon={<LuTrophy />}
+        />
       </div>
-      <p className="description">{description}</p>
+      <OfferCardDescription text={description} />
       <div className="offer-card-info">
-        <div>
-          <CiCalendar color="#3b82f6" size="22px" />
-          <p>{date}</p>
-        </div>
-        <div>
-          <IoLocationOutline color="#3b82f6" size="22px" />
-          <p>{location}</p>
-        </div>
-        <div>
-          <GoPeople color="#3b82f6" size="22px" />
-          <p>
-            {currentPeople}/{maxPeople} uczestników
-          </p>
-        </div>
+        <OfferCardDate date={date} />
+        <OfferCardLocation location={location} />
+        <OfferCardPeople currentPeople={currentPeople} maxPeople={maxPeople} />
       </div>
-      <p className="author">Autor: {author}</p>
+      <OfferCardAuthor author={author} />
     </div>
   );
 };

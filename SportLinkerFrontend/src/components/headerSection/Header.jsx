@@ -10,6 +10,7 @@ import Dropdown from "../component-items/dropdown/Dropdown.jsx";
 import ModalBackground from "../component-items/modal/ModalBackground.jsx";
 import AuthModal from "../authModal/AuthModal.jsx";
 import { LuLogIn } from "react-icons/lu";
+import { CgUserAdd } from "react-icons/cg";
 
 const Header = () => {
   let navigate = useNavigate();

@@ -14,7 +14,7 @@ const UserOffers = () => {
       location: "Warszawa, Mokotów",
       currentPeople: 1,
       maxPeople: 2,
-      author: "Anna Kowalska",
+      availability: "open",
     },
     {
       title: "Turniej badmintona - szukamy graczy",
@@ -26,7 +26,7 @@ const UserOffers = () => {
       location: "Warszawa, Mokotów",
       currentPeople: 1,
       maxPeople: 2,
-      author: "Anna Kowalska",
+      availability: "open",
     },
     {
       title: "Poszukuję partnera do tenisa",
@@ -38,12 +38,25 @@ const UserOffers = () => {
       location: "Warszawa, Mokotów",
       currentPeople: 1,
       maxPeople: 2,
+      availability: "closed",
     },
   ]);
   return (
     <div className="user-offers-wrapper">
       {offers.length > 0 ? (
-        offers.map((offer) => <UserOfferCard />)
+        offers.map((offer) => (
+          <UserOfferCard
+            title={offer.title}
+            sport={offer.sport}
+            level={offer.level}
+            description={offer.description}
+            date={offer.date}
+            location={offer.location}
+            currentPeople={offer.currentPeople}
+            maxPeople={offer.maxPeople}
+            availability={offer.availability}
+          />
+        ))
       ) : (
         <NullOffers />
       )}
