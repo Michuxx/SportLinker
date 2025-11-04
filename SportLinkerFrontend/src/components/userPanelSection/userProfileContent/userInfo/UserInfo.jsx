@@ -43,6 +43,10 @@ const UserInfo = () => {
       aboutMe: userInfo.aboutMe,
     });
     setIsEditing(false);
+    setErrors({
+      name: "",
+      email: "",
+    });
   };
 
   const emailValidation = () => {

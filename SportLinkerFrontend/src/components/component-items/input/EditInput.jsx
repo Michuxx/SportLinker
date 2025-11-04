@@ -10,20 +10,24 @@ const EditInput = ({
   name,
   min,
   max,
-  size
+  size,
+  icon,
 }) => {
   return (
-    <input
-      className={`edit-input ` + (conditionalClass && `edit-input-error`)}
-      type={type}
-      placeholder={placeholder}
-      style={{ width: `${width}%`, fontSize: `${size}rem`}}
-      onChange={onChange}
-      value={value}
-      name={name}
-      min={min}
-      max={max}
-    />
+    <div className="edit-input-wrapper">
+      {icon && <div>{icon}</div>}
+      <input
+        className={`edit-input ` + (conditionalClass && `edit-input-error`)}
+        type={type}
+        placeholder={placeholder}
+        style={{ width: `${width}%`, fontSize: `${size}rem` }}
+        onChange={onChange}
+        value={value}
+        name={name}
+        min={min}
+        max={max}
+      />
+    </div>
   );
 };
 

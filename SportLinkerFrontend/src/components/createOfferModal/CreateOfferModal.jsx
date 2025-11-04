@@ -227,6 +227,7 @@ const CreateOfferModal = () => {
           name="description"
           value={offerData.description}
           conditionalClass={errors.description}
+          rows={3}
         />
       </InputField>
       <InputField label="Lokalizacja" error={errors.localization}>

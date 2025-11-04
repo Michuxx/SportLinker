@@ -1,14 +1,20 @@
+.edit-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .edit-input {
-    border: none;
-    border-bottom: 2px rgb(59 130 246) solid;
-    line-height: 2rem;
-  }
+  border: none;
+  border-bottom: 2px rgb(59 130 246) solid;
+  line-height: 2rem;
+}
 
-  .edit-input:focus {
-    outline: none;
-    border-bottom: 2px #4f46e5 solid;
-  }
+.edit-input:focus {
+  outline: none;
+  border-bottom: 2px #4f46e5 solid;
+}
 
-  .edit-input-error {
-    border-bottom: 2px red solid;
-  }
+.edit-input-error {
+  border-bottom: 2px red solid;
+}

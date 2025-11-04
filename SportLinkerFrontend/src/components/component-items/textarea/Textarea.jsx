@@ -7,6 +7,7 @@ const Textarea = ({
   onChange,
   value,
   name,
+  rows,
 }) => {
   return (
     <textarea
@@ -16,7 +17,7 @@ const Textarea = ({
       onChange={onChange}
       value={value}
       name={name}
-      rows={3}
+      rows={rows}
     ></textarea>
   );
 };

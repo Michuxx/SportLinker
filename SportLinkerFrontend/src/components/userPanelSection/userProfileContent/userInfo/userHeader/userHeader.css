@@ -29,6 +29,12 @@
   color: rgb(75 85 99);
 }
 
+.user-header-email-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .user-btn-edit-wrapper {
   display: flex;
   gap: 1rem;

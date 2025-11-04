@@ -43,7 +43,6 @@ const UserHeader = ({
               <h1>{name}</h1>
             )}
             <div className="user-header-email">
-              <FiMail />
               {isEditing ? (
                 <InputField error={error.email}>
                   <EditInput
@@ -54,10 +53,14 @@ const UserHeader = ({
                     width={70}
                     onChange={(e) => onChange(e)}
                     conditionalClass={error.email}
+                    icon={<FiMail color="rgb(75 85 99)" size={16} />}
                   />
                 </InputField>
               ) : (
-                <p>{email}</p>
+                <div className="user-header-email-wrapper">
+                  <FiMail color="rgb(75 85 99)" />
+                  <p>{email}</p>
+                </div>
               )}
             </div>
           </div>

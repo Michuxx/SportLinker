@@ -20,7 +20,7 @@ const UserDetailedMeta = ({
           onChange={(e) => onChange(e)}
           size={1}
           type="text"
-          width={50}
+          width={100}
           placeholder={placeholder}
         />
       ) : (

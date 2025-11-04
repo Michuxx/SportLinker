@@ -18,6 +18,7 @@ const UserDetailedDescription = ({
           onChange={(e) => onChange(e)}
           value={editData.aboutMe}
           width={100}
+          rows={5}
         />
       ) : (
         <p>{text}</p>
