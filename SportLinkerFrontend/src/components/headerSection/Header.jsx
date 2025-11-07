@@ -16,6 +16,7 @@ const Header = () => {
   let navigate = useNavigate();
   const [isOpenUserDropdown, setIsOpenUserDropdown] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isLoginSelection, setIsLoginSelection] = useState(true); // for security
 
   const changeLocation = (url) => {
     navigate(url);
@@ -39,6 +40,11 @@ const Header = () => {
     },
   ];
 
+  const handleModal = (selection) => {
+    setIsLoginSelection(selection);
+    setIsLoginModalOpen((e) => !e);
+  };
+
   return (
     <header>
       <div className="header-wrapper">
@@ -48,11 +54,20 @@ const Header = () => {
         </div>
         <div className="btn-section">
           <Button
+            style="registerModalButton"
+            width={80}
+            height={50}
+            Icon={<CgUserAdd size={24} />}
+            onClick={() => handleModal(false)}
+          >
+            Załóż konto
+          </Button>
+          <Button
             style="loginModalButton"
             width={80}
             height={50}
             Icon={<LuLogIn size={24} />}
-            onClick={() => setIsLoginModalOpen((e) => !e)}
+            onClick={() => handleModal(true)}
           >
             Zaloguj się
           </Button>
@@ -74,7 +89,7 @@ const Header = () => {
       </div>
       {isLoginModalOpen && (
         <ModalBackground closeModal={() => setIsLoginModalOpen(false)}>
-          <AuthModal />
+          <AuthModal loginSelection={isLoginSelection} />
         </ModalBackground>
       )}
     </header>

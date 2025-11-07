@@ -4,8 +4,8 @@ import Login from "./Login";
 import Register from "./Reigster";
 import Button from "../component-items/button/button";
 
-const AuthModal = () => {
-  const [isLogin, setIsLogin] = useState(true);
+const AuthModal = ({ loginSelection }) => {
+  const [isLogin, setIsLogin] = useState(loginSelection);
   return (
     <div className="auth-modal-wrapper">
       {isLogin ? <Login /> : <Register />}
