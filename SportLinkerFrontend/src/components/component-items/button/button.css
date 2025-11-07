@@ -234,6 +234,16 @@ button {
   background-color: rgb(75 85 99);
 }
 
+.classicRedButton {
+  background-color: rgb(239 68 68);
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  color: #fff;
+}
+
+.classicRedButton:hover {
+  background-color: rgb(220 38 38);
+}
+
 .deleteButton {
   width: 2.5rem;
   height: 2.5rem;
