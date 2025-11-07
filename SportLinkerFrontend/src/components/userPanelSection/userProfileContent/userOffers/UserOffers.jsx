@@ -1,8 +1,11 @@
 import { useState } from "react";
 import NullOffers from "./nullOffers/NullOffers";
 import UserOfferCard from "./userOfferCard/UserOfferCard";
+import ModalBackground from "../../../component-items/modal/ModalBackground";
+import DeleteOfferModal from "../../../deleteOfferModal/DeleteOfferModal";
 
 const UserOffers = () => {
+  const [selectedOfferToDelete, setSelectedOfferToDelete] = useState(null);
   const [offers, setOffers] = useState([
     {
       title: "Poszukuję partnera do tenisa",
@@ -55,10 +58,21 @@ const UserOffers = () => {
             currentPeople={offer.currentPeople}
             maxPeople={offer.maxPeople}
             availability={offer.availability}
+            setSelectedOfferToDelete={() =>
+              setSelectedOfferToDelete(offer.title)
+            }
           />
         ))
       ) : (
         <NullOffers />
+      )}
+      {selectedOfferToDelete && (
+        <ModalBackground closeModal={() => setSelectedOfferToDelete(null)}>
+          <DeleteOfferModal
+            id={selectedOfferToDelete}
+            onCancel={() => setSelectedOfferToDelete(null)}
+          />
+        </ModalBackground>
       )}
     </div>
   );

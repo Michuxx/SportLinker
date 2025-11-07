@@ -18,6 +18,7 @@ const UserOfferCard = ({
   currentPeople,
   maxPeople,
   availability,
+  setSelectedOfferToDelete,
 }) => {
   const levelMap = {
     easy: ["beginner", "Początkujący"],
@@ -50,6 +51,7 @@ const UserOfferCard = ({
           <Button
             style="deleteButton"
             Icon={<FaRegTrashAlt size={20} />}
+            onClick={setSelectedOfferToDelete}
           ></Button>
         </div>
       </div>
