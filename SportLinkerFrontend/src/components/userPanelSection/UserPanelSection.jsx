@@ -46,7 +46,7 @@ const UserPanelSection = () => {
           </div>
         </NavLink>
         <NavLink
-          to="userInvitations"
+          to="myInvitations"
           className={({ isActive }) =>
             `nav-user-menu-option ${
               isActive
@@ -57,7 +57,37 @@ const UserPanelSection = () => {
         >
           <div className="user-menu-option-wrapper">
             <FiMail size={24} />
-            Zaproszenia do ofert
+            Moje zaproszenia
+          </div>
+        </NavLink>
+        <NavLink
+          to="foreignInvitations"
+          className={({ isActive }) =>
+            `nav-user-menu-option ${
+              isActive
+                ? "active-nav-user-menu-option"
+                : "inactive-nav-user-menu-option"
+            }`
+          }
+        >
+          <div className="user-menu-option-wrapper">
+            <FiMail size={24} />
+            Obce zaproszenia
+          </div>
+        </NavLink>
+        <NavLink
+          to="joinedOffers"
+          className={({ isActive }) =>
+            `nav-user-menu-option ${
+              isActive
+                ? "active-nav-user-menu-option"
+                : "inactive-nav-user-menu-option"
+            }`
+          }
+        >
+          <div className="user-menu-option-wrapper">
+            <FiMail size={24} />
+            Oferty z moim udziałem
           </div>
         </NavLink>
       </UserNavbar>
