@@ -28,7 +28,7 @@ const UserHeader = ({
           </div>
           <div className="user-header-info">
             {isEditing ? (
-              <InputField error={error.name}>
+              <InputField>
                 <EditInput
                   value={editData.name}
                   size={2}
@@ -36,7 +36,7 @@ const UserHeader = ({
                   name="name"
                   width={70}
                   onChange={(e) => onChange(e)}
-                  conditionalClass={error.name}
+                  error={error.name}
                 />
               </InputField>
             ) : (
@@ -44,15 +44,15 @@ const UserHeader = ({
             )}
             <div className="user-header-email">
               {isEditing ? (
-                <InputField error={error.email}>
+                <InputField>
                   <EditInput
                     value={editData.email}
                     size={1}
                     type="email"
                     name="email"
-                    width={70}
+                    width={69}
                     onChange={(e) => onChange(e)}
-                    conditionalClass={error.email}
+                    error={error.email}
                     icon={<FiMail color="rgb(75 85 99)" size={16} />}
                   />
                 </InputField>

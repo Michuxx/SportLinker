@@ -5,7 +5,7 @@ const Input = ({
   type,
   icon,
   width,
-  conditionalClass,
+  error,
   onChange,
   value,
   name,
@@ -15,11 +15,28 @@ const Input = ({
   return icon ? (
     <div className="input-wrapper">
       <span>{icon}</span>
+      <div className="input-error-wrapper">
+        <input
+          className={
+            `standard-input standard-input-with-icon ` +
+            (error && `input-error`)
+          }
+          type={type}
+          placeholder={placeholder}
+          style={{ width: `${width}%` }}
+          onChange={onChange}
+          value={value}
+          name={name}
+          min={min}
+          max={max}
+        />
+        {error && <p className="input-error-text">{error}</p>}
+      </div>
+    </div>
+  ) : (
+    <div className="input-error-wrapper">
       <input
-        className={
-          `standard-input standard-input-with-icon ` +
-          (conditionalClass && `input-error`)
-        }
+        className={`standard-input ` + (error && `input-error`)}
         type={type}
         placeholder={placeholder}
         style={{ width: `${width}%` }}
@@ -29,19 +46,8 @@ const Input = ({
         min={min}
         max={max}
       />
+      {error && <p className="input-error-text">{error}</p>}
     </div>
-  ) : (
-    <input
-      className={`standard-input ` + (conditionalClass && `input-error`)}
-      type={type}
-      placeholder={placeholder}
-      style={{ width: `${width}%` }}
-      onChange={onChange}
-      value={value}
-      name={name}
-      min={min}
-      max={max}
-    />
   );
 };
 

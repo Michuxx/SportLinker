@@ -1,13 +1,11 @@
 .edit-input-wrapper {
   display: flex;
-  align-items: center;
   gap: 5px;
 }
-
-.edit-input-wrapper span {
+.edit-input-icon {
   display: flex;
   justify-content: center;
-  align-items: center;
+  margin-top: 9px;
 }
 
 .edit-input {
@@ -23,4 +21,9 @@
 
 .edit-input-error {
   border-bottom: 2px red solid;
+}
+
+.input-error-text {
+  font-size: 0.875rem;
+  color: red;
 }

@@ -182,7 +182,7 @@ const CreateOfferModal = () => {
         <p>Znajdź partnerów do swojego ulubionego sportu</p>
       </div>
       <div className="offer-modal-select-wrapper">
-        <InputField label="Sport" error={errors.sport}>
+        <InputField label="Sport">
           <Select
             width={100}
             options={SPORT_OFFERS}
@@ -190,7 +190,7 @@ const CreateOfferModal = () => {
             defaultText="Wybierz Sport"
             onChange={(e) => handleChange(e)}
             name="sport"
-            conditionalClass={errors.sport}
+            error={errors.sport}
             value={offerData.sport}
           />
         </InputField>
@@ -207,7 +207,7 @@ const CreateOfferModal = () => {
           />
         </InputField>
       </div>
-      <InputField label="Tytuł oferty" error={errors.title}>
+      <InputField label="Tytuł oferty">
         <Input
           placeholder="np. Poszukuję partnera do tenisa"
           type="text"
@@ -216,21 +216,21 @@ const CreateOfferModal = () => {
           name="title"
           width={100}
           value={offerData.title}
-          conditionalClass={errors.title}
+          error={errors.title}
         />
       </InputField>
-      <InputField label="Opis" error={errors.description}>
+      <InputField label="Opis">
         <Textarea
           placeholder="Opisz szczegóły swojej oferty..."
           width={100}
           onChange={(e) => handleChange(e)}
           name="description"
           value={offerData.description}
-          conditionalClass={errors.description}
+          error={errors.description}
           rows={3}
         />
       </InputField>
-      <InputField label="Lokalizacja" error={errors.localization}>
+      <InputField label="Lokalizacja">
         <Input
           placeholder="np. Warszawa, Centrum"
           type="text"
@@ -239,11 +239,11 @@ const CreateOfferModal = () => {
           onChange={(e) => handleChange(e)}
           name="localization"
           value={offerData.localization}
-          conditionalClass={errors.localization}
+          error={errors.localization}
         />
       </InputField>
       <div className="offer-modal-date-wrapper">
-        <InputField label="Data" error={errors.date}>
+        <InputField label="Data">
           <Input
             type="date"
             icon={<CiCalendar color="rgb(156, 163, 175)" size={20} />}
@@ -251,21 +251,21 @@ const CreateOfferModal = () => {
             onChange={(e) => handleChange(e)}
             name="date"
             value={offerData.date}
-            conditionalClass={errors.date}
+            error={errors.date}
             min={new Date().toISOString().split("T")[0]}
           />
         </InputField>
-        <InputField label="Godzina" error={errors.time}>
+        <InputField label="Godzina">
           <Input
             type="time"
             width={100}
             onChange={(e) => handleChange(e)}
             name="time"
             value={offerData.time}
-            conditionalClass={errors.time}
+            error={errors.time}
           />
         </InputField>
-        <InputField label="Max graczy" error={errors.players}>
+        <InputField label="Max graczy">
           <Input
             type="number"
             icon={<GoPeople color="rgb(156, 163, 175)" size={20} />}
@@ -275,7 +275,7 @@ const CreateOfferModal = () => {
             onChange={(e) => handleChange(e)}
             name="players"
             value={offerData.players}
-            conditionalClass={errors.players}
+            error={errors.players}
           />
         </InputField>
       </div>

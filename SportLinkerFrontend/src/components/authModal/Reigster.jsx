@@ -78,7 +78,7 @@ const Register = () => {
         <Logo />
       </div>
       <h2>Utwórz konto w SportLinker</h2>
-      <InputField label="Imię i nazwisko" error={errors.name}>
+      <InputField label="Imię i nazwisko">
         <Input
           placeholder="John Doe"
           type="text"
@@ -86,11 +86,11 @@ const Register = () => {
           icon={<LuUser color="rgb(156 163 175)" size="20px" />}
           onChange={(e) => handleChange(e)}
           value={loginData.name}
-          conditionalClass={errors.name}
+          error={errors.name}
           name="name"
         />
       </InputField>
-      <InputField label="Email" error={errors.email}>
+      <InputField label="Email">
         <Input
           placeholder="John@example.com"
           type="email"
@@ -98,11 +98,11 @@ const Register = () => {
           icon={<MdMailOutline color="rgb(156 163 175)" size="20px" />}
           onChange={(e) => handleChange(e)}
           value={loginData.email}
-          conditionalClass={errors.email}
+          error={errors.email}
           name="email"
         />
       </InputField>
-      <InputField label="Hasło" error={errors.password}>
+      <InputField label="Hasło">
         <Input
           placeholder="••••••••"
           type="password"
@@ -110,7 +110,7 @@ const Register = () => {
           icon={<GoLock color="rgb(156 163 175)" size="20px" />}
           onChange={(e) => handleChange(e)}
           value={loginData.password}
-          conditionalClass={errors.password}
+          error={errors.password}
           name="password"
         />
       </InputField>

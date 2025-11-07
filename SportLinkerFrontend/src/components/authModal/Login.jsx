@@ -62,7 +62,7 @@ const Login = () => {
         <Logo />
       </div>
       <h2>Zaloguj się do SportLinker</h2>
-      <InputField label="Email" error={errors.email}>
+      <InputField label="Email">
         <Input
           placeholder="John@example.com"
           type="email"
@@ -70,11 +70,11 @@ const Login = () => {
           icon={<MdMailOutline color="rgb(156 163 175)" size="20px" />}
           onChange={(e) => handleChange(e)}
           value={loginData.email}
-          conditionalClass={errors.email}
+          error={errors.email}
           name="email"
         />
       </InputField>
-      <InputField label="Hasło" error={errors.password}>
+      <InputField label="Hasło">
         <Input
           placeholder="••••••••"
           type="password"
@@ -82,7 +82,7 @@ const Login = () => {
           icon={<GoLock color="rgb(156 163 175)" size="20px" />}
           onChange={(e) => handleChange(e)}
           value={loginData.password}
-          conditionalClass={errors.password}
+          error={errors.password}
           name="password"
         />
       </InputField>
