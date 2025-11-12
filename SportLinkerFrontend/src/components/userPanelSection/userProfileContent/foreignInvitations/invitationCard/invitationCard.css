@@ -7,3 +7,8 @@
   display: flex;
   gap: 5px;
 }
+
+.invitation-btn-wrapper {
+  display: flex;
+  gap: 10px;
+}
