@@ -1,0 +1,18 @@
+.invitation-card-tag-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.invitation-card-block {
+  display: flex;
+  gap: 5px;
+}
+
+.invitation-card-block span {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+  border-radius: 99999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

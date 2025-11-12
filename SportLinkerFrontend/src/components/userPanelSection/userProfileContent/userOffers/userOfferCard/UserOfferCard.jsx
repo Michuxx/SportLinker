@@ -21,8 +21,8 @@ const UserOfferCard = ({
   setSelectedOfferToDelete,
 }) => {
   const levelMap = {
-    easy: ["beginner", "Początkujący"],
-    mid: ["intermediate", "Średnio-zaawansowany"],
+    easy: ["easy", "Początkujący"],
+    mid: ["mid", "Średnio-zaawansowany"],
     expert: ["expert", "Zaawansowany"],
     any: ["any", "Dowolny poziom"],
   };

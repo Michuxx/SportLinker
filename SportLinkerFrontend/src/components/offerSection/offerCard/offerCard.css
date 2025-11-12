@@ -30,49 +30,6 @@
   align-items: center;
 }
 
-.sport {
-  background-color: rgb(219 234 254);
-  color: rgb(30 64 175);
-}
-
-.beginner {
-  background-color: rgb(220 252 231);
-  color: rgb(22 101 52);
-  display: flex;
-  gap: 5px;
-}
-
-.intermediate {
-  color: rgb(133 77 14);
-  background-color: rgb(254 249 195);
-  display: flex;
-  gap: 5px;
-}
-
-.expert {
-  background-color: #fee2e2;
-  color: #b91c1c;
-  display: flex;
-  gap: 5px;
-}
-
-.any {
-  background-color: rgb(243 244 246);
-  color: rgb(31 41 55);
-  display: flex;
-  gap: 5px;
-}
-
-.open {
-  background-color: #b2ebf2;
-  color: #006064;
-}
-
-.closed {
-  background-color: #efebe9;
-  color: #5d4037;
-}
-
 .description {
   color: rgb(55 65 81);
   line-height: 1.625;
