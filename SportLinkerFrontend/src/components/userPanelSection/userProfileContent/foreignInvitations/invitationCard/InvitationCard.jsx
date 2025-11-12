@@ -8,7 +8,7 @@ const InvitationCard = ({ invitation }) => {
       <div className="invitation-card-tag-wrapper">
         <div className="invitation-card-block">
           <Tag styleType="sport" text={invitation.sport} />
-          <Tag />
+          <Tag styleType={invitation.status} />
         </div>
       </div>
     </div>

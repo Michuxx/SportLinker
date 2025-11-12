@@ -1,5 +1,4 @@
 import "./offerCard.css";
-import { LuTrophy } from "react-icons/lu";
 import OfferCardBlock from "./OfferCardBlock.jsx";
 import OfferCardDescription from "./OfferCardDescription.jsx";
 import OfferCardAuthor from "./OfferCardAuthor.jsx";
@@ -22,7 +21,7 @@ const OfferCard = ({
     <div className="offer-card-wrapper">
       <div className="offer-card-headline-wrapper">
         <h3>{title}</h3>
-        <OfferCardBlock level={level} sport={sport} icon={<LuTrophy />} />
+        <OfferCardBlock level={level} sport={sport} />
       </div>
       <OfferCardDescription text={description} />
       <div className="offer-card-info">

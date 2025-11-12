@@ -4,7 +4,6 @@ import OfferCardDescription from "../../../../offerSection/offerCard/OfferCardDe
 import OfferCardLocation from "../../../../offerSection/offerCard/OfferCardLocation";
 import OfferCardPeople from "../../../../offerSection/offerCard/OfferCardPeople";
 import "./userOfferCard.css";
-import { LuTrophy } from "react-icons/lu";
 import Button from "../../../../component-items/button/button";
 import { FaRegTrashAlt } from "react-icons/fa";
 
@@ -26,7 +25,6 @@ const UserOfferCard = ({
         <OfferCardBlock
           level={level}
           sport={sport}
-          icon={<LuTrophy />}
           availability={availability}
         />
         <div className="user-offer-card-btn-wrapper">

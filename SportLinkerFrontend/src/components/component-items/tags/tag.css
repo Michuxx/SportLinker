@@ -12,14 +12,16 @@
   color: rgb(30 64 175);
 }
 
-.beginner {
+.beginner,
+.accepted {
   background-color: rgb(220 252 231);
   color: rgb(22 101 52);
   display: flex;
   gap: 5px;
 }
 
-.intermediate {
+.intermediate,
+.pending {
   color: rgb(133 77 14);
   background-color: rgb(254 249 195);
   display: flex;
