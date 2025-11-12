@@ -8,6 +8,7 @@ const UserOffers = () => {
   const [selectedOfferToDelete, setSelectedOfferToDelete] = useState(null);
   const [offers, setOffers] = useState([
     {
+      id: 1,
       title: "Poszukuję partnera do tenisa",
       sport: "Tenis",
       level: "mid",
@@ -20,6 +21,7 @@ const UserOffers = () => {
       availability: "open",
     },
     {
+      id: 2,
       title: "Turniej badmintona - szukamy graczy",
       sport: "Badminton",
       level: "easy",
@@ -32,6 +34,7 @@ const UserOffers = () => {
       availability: "open",
     },
     {
+      id: 3,
       title: "Poszukuję partnera do tenisa",
       sport: "Tenis",
       level: "expert",
@@ -44,6 +47,12 @@ const UserOffers = () => {
       availability: "closed",
     },
   ]);
+
+  const handleDeleteOffer = (offerId) => {
+    setOffers((prevOffers) => (
+       prevOffers.filter((offer) => offer.id !== offerId)
+    ))
+  }
   return (
     <div className="user-offers-wrapper">
       {offers.length > 0 ? (
@@ -59,7 +68,7 @@ const UserOffers = () => {
             maxPeople={offer.maxPeople}
             availability={offer.availability}
             setSelectedOfferToDelete={() =>
-              setSelectedOfferToDelete(offer.title)
+              setSelectedOfferToDelete(offer.id)
             }
           />
         ))
@@ -69,8 +78,8 @@ const UserOffers = () => {
       {selectedOfferToDelete && (
         <ModalBackground closeModal={() => setSelectedOfferToDelete(null)}>
           <DeleteOfferModal
-            id={selectedOfferToDelete}
             onCancel={() => setSelectedOfferToDelete(null)}
+            onConfirm={() => handleDeleteOffer(selectedOfferToDelete)}
           />
         </ModalBackground>
       )}

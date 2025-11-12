@@ -4,7 +4,7 @@ import Button from "../component-items/button/button";
 import { MdClose } from "react-icons/md";
 import { FaRegTrashAlt } from "react-icons/fa";
 
-const DeleteOfferModal = ({ id, onConfirm, onCancel }) => {
+const DeleteOfferModal = ({ onConfirm, onCancel }) => {
   return (
     <div className="delete-offer-modal-wrapper">
       <div className="delete-offer-icon">
@@ -13,7 +13,10 @@ const DeleteOfferModal = ({ id, onConfirm, onCancel }) => {
       <h1>Czy na pewno chcesz usunąć tę ofertę?</h1>
       <p>ten proces jest nieodwracalny</p>
       <div className="delete-offer-btn-section">
-        <Button style="classicRedButton" Icon={<FaRegTrashAlt size={20} />}>
+        <Button style="classicRedButton" onClick={() => {
+          onConfirm(); 
+          onCancel();
+          }} Icon={<FaRegTrashAlt size={20} />} >
           Usuń
         </Button>
         <Button

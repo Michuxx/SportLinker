@@ -3,9 +3,8 @@ import Home from "./components/Pages/Home";
 import Profile from "./components/Pages/Profile";
 import UserOffers from "./components/userPanelSection/userProfileContent/userOffers/UserOffers";
 import UserInfo from "./components/userPanelSection/userProfileContent/userInfo/UserInfo";
-import MyInvitations from "./components/userPanelSection/userProfileContent/myInvitations/MyInvitations";
 import ForeignInvitations from "./components/userPanelSection/userProfileContent/foreignInvitations/ForeignInvitations";
-import JoinedOffers from "./components/userPanelSection/userProfileContent/joinedOffers/JoinedOffers";
+import OfferStatuses from "./components/userPanelSection/userProfileContent/offerStatuses/OfferStatuses";
 
 function App() {
   return (
@@ -15,9 +14,8 @@ function App() {
         <Route index element={<UserInfo />} />
         <Route path="userInfo" element={<UserInfo />} />
         <Route path="userOffers" element={<UserOffers />} />
-        <Route path="myInvitations" element={<MyInvitations />} />
         <Route path="foreignInvitations" element={<ForeignInvitations />} />
-        <Route path="joinedOffers" element={<JoinedOffers />} />
+        <Route path="OfferStatuses" element={<OfferStatuses />} />
       </Route>
     </Routes>
   );
