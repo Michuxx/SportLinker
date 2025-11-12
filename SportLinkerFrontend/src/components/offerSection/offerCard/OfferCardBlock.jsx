@@ -1,19 +1,12 @@
 import Tag from "../../component-items/tags/Tag";
 import "./offerCard.css";
 
-const OfferCardBlock = ({
-  levelStyle,
-  sport,
-  levelText,
-  icon,
-  availabilityText,
-  availabilityClass,
-}) => {
+const OfferCardBlock = ({ level, sport, icon, availability }) => {
   return (
     <div className="offer-card-blocks">
       <Tag styleType="sport" text={sport} />
-      <Tag styleType={levelStyle} text={levelText} icon={icon} />
-      <Tag styleType={availabilityClass} text={availabilityText} />
+      <Tag styleType={level} icon={icon} />
+      <Tag styleType={availability} />
     </div>
   );
 };

@@ -20,32 +20,14 @@ const UserOfferCard = ({
   availability,
   setSelectedOfferToDelete,
 }) => {
-  const levelMap = {
-    easy: ["easy", "Początkujący"],
-    mid: ["mid", "Średnio-zaawansowany"],
-    expert: ["expert", "Zaawansowany"],
-    any: ["any", "Dowolny poziom"],
-  };
-
-  const levelArr = levelMap[level] || "";
-
-  const availabilityMap = {
-    open: ["open", "Dostępne"],
-    closed: ["closed", "Zamknięte"],
-  };
-
-  const availabilityArr = availabilityMap[availability] || "";
-
   return (
     <div className="user-offer-card-wrapper">
       <div className="user-offer-card-tag-wrapper">
         <OfferCardBlock
-          levelStyle={levelArr[0]}
+          level={level}
           sport={sport}
-          levelText={levelArr[1]}
           icon={<LuTrophy />}
-          availabilityClass={availabilityArr[0]}
-          availabilityText={availabilityArr[1]}
+          availability={availability}
         />
         <div className="user-offer-card-btn-wrapper">
           <Button

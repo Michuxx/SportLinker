@@ -18,25 +18,11 @@ const OfferCard = ({
   maxPeople,
   author,
 }) => {
-  const levelMap = {
-    easy: ["easy", "Początkujący"],
-    mid: ["mid", "Średnio-zaawansowany"],
-    expert: ["expert", "Zaawansowany"],
-    any: ["any", "Dowolny poziom"],
-  };
-
-  const levelArr = levelMap[level] || "";
-
   return (
     <div className="offer-card-wrapper">
       <div className="offer-card-headline-wrapper">
         <h3>{title}</h3>
-        <OfferCardBlock
-          levelStyle={levelArr[0]}
-          sport={sport}
-          levelText={levelArr[1]}
-          icon={<LuTrophy />}
-        />
+        <OfferCardBlock level={level} sport={sport} icon={<LuTrophy />} />
       </div>
       <OfferCardDescription text={description} />
       <div className="offer-card-info">
