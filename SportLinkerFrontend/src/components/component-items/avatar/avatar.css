@@ -1,0 +1,7 @@
+.avatar {
+  background: linear-gradient(to right, #3b82f6, #4f46e5);
+  border-radius: 999999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

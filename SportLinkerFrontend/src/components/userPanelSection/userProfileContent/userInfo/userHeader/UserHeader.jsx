@@ -1,5 +1,4 @@
 import "./userHeader.css";
-import { LuUser } from "react-icons/lu";
 import { FiMail } from "react-icons/fi";
 import Button from "../../../../component-items/button/button";
 import { FaRegAddressCard } from "react-icons/fa6";
@@ -7,6 +6,7 @@ import { MdClose } from "react-icons/md";
 import { FiSave } from "react-icons/fi";
 import EditInput from "../../../../component-items/input/EditInput";
 import InputField from "../../../../component-items/inputField/InputField";
+import Avatar from "../../../../component-items/avatar/Avatar";
 
 const UserHeader = ({
   name,
@@ -23,9 +23,7 @@ const UserHeader = ({
     <div className="user-header-wrapper">
       <div className="user-header-info-wrapper">
         <div className="user-header-detailed-wrapper">
-          <div className="user-header-avatar">
-            <LuUser size={36} color="white" />
-          </div>
+          <Avatar size={5}/>
           <div className="user-header-info">
             {isEditing ? (
               <InputField>

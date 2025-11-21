@@ -1,3 +1,13 @@
+.invitation-card-wrapper {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  border: 1px rgb(243 244 246) solid;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .invitation-card-tag-wrapper {
   display: flex;
   justify-content: space-between;
@@ -11,4 +21,17 @@
 .invitation-btn-wrapper {
   display: flex;
   gap: 10px;
+}
+
+.invitation-user-info-wrapper{
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.close-icon {
+  width: 100%;
+  height: 100%;
+  color: rgb(156 163 175);
 }

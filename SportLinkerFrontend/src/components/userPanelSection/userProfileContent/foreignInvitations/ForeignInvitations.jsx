@@ -31,13 +31,13 @@ const ForeignInvitations = () => {
       },
     },
     {
-      id: 3,
-      status: "accepted",
-      offerTitle: "Poszukuje partnera do tenisa",
+      id: 4,
+      status: "pending",
+      offerTitle: "Koooooszykufka",
       sport: "Tenis",
       date: "pon., 20.01, 18:00",
       location: "Warszawa, Mokotów",
-      currentPeople: 1,
+      currentPeople: 2,
       maxPeople: 2,
       user: {
         name: "Martusia",

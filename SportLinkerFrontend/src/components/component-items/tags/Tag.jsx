@@ -1,6 +1,7 @@
 import "./tag.css";
 import { LuTrophy } from "react-icons/lu";
 import { MdOutlineAccessTime } from "react-icons/md";
+import { BsPersonDown } from "react-icons/bs";
 
 const Tag = ({ styleType, text }) => {
   const styleMap = {
@@ -13,6 +14,7 @@ const Tag = ({ styleType, text }) => {
     closed: ["closed", "Zamknięte"],
     pending: ["pending", "Oczekuje na zaakceptowanie", <MdOutlineAccessTime />],
     accepted: ["accepted", "Zaakceptowano"],
+    overpopulation: ["expert", "Limit osób wyczerpany", <BsPersonDown size={24}/>]
   };
 
   const tagMap = styleMap[styleType] || "";
