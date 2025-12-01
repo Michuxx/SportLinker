@@ -2,6 +2,7 @@ import "./tag.css";
 import { LuTrophy } from "react-icons/lu";
 import { MdOutlineAccessTime } from "react-icons/md";
 import { BsPersonDown } from "react-icons/bs";
+import { RiCloseCircleLine } from "react-icons/ri";
 
 const Tag = ({ styleType, text }) => {
   const styleMap = {
@@ -14,6 +15,7 @@ const Tag = ({ styleType, text }) => {
     closed: ["closed", "Zamknięte"],
     pending: ["pending", "Oczekuje na zaakceptowanie", <MdOutlineAccessTime />],
     accepted: ["accepted", "Zaakceptowano"],
+    rejected: ["rejected", "Odrzucono", <RiCloseCircleLine />],
     overpopulation: ["expert", "Limit osób wyczerpany", <BsPersonDown size={24}/>]
   };
 

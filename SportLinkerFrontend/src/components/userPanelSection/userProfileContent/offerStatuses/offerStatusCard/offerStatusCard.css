@@ -1,0 +1,13 @@
+.offer-status-card-wrapper {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  border: 1px rgb(243 244 246) solid;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.offer-status-title {
+  margin-top: 1.5rem;
+}

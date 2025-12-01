@@ -28,7 +28,8 @@
   gap: 5px;
 }
 
-.expert {
+.expert,
+.rejected {
   background-color: #fee2e2;
   color: #b91c1c;
   display: flex;
