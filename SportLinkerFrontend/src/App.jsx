@@ -5,6 +5,7 @@ import UserOffers from "./components/userPanelSection/userProfileContent/userOff
 import UserInfo from "./components/userPanelSection/userProfileContent/userInfo/UserInfo";
 import ForeignInvitations from "./components/userPanelSection/userProfileContent/foreignInvitations/ForeignInvitations";
 import OfferStatuses from "./components/userPanelSection/userProfileContent/offerStatuses/OfferStatuses";
+import Offer from "./components/Pages/Offer";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="foreignInvitations" element={<ForeignInvitations />} />
         <Route path="OfferStatuses" element={<OfferStatuses />} />
       </Route>
+      <Route path="/offer/:id" element={<Offer />} />
     </Routes>
   );
 }

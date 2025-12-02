@@ -49,27 +49,17 @@ const UserOffers = () => {
   ]);
 
   const handleDeleteOffer = (offerId) => {
-    setOffers((prevOffers) => (
-       prevOffers.filter((offer) => offer.id !== offerId)
-    ))
-  }
+    setOffers((prevOffers) =>
+      prevOffers.filter((offer) => offer.id !== offerId)
+    );
+  };
   return (
     <div className="user-offers-wrapper">
       {offers.length > 0 ? (
         offers.map((offer) => (
           <UserOfferCard
-            title={offer.title}
-            sport={offer.sport}
-            level={offer.level}
-            description={offer.description}
-            date={offer.date}
-            location={offer.location}
-            currentPeople={offer.currentPeople}
-            maxPeople={offer.maxPeople}
-            availability={offer.availability}
-            setSelectedOfferToDelete={() =>
-              setSelectedOfferToDelete(offer.id)
-            }
+            offer={offer}
+            setSelectedOfferToDelete={() => setSelectedOfferToDelete(offer.id)}
           />
         ))
       ) : (

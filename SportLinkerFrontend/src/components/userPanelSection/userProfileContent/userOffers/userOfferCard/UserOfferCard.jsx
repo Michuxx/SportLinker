@@ -6,43 +6,44 @@ import OfferCardPeople from "../../../../offerSection/offerCard/OfferCardPeople"
 import "./userOfferCard.css";
 import Button from "../../../../component-items/button/button";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { Link } from "react-router";
 
-const UserOfferCard = ({
-  title,
-  sport,
-  level,
-  description,
-  date,
-  location,
-  currentPeople,
-  maxPeople,
-  availability,
-  setSelectedOfferToDelete,
-}) => {
+const UserOfferCard = ({ offer, setSelectedOfferToDelete }) => {
   return (
-    <div className="user-offer-card-wrapper">
-      <div className="user-offer-card-tag-wrapper">
-        <OfferCardBlock
-          level={level}
-          sport={sport}
-          availability={availability}
-        />
-        <div className="user-offer-card-btn-wrapper">
-          <Button
-            style="deleteButton"
-            Icon={<FaRegTrashAlt size={20} />}
-            onClick={setSelectedOfferToDelete}
-          ></Button>
+    <Link
+      to={`/offer/${offer.id}`}
+      style={{ textDecoration: `none`, color: `inherit` }}
+    >
+      <div className="user-offer-card-wrapper">
+        <div className="user-offer-card-tag-wrapper">
+          <OfferCardBlock
+            level={offer.level}
+            sport={offer.sport}
+            availability={offer.availability}
+          />
+          <div className="user-offer-card-btn-wrapper">
+            <Button
+              style="deleteButton"
+              Icon={<FaRegTrashAlt size={20} />}
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedOfferToDelete();
+              }}
+            ></Button>
+          </div>
+        </div>
+        <h3>{offer.title}</h3>
+        <OfferCardDescription text={offer.description} />
+        <div className="user-offer-card-info-wrapper">
+          <OfferCardDate date={offer.date} />
+          <OfferCardLocation location={offer.location} />
+          <OfferCardPeople
+            currentPeople={offer.currentPeople}
+            maxPeople={offer.maxPeople}
+          />
         </div>
       </div>
-      <h3>{title}</h3>
-      <OfferCardDescription text={description} />
-      <div className="user-offer-card-info-wrapper">
-        <OfferCardDate date={date} />
-        <OfferCardLocation location={location} />
-        <OfferCardPeople currentPeople={currentPeople} maxPeople={maxPeople} />
-      </div>
-    </div>
+    </Link>
   );
 };
 
