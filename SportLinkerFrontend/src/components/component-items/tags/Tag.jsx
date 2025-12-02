@@ -3,6 +3,7 @@ import { LuTrophy } from "react-icons/lu";
 import { MdOutlineAccessTime } from "react-icons/md";
 import { BsPersonDown } from "react-icons/bs";
 import { RiCloseCircleLine } from "react-icons/ri";
+import { FaCheck } from "react-icons/fa6";
 
 const Tag = ({ styleType, text }) => {
   const styleMap = {
@@ -14,9 +15,13 @@ const Tag = ({ styleType, text }) => {
     open: ["open", "Dostępne"],
     closed: ["closed", "Zamknięte"],
     pending: ["pending", "Oczekuje na zaakceptowanie", <MdOutlineAccessTime />],
-    accepted: ["accepted", "Zaakceptowano"],
+    accepted: ["accepted", "Zaakceptowano", <FaCheck />],
     rejected: ["rejected", "Odrzucono", <RiCloseCircleLine />],
-    overpopulation: ["expert", "Limit osób wyczerpany", <BsPersonDown size={24}/>]
+    overpopulation: [
+      "expert",
+      "Limit osób wyczerpany",
+      <BsPersonDown size={24} />,
+    ],
   };
 
   const tagMap = styleMap[styleType] || "";
