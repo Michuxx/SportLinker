@@ -19,6 +19,7 @@ const UserOffers = () => {
       currentPeople: 1,
       maxPeople: 2,
       availability: "open",
+      mode: "open",
     },
     {
       id: 2,
@@ -32,6 +33,7 @@ const UserOffers = () => {
       currentPeople: 1,
       maxPeople: 2,
       availability: "open",
+      mode: "open",
     },
     {
       id: 3,
@@ -45,6 +47,7 @@ const UserOffers = () => {
       currentPeople: 1,
       maxPeople: 2,
       availability: "closed",
+      mode: "closed",
     },
   ]);
 

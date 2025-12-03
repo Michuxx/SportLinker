@@ -5,6 +5,7 @@ import OfferCardAuthor from "./OfferCardAuthor.jsx";
 import OfferCardDate from "./OfferCardDate.jsx";
 import OfferCardLocation from "./OfferCardLocation.jsx";
 import OfferCardPeople from "./OfferCardPeople.jsx";
+import OfferCardMode from "./OfferCardMode.jsx";
 
 const OfferCard = ({
   title,
@@ -16,6 +17,7 @@ const OfferCard = ({
   currentPeople,
   maxPeople,
   author,
+  mode,
 }) => {
   return (
     <div className="offer-card-wrapper">
@@ -28,6 +30,7 @@ const OfferCard = ({
         <OfferCardDate date={date} />
         <OfferCardLocation location={location} />
         <OfferCardPeople currentPeople={currentPeople} maxPeople={maxPeople} />
+        <OfferCardMode mode={mode} />
       </div>
       <OfferCardAuthor author={author} />
     </div>

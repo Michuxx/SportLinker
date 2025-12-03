@@ -1,10 +1,10 @@
 import "./offerCard.css";
-import { IoLocationOutline } from "react-icons/io5";
+import { GrLocation } from "react-icons/gr";
 
 const OfferCardLocation = ({ location }) => {
   return (
     <div>
-      <IoLocationOutline color="#3b82f6" size="22px" />
+      <GrLocation color="#3b82f6" size="22px" />
       <p>{location}</p>
     </div>
   );

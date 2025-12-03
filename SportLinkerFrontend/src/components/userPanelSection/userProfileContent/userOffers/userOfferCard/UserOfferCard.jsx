@@ -7,6 +7,7 @@ import "./userOfferCard.css";
 import Button from "../../../../component-items/button/button";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router";
+import OfferCardMode from "../../../../offerSection/offerCard/OfferCardMode";
 
 const UserOfferCard = ({ offer, setSelectedOfferToDelete }) => {
   return (
@@ -41,6 +42,7 @@ const UserOfferCard = ({ offer, setSelectedOfferToDelete }) => {
             currentPeople={offer.currentPeople}
             maxPeople={offer.maxPeople}
           />
+          <OfferCardMode mode={offer.mode} />
         </div>
       </div>
     </Link>
