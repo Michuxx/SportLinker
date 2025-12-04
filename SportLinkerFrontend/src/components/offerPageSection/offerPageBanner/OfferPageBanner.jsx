@@ -7,7 +7,7 @@ const OfferPageBanner = () => {
     id: 1,
     title: "Poszukuję partnera do tenisa",
     sport: "Tenis",
-    level: "any",
+    level: "expert",
     description:
       "Szukam osoby do regularnego grania w tenisa. Poziom średniozaawansowany, gra 2-3 razy w tygodniu.",
     date: "pon., 20.01, 18:00",
