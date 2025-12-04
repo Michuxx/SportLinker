@@ -4,8 +4,8 @@ import { FiUnlock } from "react-icons/fi";
 
 const OfferCardMode = ({ mode }) => {
   const modeType = {
-    open: ["otwarty", <FiUnlock size="22px" color="#3b82f6" />],
-    closed: ["zamknięty", <FiLock size="22px" color="#3b82f6" />],
+    public: ["otwarty", <FiUnlock size="22px" color="#3b82f6" />],
+    private: ["zamknięty", <FiLock size="22px" color="#3b82f6" />],
   };
 
   const modeInfo = modeType[mode];

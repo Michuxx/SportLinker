@@ -1,0 +1,5 @@
+.offer-banner-container {
+  padding: 2rem;
+  background-image: linear-gradient(to bottom right, #3b82f6, #4f46e5);
+  border-radius: 1rem 1rem 0 0;
+}

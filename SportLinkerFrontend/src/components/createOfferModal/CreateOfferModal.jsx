@@ -26,7 +26,7 @@ const CreateOfferModal = () => {
     date: "",
     time: "",
     players: 2,
-    mode: "open",
+    mode: "public",
   });
 
   const [errors, setErrors] = useState({

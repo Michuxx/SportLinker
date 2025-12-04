@@ -14,7 +14,7 @@ const OfferCardSection = () => {
         currentPeople={1}
         maxPeople={2}
         author="Anna Kowalska"
-        mode="open"
+        mode="public"
       />
       <OfferCard
         title="Turniej badmintona - szukamy graczy"
@@ -26,7 +26,7 @@ const OfferCardSection = () => {
         currentPeople={3}
         maxPeople={8}
         author="Anna Kowalska"
-        mode="open"
+        mode="public"
       />
       <OfferCard
         title="Turniej badmintona - szukamy graczy"
@@ -38,7 +38,7 @@ const OfferCardSection = () => {
         currentPeople={3}
         maxPeople={8}
         author="Anna Kowalska"
-        mode="open"
+        mode="public"
       />
       <OfferCard
         title="Mecz piłki nożnej - brakuje 4 osób"
@@ -50,7 +50,7 @@ const OfferCardSection = () => {
         currentPeople={18}
         maxPeople={22}
         author="Anna Kowalska"
-        mode="closed"
+        mode="private"
       />
     </section>
   );
