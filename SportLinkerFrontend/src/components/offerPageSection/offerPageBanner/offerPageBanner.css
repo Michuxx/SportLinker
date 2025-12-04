@@ -3,3 +3,15 @@
   background-image: linear-gradient(to bottom right, #3b82f6, #4f46e5);
   border-radius: 1rem 1rem 0 0;
 }
+
+.offer-banner-headline h1 {
+  margin-bottom: 1rem;
+  color: #fff;
+  font-family: "Poppins-SemiBold";
+}
+
+.offer-banner-description p {
+  color: rgb(219 234 254);
+  font-size: 1.125rem;
+  line-height: 1.625;
+}

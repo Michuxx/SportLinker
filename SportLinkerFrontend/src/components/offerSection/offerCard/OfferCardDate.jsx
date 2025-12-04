@@ -1,10 +1,10 @@
 import "./offerCard.css";
-import { CiCalendar } from "react-icons/ci";
+import { FiCalendar } from "react-icons/fi";
 
 const OfferCardDate = ({ date }) => {
   return (
     <div>
-      <CiCalendar color="#3b82f6" size="22px" />
+      <FiCalendar color="#3b82f6" size="22px" />
       <p>{date}</p>
     </div>
   );

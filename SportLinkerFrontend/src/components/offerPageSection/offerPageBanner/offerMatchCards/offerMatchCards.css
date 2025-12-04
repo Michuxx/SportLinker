@@ -1,0 +1,33 @@
+.offer-match-cards-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  max-width: 90%;
+}
+
+.offer-match-card-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.match-icon {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.288);
+}
+
+.match-card-title {
+  color: rgb(219 234 254);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.match-card-text {
+  font-family: "Poppins-medium";
+  color: #fff;
+}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import UserDetailedMeta from "./UserDetailedMeta";
 import "./userDetailed.css";
 import { GrLocation } from "react-icons/gr";
-import { CiCalendar } from "react-icons/ci";
+import { FiCalendar } from "react-icons/fi";
 import { LuTrophy } from "react-icons/lu";
 import UserDetailedDescription from "./userDetailedDescription";
 import UserDetailedSport from "./UserDetailedSport";
@@ -32,7 +32,7 @@ const UserDetailed = ({
       <div className="user-detailed-section">
         <h3>Informacje podstawowe</h3>
         <UserDetailedMeta
-          icon={<CiCalendar size={24} color="rgb(59 130 246)" />}
+          icon={<FiCalendar size={24} color="rgb(59 130 246)" />}
           text={dateCreationText}
         />
         <UserDetailedMeta

@@ -6,7 +6,7 @@ import { LEVEL } from "../../assets/LEVEL.js";
 import { LuTrophy } from "react-icons/lu";
 import { GrNotes } from "react-icons/gr";
 import { GrLocation } from "react-icons/gr";
-import { CiCalendar } from "react-icons/ci";
+import { FiCalendar } from "react-icons/fi";
 import { GoPeople } from "react-icons/go";
 import { MdInfoOutline } from "react-icons/md";
 import Input from "../component-items/input/Input.jsx";
@@ -246,7 +246,7 @@ const CreateOfferModal = () => {
         <InputField label="Data">
           <Input
             type="date"
-            icon={<CiCalendar color="rgb(156, 163, 175)" size={20} />}
+            icon={<FiCalendar color="rgb(156, 163, 175)" size={20} />}
             width={100}
             onChange={(e) => handleChange(e)}
             name="date"
