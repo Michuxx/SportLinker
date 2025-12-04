@@ -63,6 +63,7 @@ const UserOffers = () => {
           <UserOfferCard
             offer={offer}
             setSelectedOfferToDelete={() => setSelectedOfferToDelete(offer.id)}
+            key={offer.id}
           />
         ))
       ) : (

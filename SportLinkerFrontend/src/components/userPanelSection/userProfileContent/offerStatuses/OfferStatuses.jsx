@@ -42,7 +42,7 @@ const OfferStatuses = () => {
     <div className="user-offer-statuses-wrapper">
       {statuses.length > 0 ? (
         statuses.map((offerStatus) => (
-          <OfferStatusCard offerStatus={offerStatus} />
+          <OfferStatusCard offerStatus={offerStatus} key={offerStatus.id} />
         ))
       ) : (
         <NullStatuses />

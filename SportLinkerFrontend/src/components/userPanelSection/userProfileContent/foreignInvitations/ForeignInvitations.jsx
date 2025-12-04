@@ -49,7 +49,7 @@ const ForeignInvitations = () => {
     <div className="user-invitations-wrapper">
       {invitations.length > 0 ? (
         invitations.map((invitation) => (
-          <InvitationCard invitation={invitation} />
+          <InvitationCard invitation={invitation} key={invitation.id} />
         ))
       ) : (
         <NullInvitations />
