@@ -1,3 +1,8 @@
 .offer-attendees-container {
   width: 70%;
 }
+
+.offer-member-list h3 {
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+}
