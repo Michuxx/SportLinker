@@ -15,8 +15,8 @@ const OfferAttendees = ({ author, members, offerAuthorId }) => {
   return (
     <div className="offer-attendees-container">
       <OfferAuthorCard author={author} />
+      <h3>Uczestnicy ({peopleCounter})</h3>
       <div className="offer-member-list">
-        <h3>Uczestnicy ({peopleCounter})</h3>
         <OfferMemberCard member={author} offerAuthorId={offerAuthorId} />
         {members.map((member) => (
           <OfferMemberCard member={member} offerAuthorId={offerAuthorId} />

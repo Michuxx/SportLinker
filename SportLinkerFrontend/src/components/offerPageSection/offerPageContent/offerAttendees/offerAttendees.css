@@ -2,7 +2,13 @@
   width: 70%;
 }
 
-.offer-member-list h3 {
+.offer-attendees-container h3 {
   font-size: 1.125rem;
   margin-bottom: 1rem;
+}
+
+.offer-member-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
 }
