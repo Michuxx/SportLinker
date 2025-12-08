@@ -5,7 +5,11 @@ import "./offerPageContent.css";
 const OfferPageContent = ({ offerData }) => {
   return (
     <div className="offer-page-content-container">
-      <OfferAttendees />
+      <OfferAttendees
+        author={offerData.author}
+        members={offerData.members}
+        offerAuthorId={offerData.authorId}
+      />
       <OfferControlPanel />
     </div>
   );

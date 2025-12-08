@@ -1,0 +1,33 @@
+.offer-author-card-container {
+  padding: 1.5rem;
+  background-color: rgb(249 250 251);
+  border-radius: 0.75rem;
+}
+
+.offer-author-card-container h3 {
+  margin-bottom: 1rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.author-info-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.author-name {
+  color: rgb(17 24 39);
+  font-family: "Poppins-Medium";
+}
+
+.author-join-date {
+  color: rgb(75 85 99);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
