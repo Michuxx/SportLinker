@@ -43,17 +43,19 @@ const OfferPageSection = () => {
   });
 
   const [currentPeople, setCurrentPeople] = useState();
+  const [openSlots, setOpenSlots] = useState();
 
   useEffect(() => {
     let counter = 1;
     counter += offerData.members.length;
     setCurrentPeople(counter);
+    setOpenSlots(offerData.maxPeople - counter);
   }, [offerData]);
 
   return (
     <div className="offer-page-section-container">
       <OfferPageBanner offerData={offerData} currentPeople={currentPeople} />
-      <OfferPageContent offerData={offerData} currentPeople={currentPeople} />
+      <OfferPageContent offerData={offerData} openSlots={openSlots} />
     </div>
   );
 };

@@ -1,0 +1,28 @@
+.offer-info-panel-container {
+  background-color: rgb(249 250 251);
+  padding: 1.5rem;
+  border: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.offer-info-panel-container h3 {
+  font-size: 1.125rem;
+  color: rgb(17 24 39);
+  margin-bottom: 1rem;
+}
+
+.offer-info-block-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.offer-info-block-container span {
+  color: rgb(75 85 99);
+  font-size: 0.875rem;
+}
+
+.offer-info-block-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
