@@ -1,0 +1,11 @@
+.offer-action-panel-container {
+  background-color: rgb(249 250 251);
+  padding: 1.5rem;
+  border: 0.75rem;
+}
+
+.offer-action-panel-container h3 {
+  font-size: 1.125rem;
+  color: rgb(17 24 39);
+  margin-bottom: 1rem;
+}
