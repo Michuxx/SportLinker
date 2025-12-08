@@ -3,7 +3,7 @@ import "./offerPageBanner.css";
 import OfferPageTags from "./offerPageTags/OfferPageTags";
 import OfferMatchCards from "./offerMatchCards/OfferMatchCards";
 
-const OfferPageBanner = ({ offerData }) => {
+const OfferPageBanner = ({ offerData, currentPeople }) => {
   return (
     <div className="offer-banner-container">
       <OfferPageTags
@@ -20,7 +20,7 @@ const OfferPageBanner = ({ offerData }) => {
       <OfferMatchCards
         date={offerData.date}
         location={offerData.location}
-        people={`${offerData.currentPeople}/${offerData.maxPeople}`}
+        people={`${currentPeople}/${offerData.maxPeople}`}
       />
     </div>
   );

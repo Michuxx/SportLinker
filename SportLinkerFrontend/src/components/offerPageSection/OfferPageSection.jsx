@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OfferPageBanner from "./offerPageBanner/OfferPageBanner";
 import "./offerPageSection.css";
 import OfferPageContent from "./offerPageContent/OfferPageContent";
@@ -14,8 +14,7 @@ const OfferPageSection = () => {
     date: "pon., 20.01, 18:00",
     creationDate: "04.12.2025",
     location: "Warszawa, Mokotów",
-    currentPeople: 1,
-    maxPeople: 2,
+    maxPeople: 4,
     availability: "open",
     mode: "private",
     authorId: 1,
@@ -43,10 +42,18 @@ const OfferPageSection = () => {
     ],
   });
 
+  const [currentPeople, setCurrentPeople] = useState();
+
+  useEffect(() => {
+    let counter = 1;
+    counter += offerData.members.length;
+    setCurrentPeople(counter);
+  }, [offerData]);
+
   return (
     <div className="offer-page-section-container">
-      <OfferPageBanner offerData={offerData} />
-      <OfferPageContent offerData={offerData} />
+      <OfferPageBanner offerData={offerData} currentPeople={currentPeople} />
+      <OfferPageContent offerData={offerData} currentPeople={currentPeople} />
     </div>
   );
 };
