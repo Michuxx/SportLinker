@@ -1,0 +1,27 @@
+.offer-member-card-container {
+  padding: 1.5rem;
+  background-color: rgb(249 250 251);
+  border-radius: 0.75rem;
+  display: flex;
+  gap: 10px;
+}
+.member-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.member-name {
+  color: rgb(17 24 39);
+}
+
+.author-member {
+  color: rgb(37 99 235);
+  font-size: 0.75rem;
+}
+
+.member-join-date {
+  color: rgb(75 85 99);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
