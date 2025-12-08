@@ -15,7 +15,7 @@ const OfferPageSection = () => {
     creationDate: "04.12.2025",
     location: "Warszawa, Mokotów",
     maxPeople: 4,
-    availability: "open",
+    availability: "closed",
     mode: "private",
     authorId: 1,
     author: {
