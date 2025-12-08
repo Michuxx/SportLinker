@@ -19,6 +19,8 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     gradientButton: "gradientButton",
     deleteButton: "deleteButton",
     registerModalButton: "registerModalButton",
+    actionButton: "actionButton",
+    actionWarningButton: "actionWarningButton",
   };
 
   const buttonStyle = buttonType[style];

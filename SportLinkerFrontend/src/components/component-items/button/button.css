@@ -254,3 +254,29 @@ button {
 .deleteButton:hover {
   background-color: rgb(254 242 242);
 }
+
+.actionButton {
+  color: rgb(55 65 81);
+  background-color: transparent;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: "Poppins";
+}
+
+.actionButton:hover {
+  background-color: rgb(229 231 235);
+}
+
+.actionWarningButton {
+  color: rgb(220 38 38);
+  background-color: transparent;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: "Poppins";
+}
+
+.actionWarningButton:hover {
+  background-color: rgb(254 242 242);
+}
