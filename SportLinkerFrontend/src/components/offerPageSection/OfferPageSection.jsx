@@ -18,6 +18,29 @@ const OfferPageSection = () => {
     maxPeople: 2,
     availability: "open",
     mode: "private",
+    authorId: 1,
+    author: {
+      id: 1,
+      name: "Macius",
+      joinDate: "02.12.2025",
+    },
+    members: [
+      {
+        id: 2,
+        name: "Kuba",
+        joinDate: "02.12.2025",
+      },
+      {
+        id: 3,
+        name: "Janusz",
+        joinDate: "02.12.2025",
+      },
+      {
+        id: 4,
+        name: "Martusiem",
+        joinDate: "02.12.2025",
+      },
+    ],
   });
 
   return (
