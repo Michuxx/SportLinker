@@ -119,13 +119,14 @@ const CreateOfferModal = () => {
   };
 
   const descriptionValidation = () => {
-    if (offerData.description === "") {
+    console.log(errors.description);
+    if (offerData.description.trim() === "") {
       setErrors((prev) => ({
         ...prev,
         description: "Opis nie może być pusty",
       }));
       return false;
-    } else if (offerData.description.length > 180) {
+    } else if (offerData.description.trim().length > 180) {
       setErrors((prev) => ({
         ...prev,
         description: "Opis nie może mieć więcej niż 180 znaków",
@@ -228,6 +229,7 @@ const CreateOfferModal = () => {
           value={offerData.description}
           error={errors.description}
           rows={3}
+          maxLetters={180}
         />
       </InputField>
       <InputField label="Lokalizacja">

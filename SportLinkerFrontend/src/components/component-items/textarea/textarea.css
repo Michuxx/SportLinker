@@ -8,3 +8,19 @@
 .textarea-error {
   border: 1px red solid;
 }
+
+.additional-info-textarea {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: rgb(75 85 99);
+}
+
+.textarea-error-text {
+  color: red;
+}
+
+.word-counter {
+  margin-left: auto;
+  white-space: nowrap;
+}

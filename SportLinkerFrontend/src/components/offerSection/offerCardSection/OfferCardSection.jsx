@@ -5,6 +5,7 @@ const OfferCardSection = () => {
   return (
     <section className="offer-card-section-wrapper" id="offers">
       <OfferCard
+        id="1"
         title="Poszukuję partnera do tenisa"
         sport="Tenis"
         level="mid"
@@ -17,6 +18,7 @@ const OfferCardSection = () => {
         mode="public"
       />
       <OfferCard
+        id="2"
         title="Turniej badmintona - szukamy graczy"
         sport="Badminton"
         level="easy"
@@ -29,6 +31,7 @@ const OfferCardSection = () => {
         mode="public"
       />
       <OfferCard
+        id="3"
         title="Turniej badmintona - szukamy graczy"
         sport="Badminton"
         level="expert"
@@ -41,6 +44,7 @@ const OfferCardSection = () => {
         mode="public"
       />
       <OfferCard
+        id="4"
         title="Mecz piłki nożnej - brakuje 4 osób"
         sport="Piłka nożna"
         level="any"

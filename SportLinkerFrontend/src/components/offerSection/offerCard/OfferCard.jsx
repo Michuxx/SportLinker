@@ -6,8 +6,10 @@ import OfferCardDate from "./OfferCardDate.jsx";
 import OfferCardLocation from "./OfferCardLocation.jsx";
 import OfferCardPeople from "./OfferCardPeople.jsx";
 import OfferCardMode from "./OfferCardMode.jsx";
+import { Link } from "react-router";
 
 const OfferCard = ({
+  id,
   title,
   sport,
   level,
@@ -20,20 +22,28 @@ const OfferCard = ({
   mode,
 }) => {
   return (
-    <div className="offer-card-wrapper">
-      <div className="offer-card-headline-wrapper">
-        <h3>{title}</h3>
-        <OfferCardBlock level={level} sport={sport} />
+    <Link
+      to={`/offer/${id}`}
+      style={{ textDecoration: `none`, color: `inherit` }}
+    >
+      <div className="offer-card-wrapper">
+        <div className="offer-card-headline-wrapper">
+          <h3>{title}</h3>
+          <OfferCardBlock level={level} sport={sport} />
+        </div>
+        <OfferCardDescription text={description} />
+        <div className="offer-card-info">
+          <OfferCardDate date={date} />
+          <OfferCardLocation location={location} />
+          <OfferCardPeople
+            currentPeople={currentPeople}
+            maxPeople={maxPeople}
+          />
+          <OfferCardMode mode={mode} />
+        </div>
+        <OfferCardAuthor author={author} />
       </div>
-      <OfferCardDescription text={description} />
-      <div className="offer-card-info">
-        <OfferCardDate date={date} />
-        <OfferCardLocation location={location} />
-        <OfferCardPeople currentPeople={currentPeople} maxPeople={maxPeople} />
-        <OfferCardMode mode={mode} />
-      </div>
-      <OfferCardAuthor author={author} />
-    </div>
+    </Link>
   );
 };
 
