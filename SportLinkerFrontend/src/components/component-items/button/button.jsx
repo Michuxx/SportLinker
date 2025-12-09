@@ -21,6 +21,8 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     registerModalButton: "registerModalButton",
     actionButton: "actionButton",
     actionWarningButton: "actionWarningButton",
+    offerPageJoinButton: "offerPageJoinButton",
+    offerPageJoinedButton: "offerPageJoinedButton",
   };
 
   const buttonStyle = buttonType[style];

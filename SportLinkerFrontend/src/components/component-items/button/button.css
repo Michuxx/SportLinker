@@ -280,3 +280,33 @@ button {
 .actionWarningButton:hover {
   background-color: rgb(254 242 242);
 }
+
+.offerPageJoinButton {
+  background-color: #ffffff;
+  color: #4f46e5;
+  font-family: "Poppins-SemiBold";
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 9999px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease-in-out;
+}
+
+.offerPageJoinButton:hover {
+  background-color: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.offerPageJoinedButton {
+  background-color: transparent;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: none;
+  cursor: default;
+  padding: 0.5rem 1.5rem;
+}

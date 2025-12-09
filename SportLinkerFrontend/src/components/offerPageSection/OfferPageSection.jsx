@@ -17,6 +17,7 @@ const OfferPageSection = () => {
     maxPeople: 4,
     availability: "closed",
     mode: "private",
+    status: "accepted", // pending, rejected, accepted, null
     authorId: 1,
     author: {
       id: 1,
