@@ -155,23 +155,76 @@ const CreateOfferModal = () => {
   };
 
   const handleSubmit = () => {
-    const validatedSport = sportValidation();
-    const validatedtitle = titleValidation();
-    const validatedDescription = descriptionValidation();
-    const validatedLocalization = localizationValidation();
-    const validatedDate = dateValidation();
-    const validatedTime = timeValidation();
-    const validatedPlayers = playersValidation();
+    const newErrors = {};
+    let isValid = true;
 
-    if (
-      validatedSport &&
-      validatedtitle &&
-      validatedDescription &&
-      validatedLocalization &&
-      validatedDate &&
-      validatedTime &&
-      validatedPlayers
-    ) {
+    const now = new Date();
+    const todaysDate = now.toLocaleDateString("en-CA");
+    const currentTime = now.toLocaleTimeString("pl-PL", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    // --- 1. SPORT ---
+    if (offerData.sport === "none") {
+      newErrors.sport = "Wybierz sport";
+      isValid = false;
+    }
+
+    // --- 2. TYTUŁ ---
+    if (!offerData.title.trim()) {
+      newErrors.title = "Tytuł nie może być pusty";
+      isValid = false;
+    } else if (offerData.title.length > 50) {
+      newErrors.title = "Tytuł nie może mieć więcej niż 50 znaków";
+      isValid = false;
+    }
+
+    // --- 3. OPIS ---
+    if (!offerData.description.trim()) {
+      newErrors.description = "Opis nie może być pusty";
+      isValid = false;
+    } else if (offerData.description.length > 180) {
+      newErrors.description = "Opis nie może mieć więcej niż 180 znaków";
+      isValid = false;
+    }
+
+    // --- 4. LOKALIZACJA ---
+    if (!offerData.localization.trim()) {
+      newErrors.localization = "Lokalizacja nie może być pusta";
+      isValid = false;
+    }
+
+    // --- 5. DATA ---
+    if (!offerData.date) {
+      newErrors.date = "Data nie może być pusta";
+      isValid = false;
+    } else if (offerData.date < todaysDate) {
+      newErrors.date = "Data nie może być wcześniejsza niż dziś";
+      isValid = false;
+    }
+
+    // --- 6. GODZINA ---
+    if (!offerData.time) {
+      newErrors.time = "Godzina spotkania nie może być pusta";
+      isValid = false;
+    } else if (offerData.date === todaysDate && offerData.time < currentTime) {
+      newErrors.time = "Godzina spotkania nie może być wcześniejsza niż teraz";
+      isValid = false;
+    }
+
+    // --- 7. GRACZE ---
+    const playersAmount = parseInt(offerData.players, 10);
+    if (isNaN(playersAmount)) {
+      newErrors.players = "Nieprawidłowa ilość graczy";
+      isValid = false;
+    } else if (playersAmount < 2) {
+      newErrors.players = "Musi być co najmniej 2 graczy";
+      isValid = false;
+    }
+    setErrors(newErrors);
+
+    if (isValid) {
       console.log("Stworzono!");
     }
   };
