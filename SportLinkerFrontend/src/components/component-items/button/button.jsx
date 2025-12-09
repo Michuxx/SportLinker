@@ -23,6 +23,8 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     actionWarningButton: "actionWarningButton",
     offerPageJoinButton: "offerPageJoinButton",
     offerPageJoinedButton: "offerPageJoinedButton",
+    offerPageRejectedButton: "offerPageRejectedButton",
+    offerPagePendingButton: "offerPagePendingButton",
   };
 
   const buttonStyle = buttonType[style];

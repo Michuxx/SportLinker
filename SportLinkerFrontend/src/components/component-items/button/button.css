@@ -303,10 +303,30 @@ button {
 }
 
 .offerPageJoinedButton {
+  border-radius: 9999px;
   background-color: transparent;
   color: #ffffff;
   border: 2px solid rgba(255, 255, 255, 0.8);
   box-shadow: none;
   cursor: default;
   padding: 0.5rem 1.5rem;
+}
+
+.offerPageRejectedButton {
+  border-radius: 9999px;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+  cursor: default;
+  border: none;
+  padding: 0.5rem 1.5rem;
+}
+
+.offerPagePendingButton {
+  border-radius: 9999px;
+  padding: 0.5rem 1.5rem;
+  background-color: #fffbeb;
+  color: #b45309;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+  border: none;
 }

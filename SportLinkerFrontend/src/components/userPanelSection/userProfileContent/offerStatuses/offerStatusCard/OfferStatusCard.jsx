@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./offerStatusCard.css";
 import Tag from "../../../../component-items/tags/Tag";
 import OfferCardDate from "../../../../offerSection/offerCard/OfferCardDate";
