@@ -1,12 +1,12 @@
 export const CREATE_OFFER_VALUES = [
   {
     id: "1",
-    value: "closed",
-    text: "Zamknięty",
+    value: "private",
+    text: "Prywatny",
   },
   {
     id: "2",
-    value: "open",
-    text: "Otwarty",
+    value: "public",
+    text: "Publiczny",
   },
 ];

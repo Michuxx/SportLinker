@@ -10,8 +10,8 @@ const Tag = ({ styleType, text }) => {
     expert: ["offer-expert", "Zaawansowany", <LuTrophy />],
     any: ["offer-any", "Dowolny poziom", <LuTrophy />],
     sport: ["offer-sport", `${text}`],
-    private: ["offer-private", "Tryb: Zamknięty", <FiLock />],
-    public: ["offer-public", "Tryb: Otwarty", <FiUnlock />],
+    private: ["offer-private", "Tryb: Prywatny", <FiLock />],
+    public: ["offer-public", "Tryb: Publiczny", <FiUnlock />],
   };
 
   const tagMap = styleMap[styleType] || "";

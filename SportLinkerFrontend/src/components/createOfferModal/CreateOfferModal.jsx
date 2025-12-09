@@ -284,9 +284,9 @@ const CreateOfferModal = () => {
         tooltipDirection="top"
         tooltipText={
           <>
-            <b>Zamknięty</b> - wysyłana jest prośba o dołączenie do oferty.
+            <b>Prywatny</b> - wysyłana jest prośba o dołączenie do oferty.
             <br />
-            <b>Otwarty</b> - każdy może dołączyć bez pytania
+            <b>Publiczny</b> - każdy może dołączyć bez pytania
           </>
         }
         tooltipIcon={<MdInfoOutline size={20} />}
