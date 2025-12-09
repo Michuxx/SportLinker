@@ -3,12 +3,18 @@
   background-color: rgb(249 250 251);
   border-radius: 0.75rem;
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
 }
 .member-info-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.member-info-block {
+  display: flex;
+
+  gap: 10px;
 }
 
 .member-name {
@@ -24,4 +30,9 @@
   color: rgb(75 85 99);
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+.member-delete-btn {
+  display: flex;
+  align-items: center;
 }
