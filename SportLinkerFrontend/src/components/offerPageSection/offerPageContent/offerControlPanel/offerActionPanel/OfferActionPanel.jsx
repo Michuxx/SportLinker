@@ -3,6 +3,7 @@ import Button from "../../../../component-items/button/button";
 import { FiMessageCircle } from "react-icons/fi";
 import { BsShare } from "react-icons/bs";
 import { FiFlag } from "react-icons/fi";
+import { FiSettings } from "react-icons/fi";
 
 const OfferActionPanel = () => {
   return (
@@ -25,6 +26,13 @@ const OfferActionPanel = () => {
           Icon={<FiFlag size={20} />}
         >
           Zgłoś
+        </Button>
+        <Button
+          style="actionSettingsButton"
+          width={100}
+          Icon={<FiSettings size={20} />}
+        >
+          Edytuj ofertę
         </Button>
       </div>
     </div>

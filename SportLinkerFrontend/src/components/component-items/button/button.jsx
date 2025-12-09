@@ -21,6 +21,7 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     registerModalButton: "registerModalButton",
     actionButton: "actionButton",
     actionWarningButton: "actionWarningButton",
+    actionSettingsButton: "actionSettingsButton",
     offerPageJoinButton: "offerPageJoinButton",
     offerPageJoinedButton: "offerPageJoinedButton",
     offerPageRejectedButton: "offerPageRejectedButton",

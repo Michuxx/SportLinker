@@ -281,6 +281,19 @@ button {
   background-color: rgb(254 242 242);
 }
 
+.actionSettingsButton {
+  color: #1e88e5;
+  background-color: transparent;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: "Poppins";
+}
+
+.actionSettingsButton:hover {
+  background-color: rgb(239 246 255);
+}
+
 .offerPageJoinButton {
   background-color: #ffffff;
   color: #4f46e5;
