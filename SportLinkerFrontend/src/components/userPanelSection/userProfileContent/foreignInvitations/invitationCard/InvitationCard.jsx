@@ -8,6 +8,7 @@ import OfferCardPeople from "../../../../offerSection/offerCard/OfferCardPeople"
 import { FaCheck } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { Link } from "react-router";
 
 const InvitationCard = ({ invitation }) => {
   const buttonSelection = () => {
@@ -50,7 +51,15 @@ const InvitationCard = ({ invitation }) => {
         <div className="invitation-join-info">
           <h2>{invitation.user.name}</h2>
           <p>
-            Chce dołączyć do <i>{invitation.offerTitle}</i>
+            Chce dołączyć do{" "}
+            <i>
+              <Link
+                to={`/offer/${invitation.id}`}
+                style={{ textDecoration: `none`, color: `inherit` }}
+              >
+                {invitation.offerTitle}
+              </Link>
+            </i>
           </p>
         </div>
       </div>
