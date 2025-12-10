@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import OfferPageBanner from "./offerPageBanner/OfferPageBanner";
 import "./offerPageSection.css";
 import OfferPageContent from "./offerPageContent/OfferPageContent";
+import ModalBackground from "../component-items/modal/ModalBackground";
+import EditOfferModal from "../editOfferModal/EditOfferModal";
 
 const OfferPageSection = () => {
   const [offerData, setOfferData] = useState({
@@ -43,6 +45,8 @@ const OfferPageSection = () => {
     ],
   });
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [currentPeople, setCurrentPeople] = useState();
   const [openSlots, setOpenSlots] = useState();
 
@@ -56,7 +60,16 @@ const OfferPageSection = () => {
   return (
     <div className="offer-page-section-container">
       <OfferPageBanner offerData={offerData} currentPeople={currentPeople} />
-      <OfferPageContent offerData={offerData} openSlots={openSlots} />
+      <OfferPageContent
+        offerData={offerData}
+        openSlots={openSlots}
+        openEditModal={() => setIsModalOpen(true)}
+      />
+      {isModalOpen && (
+        <ModalBackground closeModal={() => setIsModalOpen(false)}>
+          <EditOfferModal />
+        </ModalBackground>
+      )}
     </div>
   );
 };
