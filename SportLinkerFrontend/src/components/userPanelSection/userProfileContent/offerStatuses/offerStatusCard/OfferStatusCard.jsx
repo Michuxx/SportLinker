@@ -6,6 +6,7 @@ import OfferCardPeople from "../../../../offerSection/offerCard/OfferCardPeople"
 import Button from "../../../../component-items/button/button";
 import { MdClose } from "react-icons/md";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { Link } from "react-router";
 
 const OfferStatusCard = ({ offerStatus }) => {
   const buttonSelection = () => {
@@ -33,27 +34,32 @@ const OfferStatusCard = ({ offerStatus }) => {
   };
 
   return (
-    <div className="offer-status-card-wrapper">
-      <div className="invitation-card-tag-wrapper">
-        <div className="invitation-card-block">
-          <Tag styleType="sport" text={offerStatus.sport} />
-          <Tag styleType={offerStatus.status} />
-          <Tag styleType={offerStatus.availability} />
+    <Link
+      to={`/offer/${offerStatus.id}`}
+      style={{ textDecoration: `none`, color: `inherit` }}
+    >
+      <div className="offer-status-card-wrapper">
+        <div className="invitation-card-tag-wrapper">
+          <div className="invitation-card-block">
+            <Tag styleType="sport" text={offerStatus.sport} />
+            <Tag styleType={offerStatus.status} />
+            <Tag styleType={offerStatus.availability} />
+          </div>
+          <div className="invitation-btn-wrapper">{buttonSelection()}</div>
         </div>
-        <div className="invitation-btn-wrapper">{buttonSelection()}</div>
+        <div className="offer-status-title">
+          <h3>{offerStatus.title}</h3>
+        </div>
+        <div className="user-offer-card-info-wrapper">
+          <OfferCardDate date={offerStatus.date} />
+          <OfferCardLocation location={offerStatus.location} />
+          <OfferCardPeople
+            currentPeople={offerStatus.currentPeople}
+            maxPeople={offerStatus.maxPeople}
+          />
+        </div>
       </div>
-      <div className="offer-status-title">
-        <h3>{offerStatus.title}</h3>
-      </div>
-      <div className="user-offer-card-info-wrapper">
-        <OfferCardDate date={offerStatus.date} />
-        <OfferCardLocation location={offerStatus.location} />
-        <OfferCardPeople
-          currentPeople={offerStatus.currentPeople}
-          maxPeople={offerStatus.maxPeople}
-        />
-      </div>
-    </div>
+    </Link>
   );
 };
 

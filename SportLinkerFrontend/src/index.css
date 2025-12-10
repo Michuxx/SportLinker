@@ -33,11 +33,11 @@
 
 #root {
   overflow-x: hidden;
+  background-color: rgba(249, 250, 251, 1);
 }
 
 .container,
 .profile-container,
 .offer-container {
   background-color: rgba(249, 250, 251, 1);
-  height: 100vh;
 }
