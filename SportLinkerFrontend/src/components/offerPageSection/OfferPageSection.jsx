@@ -53,7 +53,6 @@ const OfferPageSection = () => {
   const formattedDate = useDateFormat(offerData.date);
 
   const [errors, setErrors] = useState({
-    sport: "",
     title: "",
     description: "",
     location: "",
@@ -62,35 +61,118 @@ const OfferPageSection = () => {
     maxPeople: "",
   });
 
+  const [editData, setEditData] = useState({
+    title: "",
+    description: "",
+    location: "",
+    date: "",
+    time: "",
+    maxPeople: "",
+    level: "",
+    mode: "",
+    availability: "",
+  });
+
+  const handleOpenEditModal = () => {
+    setEditData({
+      title: offerData.title,
+      description: offerData.description,
+      location: offerData.location,
+      date: offerData.date.split("T")[0],
+      time: offerData.date.split("T")[1],
+      maxPeople: offerData.maxPeople,
+      level: offerData.level,
+      mode: offerData.mode,
+      availability: offerData.availability,
+    });
+
+    setIsModalOpen(true);
+    console.log(editData);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setOfferData((prev) => ({ ...prev, [name]: value }));
+    setEditData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({
       ...prev,
       [name]: "",
     }));
   };
 
-  const handleChangeDate = (e) => {
-    const newDate = e.target.value;
-    const currentTime = offerData.date.split("T")[1] || "00:00";
+  const handleSubmit = () => {
+    const newErrors = {};
+    let isValid = true;
 
-    setOfferData((prev) => ({
-      ...prev,
-      date: `${newDate}T${currentTime}`,
-    }));
+    const now = new Date();
+    const todaysDate = now.toLocaleDateString("en-CA");
+    const currentTime = now.toLocaleTimeString("pl-PL", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    // --- 1. TYTUŁ ---
+    if (!editData.title.trim()) {
+      newErrors.title = "Tytuł nie może być pusty";
+      isValid = false;
+    } else if (editData.title.length > 50) {
+      newErrors.title = "Tytuł nie może mieć więcej niż 50 znaków";
+      isValid = false;
+    }
+
+    // --- 2. OPIS ---
+    if (!editData.description.trim()) {
+      newErrors.description = "Opis nie może być pusty";
+      isValid = false;
+    } else if (editData.description.length > 180) {
+      newErrors.description = "Opis nie może mieć więcej niż 180 znaków";
+      isValid = false;
+    }
+
+    // --- 3. LOKALIZACJA ---
+    if (!editData.location.trim()) {
+      newErrors.location = "Lokalizacja nie może być pusta";
+      isValid = false;
+    }
+
+    // --- 4. DATA ---
+    if (!editData.date) {
+      newErrors.date = "Data nie może być pusta";
+      isValid = false;
+    } else if (editData.date < todaysDate) {
+      newErrors.date = "Data nie może być wcześniejsza niż dziś";
+      isValid = false;
+    }
+
+    // --- 5. GODZINA ---
+    if (!editData.time) {
+      newErrors.time = "Godzina spotkania nie może być pusta";
+      isValid = false;
+    } else if (editData.date === todaysDate && editData.time < currentTime) {
+      newErrors.time = "Godzina spotkania nie może być wcześniejsza niż teraz";
+      isValid = false;
+    }
+
+    // --- 6. GRACZE ---
+    const playersAmount = parseInt(editData.maxPeople);
+    if (isNaN(playersAmount)) {
+      newErrors.maxPeople = "Nieprawidłowa ilość graczy";
+      isValid = false;
+    } else if (playersAmount < currentPeople) {
+      newErrors.maxPeople = "Jest obecnie za dużo graczy";
+      isValid = false;
+    } else if (playersAmount < 2) {
+      newErrors.maxPeople = "Musi być co najmniej 2 graczy";
+      isValid = false;
+    }
+
+    // --- 7. STATUS ---
+
+    setErrors(newErrors);
+
+    if (isValid) {
+      console.log("Stworzono!");
+    }
   };
-  const handleChangeTime = (e) => {
-    const newTime = e.target.value;
-    const currentDate = offerData.date.split("T")[0];
-
-    setOfferData((prev) => ({
-      ...prev,
-      date: `${currentDate}T${newTime}`,
-    }));
-  };
-
-  const handleSubmit = () => {};
 
   useEffect(() => {
     let counter = 1;
@@ -109,17 +191,15 @@ const OfferPageSection = () => {
       <OfferPageContent
         offerData={offerData}
         openSlots={openSlots}
-        openEditModal={() => setIsModalOpen(true)}
+        openEditModal={handleOpenEditModal}
       />
       {isModalOpen && (
         <ModalBackground closeModal={() => setIsModalOpen(false)}>
           <EditOfferModal
-            offerData={offerData}
+            offerData={editData}
             errors={errors}
             handleChange={handleChange}
-            handleChangeDate={handleChangeDate}
             handleSubmit={handleSubmit}
-            handleChangeTime={handleChangeTime}
           />
         </ModalBackground>
       )}

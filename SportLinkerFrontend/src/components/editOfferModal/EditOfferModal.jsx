@@ -15,14 +15,7 @@ import Textarea from "../component-items/textarea/Textarea";
 import RadioButton from "../component-items/radio/RadioButton";
 import Button from "../component-items/button/button";
 
-const EditOfferModal = ({
-  offerData,
-  errors,
-  handleChange,
-  handleSubmit,
-  handleChangeDate,
-  handleChangeTime,
-}) => {
+const EditOfferModal = ({ offerData, errors, handleChange, handleSubmit }) => {
   return (
     <div className="edit-offer-modal-container">
       <ModalHeader title="Edytuj ofertę" />
@@ -80,9 +73,9 @@ const EditOfferModal = ({
             type="date"
             icon={<FiCalendar color="rgb(156, 163, 175)" size={20} />}
             width={100}
-            onChange={(e) => handleChangeDate(e)}
+            onChange={(e) => handleChange(e)}
             name="date"
-            value={offerData.date.split("T")[0]}
+            value={offerData.date}
             error={errors.date}
             min={new Date().toISOString().split("T")[0]}
           />
@@ -91,10 +84,10 @@ const EditOfferModal = ({
           <Input
             type="time"
             width={100}
-            onChange={(e) => handleChangeTime(e)}
+            onChange={(e) => handleChange(e)}
             name="time"
-            value={offerData.date.split("T")[1]}
-            error={errors.date}
+            value={offerData.time}
+            error={errors.time}
           />
         </InputField>
         <InputField label="Max graczy">
