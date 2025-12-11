@@ -2,7 +2,7 @@ import OfferAttendees from "./offerAttendees/OfferAttendees";
 import OfferControlPanel from "./offerControlPanel/OfferControlPanel";
 import "./offerPageContent.css";
 
-const OfferPageContent = ({ offerData, openSlots }) => {
+const OfferPageContent = ({ offerData, openSlots, openEditModal }) => {
   return (
     <div className="offer-page-content-container">
       <OfferAttendees
@@ -14,6 +14,7 @@ const OfferPageContent = ({ offerData, openSlots }) => {
         creationDate={offerData.creationDate}
         status={offerData.availability}
         openSlots={openSlots}
+        openEditModal={openEditModal}
       />
     </div>
   );

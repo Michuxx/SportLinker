@@ -5,7 +5,7 @@ import { BsShare } from "react-icons/bs";
 import { FiFlag } from "react-icons/fi";
 import { FiSettings } from "react-icons/fi";
 
-const OfferActionPanel = () => {
+const OfferActionPanel = ({ openEditModal }) => {
   return (
     <div className="offer-action-panel-container">
       <h3>Akcje</h3>
@@ -31,6 +31,7 @@ const OfferActionPanel = () => {
           style="actionSettingsButton"
           width={100}
           Icon={<FiSettings size={20} />}
+          onClick={openEditModal}
         >
           Edytuj ofertę
         </Button>

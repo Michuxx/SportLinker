@@ -15,6 +15,7 @@ import { CREATE_OFFER_VALUES } from "../../assets/CREATE_OFFER_VALUES.js";
 import RadioButton from "../component-items/radio/RadioButton.jsx";
 import Button from "../component-items/button/button.jsx";
 import { useState } from "react";
+import ModalHeader from "../component-items/modal/ModalHeader.jsx";
 
 const CreateOfferModal = () => {
   const [offerData, setOfferData] = useState({
@@ -46,112 +47,6 @@ const CreateOfferModal = () => {
       ...prev,
       [name]: "",
     }));
-  };
-
-  const sportValidation = () => {
-    if (offerData.sport === "none") {
-      setErrors((prev) => ({ ...prev, sport: "Wybierz sport" }));
-      return false;
-    }
-    return true;
-  };
-
-  const titleValidation = () => {
-    if (offerData.title === "") {
-      setErrors((prev) => ({ ...prev, title: "Tytuł nie może być pusty" }));
-      return false;
-    } else if (offerData.title.length > 50) {
-      setErrors((prev) => ({
-        ...prev,
-        title: "Tytuł nie może mieć więcej niż 50 znaków",
-      }));
-      return false;
-    }
-    return true;
-  };
-
-  const localizationValidation = () => {
-    if (offerData.localization === "") {
-      setErrors((prev) => ({
-        ...prev,
-        localization: "Lokalizacja nie może być pusta",
-      }));
-      return false;
-    }
-    return true;
-  };
-
-  const dateValidation = () => {
-    let todaysDate = new Date().toLocaleDateString("en-CA");
-    if (offerData.date === "") {
-      setErrors((prev) => ({
-        ...prev,
-        date: "data nie może być pusta",
-      }));
-      return false;
-    } else if (offerData.date < todaysDate) {
-      setErrors((prev) => ({
-        ...prev,
-        date: "data nie może być wcześniejsza niż dziś",
-      }));
-      return false;
-    }
-    return true;
-  };
-
-  const timeValidation = () => {
-    let todaysDate = new Date().toLocaleDateString("en-CA");
-    let todaysTime = new Date().toLocaleTimeString("pl-PL");
-    if (offerData.time === "") {
-      setErrors((prev) => ({
-        ...prev,
-        time: "godzina spotkania nie może być pusta",
-      }));
-      return false;
-    } else if (offerData.date === todaysDate && offerData.time < todaysTime) {
-      setErrors((prev) => ({
-        ...prev,
-        time: "godzina spotkania nie może być wcześniejsza niż dziś",
-      }));
-      return false;
-    }
-    return true;
-  };
-
-  const descriptionValidation = () => {
-    console.log(errors.description);
-    if (offerData.description.trim() === "") {
-      setErrors((prev) => ({
-        ...prev,
-        description: "Opis nie może być pusty",
-      }));
-      return false;
-    } else if (offerData.description.trim().length > 180) {
-      setErrors((prev) => ({
-        ...prev,
-        description: "Opis nie może mieć więcej niż 180 znaków",
-      }));
-      return false;
-    }
-    return true;
-  };
-
-  const playersValidation = () => {
-    const playersAmount = parseInt(offerData.players);
-    if (playersAmount < 2) {
-      setErrors((prev) => ({
-        ...prev,
-        players: "Musi być conajmniej 2 graczy",
-      }));
-      return false;
-    } else if (isNaN(playersAmount)) {
-      setErrors((prev) => ({
-        ...prev,
-        players: "Nieprawidłowa ilość graczy",
-      }));
-      return false;
-    }
-    return true;
   };
 
   const handleSubmit = () => {
@@ -231,10 +126,10 @@ const CreateOfferModal = () => {
 
   return (
     <div className="offer-modal-wrapper">
-      <div className="offer-modal-header">
-        <h2>Utwórz nową ofertę</h2>
-        <p>Znajdź partnerów do swojego ulubionego sportu</p>
-      </div>
+      <ModalHeader
+        title="Utwórz nową ofertę"
+        description="Znajdź partnerów do swojego ulubionego sportu"
+      />
       <div className="offer-modal-select-wrapper">
         <InputField label="Sport">
           <Select
