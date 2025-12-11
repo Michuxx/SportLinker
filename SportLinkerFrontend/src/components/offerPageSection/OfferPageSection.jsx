@@ -85,9 +85,15 @@ const OfferPageSection = () => {
       mode: offerData.mode,
       availability: offerData.availability,
     });
-
+    setErrors({
+      title: "",
+      description: "",
+      location: "",
+      date: "",
+      time: "",
+      maxPeople: "",
+    });
     setIsModalOpen(true);
-    console.log(editData);
   };
 
   const handleChange = (e) => {
@@ -102,6 +108,7 @@ const OfferPageSection = () => {
   const handleSubmit = () => {
     const newErrors = {};
     let isValid = true;
+    let normalizedDate;
 
     const now = new Date();
     const todaysDate = now.toLocaleDateString("en-CA");
@@ -163,14 +170,20 @@ const OfferPageSection = () => {
     } else if (playersAmount < 2) {
       newErrors.maxPeople = "Musi być co najmniej 2 graczy";
       isValid = false;
+    } else if (playersAmount > 30) {
+      newErrors.maxPeople = "Może być maksymalnie 30 graczy";
+      isValid = false;
     }
 
     // --- 7. STATUS ---
 
     setErrors(newErrors);
 
+    normalizedDate = `${editData.date}T${editData.time}`;
+
     if (isValid) {
-      console.log("Stworzono!");
+      setOfferData((prev) => ({ ...prev, ...editData, date: normalizedDate }));
+      setIsModalOpen(false);
     }
   };
 

@@ -62,7 +62,7 @@ const EditOfferModal = ({ offerData, errors, handleChange, handleSubmit }) => {
           icon={<GrLocation color="rgb(156, 163, 175)" size={20} />}
           width={100}
           onChange={(e) => handleChange(e)}
-          name="localization"
+          name="location"
           value={offerData.location}
           error={errors.location}
         />

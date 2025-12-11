@@ -116,6 +116,9 @@ const CreateOfferModal = () => {
     } else if (playersAmount < 2) {
       newErrors.players = "Musi być co najmniej 2 graczy";
       isValid = false;
+    } else if (playersAmount > 30) {
+      newErrors.maxPeople = "Może być maksymalnie 30 graczy";
+      isValid = false;
     }
     setErrors(newErrors);
 
