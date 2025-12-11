@@ -5,8 +5,8 @@ import { FiUnlock } from "react-icons/fi";
 
 const Tag = ({ styleType, text }) => {
   const styleMap = {
-    easy: ["offer-beginner", "Początkujący", <LuTrophy />], //class, text, icon
-    mid: ["offer-intermediate", "Średnio-zaawansowany", <LuTrophy />],
+    beginner: ["offer-beginner", "Początkujący", <LuTrophy />], //class, text, icon
+    intermediate: ["offer-intermediate", "Średnio-zaawansowany", <LuTrophy />],
     expert: ["offer-expert", "Zaawansowany", <LuTrophy />],
     any: ["offer-any", "Dowolny poziom", <LuTrophy />],
     sport: ["offer-sport", `${text}`],

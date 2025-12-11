@@ -7,8 +7,8 @@ import { FaCheck } from "react-icons/fa6";
 
 const Tag = ({ styleType, text }) => {
   const styleMap = {
-    easy: ["beginner", "Początkujący", <LuTrophy />], //class, text, icon
-    mid: ["intermediate", "Średnio-zaawansowany", <LuTrophy />],
+    beginner: ["beginner", "Początkujący", <LuTrophy />], //class, text, icon
+    intermediate: ["intermediate", "Średnio-zaawansowany", <LuTrophy />],
     expert: ["expert", "Zaawansowany", <LuTrophy />],
     any: ["any", "Dowolny poziom", <LuTrophy />],
     sport: ["sport", `${text}`],

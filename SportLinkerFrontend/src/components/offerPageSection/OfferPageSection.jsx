@@ -52,8 +52,6 @@ const OfferPageSection = () => {
 
   const formattedDate = useDateFormat(offerData.date);
 
-  console.log(formattedDate);
-
   const [errors, setErrors] = useState({
     sport: "",
     title: "",

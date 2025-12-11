@@ -11,7 +11,7 @@ const UserOffers = () => {
       id: 1,
       title: "Poszukuję partnera do tenisa",
       sport: "Tenis",
-      level: "mid",
+      level: "intermediate",
       description:
         "Szukam osoby do regularnego grania w tenisa. Poziom średniozaawansowany, gra 2-3 razy w tygodniu.",
       date: "pon., 20.01, 18:00",
@@ -25,7 +25,7 @@ const UserOffers = () => {
       id: 2,
       title: "Turniej badmintona - szukamy graczy",
       sport: "Badminton",
-      level: "easy",
+      level: "beginner",
       description:
         "Organizujemy turniej badmintona dla początkujących. Miła atmosfera gwarantowana!",
       date: "pon., 20.01, 18:00",
