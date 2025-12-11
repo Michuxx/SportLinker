@@ -61,7 +61,7 @@ const UserDetailed = ({
         <UserDetailedDescription
           text={aboutText}
           isEditing={isEditing}
-          editData={editData.aboutMe}
+          editData={editData}
           name="aboutMe"
           onChange={onChange}
           placeholder="Napisz coś o sobie :)"

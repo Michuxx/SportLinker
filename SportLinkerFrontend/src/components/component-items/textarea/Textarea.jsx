@@ -23,9 +23,11 @@ const Textarea = ({
       ></textarea>
       <div className="additional-info-textarea">
         {error && <p className="textarea-error-text">{error}</p>}
-        <p className={`word-counter ` + (error && `textarea-error-text`)}>
-          {value.length}/{maxLetters}
-        </p>
+        {maxLetters && (
+          <p className={`word-counter ` + (error && `textarea-error-text`)}>
+            {value.length}/{maxLetters}
+          </p>
+        )}
       </div>
     </div>
   );

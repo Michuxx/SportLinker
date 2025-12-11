@@ -86,6 +86,7 @@ const UserInfo = () => {
         ...prev,
         ...editData,
       }));
+
       setIsEditing(false);
     }
   };
