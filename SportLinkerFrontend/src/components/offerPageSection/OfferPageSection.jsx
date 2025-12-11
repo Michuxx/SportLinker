@@ -6,6 +6,10 @@ import ModalBackground from "../component-items/modal/ModalBackground";
 import EditOfferModal from "../editOfferModal/EditOfferModal";
 
 const OfferPageSection = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPeople, setCurrentPeople] = useState();
+  const [openSlots, setOpenSlots] = useState();
+
   const [offerData, setOfferData] = useState({
     id: 1,
     title: "Poszukuję partnera do tenisa",
@@ -45,10 +49,26 @@ const OfferPageSection = () => {
     ],
   });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errors, setErrors] = useState({
+    sport: "",
+    title: "",
+    description: "",
+    location: "",
+    date: "",
+    time: "",
+    maxPeople: "",
+  });
 
-  const [currentPeople, setCurrentPeople] = useState();
-  const [openSlots, setOpenSlots] = useState();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setOfferData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  };
+
+  const handleSubmit = () => {};
 
   useEffect(() => {
     let counter = 1;
@@ -67,7 +87,12 @@ const OfferPageSection = () => {
       />
       {isModalOpen && (
         <ModalBackground closeModal={() => setIsModalOpen(false)}>
-          <EditOfferModal />
+          <EditOfferModal
+            offerData={offerData}
+            errors={errors}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+          />
         </ModalBackground>
       )}
     </div>

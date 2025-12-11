@@ -1,4 +1,3 @@
-import { useState } from "react";
 import UserDetailedMeta from "./UserDetailedMeta";
 import "./userDetailed.css";
 import { GrLocation } from "react-icons/gr";
