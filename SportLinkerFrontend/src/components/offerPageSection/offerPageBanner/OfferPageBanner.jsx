@@ -6,7 +6,7 @@ import { FaCheck } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 import { MdOutlineAccessTime } from "react-icons/md";
 
-const OfferPageBanner = ({ offerData, currentPeople }) => {
+const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
   const buttonSelection = () => {
     if (offerData.availability === "closed") {
       return (
@@ -57,7 +57,7 @@ const OfferPageBanner = ({ offerData, currentPeople }) => {
         <p>{offerData.description}</p>
       </div>
       <OfferMatchCards
-        date={offerData.date}
+        date={formattedDate}
         location={offerData.location}
         people={`${currentPeople}/${offerData.maxPeople}`}
       />

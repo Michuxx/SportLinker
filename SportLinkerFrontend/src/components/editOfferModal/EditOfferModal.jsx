@@ -11,12 +11,18 @@ import { GoPeople } from "react-icons/go";
 import { MdInfoOutline } from "react-icons/md";
 import { LEVEL } from "../../assets/LEVEL";
 import { CREATE_OFFER_VALUES } from "../../assets/CREATE_OFFER_VALUES";
-import { useState } from "react";
 import Textarea from "../component-items/textarea/Textarea";
 import RadioButton from "../component-items/radio/RadioButton";
 import Button from "../component-items/button/button";
 
-const EditOfferModal = ({ offerData, errors, handleChange, handleSubmit }) => {
+const EditOfferModal = ({
+  offerData,
+  errors,
+  handleChange,
+  handleSubmit,
+  handleChangeDate,
+  handleChangeTime,
+}) => {
   return (
     <div className="edit-offer-modal-container">
       <ModalHeader title="Edytuj ofertę" />
@@ -74,9 +80,9 @@ const EditOfferModal = ({ offerData, errors, handleChange, handleSubmit }) => {
             type="date"
             icon={<FiCalendar color="rgb(156, 163, 175)" size={20} />}
             width={100}
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChangeDate(e)}
             name="date"
-            value={offerData.date}
+            value={offerData.date.split("T")[0]}
             error={errors.date}
             min={new Date().toISOString().split("T")[0]}
           />
@@ -85,9 +91,9 @@ const EditOfferModal = ({ offerData, errors, handleChange, handleSubmit }) => {
           <Input
             type="time"
             width={100}
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChangeTime(e)}
             name="time"
-            value={offerData.date}
+            value={offerData.date.split("T")[1]}
             error={errors.date}
           />
         </InputField>
@@ -99,7 +105,7 @@ const EditOfferModal = ({ offerData, errors, handleChange, handleSubmit }) => {
             min={2}
             max={30}
             onChange={(e) => handleChange(e)}
-            name="players"
+            name="maxPeople"
             value={offerData.maxPeople}
             error={errors.maxPeople}
           />

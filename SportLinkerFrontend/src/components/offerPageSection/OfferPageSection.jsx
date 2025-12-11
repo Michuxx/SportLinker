@@ -4,6 +4,7 @@ import "./offerPageSection.css";
 import OfferPageContent from "./offerPageContent/OfferPageContent";
 import ModalBackground from "../component-items/modal/ModalBackground";
 import EditOfferModal from "../editOfferModal/EditOfferModal";
+import useDateFormat from "../../hooks/useDateFormat";
 
 const OfferPageSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,7 +18,7 @@ const OfferPageSection = () => {
     level: "expert",
     description:
       "Szukam osoby do regularnego grania w tenisa. Poziom średniozaawansowany, gra 2-3 razy w tygodniu.",
-    date: "pon., 20.01, 18:00",
+    date: "2025-01-20T18:00",
     creationDate: "04.12.2025",
     location: "Warszawa, Mokotów",
     maxPeople: 4,
@@ -49,6 +50,10 @@ const OfferPageSection = () => {
     ],
   });
 
+  const formattedDate = useDateFormat(offerData.date);
+
+  console.log(formattedDate);
+
   const [errors, setErrors] = useState({
     sport: "",
     title: "",
@@ -68,6 +73,25 @@ const OfferPageSection = () => {
     }));
   };
 
+  const handleChangeDate = (e) => {
+    const newDate = e.target.value;
+    const currentTime = offerData.date.split("T")[1] || "00:00";
+
+    setOfferData((prev) => ({
+      ...prev,
+      date: `${newDate}T${currentTime}`,
+    }));
+  };
+  const handleChangeTime = (e) => {
+    const newTime = e.target.value;
+    const currentDate = offerData.date.split("T")[0];
+
+    setOfferData((prev) => ({
+      ...prev,
+      date: `${currentDate}T${newTime}`,
+    }));
+  };
+
   const handleSubmit = () => {};
 
   useEffect(() => {
@@ -79,7 +103,11 @@ const OfferPageSection = () => {
 
   return (
     <div className="offer-page-section-container">
-      <OfferPageBanner offerData={offerData} currentPeople={currentPeople} />
+      <OfferPageBanner
+        offerData={offerData}
+        currentPeople={currentPeople}
+        formattedDate={formattedDate}
+      />
       <OfferPageContent
         offerData={offerData}
         openSlots={openSlots}
@@ -91,7 +119,9 @@ const OfferPageSection = () => {
             offerData={offerData}
             errors={errors}
             handleChange={handleChange}
+            handleChangeDate={handleChangeDate}
             handleSubmit={handleSubmit}
+            handleChangeTime={handleChangeTime}
           />
         </ModalBackground>
       )}

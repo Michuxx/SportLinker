@@ -9,7 +9,7 @@ const OfferMatchCards = ({ date, location, people }) => {
     <div className="offer-match-cards-container">
       <MatchCard
         title="Termin"
-        text={date}
+        text={`${date.weekday}, ${date.date} ${date.time}`}
         icon={<FiCalendar size={24} color="#fff" />}
       />
       <MatchCard
