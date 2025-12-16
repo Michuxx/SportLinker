@@ -10,27 +10,47 @@ import { FiCalendar } from "react-icons/fi";
 import { GoPeople } from "react-icons/go";
 import { MdInfoOutline } from "react-icons/md";
 import { LEVEL } from "../../assets/LEVEL";
+import { OFFER_AVAILABILITY } from "../../assets/OFFER_AVAILABILITY";
 import { CREATE_OFFER_VALUES } from "../../assets/CREATE_OFFER_VALUES";
 import Textarea from "../component-items/textarea/Textarea";
 import RadioButton from "../component-items/radio/RadioButton";
 import Button from "../component-items/button/button";
 
 const EditOfferModal = ({ offerData, errors, handleChange, handleSubmit }) => {
+  const availabilityMap = {
+    open: ["open", "Dostępna"],
+    closed: ["closed", "Zamknięta"],
+  };
+
+  const availabilityValue = availabilityMap[offerData.availability];
+
   return (
     <div className="edit-offer-modal-container">
       <ModalHeader title="Edytuj ofertę" />
-      <InputField label="Poziom umiejętności">
-        <Select
-          width={100}
-          options={LEVEL}
-          defaultValue="any"
-          defaultText="Dowolny poziom"
-          icon={<LuTrophy color="rgb(156, 163, 175)" size={20} />}
-          onChange={(e) => handleChange(e)}
-          name="level"
-          value={offerData.level}
-        />
-      </InputField>
+      <div className="edit-offer-modal-select-wrapper">
+        <InputField label="Poziom umiejętności">
+          <Select
+            width={100}
+            options={OFFER_AVAILABILITY}
+            defaultValue={availabilityValue[0]}
+            defaultText={availabilityValue[1]}
+            icon={<LuTrophy color="rgb(156, 163, 175)" size={20} />}
+            onChange={(e) => handleChange(e)}
+            name="availability"
+            value={offerData.availability}
+          />
+          <Select
+            width={100}
+            options={LEVEL}
+            defaultValue="any"
+            defaultText="Dowolny poziom"
+            icon={<LuTrophy color="rgb(156, 163, 175)" size={20} />}
+            onChange={(e) => handleChange(e)}
+            name="level"
+            value={offerData.level}
+          />
+        </InputField>
+      </div>
       <InputField label="Tytuł oferty">
         <Input
           placeholder="np. Poszukuję partnera do tenisa"
