@@ -26,3 +26,8 @@
   justify-content: space-between;
   margin-bottom: 1rem;
 }
+
+.offer-status-btn-wrapper {
+  display: flex;
+  gap: 1rem;
+}

@@ -26,6 +26,7 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     offerPageJoinedButton: "offerPageJoinedButton",
     offerPageRejectedButton: "offerPageRejectedButton",
     offerPagePendingButton: "offerPagePendingButton",
+    offerPageCancelButton: "offerPageCancelButton",
   };
 
   const buttonStyle = buttonType[style];

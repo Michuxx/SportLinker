@@ -10,9 +10,12 @@ const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
   const buttonSelection = () => {
     if (offerData.availability === "closed") {
       return (
-        <Button style="offerPageRejectedButton" Icon={<MdClose size={18} />}>
-          Zapisy zamknięte
-        </Button>
+        <div className="offer-status-btn-wrapper">
+          <Button style="offerPageRejectedButton" Icon={<MdClose size={18} />}>
+            Zapisy zamknięte
+          </Button>
+          <Button style="offerPageCancelButton">Anuluj</Button>
+        </div>
       );
     } else if (offerData.status === "rejected") {
       return (
@@ -22,18 +25,24 @@ const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
       );
     } else if (offerData.status === "accepted") {
       return (
-        <Button style="offerPageJoinedButton" Icon={<FaCheck size={18} />}>
-          Dołączono
-        </Button>
+        <div className="offer-status-btn-wrapper">
+          <Button style="offerPageJoinedButton" Icon={<FaCheck size={18} />}>
+            Dołączono
+          </Button>
+          <Button style="offerPageCancelButton">Opuść ofertę</Button>
+        </div>
       );
     } else if (offerData.status === "pending") {
       return (
-        <Button
-          style="offerPagePendingButton"
-          Icon={<MdOutlineAccessTime size={18} />}
-        >
-          Oczekuje na akceptacje
-        </Button>
+        <div className="offer-status-btn-wrapper">
+          <Button
+            style="offerPagePendingButton"
+            Icon={<MdOutlineAccessTime size={18} />}
+          >
+            Oczekuje na akceptacje
+          </Button>
+          <Button style="offerPageCancelButton">Anuluj</Button>
+        </div>
       );
     } else {
       return <Button style="offerPageJoinButton">Dołącz</Button>;

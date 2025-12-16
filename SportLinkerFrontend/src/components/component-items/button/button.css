@@ -343,3 +343,31 @@ button {
   box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.15);
   border: none;
 }
+
+.offerPageCancelButton {
+  border-radius: 9999px;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.15
+  ); /* Lekko przyciemnione tło dla czytelności */
+  color: #e5e7eb; /* Złamana biel */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Subtelny obrys */
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.offerPageCancelButton:hover {
+  background-color: rgba(
+    239,
+    68,
+    68,
+    0.2
+  ); /* Czerwony odcień przy hoverze (sugeruje usunięcie) */
+  border-color: rgba(239, 68, 68, 0.6); /* Czerwony obrys przy hoverze */
+  color: #ffffff;
+  transform: translateY(-1px);
+}

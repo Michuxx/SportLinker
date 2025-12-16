@@ -178,7 +178,7 @@ const OfferPageSection = () => {
 
     // --- 7. STATUS ---
 
-    if (playersAmount >= currentPeople && editData.availability === "open") {
+    if (playersAmount <= currentPeople && editData.availability === "open") {
       newErrors.availability = "Oferta ma już komplet graczy";
       isValid = false;
     }
