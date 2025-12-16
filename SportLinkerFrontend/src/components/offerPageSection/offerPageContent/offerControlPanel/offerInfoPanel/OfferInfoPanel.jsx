@@ -21,7 +21,7 @@ const OfferInfoPanel = ({ creationDate, status, openSlots }) => {
       <div className="offer-info-block-wrapper">
         <OfferInfoBlock title="Utworzono:" value={creationDate} />
         <OfferInfoBlock
-          title="Status:"
+          title="Dostępność:"
           value={statusText}
           additionalCss={statusCss}
         />

@@ -12,31 +12,28 @@ import { MdInfoOutline } from "react-icons/md";
 import { LEVEL } from "../../assets/LEVEL";
 import { OFFER_AVAILABILITY } from "../../assets/OFFER_AVAILABILITY";
 import { CREATE_OFFER_VALUES } from "../../assets/CREATE_OFFER_VALUES";
+import { BsDoorOpen } from "react-icons/bs";
 import Textarea from "../component-items/textarea/Textarea";
 import RadioButton from "../component-items/radio/RadioButton";
 import Button from "../component-items/button/button";
 
 const EditOfferModal = ({ offerData, errors, handleChange, handleSubmit }) => {
-  const availabilityMap = {
-    open: ["open", "Dostępna"],
-    closed: ["closed", "Zamknięta"],
-  };
-
-  const availabilityValue = availabilityMap[offerData.availability];
-
   return (
     <div className="edit-offer-modal-container">
       <ModalHeader title="Edytuj ofertę" />
       <div className="edit-offer-modal-select-wrapper">
-        <InputField label="Poziom umiejętności">
+        <InputField label="Dostępność oferty">
           <Select
             width={100}
             options={OFFER_AVAILABILITY}
-            icon={<LuTrophy color="rgb(156, 163, 175)" size={20} />}
+            icon={<BsDoorOpen color="rgb(156, 163, 175)" size={20} />}
             onChange={(e) => handleChange(e)}
             name="availability"
             value={offerData.availability}
+            error={errors.availability}
           />
+        </InputField>
+        <InputField label="Poziom umiejętności">
           <Select
             width={100}
             options={LEVEL}
