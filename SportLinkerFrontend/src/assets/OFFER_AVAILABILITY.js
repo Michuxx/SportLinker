@@ -1,8 +1,10 @@
 export const OFFER_AVAILABILITY = [
   {
-    open: "Dostępna",
+    value: "open",
+    text: "Dostępna",
   },
   {
-    closed: "Zamknięta",
+    value: "closed",
+    text: "Zamknięta",
   },
 ];

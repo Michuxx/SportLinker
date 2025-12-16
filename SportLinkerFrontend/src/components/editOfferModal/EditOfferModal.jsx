@@ -32,8 +32,6 @@ const EditOfferModal = ({ offerData, errors, handleChange, handleSubmit }) => {
           <Select
             width={100}
             options={OFFER_AVAILABILITY}
-            defaultValue={availabilityValue[0]}
-            defaultText={availabilityValue[1]}
             icon={<LuTrophy color="rgb(156, 163, 175)" size={20} />}
             onChange={(e) => handleChange(e)}
             name="availability"

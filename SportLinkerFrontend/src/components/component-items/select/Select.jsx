@@ -25,7 +25,7 @@ const Select = ({
         onChange={onChange}
         value={value || defaultValue}
       >
-        <option value={defaultValue}>{defaultText}</option>
+        {defaultValue && <option value={defaultValue}>{defaultText}</option>}
         {options.map((opt, index) => (
           <option value={opt.value} key={index}>
             {opt.text}
