@@ -1,0 +1,24 @@
+.delete-offer-modal-wrapper {
+  text-align: center;
+}
+
+.delete-offer-modal-wrapper p {
+  color: rgb(55 65 81);
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.delete-offer-icon {
+  margin-top: 2rem;
+}
+
+.delete-offer-btn-section {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.delete-offer-modal-wrapper h1 {
+  font-size: 1.5rem;
+}

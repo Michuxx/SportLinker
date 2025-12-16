@@ -7,7 +7,7 @@ import EditOfferModal from "../editOfferModal/EditOfferModal";
 import useDateFormat from "../../hooks/useDateFormat";
 
 const OfferPageSection = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentPeople, setCurrentPeople] = useState();
   const [openSlots, setOpenSlots] = useState();
 
@@ -94,7 +94,7 @@ const OfferPageSection = () => {
       maxPeople: "",
       availability: "",
     });
-    setIsModalOpen(true);
+    setIsEditModalOpen(true);
   };
 
   const handleChange = (e) => {
@@ -105,6 +105,8 @@ const OfferPageSection = () => {
       [name]: "",
     }));
   };
+
+  const openLeaveModal = () => {};
 
   const handleSubmit = () => {
     const newErrors = {};
@@ -189,7 +191,7 @@ const OfferPageSection = () => {
 
     if (isValid) {
       setOfferData((prev) => ({ ...prev, ...editData, date: normalizedDate }));
-      setIsModalOpen(false);
+      setIsEditModalOpen(false);
     }
   };
 
@@ -212,8 +214,8 @@ const OfferPageSection = () => {
         openSlots={openSlots}
         openEditModal={handleOpenEditModal}
       />
-      {isModalOpen && (
-        <ModalBackground closeModal={() => setIsModalOpen(false)}>
+      {isEditModalOpen && (
+        <ModalBackground closeModal={() => setIsEditModalOpen(false)}>
           <EditOfferModal
             offerData={editData}
             errors={errors}

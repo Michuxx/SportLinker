@@ -5,8 +5,26 @@ import Button from "../../component-items/button/button";
 import { FaCheck } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 import { MdOutlineAccessTime } from "react-icons/md";
+import ModalBackground from "../../component-items/modal/ModalBackground";
+import LeaveModal from "../../leaveModal/LeaveModal";
+import { useState } from "react";
 
 const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+  const [leaveModalText, setLeaveModalText] = useState("");
+
+  const openLeaveModal = () => {
+    setLeaveModalText("Czy na pewno chcesz opuścić ofertę?");
+    setIsLeaveModalOpen(true);
+  };
+
+  const openLeavePendingModal = () => {
+    setLeaveModalText(
+      "Czy na pewno chcesz zrezygnować z dołączenia do oferty?"
+    );
+    setIsLeaveModalOpen(true);
+  };
+
   const buttonSelection = () => {
     if (offerData.availability === "closed") {
       return (
@@ -14,7 +32,9 @@ const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
           <Button style="offerPageRejectedButton" Icon={<MdClose size={18} />}>
             Zapisy zamknięte
           </Button>
-          <Button style="offerPageCancelButton">Anuluj</Button>
+          <Button style="offerPageCancelButton" onClick={openLeavePendingModal}>
+            Anuluj
+          </Button>
         </div>
       );
     } else if (offerData.status === "rejected") {
@@ -29,7 +49,9 @@ const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
           <Button style="offerPageJoinedButton" Icon={<FaCheck size={18} />}>
             Dołączono
           </Button>
-          <Button style="offerPageCancelButton">Opuść ofertę</Button>
+          <Button style="offerPageCancelButton" onClick={openLeaveModal}>
+            Opuść ofertę
+          </Button>
         </div>
       );
     } else if (offerData.status === "pending") {
@@ -41,7 +63,9 @@ const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
           >
             Oczekuje na akceptacje
           </Button>
-          <Button style="offerPageCancelButton">Anuluj</Button>
+          <Button style="offerPageCancelButton" onClick={openLeavePendingModal}>
+            Anuluj
+          </Button>
         </div>
       );
     } else {
@@ -70,6 +94,11 @@ const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
         location={offerData.location}
         people={`${currentPeople}/${offerData.maxPeople}`}
       />
+      {isLeaveModalOpen && (
+        <ModalBackground>
+          <LeaveModal text={leaveModalText} />
+        </ModalBackground>
+      )}
     </div>
   );
 };
