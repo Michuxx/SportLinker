@@ -6,8 +6,8 @@ import { FaCheck } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 import { MdOutlineAccessTime } from "react-icons/md";
 import ModalBackground from "../../component-items/modal/ModalBackground";
-import LeaveModal from "../../leaveModal/LeaveModal";
 import { useState } from "react";
+import WarningModal from "../../warningModal/WarningModal";
 
 const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
@@ -95,8 +95,12 @@ const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
         people={`${currentPeople}/${offerData.maxPeople}`}
       />
       {isLeaveModalOpen && (
-        <ModalBackground>
-          <LeaveModal text={leaveModalText} />
+        <ModalBackground closeModal={() => setIsLeaveModalOpen(false)}>
+          <WarningModal
+            headline={leaveModalText}
+            confirmText="Tak, chcę"
+            onCancel={() => setIsLeaveModalOpen(false)}
+          />
         </ModalBackground>
       )}
     </div>

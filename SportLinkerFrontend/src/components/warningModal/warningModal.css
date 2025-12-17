@@ -1,18 +1,18 @@
-.delete-offer-modal-wrapper {
+.warning-modal-wrapper {
   text-align: center;
 }
 
-.delete-offer-modal-wrapper p {
+.warning-modal-wrapper p {
   color: rgb(55 65 81);
   margin-top: 1rem;
   margin-bottom: 1.5rem;
 }
 
-.delete-offer-icon {
+.warning-icon {
   margin-top: 2rem;
 }
 
-.delete-offer-btn-section {
+.warning-btn-section {
   display: flex;
   justify-content: center;
   gap: 2rem;

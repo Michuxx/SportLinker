@@ -1,25 +1,33 @@
 import { CiWarning } from "react-icons/ci";
-import "./leaveModal.css";
+import "./warningModal.css";
 import Button from "../component-items/button/button";
 import { MdClose } from "react-icons/md";
-import { FaRegTrashAlt } from "react-icons/fa";
 
-const LeaveModal = ({ onConfirm, onCancel, text }) => {
+const WarningModal = ({
+  onConfirm,
+  onCancel,
+  headline,
+  paragraph,
+  confirmText,
+  confirmIcon,
+}) => {
   return (
-    <div className="delete-offer-modal-wrapper">
-      <div className="delete-offer-icon">
+    <div className="warning-modal-wrapper">
+      <div className="warning-icon">
         <CiWarning size={96} color="rgb(220 38 38)" />
       </div>
-      <h1>{text}</h1>
-      <div className="delete-offer-btn-section">
+      <h1>{headline}</h1>
+      <p>{paragraph}</p>
+      <div className="warning-btn-section">
         <Button
           style="classicRedButton"
           onClick={() => {
             onConfirm();
             onCancel();
           }}
+          Icon={confirmIcon}
         >
-          Tak
+          {confirmText}
         </Button>
         <Button
           onClick={onCancel}
@@ -33,4 +41,4 @@ const LeaveModal = ({ onConfirm, onCancel, text }) => {
   );
 };
 
-export default LeaveModal;
+export default WarningModal;

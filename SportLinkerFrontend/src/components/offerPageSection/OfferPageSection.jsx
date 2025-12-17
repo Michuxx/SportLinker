@@ -106,8 +106,6 @@ const OfferPageSection = () => {
     }));
   };
 
-  const openLeaveModal = () => {};
-
   const handleSubmit = () => {
     const newErrors = {};
     let isValid = true;

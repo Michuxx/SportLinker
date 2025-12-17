@@ -2,7 +2,8 @@ import { useState } from "react";
 import NullOffers from "./nullOffers/NullOffers";
 import UserOfferCard from "./userOfferCard/UserOfferCard";
 import ModalBackground from "../../../component-items/modal/ModalBackground";
-import DeleteOfferModal from "../../../deleteOfferModal/DeleteOfferModal";
+import WarningModal from "../../../warningModal/WarningModal";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const UserOffers = () => {
   const [selectedOfferToDelete, setSelectedOfferToDelete] = useState(null);
@@ -71,9 +72,13 @@ const UserOffers = () => {
       )}
       {selectedOfferToDelete && (
         <ModalBackground closeModal={() => setSelectedOfferToDelete(null)}>
-          <DeleteOfferModal
+          <WarningModal
             onCancel={() => setSelectedOfferToDelete(null)}
             onConfirm={() => handleDeleteOffer(selectedOfferToDelete)}
+            headline="Czy na pewno chcesz usunąć tę ofertę?"
+            paragraph="ten proces jest nieodwracalny"
+            confirmText="Usuń"
+            confirmIcon={<FaRegTrashAlt size={20} />}
           />
         </ModalBackground>
       )}
