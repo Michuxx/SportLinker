@@ -5,11 +5,18 @@ import Button from "../../component-items/button/button";
 import { FaCheck } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 import { MdOutlineAccessTime } from "react-icons/md";
+import { BsDoorOpenFill } from "react-icons/bs";
 import ModalBackground from "../../component-items/modal/ModalBackground";
 import { useState } from "react";
 import WarningModal from "../../warningModal/WarningModal";
 
-const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
+const OfferPageBanner = ({
+  offerData,
+  currentPeople,
+  formattedDate,
+  leaveOffer,
+  joinOffer,
+}) => {
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
   const [leaveModalText, setLeaveModalText] = useState("");
 
@@ -32,9 +39,14 @@ const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
           <Button style="offerPageRejectedButton" Icon={<MdClose size={18} />}>
             Zapisy zamknięte
           </Button>
-          <Button style="offerPageCancelButton" onClick={openLeavePendingModal}>
-            Anuluj
-          </Button>
+          {offerData.status !== null && (
+            <Button
+              style="offerPageCancelButton"
+              onClick={openLeavePendingModal}
+            >
+              Anuluj
+            </Button>
+          )}
         </div>
       );
     } else if (offerData.status === "rejected") {
@@ -69,7 +81,13 @@ const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
         </div>
       );
     } else {
-      return <Button style="offerPageJoinButton">Dołącz</Button>;
+      return (
+        <Button style="offerPageJoinButton" onClick={joinOffer}>
+          {offerData.mode === "public"
+            ? "Dołącz"
+            : "Wyślij prośbę o dołączenie"}
+        </Button>
+      );
     }
   };
 
@@ -99,7 +117,9 @@ const OfferPageBanner = ({ offerData, currentPeople, formattedDate }) => {
           <WarningModal
             headline={leaveModalText}
             confirmText="Tak, chcę"
+            confirmIcon={<BsDoorOpenFill size={20} />}
             onCancel={() => setIsLeaveModalOpen(false)}
+            onConfirm={leaveOffer}
           />
         </ModalBackground>
       )}

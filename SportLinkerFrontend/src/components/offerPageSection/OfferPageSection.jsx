@@ -23,7 +23,7 @@ const OfferPageSection = () => {
     location: "Warszawa, Mokotów",
     maxPeople: 4,
     availability: "closed",
-    mode: "private",
+    mode: "private", // private, public
     status: "pending", // pending, rejected, accepted, null
     authorId: 1,
     author: {
@@ -176,8 +176,7 @@ const OfferPageSection = () => {
       isValid = false;
     }
 
-    // --- 7. STATUS ---
-
+    // --- 7. DOSTEPNOSC ---
     if (playersAmount <= currentPeople && editData.availability === "open") {
       newErrors.availability = "Oferta ma już komplet graczy";
       isValid = false;
@@ -190,6 +189,16 @@ const OfferPageSection = () => {
     if (isValid) {
       setOfferData((prev) => ({ ...prev, ...editData, date: normalizedDate }));
       setIsEditModalOpen(false);
+    }
+  };
+
+  const joinOffer = () => {
+    switch (offerData.mode) {
+      case "public":
+        setOfferData((prev) => ({ ...prev, status: "accepted" }));
+        break;
+      case "private":
+        setOfferData((prev) => ({ ...prev, status: "pending" }));
     }
   };
 
@@ -206,6 +215,8 @@ const OfferPageSection = () => {
         offerData={offerData}
         currentPeople={currentPeople}
         formattedDate={formattedDate}
+        leaveOffer={() => setOfferData((prev) => ({ ...prev, status: null }))}
+        joinOffer={joinOffer}
       />
       <OfferPageContent
         offerData={offerData}
