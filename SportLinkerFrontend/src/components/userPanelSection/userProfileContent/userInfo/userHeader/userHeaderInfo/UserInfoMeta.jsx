@@ -1,4 +1,5 @@
 import EditInput from "../../../../../component-items/input/EditInput";
+import "./userHeaderInfo.css";
 
 const UserInfoMeta = ({
   icon,
@@ -10,7 +11,7 @@ const UserInfoMeta = ({
   placeholder,
 }) => {
   return (
-    <div className="user-detailed-meta-wrapper">
+    <div className="user-meta-wrapper">
       <span>{icon}</span>
       {isEditing ? (
         <EditInput
