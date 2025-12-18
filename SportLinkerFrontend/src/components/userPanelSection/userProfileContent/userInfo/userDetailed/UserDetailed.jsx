@@ -1,4 +1,4 @@
-import UserDetailedMeta from "./UserDetailedMeta";
+import UserDetailedMeta from "../userHeader/userHeaderInfo/UserInfoMeta";
 import "./userDetailed.css";
 import { GrLocation } from "react-icons/gr";
 import { FiCalendar } from "react-icons/fi";
@@ -30,7 +30,7 @@ const UserDetailed = ({
     <div className="user-detailed-wrapper">
       <div className="user-detailed-section">
         <h3>Informacje podstawowe</h3>
-        <UserDetailedMeta
+        {/* <UserDetailedMeta
           icon={<FiCalendar size={24} color="rgb(59 130 246)" />}
           text={dateCreationText}
         />
@@ -42,7 +42,7 @@ const UserDetailed = ({
           name="location"
           onChange={onChange}
           placeholder="Nie podawaj dokładnej lokalizacji"
-        />
+        /> */}
         <UserDetailedSport
           icon={<LuTrophy size={24} color="rgb(59 130 246)" />}
           text={favouriteSportText}

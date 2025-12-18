@@ -1,5 +1,4 @@
 import "./userHeader.css";
-import { FiMail } from "react-icons/fi";
 import Button from "../../../../component-items/button/button";
 import { FaRegAddressCard } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
@@ -7,10 +6,10 @@ import { FiSave } from "react-icons/fi";
 import EditInput from "../../../../component-items/input/EditInput";
 import InputField from "../../../../component-items/inputField/InputField";
 import Avatar from "../../../../component-items/avatar/Avatar";
+import UserHeaderInfo from "./userHeaderInfo/UserHeaderInfo";
 
 const UserHeader = ({
   name,
-  email,
   isEditing,
   setIsEditing,
   editData,
@@ -18,6 +17,8 @@ const UserHeader = ({
   onChange,
   handleSave,
   error,
+  creationDate,
+  location,
 }) => {
   return (
     <div className="user-header-wrapper">
@@ -41,8 +42,15 @@ const UserHeader = ({
             ) : (
               <h1>{name}</h1>
             )}
-            <div className="user-header-email">
-              {isEditing ? (
+            <UserHeaderInfo
+              creationDate={creationDate}
+              editData={editData}
+              location={location}
+              isEditing={isEditing}
+              onChange={onChange}
+            />
+            {/* <div className="user-header-email">
+               {isEditing ? (
                 <InputField>
                   <EditInput
                     value={editData.email}
@@ -60,8 +68,8 @@ const UserHeader = ({
                   <FiMail color="rgb(75 85 99)" />
                   <p>{email}</p>
                 </div>
-              )}
-            </div>
+              )} 
+            </div> */}
           </div>
         </div>
         <div className="user-header-btn-wrapper">

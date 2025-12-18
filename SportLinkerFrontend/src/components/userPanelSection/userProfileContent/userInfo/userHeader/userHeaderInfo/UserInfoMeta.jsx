@@ -1,7 +1,6 @@
-import EditInput from "../../../../component-items/input/EditInput";
-import "./userDetailed.css";
+import EditInput from "../../../../../component-items/input/EditInput";
 
-const UserDetailedMeta = ({
+const UserInfoMeta = ({
   icon,
   text,
   isEditing,
@@ -30,4 +29,4 @@ const UserDetailedMeta = ({
   );
 };
 
-export default UserDetailedMeta;
+export default UserInfoMeta;

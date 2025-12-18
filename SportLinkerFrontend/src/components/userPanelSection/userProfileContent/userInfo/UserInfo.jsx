@@ -95,7 +95,6 @@ const UserInfo = () => {
     <div className="user-info-wrapper">
       <UserHeader
         name={userInfo.name}
-        email={userInfo.email}
         editData={editData}
         isEditing={isEditing}
         onChange={handleChangeEditData}
@@ -103,11 +102,11 @@ const UserInfo = () => {
         cancelHandle={cancelHandle}
         handleSave={handleSaveData}
         error={errors}
+        creationDate={userInfo.created}
+        location={userInfo.location}
       />
       <UserDetailed
         onChange={handleChangeEditData}
-        creationDate={userInfo.created}
-        location={userInfo.location}
         sport={userInfo.favouriteSport}
         aboutMe={userInfo.aboutMe}
         editData={editData}
