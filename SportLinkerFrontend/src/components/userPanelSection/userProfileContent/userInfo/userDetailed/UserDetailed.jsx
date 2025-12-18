@@ -6,6 +6,7 @@ import { LuTrophy } from "react-icons/lu";
 import UserDetailedDescription from "./userDetailedDescription";
 import UserDetailedSport from "./UserDetailedSport";
 import { SPORT_OFFERS } from "../../../../../assets/SPORT_OFFERS";
+import UserDetailedCards from "./UserDetailedCards";
 
 const UserDetailed = ({
   creationDate,
@@ -16,10 +17,6 @@ const UserDetailed = ({
   isEditing,
   onChange,
 }) => {
-  const dateCreationText = `Dołączył: ${creationDate}`;
-
-  const localizationText = location ? location : "Nie podano lokalizacji";
-
   const favouriteSportText = `Ulubiony sport: ${sport ? sport : "brak"}`;
 
   const aboutText = aboutMe
@@ -28,21 +25,14 @@ const UserDetailed = ({
 
   return (
     <div className="user-detailed-wrapper">
-      <div className="user-detailed-section">
+      <UserDetailedCards
+        aboutText={aboutText}
+        isEditing={isEditing}
+        editData={editData}
+        onChange={onChange}
+      />
+      {/* <div className="user-detailed-section">
         <h3>Informacje podstawowe</h3>
-        {/* <UserDetailedMeta
-          icon={<FiCalendar size={24} color="rgb(59 130 246)" />}
-          text={dateCreationText}
-        />
-        <UserDetailedMeta
-          icon={<GrLocation size={24} color="rgb(59 130 246)" />}
-          text={localizationText}
-          isEditing={isEditing}
-          editData={editData.location}
-          name="location"
-          onChange={onChange}
-          placeholder="Nie podawaj dokładnej lokalizacji"
-        /> */}
         <UserDetailedSport
           icon={<LuTrophy size={24} color="rgb(59 130 246)" />}
           text={favouriteSportText}
@@ -65,7 +55,7 @@ const UserDetailed = ({
           onChange={onChange}
           placeholder="Napisz coś o sobie :)"
         />
-      </div>
+      </div> */}
     </div>
   );
 };

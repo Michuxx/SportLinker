@@ -1,5 +1,9 @@
 .user-header-wrapper {
   margin-bottom: 1.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  border: 1px rgb(243 244 246) solid;
+  border-radius: 0.75rem;
 }
 
 .user-header-banner {
@@ -12,7 +16,7 @@
   display: flex;
   justify-content: space-between;
   position: relative;
-  padding: 0 2rem 2rem 2rem;
+  padding: 0 2rem 0rem 2rem;
   bottom: 3.5rem;
 }
 
