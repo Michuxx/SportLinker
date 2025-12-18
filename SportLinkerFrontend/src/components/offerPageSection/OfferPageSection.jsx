@@ -202,6 +202,13 @@ const OfferPageSection = () => {
     }
   };
 
+  const kickPlayer = (memberId) => {
+    setOfferData((prev) => ({
+      ...prev,
+      members: offerData.members.filter((member) => member.id !== memberId),
+    }));
+  };
+
   useEffect(() => {
     let counter = 1;
     counter += offerData.members.length;
@@ -222,6 +229,7 @@ const OfferPageSection = () => {
         offerData={offerData}
         openSlots={openSlots}
         openEditModal={handleOpenEditModal}
+        kickPlayer={kickPlayer}
       />
       {isEditModalOpen && (
         <ModalBackground closeModal={() => setIsEditModalOpen(false)}>

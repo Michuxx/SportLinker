@@ -2,8 +2,13 @@ import "./offerMemberCard.css";
 import Avatar from "../../../../component-items/avatar/Avatar";
 import Button from "../../../../component-items/button/button";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { useState } from "react";
+import BackgroundModal from "../../../../component-items/modal/ModalBackground";
+import WarningModal from "../../../../warningModal/WarningModal";
 
-const OfferMemberCard = ({ member, offerAuthorId }) => {
+const OfferMemberCard = ({ member, offerAuthorId, kickPlayer }) => {
+  const [isKickModalOpen, setIsKickModalOpen] = useState(false);
+
   return (
     <div className="offer-member-card-container">
       <div className="member-info-block">
@@ -22,8 +27,20 @@ const OfferMemberCard = ({ member, offerAuthorId }) => {
           <Button
             style="deleteButton"
             Icon={<FaRegTrashAlt size={20} />}
+            onClick={() => setIsKickModalOpen(true)}
           ></Button>
         </div>
+      )}
+      {isKickModalOpen && (
+        <BackgroundModal closeModal={() => setIsKickModalOpen(false)}>
+          <WarningModal
+            onCancel={() => setIsKickModalOpen(false)}
+            headline={`Czy na pewno chcesz wyrzucić ${member.name}?`}
+            confirmText="Wyrzuć"
+            confirmIcon={<FaRegTrashAlt size={20} />}
+            onConfirm={() => kickPlayer(member.id)}
+          />
+        </BackgroundModal>
       )}
     </div>
   );

@@ -10,11 +10,16 @@ const WarningModal = ({
   paragraph,
   confirmText,
   confirmIcon,
+  mainIcon,
 }) => {
   return (
     <div className="warning-modal-wrapper">
       <div className="warning-icon">
-        <CiWarning size={96} color="rgb(220 38 38)" />
+        {mainIcon ? (
+          { mainIcon }
+        ) : (
+          <CiWarning size={96} color="rgb(220 38 38)" />
+        )}
       </div>
       <h1>{headline}</h1>
       <p>{paragraph}</p>
