@@ -1,5 +1,4 @@
 import { NavLink, Outlet } from "react-router";
-import PageTitle from "../pageTitle/PageTitle";
 import UserNavbar from "./userNavbar/UserNavbar";
 import UserProfileContent from "./userProfileContent/UserProfileContent";
 import "./userPanelSection.css";
@@ -11,10 +10,6 @@ import { LuMailQuestion } from "react-icons/lu";
 const UserPanelSection = () => {
   return (
     <div className="user-panel-section-wrapper">
-      <PageTitle
-        header="Panel użytkownika"
-        label="Zarządzaj swoim profilem i aktywnością"
-      />
       <UserNavbar>
         <NavLink
           to="userInfo"

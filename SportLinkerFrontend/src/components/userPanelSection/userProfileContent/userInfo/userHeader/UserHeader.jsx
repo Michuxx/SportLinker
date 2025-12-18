@@ -21,9 +21,10 @@ const UserHeader = ({
 }) => {
   return (
     <div className="user-header-wrapper">
+      <div className="user-header-banner"></div>
       <div className="user-header-info-wrapper">
         <div className="user-header-detailed-wrapper">
-          <Avatar size={5}/>
+          <Avatar size={8} />
           <div className="user-header-info">
             {isEditing ? (
               <InputField>

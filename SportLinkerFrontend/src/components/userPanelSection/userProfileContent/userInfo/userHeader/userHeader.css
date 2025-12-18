@@ -2,13 +2,23 @@
   margin-bottom: 1.5rem;
 }
 
+.user-header-banner {
+  height: 12rem;
+  background-image: linear-gradient(to bottom right, #3b82f6, #4f46e5, #7e22ce);
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
 .user-header-info-wrapper {
   display: flex;
   justify-content: space-between;
+  position: relative;
+  padding: 0 2rem 2rem 2rem;
+  bottom: 3.5rem;
 }
 
 .user-header-detailed-wrapper {
   display: flex;
+  align-items: flex-end;
   gap: 1rem;
 }
 
