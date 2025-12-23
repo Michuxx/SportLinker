@@ -15,6 +15,7 @@
   display: flex;
   border-bottom: 1px rgb(243 244 246) solid;
   padding-bottom: 1.5rem;
+  gap: 1.5rem;
 }
 
 .user-detailed-meta-wrapper p,
