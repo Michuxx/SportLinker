@@ -1,13 +1,13 @@
-import OfferCardBlock from "../../../../offerSection/offerCard/OfferCardBlock";
-import OfferCardDate from "../../../../offerSection/offerCard/OfferCardDate";
-import OfferCardDescription from "../../../../offerSection/offerCard/OfferCardDescription";
-import OfferCardLocation from "../../../../offerSection/offerCard/OfferCardLocation";
-import OfferCardPeople from "../../../../offerSection/offerCard/OfferCardPeople";
+import OfferCardBlock from "../../../../../../offerSection/offerCard/OfferCardBlock";
+import OfferCardDate from "../../../../../../offerSection/offerCard/OfferCardDate";
+import OfferCardDescription from "../../../../../../offerSection/offerCard/OfferCardDescription";
+import OfferCardLocation from "../../../../../../offerSection/offerCard/OfferCardLocation";
+import OfferCardPeople from "../../../../../../offerSection/offerCard/OfferCardPeople";
 import "./userOfferCard.css";
-import Button from "../../../../component-items/button/button";
+import Button from "../../../../../../component-items/button/button";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router";
-import OfferCardMode from "../../../../offerSection/offerCard/OfferCardMode";
+import OfferCardMode from "../../../../../../offerSection/offerCard/OfferCardMode";
 
 const UserOfferCard = ({ offer, setSelectedOfferToDelete }) => {
   return (

@@ -7,6 +7,7 @@ import UserDetailedDescription from "./userDetailedDescription";
 import UserDetailedSport from "./UserDetailedSport";
 import { SPORT_OFFERS } from "../../../../../assets/SPORT_OFFERS";
 import UserDetailedCards from "./UserDetailedCards";
+import UserOffers from "./userOffers/UserOffers";
 
 const UserDetailed = ({
   creationDate,
@@ -31,31 +32,7 @@ const UserDetailed = ({
         editData={editData}
         onChange={onChange}
       />
-      {/* <div className="user-detailed-section">
-        <h3>Informacje podstawowe</h3>
-        <UserDetailedSport
-          icon={<LuTrophy size={24} color="rgb(59 130 246)" />}
-          text={favouriteSportText}
-          isEditing={isEditing}
-          name="favouriteSport"
-          onChange={onChange}
-          defaultValue="none"
-          defaultText="Brak"
-          options={SPORT_OFFERS}
-          prevValue={editData.favouriteSport}
-        />
-      </div>
-      <div className="user-detailed-section">
-        <h3>O mnie</h3>
-        <UserDetailedDescription
-          text={aboutText}
-          isEditing={isEditing}
-          editData={editData}
-          name="aboutMe"
-          onChange={onChange}
-          placeholder="Napisz coś o sobie :)"
-        />
-      </div> */}
+      <UserOffers />
     </div>
   );
 };

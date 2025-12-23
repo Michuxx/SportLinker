@@ -1,8 +1,8 @@
 import { useState } from "react";
 import NullOffers from "./nullOffers/NullOffers";
 import UserOfferCard from "./userOfferCard/UserOfferCard";
-import ModalBackground from "../../../component-items/modal/ModalBackground";
-import WarningModal from "../../../warningModal/WarningModal";
+import ModalBackground from "../../../../../../component-items/modal/ModalBackground";
+import WarningModal from "../../../../../../warningModal/WarningModal";
 import { FaRegTrashAlt } from "react-icons/fa";
 
 const UserOffers = () => {
