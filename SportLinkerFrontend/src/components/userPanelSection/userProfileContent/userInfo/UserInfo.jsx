@@ -2,7 +2,6 @@ import "./userInfo.css";
 import UserHeader from "./userHeader/UserHeader";
 import { useState } from "react";
 import UserDetailed from "./userDetailed/UserDetailed";
-import UserStats from "./userStats/UserStats";
 
 const UserInfo = () => {
   const [userInfo, setUserInfo] = useState({
@@ -111,8 +110,6 @@ const UserInfo = () => {
         aboutMe={userInfo.aboutMe}
         editData={editData}
         isEditing={isEditing}
-      />
-      <UserStats
         createdOffers={userInfo.createdOffers}
         joinedOffers={userInfo.joinedOffers}
         invitations={userInfo.invitations}

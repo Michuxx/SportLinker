@@ -17,6 +17,9 @@ const UserDetailed = ({
   editData,
   isEditing,
   onChange,
+  createdOffers,
+  joinedOffers,
+  invitations,
 }) => {
   const favouriteSportText = `Ulubiony sport: ${sport ? sport : "brak"}`;
 
@@ -31,6 +34,9 @@ const UserDetailed = ({
         isEditing={isEditing}
         editData={editData}
         onChange={onChange}
+        createdOffers={createdOffers}
+        joinedOffers={joinedOffers}
+        invitations={invitations}
       />
       <UserOffers />
     </div>

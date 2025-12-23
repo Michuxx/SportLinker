@@ -9,39 +9,40 @@
   gap: 1rem;
 }
 
-.user-card-wrapper {
+.user-card-stats-wrapper {
   padding: 1rem;
-  width: 33.3%;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.user-card-wrapper span {
+.user-card-stats-wrapper span {
   font-family: Poppins-SemiBold;
   font-size: 1.5rem;
 }
 
-.user-card-wrapper:nth-child(1) {
+.user-card-stats-wrapper:nth-of-type(1) {
   background-color: rgb(239 246 255);
 }
 
-.user-card-wrapper:nth-child(1) span {
+.user-card-stats-wrapper:nth-of-type(1) span {
   color: rgb(37 99 235);
 }
-.user-card-wrapper:nth-child(2) {
+.user-card-stats-wrapper:nth-of-type(2) {
   background-color: rgb(238 242 255);
 }
 
-.user-card-wrapper:nth-child(2) span {
+.user-card-stats-wrapper:nth-of-type(2) span {
   color: rgb(79 70 229);
 }
-.user-card-wrapper:nth-child(3) {
+.user-card-stats-wrapper:nth-of-type(3) {
   background-color: rgb(250 245 255);
 }
 
-.user-card-wrapper:nth-child(3) span {
+.user-card-stats-wrapper:nth-of-type(3) span {
   color: rgb(147 51 234);
 }
 
-.user-card-wrapper p {
+.user-card-stats-wrapper p {
   color: rgb(75 85 99);
 }

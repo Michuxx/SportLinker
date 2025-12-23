@@ -1,8 +1,17 @@
 import "./userDetailed.css";
 import UserDetailedBackground from "./UserDetailedBackground";
 import UserDetailedDescription from "./userDetailedDescription";
+import UserStatsCard from "./userStats/UserStatsCard";
 
-const UserDetailedCards = ({ aboutText, isEditing, editData, onChange }) => {
+const UserDetailedCards = ({
+  aboutText,
+  isEditing,
+  editData,
+  onChange,
+  createdOffers,
+  joinedOffers,
+  invitations,
+}) => {
   return (
     <div className="user-detailed-cards-wrapper">
       <UserDetailedBackground title="O mnie">
@@ -16,7 +25,11 @@ const UserDetailedCards = ({ aboutText, isEditing, editData, onChange }) => {
         />
       </UserDetailedBackground>
       <UserDetailedBackground title="Ulubione sporty"></UserDetailedBackground>
-      <UserDetailedBackground title="Statystyki"></UserDetailedBackground>
+      <UserDetailedBackground title="Statystyki">
+        <UserStatsCard value={createdOffers} text="Utworzone oferty" />
+        <UserStatsCard value={joinedOffers} text="Dołączenia" />
+        <UserStatsCard value={invitations} text="Zaproszenia" />
+      </UserDetailedBackground>
     </div>
   );
 };
