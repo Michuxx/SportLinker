@@ -1,0 +1,10 @@
+.user-offers-wrapper {
+  padding-left: 2rem;
+}
+
+.profile-offer-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+}

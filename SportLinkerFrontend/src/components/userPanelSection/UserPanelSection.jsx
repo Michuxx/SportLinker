@@ -27,21 +27,6 @@ const UserPanelSection = () => {
           </div>
         </NavLink>
         <NavLink
-          to="userOffers"
-          className={({ isActive }) =>
-            `nav-user-menu-option ${
-              isActive
-                ? "active-nav-user-menu-option"
-                : "inactive-nav-user-menu-option"
-            }`
-          }
-        >
-          <div className="user-menu-option-wrapper">
-            <GrNotes size={24} />
-            Moje oferty
-          </div>
-        </NavLink>
-        <NavLink
           to="foreignInvitations"
           className={({ isActive }) =>
             `nav-user-menu-option ${

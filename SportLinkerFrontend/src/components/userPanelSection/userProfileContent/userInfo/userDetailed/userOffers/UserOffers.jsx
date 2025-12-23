@@ -1,12 +1,17 @@
 import { useState } from "react";
 import NullOffers from "./nullOffers/NullOffers";
 import UserOfferCard from "./userOfferCard/UserOfferCard";
-import ModalBackground from "../../../../../../component-items/modal/ModalBackground";
-import WarningModal from "../../../../../../warningModal/WarningModal";
+import WarningModal from "../../../../../warningModal/WarningModal";
 import { FaRegTrashAlt } from "react-icons/fa";
+import "./userOffers.css";
+import ModalBackground from "../../../../../component-items/modal/ModalBackground";
+import PageTitle from "../../../../../pageTitle/PageTitle";
+import Button from "../../../../../component-items/button/button";
+import CreateOfferModal from "../../../../../createOfferModal/CreateOfferModal";
 
 const UserOffers = () => {
   const [selectedOfferToDelete, setSelectedOfferToDelete] = useState(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [offers, setOffers] = useState([
     {
       id: 1,
@@ -59,6 +64,16 @@ const UserOffers = () => {
   };
   return (
     <div className="user-offers-wrapper">
+      <div className="profile-offer-header-wrapper">
+        <PageTitle header="Moje oferty" label="Oferty, które utworzyłeś" />
+        <Button
+          style="gradientButton"
+          width={20}
+          onClick={() => setIsCreateModalOpen(true)}
+        >
+          Utwórz ofertę
+        </Button>
+      </div>
       {offers.length > 0 ? (
         offers.map((offer) => (
           <UserOfferCard
@@ -80,6 +95,11 @@ const UserOffers = () => {
             confirmText="Usuń"
             confirmIcon={<FaRegTrashAlt size={20} />}
           />
+        </ModalBackground>
+      )}
+      {isCreateModalOpen && (
+        <ModalBackground closeModal={() => setIsCreateModalOpen(false)}>
+          <CreateOfferModal />
         </ModalBackground>
       )}
     </div>
