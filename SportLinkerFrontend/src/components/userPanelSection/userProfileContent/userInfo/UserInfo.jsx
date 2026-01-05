@@ -53,6 +53,12 @@ const UserInfo = () => {
         location={userInfo.location}
       />
       <UserDetailed
+        isAboutMeEditing={isAboutMeEditing}
+        isSportEditing={isSportEditing}
+        setIsAboutMeEditing={setIsAboutMeEditing}
+        setIsSportMeEditing={setIsSportMeEditing}
+        handleSaveData={handleSaveData}
+        cancelHandle={cancelHandle}
         onChange={handleChangeEditData}
         sport={userInfo.favouriteSport}
         aboutMe={userInfo.aboutMe}

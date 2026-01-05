@@ -206,7 +206,7 @@ button {
 .classicBlueButton {
   background-color: rgb(59 130 246);
   color: #fff;
-  padding: 0.5rem 1rem 0.5rem 1rem;
+  padding: 0.5rem;
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 

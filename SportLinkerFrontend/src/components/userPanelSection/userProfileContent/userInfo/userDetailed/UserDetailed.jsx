@@ -1,11 +1,4 @@
-import UserDetailedMeta from "../userHeader/userHeaderInfo/UserInfoMeta";
 import "./userDetailed.css";
-import { GrLocation } from "react-icons/gr";
-import { FiCalendar } from "react-icons/fi";
-import { LuTrophy } from "react-icons/lu";
-import UserDetailedDescription from "./userDetailedDescription";
-import UserDetailedSport from "./UserDetailedSport";
-import { SPORT_OFFERS } from "../../../../../assets/SPORT_OFFERS";
 import UserDetailedCards from "./UserDetailedCards";
 import UserOffers from "./userOffers/UserOffers";
 
@@ -17,6 +10,12 @@ const UserDetailed = ({
   createdOffers,
   joinedOffers,
   invitations,
+  isSportEditing,
+  isAboutMeEditing,
+  setIsSportMeEditing,
+  setIsAboutMeEditing,
+  cancelHandle,
+  handleSaveData,
 }) => {
   const favouriteSportText = `Ulubiony sport: ${sport ? sport : "brak"}`;
 
@@ -33,6 +32,12 @@ const UserDetailed = ({
         createdOffers={createdOffers}
         joinedOffers={joinedOffers}
         invitations={invitations}
+        isAboutMeEditing={isAboutMeEditing}
+        isSportEditing={isSportEditing}
+        setIsAboutMeEditing={setIsAboutMeEditing}
+        setIsSportMeEditing={setIsSportMeEditing}
+        handleSaveData={handleSaveData}
+        cancelHandle={cancelHandle}
       />
       <UserOffers />
     </div>
