@@ -1,4 +1,5 @@
 import "./userDetailed.css";
+import "../../../../component-items/multiSelectCss/multiselect.css";
 import { MultiSelect } from "primereact/multiselect";
 import { SPORT_OFFERS } from "../../../../../assets/SPORT_OFFERS";
 
@@ -14,7 +15,6 @@ const UserDetailedSport = ({ selectedSports, onChange }) => {
         placeholder="Wybierz sporty..."
         filter
         filterDelay={400}
-        className="multiselect-demo"
       />
     </div>
   );
