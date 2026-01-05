@@ -59,3 +59,24 @@
   display: flex;
   gap: 1rem;
 }
+
+.p-multiselect {
+  min-width: 15rem;
+}
+
+.p-multiselect-label:not(.p-placeholder):not(.p-multiselect-items-label) {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.country-item-value {
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  display: inline-flex;
+  margin-right: 0.5rem;
+  background-color: green;
+  color: black;
+}
+
+.country-item-value img.flag {
+  width: 17px;
+}

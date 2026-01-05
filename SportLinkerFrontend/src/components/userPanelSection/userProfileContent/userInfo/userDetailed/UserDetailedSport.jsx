@@ -1,32 +1,21 @@
-import Select from "../../../../component-items/select/Select";
 import "./userDetailed.css";
+import { MultiSelect } from "primereact/multiselect";
+import { SPORT_OFFERS } from "../../../../../assets/SPORT_OFFERS";
 
-const UserDetailedSport = ({
-  icon,
-  text,
-  isEditing,
-  onChange,
-  name,
-  defaultValue,
-  defaultText,
-  options,
-  prevValue,
-}) => {
+const UserDetailedSport = ({ selectedSports, onChange }) => {
   return (
     <div className="user-detailed-meta-wrapper">
-      <span>{icon}</span>
-      {isEditing ? (
-        <Select
-          onChange={(e) => onChange(e)}
-          name={name}
-          defaultText={defaultText}
-          defaultValue={defaultValue}
-          options={options}
-          value={prevValue}
-        />
-      ) : (
-        <p>{text}</p>
-      )}
+      <MultiSelect
+        value={selectedSports}
+        onChange={(e) => onChange(e)}
+        options={SPORT_OFFERS}
+        optionLabel="text"
+        name="favouriteSport"
+        placeholder="Wybierz sporty..."
+        filter
+        filterDelay={400}
+        className="multiselect-demo"
+      />
     </div>
   );
 };

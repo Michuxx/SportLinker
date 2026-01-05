@@ -1,10 +1,12 @@
 import "./userDetailed.css";
 import UserDetailedBackground from "./UserDetailedBackground";
 import UserDetailedDescription from "./userDetailedDescription";
+import UserDetailedSport from "./UserDetailedSport";
 import UserStatsCard from "./userStats/UserStatsCard";
 
 const UserDetailedCards = ({
   aboutText,
+  favouriteSportText,
   editData,
   onChange,
   createdOffers,
@@ -43,7 +45,13 @@ const UserDetailedCards = ({
           isEditing={isAboutMeEditing}
         />
       </UserDetailedBackground>
-      <UserDetailedBackground title="Ulubione sporty"></UserDetailedBackground>
+      <UserDetailedBackground title="Ulubione sporty">
+        {favouriteSportText}
+        <UserDetailedSport
+          selectedSports={editData.favouriteSport}
+          onChange={onChange}
+        />
+      </UserDetailedBackground>
       <UserDetailedBackground title="Statystyki">
         <UserStatsCard
           value={createdOffers}

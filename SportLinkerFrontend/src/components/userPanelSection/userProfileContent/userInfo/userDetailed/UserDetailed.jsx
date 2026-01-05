@@ -17,7 +17,8 @@ const UserDetailed = ({
   cancelHandle,
   handleSaveData,
 }) => {
-  const favouriteSportText = `Ulubiony sport: ${sport ? sport : "brak"}`;
+  // const favouriteSportText = sport.length === 0 && "Brak ulubionego sportu";
+  const favouriteSportText = "";
 
   const aboutText = aboutMe
     ? aboutMe
@@ -27,6 +28,7 @@ const UserDetailed = ({
     <div className="user-detailed-wrapper">
       <UserDetailedCards
         aboutText={aboutText}
+        favouriteSportText={favouriteSportText}
         editData={editData}
         onChange={onChange}
         createdOffers={createdOffers}
