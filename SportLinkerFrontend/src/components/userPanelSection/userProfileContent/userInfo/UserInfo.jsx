@@ -9,98 +9,46 @@ const UserInfo = () => {
     email: "John@example.pl",
     created: "30.10.2025",
     location: "",
-    favouriteSport: null,
+    favouriteSport: [],
     aboutMe: "",
     createdOffers: 0,
     joinedOffers: 0,
     invitations: 0,
   });
 
-  const [errors, setErrors] = useState({
-    name: "",
-    email: "",
-  });
-
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-  const [isEditing, setIsEditing] = useState(false);
+  const [isAboutMeEditing, setIsAboutMeEditing] = useState(false);
+  const [isSportEditing, setIsSportMeEditing] = useState(false);
 
   const [editData, setEditData] = useState({
-    name: userInfo.name,
-    email: userInfo.email,
-    location: userInfo.location,
     favouriteSport: userInfo.favouriteSport,
     aboutMe: userInfo.aboutMe,
   });
 
-  const cancelHandle = () => {
+  const cancelHandle = (setEditingFalse) => {
     setEditData({
-      name: userInfo.name,
-      email: userInfo.email,
-      location: userInfo.location,
       favouriteSport: userInfo.favouriteSport,
       aboutMe: userInfo.aboutMe,
     });
-    setIsEditing(false);
-    setErrors({
-      name: "",
-      email: "",
-    });
-  };
-
-  const emailValidation = () => {
-    if (editData.email.length === 0 || !emailRegex.test(editData.email)) {
-      setErrors((prev) => ({
-        ...prev,
-        email: "Email jest nieprawidłowy lub pusty",
-      }));
-      return false;
-    }
-    return true;
-  };
-
-  const nameValidation = () => {
-    if (editData.name.length === 0) {
-      setErrors((prev) => ({
-        ...prev,
-        name: "Imię i nazwisko nie może być puste",
-      }));
-      return false;
-    }
-    return true;
+    setEditingFalse();
   };
 
   const handleChangeEditData = (e) => {
     const { name, value } = e.target;
     setEditData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleSaveData = () => {
-    const validatedEmail = emailValidation();
-    const validatedName = nameValidation();
-
-    if (validatedEmail && validatedName) {
-      setUserInfo((prev) => ({
-        ...prev,
-        ...editData,
-      }));
-
-      setIsEditing(false);
-    }
+  const handleSaveData = (setEditingFalse) => {
+    setUserInfo((prev) => ({
+      ...prev,
+      ...editData,
+    }));
+    setEditingFalse();
   };
 
   return (
     <div className="user-info-wrapper">
       <UserHeader
         name={userInfo.name}
-        editData={editData}
-        isEditing={isEditing}
-        onChange={handleChangeEditData}
-        setIsEditing={() => setIsEditing((e) => !e)}
-        cancelHandle={cancelHandle}
-        handleSave={handleSaveData}
-        error={errors}
         creationDate={userInfo.created}
         location={userInfo.location}
       />
@@ -109,7 +57,6 @@ const UserInfo = () => {
         sport={userInfo.favouriteSport}
         aboutMe={userInfo.aboutMe}
         editData={editData}
-        isEditing={isEditing}
         createdOffers={userInfo.createdOffers}
         joinedOffers={userInfo.joinedOffers}
         invitations={userInfo.invitations}

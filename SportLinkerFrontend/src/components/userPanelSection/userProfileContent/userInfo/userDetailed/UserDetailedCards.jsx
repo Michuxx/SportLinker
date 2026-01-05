@@ -5,7 +5,6 @@ import UserStatsCard from "./userStats/UserStatsCard";
 
 const UserDetailedCards = ({
   aboutText,
-  isEditing,
   editData,
   onChange,
   createdOffers,
@@ -17,7 +16,6 @@ const UserDetailedCards = ({
       <UserDetailedBackground title="O mnie">
         <UserDetailedDescription
           text={aboutText}
-          isEditing={isEditing}
           editData={editData}
           name="aboutMe"
           onChange={onChange}

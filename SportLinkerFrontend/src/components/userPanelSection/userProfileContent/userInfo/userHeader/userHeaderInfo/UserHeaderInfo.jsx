@@ -3,13 +3,7 @@ import { FiCalendar } from "react-icons/fi";
 import UserInfoMeta from "./UserInfoMeta";
 import "./userHeaderInfo.css";
 
-const UserHeaderInfo = ({
-  creationDate,
-  location,
-  editData,
-  isEditing,
-  onChange,
-}) => {
+const UserHeaderInfo = ({ creationDate, location }) => {
   const dateCreationText = `Dołączył: ${creationDate}`;
 
   const localizationText = location ? location : "Nie podano lokalizacji";
@@ -23,11 +17,6 @@ const UserHeaderInfo = ({
       <UserInfoMeta
         icon={<GrLocation size={24} color="rgb(59 130 246)" />}
         text={localizationText}
-        isEditing={isEditing}
-        editData={editData.location}
-        name="location"
-        onChange={onChange}
-        placeholder="Nie podawaj dokładnej lokalizacji"
       />
     </div>
   );

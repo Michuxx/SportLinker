@@ -10,12 +10,9 @@ import UserDetailedCards from "./UserDetailedCards";
 import UserOffers from "./userOffers/UserOffers";
 
 const UserDetailed = ({
-  creationDate,
-  location,
   sport,
   aboutMe,
   editData,
-  isEditing,
   onChange,
   createdOffers,
   joinedOffers,
@@ -31,7 +28,6 @@ const UserDetailed = ({
     <div className="user-detailed-wrapper">
       <UserDetailedCards
         aboutText={aboutText}
-        isEditing={isEditing}
         editData={editData}
         onChange={onChange}
         createdOffers={createdOffers}
