@@ -45,9 +45,24 @@ const UserDetailedCards = ({
       </UserDetailedBackground>
       <UserDetailedBackground title="Ulubione sporty"></UserDetailedBackground>
       <UserDetailedBackground title="Statystyki">
-        <UserStatsCard value={createdOffers} text="Utworzone oferty" />
-        <UserStatsCard value={joinedOffers} text="Dołączenia" />
-        <UserStatsCard value={invitations} text="Zaproszenia" />
+        <UserStatsCard
+          value={createdOffers}
+          text="Utworzone oferty"
+          bgColor="rgb(239 246 255)"
+          textColor="rgb(37 99 235)"
+        />
+        <UserStatsCard
+          value={joinedOffers}
+          text="Dołączenia"
+          bgColor="rgb(238 242 255)"
+          textColor="rgb(79 70 229)"
+        />
+        <UserStatsCard
+          value={invitations}
+          text="Zaproszenia"
+          bgColor="rgb(250 245 255)"
+          textColor="rgb(147 51 234)"
+        />
       </UserDetailedBackground>
     </div>
   );
