@@ -6,16 +6,15 @@ import UserStatsCard from "./userStats/UserStatsCard";
 
 const UserDetailedCards = ({
   aboutText,
-  favouriteSportText,
   editData,
   onChange,
   createdOffers,
   joinedOffers,
   invitations,
-  isSportEditing,
   isAboutMeEditing,
-  setIsSportMeEditing,
   setIsAboutMeEditing,
+  isSportEditing,
+  setIsSportEditing,
   cancelHandle,
   handleSaveData,
 }) => {
@@ -27,12 +26,20 @@ const UserDetailedCards = ({
     handleSaveData(() => setIsAboutMeEditing(false));
   };
 
+  const handleCancelSport = () => {
+    cancelHandle(() => setIsSportEditing(false));
+  };
+
+  const handleSaveSport = () => {
+    handleSaveData(() => setIsSportEditing(false));
+  };
+
   return (
     <div className="user-detailed-cards-wrapper">
       <UserDetailedBackground
         title="O mnie"
-        setEditing={() => setIsAboutMeEditing(true)}
         isEditing={isAboutMeEditing}
+        setEditing={() => setIsAboutMeEditing(true)}
         cancelEdit={handleCancelAboutMe}
         saveEdit={handleSaveAboutMe}
       >
@@ -45,8 +52,13 @@ const UserDetailedCards = ({
           isEditing={isAboutMeEditing}
         />
       </UserDetailedBackground>
-      <UserDetailedBackground title="Ulubione sporty">
-        {favouriteSportText}
+      <UserDetailedBackground
+        title="Ulubione sporty"
+        isEditing={isSportEditing}
+        setEditing={() => setIsSportEditing(true)}
+        cancelEdit={handleCancelSport}
+        saveEdit={handleSaveSport}
+      >
         <UserDetailedSport
           selectedSports={editData.favouriteSport}
           onChange={onChange}

@@ -17,7 +17,7 @@ const UserInfo = () => {
   });
 
   const [isAboutMeEditing, setIsAboutMeEditing] = useState(false);
-  const [isSportEditing, setIsSportMeEditing] = useState(false);
+  const [isSportEditing, setIsSportEditing] = useState(false);
 
   const [editData, setEditData] = useState({
     favouriteSport: userInfo.favouriteSport,
@@ -56,7 +56,7 @@ const UserInfo = () => {
         isAboutMeEditing={isAboutMeEditing}
         isSportEditing={isSportEditing}
         setIsAboutMeEditing={setIsAboutMeEditing}
-        setIsSportMeEditing={setIsSportMeEditing}
+        setIsSportEditing={setIsSportEditing}
         handleSaveData={handleSaveData}
         cancelHandle={cancelHandle}
         onChange={handleChangeEditData}

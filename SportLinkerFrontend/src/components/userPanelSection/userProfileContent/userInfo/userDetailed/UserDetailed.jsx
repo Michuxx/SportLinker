@@ -11,15 +11,12 @@ const UserDetailed = ({
   joinedOffers,
   invitations,
   isSportEditing,
+  setIsSportEditing,
   isAboutMeEditing,
-  setIsSportMeEditing,
   setIsAboutMeEditing,
   cancelHandle,
   handleSaveData,
 }) => {
-  // const favouriteSportText = sport.length === 0 && "Brak ulubionego sportu";
-  const favouriteSportText = "";
-
   const aboutText = aboutMe
     ? aboutMe
     : `Brak opisu. Kliknij "Edytuj", aby dodać informacje o sobie`;
@@ -28,7 +25,6 @@ const UserDetailed = ({
     <div className="user-detailed-wrapper">
       <UserDetailedCards
         aboutText={aboutText}
-        favouriteSportText={favouriteSportText}
         editData={editData}
         onChange={onChange}
         createdOffers={createdOffers}
@@ -37,7 +33,7 @@ const UserDetailed = ({
         isAboutMeEditing={isAboutMeEditing}
         isSportEditing={isSportEditing}
         setIsAboutMeEditing={setIsAboutMeEditing}
-        setIsSportMeEditing={setIsSportMeEditing}
+        setIsSportEditing={setIsSportEditing}
         handleSaveData={handleSaveData}
         cancelHandle={cancelHandle}
       />
