@@ -23,11 +23,13 @@ const UserDetailedSport = ({ selectedSports, onChange, isEditing }) => {
           showSelectAll={false}
         />
       )}
-      {selectedSports.length > 0
-        ? selectedSports.map((sport) => (
-            <Tag styleType="sport" text={sport.text} />
-          ))
-        : "Brak ulubionych sportów"}
+      <div className="user-detailed-selected-sports-wrapper">
+        {selectedSports.length > 0
+          ? selectedSports.map((sport) => (
+              <Tag styleType="sport" text={sport.text} />
+            ))
+          : "Brak ulubionych sportów"}
+      </div>
     </div>
   );
 };
