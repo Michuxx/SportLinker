@@ -60,7 +60,6 @@ const UserInfo = () => {
         handleSaveData={handleSaveData}
         cancelHandle={cancelHandle}
         onChange={handleChangeEditData}
-        sport={userInfo.favouriteSport}
         aboutMe={userInfo.aboutMe}
         editData={editData}
         createdOffers={userInfo.createdOffers}

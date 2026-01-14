@@ -3,7 +3,6 @@ import UserDetailedCards from "./UserDetailedCards";
 import UserOffers from "./userOffers/UserOffers";
 
 const UserDetailed = ({
-  sport,
   aboutMe,
   editData,
   onChange,

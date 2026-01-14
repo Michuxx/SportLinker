@@ -1,18 +1,22 @@
 export const SPORT_OFFERS = [
   {
-    value: "Tenis",
+    id: 1,
+    optionValue: "Tenis",
     text: "Tenis",
   },
   {
-    value: "Badminton",
+    id: 2,
+    optionValue: "Badminton",
     text: "Badminton",
   },
   {
-    value: "Football",
+    id: 3,
+    optionValue: "Football",
     text: "Piłka nożna",
   },
   {
-    value: "volleyball",
+    id: 4,
+    optionValue: "volleyball",
     text: "Siatkówka",
   },
 ];

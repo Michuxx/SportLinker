@@ -60,6 +60,7 @@ const UserDetailedCards = ({
         saveEdit={handleSaveSport}
       >
         <UserDetailedSport
+          isEditing={isSportEditing}
           selectedSports={editData.favouriteSport}
           onChange={onChange}
         />
