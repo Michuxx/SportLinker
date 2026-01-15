@@ -43,3 +43,15 @@
   display: flex;
   gap: 1rem;
 }
+
+.avatar-white-bg {
+  background-color: #fff;
+  border-radius: 999999px;
+  height: 8.75rem;
+  width: 8.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 #0000, 0 0 #0000, var(0 0 #0000, 0 0 #0000),
+    0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
