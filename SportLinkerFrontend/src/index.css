@@ -38,6 +38,7 @@
 
 .container,
 .profile-container,
-.offer-container {
+.offer-container,
+.settings-container {
   background-color: rgba(249, 250, 251, 1);
 }

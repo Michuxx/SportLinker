@@ -10,6 +10,7 @@ const UserDetailedBackground = ({
   isEditing,
   cancelEdit,
   saveEdit,
+  saveEdited,
 }) => {
   return (
     <div className="user-detailed-background">
@@ -38,6 +39,15 @@ const UserDetailedBackground = ({
               />
             )}
           </>
+        )}
+        {saveEdited && (
+          <Button
+            Icon={<FiSave size={22} />}
+            style={"gradientButton"}
+            onClick={saveEdited}
+          >
+            Zapisz
+          </Button>
         )}
       </div>
       {children}
