@@ -7,7 +7,7 @@ const UserInfo = () => {
   const [userInfo, setUserInfo] = useState({
     name: "John Snow",
     email: "John@example.pl",
-    created: "30.10.2025",
+    birthDate: "2003-01-20",
     location: "",
     favouriteSport: [],
     aboutMe: "",
@@ -49,7 +49,7 @@ const UserInfo = () => {
     <div className="user-info-wrapper">
       <UserHeader
         name={userInfo.name}
-        creationDate={userInfo.created}
+        birthDate={userInfo.birthDate}
         location={userInfo.location}
       />
       <UserDetailed
