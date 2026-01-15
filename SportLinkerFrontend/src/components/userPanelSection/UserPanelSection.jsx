@@ -1,16 +1,16 @@
 import { NavLink, Outlet } from "react-router";
-import UserNavbar from "./userNavbar/UserNavbar";
 import UserProfileContent from "./userProfileContent/UserProfileContent";
 import "./userPanelSection.css";
 import { LuUser } from "react-icons/lu";
 import { GrNotes } from "react-icons/gr";
 import { FiMail } from "react-icons/fi";
 import { LuMailQuestion } from "react-icons/lu";
+import Navbar from "../component-items/navbar/Navbar";
 
 const UserPanelSection = () => {
   return (
     <div className="user-panel-section-wrapper">
-      <UserNavbar>
+      <Navbar>
         <NavLink
           to="userInfo"
           className={({ isActive }) =>
@@ -56,7 +56,7 @@ const UserPanelSection = () => {
             Statusy ofert
           </div>
         </NavLink>
-      </UserNavbar>
+      </Navbar>
       <UserProfileContent>
         <Outlet />
       </UserProfileContent>
