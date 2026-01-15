@@ -30,7 +30,7 @@ const Header = () => {
     },
     {
       style: "classicDropdownOptionButton",
-      onClick: () => changeLocation("/profile"),
+      onClick: () => changeLocation("/settings/account"),
       text: "Ustawienia",
     },
     {

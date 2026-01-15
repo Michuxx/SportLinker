@@ -1,4 +1,4 @@
-import "./Navbar.css";
+import "./navbar.css";
 
 const Navbar = ({ children }) => {
   return <div className="user-navbar-wrapper">{children}</div>;
