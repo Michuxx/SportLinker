@@ -11,8 +11,4 @@ export const GENDERS = [
     value: "Other",
     text: "Inna",
   },
-  {
-    value: null,
-    text: "Wolę nie podawać",
-  },
 ];

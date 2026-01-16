@@ -11,6 +11,7 @@ const Input = ({
   name,
   min,
   max,
+  disabled,
 }) => {
   return icon ? (
     <div className="input-wrapper">
@@ -29,6 +30,7 @@ const Input = ({
           name={name}
           min={min}
           max={max}
+          disabled={disabled}
         />
         {error && <p className="input-error-text">{error}</p>}
       </div>
@@ -36,6 +38,7 @@ const Input = ({
   ) : (
     <div className="input-error-wrapper">
       <input
+        disabled={disabled}
         className={`standard-input ` + (error && `input-error`)}
         type={type}
         placeholder={placeholder}
