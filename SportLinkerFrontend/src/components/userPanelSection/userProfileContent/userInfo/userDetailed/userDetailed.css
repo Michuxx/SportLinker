@@ -27,6 +27,7 @@
 .user-detailed-meta-wrapper p,
 .user-detailed-description-wrapper p {
   color: rgb(75 85 99);
+  overflow-wrap: anywhere;
 }
 
 .user-detailed-section {

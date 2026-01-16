@@ -11,6 +11,42 @@ import { FiPhone } from "react-icons/fi";
 import { FaTransgender } from "react-icons/fa";
 
 const PersonalInfo = ({ userInfo, errors, handleChange }) => {
+  const hideEmail = (email) => {
+    if (!email || typeof email !== "string") return "";
+
+    const [localPart, domain] = email.split("@");
+
+    if (localPart.length <= 2) {
+      return `${localPart[0]}*@${domain}`;
+    }
+
+    const maskedLocal =
+      localPart.substring(0, 2) + "*".repeat(localPart.length - 2);
+
+    return `${maskedLocal}@${domain}`;
+  };
+
+  const hidePhoneNumber = (number) => {
+    if (!number || typeof number !== "string") return "";
+
+    let hiddenNumber = "";
+
+    for (let i = 0; i < number.length; i++) {
+      if (i > 2 && i < 10) {
+        hiddenNumber += "*";
+      } else {
+        hiddenNumber += number[i];
+      }
+
+      if (i === 2) {
+        hiddenNumber += " ";
+      } else if ((i - 2) % 3 === 0 && i > 2 && i < number.length) {
+        hiddenNumber += " ";
+      }
+    }
+    return hiddenNumber;
+  };
+
   return (
     <>
       <div className="acc-settings-input-wrapper">
@@ -33,7 +69,7 @@ const PersonalInfo = ({ userInfo, errors, handleChange }) => {
             width={100}
             icon={<MdMailOutline color="rgb(156 163 175)" size="20px" />}
             onChange={(e) => handleChange(e)}
-            value={userInfo.email}
+            value={hideEmail(userInfo.email)}
             name="email"
             disabled={true}
           />
@@ -43,12 +79,12 @@ const PersonalInfo = ({ userInfo, errors, handleChange }) => {
         <InputField label="Numer telefonu">
           <Input
             icon={<FiPhone color="rgb(156 163 175)" size="20px" />}
-            placeholder="+48 123 456 789"
+            placeholder="Brak numeru telefonu"
             type="text"
             width={100}
             onChange={(e) => handleChange(e)}
             name="phoneNumber"
-            value={userInfo.phoneNumber}
+            value={hidePhoneNumber(userInfo.phoneNumber)}
             disabled={true}
           />
         </InputField>

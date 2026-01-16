@@ -12,7 +12,7 @@ const AccountSettings = () => {
   const [userInfo, setUserInfo] = useState({
     name: "John Snow",
     email: "John@example.pl",
-    phoneNumber: "",
+    phoneNumber: "+48131675998",
     birthDate: "",
     location: "",
     gender: "NotDisclosed",
