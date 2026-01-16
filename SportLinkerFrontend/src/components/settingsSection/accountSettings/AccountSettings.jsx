@@ -2,6 +2,7 @@ import { useState } from "react";
 import UserDetailedBackground from "../../userPanelSection/userProfileContent/userInfo/userDetailed/UserDetailedBackground";
 import "./accountSettings.css";
 import PersonalInfo from "./PersonalInfo";
+import SecurityPanel from "./securityPanel/SecurityPanel";
 
 const AccountSettings = () => {
   const [userInfo, setUserInfo] = useState({
@@ -17,6 +18,45 @@ const AccountSettings = () => {
     name: "",
     birthDate: "",
   });
+
+  const securityOptions = [
+    {
+      header: "Zmiana Emaila",
+      text: "Twój obecny email jest nieaktualny? Zmień go klikając w przycisk",
+      borderColor: "rgb(254 240 138)",
+      bgColor: "rgb(254 252 232)",
+      fontColor: "rgb(161 98 7)",
+      buttonStyle: "classicOrangeButton",
+      buttonIcon: null,
+    },
+    {
+      header: "Zmiana numeru telefonu",
+      text: "Zmieniałeś numer telefonu? Zmień go klikając w przycisk",
+      borderColor: "#EBF5FF",
+      bgColor: "#D1E9FF",
+      fontColor: "#1E40AF",
+      buttonStyle: "classicBlueButton",
+      buttonIcon: null,
+    },
+    {
+      header: "Zmiana Hasła",
+      text: "Regularnie zmieniaj hasło, aby zachować bezpieczeństwo konta",
+      borderColor: "#F5F3FF",
+      bgColor: "#EDE9FE",
+      fontColor: "#5B21B6",
+      buttonStyle: "classicPurpleButton",
+      buttonIcon: null,
+    },
+    {
+      header: "Usuń konto",
+      text: "Usunięcie konta jest nieodwracalne. Wszystkie Twoje dane zostaną trwale usunięte.",
+      borderColor: "rgb(254 202 202)",
+      bgColor: "rgb(254 242 242)",
+      fontColor: "rgb(185 28 28)",
+      buttonStyle: "classicRedButton",
+      buttonIcon: null,
+    },
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -82,6 +122,11 @@ const AccountSettings = () => {
           handleChange={handleChange}
         />
       </UserDetailedBackground>
+      <div className="acc-security-settings">
+        <UserDetailedBackground title="Prywatność">
+          <SecurityPanel options={securityOptions} />
+        </UserDetailedBackground>
+      </div>
     </div>
   );
 };
