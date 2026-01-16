@@ -1,8 +1,8 @@
-import InputField from "../../component-items/inputField/InputField";
-import Input from "../../component-items/input/Input";
-import Select from "../../component-items/select/Select";
-import "./accountSettings.css";
-import { GENDERS } from "../../../assets/GENDERS";
+import InputField from "../../../component-items/inputField/InputField";
+import Input from "../../../component-items/input/Input";
+import Select from "../../../component-items/select/Select";
+import "../accountSettings.css";
+import { GENDERS } from "../../../../assets/GENDERS";
 import { GrLocation } from "react-icons/gr";
 import { FiCalendar } from "react-icons/fi";
 import { MdMailOutline } from "react-icons/md";

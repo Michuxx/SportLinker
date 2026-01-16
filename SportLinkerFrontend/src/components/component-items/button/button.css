@@ -244,6 +244,26 @@ button {
   background-color: rgb(220 38 38);
 }
 
+.classicOrangeButton {
+  background-color: rgb(202 138 4);
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  color: #fff;
+}
+
+.classicOrangeButton:hover {
+  background-color: rgb(161 98 7);
+}
+
+.classicPurpleButton {
+  background-color: #8b5cf6;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  color: #fff;
+}
+
+.classicPurpleButton:hover {
+  background-color: #6846b9;
+}
+
 .deleteButton {
   width: 2.5rem;
   height: 2.5rem;

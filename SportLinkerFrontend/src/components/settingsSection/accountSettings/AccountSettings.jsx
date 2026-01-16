@@ -1,7 +1,7 @@
 import { useState } from "react";
 import UserDetailedBackground from "../../userPanelSection/userProfileContent/userInfo/userDetailed/UserDetailedBackground";
 import "./accountSettings.css";
-import PersonalInfo from "./PersonalInfo";
+import PersonalInfo from "./personalInfo/PersonalInfo";
 import SecurityPanel from "./securityPanel/SecurityPanel";
 
 const AccountSettings = () => {
@@ -27,24 +27,27 @@ const AccountSettings = () => {
       bgColor: "rgb(254 252 232)",
       fontColor: "rgb(161 98 7)",
       buttonStyle: "classicOrangeButton",
+      buttonText: "Zmień Email",
       buttonIcon: null,
     },
     {
       header: "Zmiana numeru telefonu",
       text: "Zmieniałeś numer telefonu? Zmień go klikając w przycisk",
-      borderColor: "#EBF5FF",
-      bgColor: "#D1E9FF",
+      borderColor: "#D1E9FF",
+      bgColor: "#EBF5FF",
       fontColor: "#1E40AF",
       buttonStyle: "classicBlueButton",
+      buttonText: "Zmień numer telefonu",
       buttonIcon: null,
     },
     {
       header: "Zmiana Hasła",
       text: "Regularnie zmieniaj hasło, aby zachować bezpieczeństwo konta",
-      borderColor: "#F5F3FF",
-      bgColor: "#EDE9FE",
+      borderColor: "#EDE9FE",
+      bgColor: "#F5F3FF",
       fontColor: "#5B21B6",
       buttonStyle: "classicPurpleButton",
+      buttonText: "Zmień hasło",
       buttonIcon: null,
     },
     {
@@ -54,6 +57,7 @@ const AccountSettings = () => {
       bgColor: "rgb(254 242 242)",
       fontColor: "rgb(185 28 28)",
       buttonStyle: "classicRedButton",
+      buttonText: "Usuń konto",
       buttonIcon: null,
     },
   ];

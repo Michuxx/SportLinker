@@ -16,6 +16,8 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     classicGreenButton: "classicGreenButton",
     classicGreyButton: "classicGreyButton",
     classicRedButton: "classicRedButton",
+    classicOrangeButton: "classicOrangeButton",
+    classicPurpleButton: "classicPurpleButton",
     gradientButton: "gradientButton",
     deleteButton: "deleteButton",
     registerModalButton: "registerModalButton",

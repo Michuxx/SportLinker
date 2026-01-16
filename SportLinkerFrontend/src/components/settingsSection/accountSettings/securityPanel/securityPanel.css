@@ -1,0 +1,20 @@
+.security-settings-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.security-card-wrapper {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+@media screen and (max-width: 728px) {
+  .security-settings-wrapper {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
