@@ -3,6 +3,10 @@ import UserDetailedBackground from "../../userPanelSection/userProfileContent/us
 import "./accountSettings.css";
 import PersonalInfo from "./personalInfo/PersonalInfo";
 import SecurityPanel from "./securityPanel/SecurityPanel";
+import { MdOutlineAlternateEmail } from "react-icons/md";
+import { MdOutlineContactPhone } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const AccountSettings = () => {
   const [userInfo, setUserInfo] = useState({
@@ -28,7 +32,7 @@ const AccountSettings = () => {
       fontColor: "rgb(161 98 7)",
       buttonStyle: "classicOrangeButton",
       buttonText: "Zmień Email",
-      buttonIcon: null,
+      buttonIcon: <MdOutlineAlternateEmail size={20} />,
     },
     {
       header: "Zmiana numeru telefonu",
@@ -38,7 +42,7 @@ const AccountSettings = () => {
       fontColor: "#1E40AF",
       buttonStyle: "classicBlueButton",
       buttonText: "Zmień numer telefonu",
-      buttonIcon: null,
+      buttonIcon: <MdOutlineContactPhone size={20} />,
     },
     {
       header: "Zmiana Hasła",
@@ -48,7 +52,7 @@ const AccountSettings = () => {
       fontColor: "#5B21B6",
       buttonStyle: "classicPurpleButton",
       buttonText: "Zmień hasło",
-      buttonIcon: null,
+      buttonIcon: <RiLockPasswordLine size={20} />,
     },
     {
       header: "Usuń konto",
@@ -58,7 +62,7 @@ const AccountSettings = () => {
       fontColor: "rgb(185 28 28)",
       buttonStyle: "classicRedButton",
       buttonText: "Usuń konto",
-      buttonIcon: null,
+      buttonIcon: <FaRegTrashAlt size={20} />,
     },
   ];
 
