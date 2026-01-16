@@ -8,6 +8,10 @@ const UserInfo = () => {
     name: "John Snow",
     email: "John@example.pl",
     birthDate: "2003-01-20",
+    gender: {
+      value: "Male",
+      text: "Mężczyzna",
+    },
     location: "",
     favouriteSport: [],
     aboutMe: "",
@@ -51,6 +55,7 @@ const UserInfo = () => {
         name={userInfo.name}
         birthDate={userInfo.birthDate}
         location={userInfo.location}
+        gender={userInfo.gender}
       />
       <UserDetailed
         isAboutMeEditing={isAboutMeEditing}

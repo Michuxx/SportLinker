@@ -2,7 +2,7 @@ import "./userHeader.css";
 import Avatar from "../../../../component-items/avatar/Avatar";
 import UserHeaderInfo from "./userHeaderInfo/UserHeaderInfo";
 
-const UserHeader = ({ name, birthDate, location }) => {
+const UserHeader = ({ name, birthDate, location, gender }) => {
   return (
     <div className="user-header-wrapper">
       <div className="user-header-banner"></div>
@@ -13,7 +13,11 @@ const UserHeader = ({ name, birthDate, location }) => {
           </div>
           <div className="user-header-info">
             <h1>{name}</h1>
-            <UserHeaderInfo birthDate={birthDate} location={location} />
+            <UserHeaderInfo
+              birthDate={birthDate}
+              location={location}
+              gender={gender}
+            />
           </div>
         </div>
       </div>
