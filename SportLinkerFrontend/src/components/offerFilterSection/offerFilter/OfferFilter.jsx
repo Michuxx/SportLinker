@@ -5,6 +5,7 @@ import "./offerFilter.css";
 import { IoSearchOutline } from "react-icons/io5";
 import { LuFilter } from "react-icons/lu";
 import { SPORT_OFFERS } from "../../../assets/SPORT_OFFERS.js";
+import { GrLocation } from "react-icons/gr";
 
 const OfferFilter = () => {
   return (
@@ -31,7 +32,12 @@ const OfferFilter = () => {
           />
         </InputField>
         <InputField label="Lokalizacja">
-          <Input placeholder="np. Warszawa" type="text" width={97} />
+          <Input
+            placeholder="np. Warszawa"
+            type="text"
+            width={97}
+            icon={<GrLocation color="rgb(156 163 175)" size="20px" />}
+          />
         </InputField>
       </div>
     </div>
