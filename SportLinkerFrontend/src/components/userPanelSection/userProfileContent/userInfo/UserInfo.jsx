@@ -50,6 +50,13 @@ const UserInfo = () => {
     }));
   };
 
+  const handleChangeBackgroundImage = (image) => {
+    setUserInfo((prev) => ({
+      ...prev,
+      backgroundImage: image,
+    }));
+  };
+
   const handleSaveData = (setEditingFalse) => {
     setUserInfo((prev) => ({
       ...prev,
@@ -65,7 +72,10 @@ const UserInfo = () => {
         birthDate={userInfo.birthDate}
         location={userInfo.location}
         gender={userInfo.gender}
+        profileImage={userInfo.profileImage}
         changeProfileImage={handleChangeProfileImage}
+        backgroundImage={userInfo.backgroundImage}
+        changeBackgroundImage={handleChangeBackgroundImage}
       />
       <UserDetailed
         isAboutMeEditing={isAboutMeEditing}

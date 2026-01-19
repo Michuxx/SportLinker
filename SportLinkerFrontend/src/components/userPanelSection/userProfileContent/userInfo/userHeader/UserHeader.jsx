@@ -1,6 +1,7 @@
 import "./userHeader.css";
 import Avatar from "../../../../component-items/avatar/Avatar";
 import UserHeaderInfo from "./userHeaderInfo/UserHeaderInfo";
+import UserBanner from "./userHeaderInfo/userBanner/UserBanner";
 
 const UserHeader = ({
   name,
@@ -8,14 +9,24 @@ const UserHeader = ({
   location,
   gender,
   changeProfileImage,
+  profileImage,
+  changeBackgroundImage,
+  backgroundImage,
 }) => {
   return (
     <div className="user-header-wrapper">
-      <div className="user-header-banner"></div>
+      <UserBanner
+        bannerImage={backgroundImage}
+        changeBackgroundImage={changeBackgroundImage}
+      />
       <div className="user-header-info-wrapper">
         <div className="user-header-detailed-wrapper">
           <div className="avatar-white-bg">
-            <Avatar size={8} onImageSelected={changeProfileImage} />
+            <Avatar
+              size={8}
+              onImageSelected={changeProfileImage}
+              image={profileImage}
+            />
           </div>
           <div className="user-header-info">
             <h1>{name}</h1>
