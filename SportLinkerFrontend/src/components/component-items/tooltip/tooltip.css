@@ -1,0 +1,21 @@
+/* Styl dla samego dymka */
+.custom-tooltip {
+    background-color: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none; 
+    z-index: 9999;
+    animation: fadeIn 0.15s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  .tooltip-trigger {
+    cursor: pointer;
+    line-height: 0;
+  }
