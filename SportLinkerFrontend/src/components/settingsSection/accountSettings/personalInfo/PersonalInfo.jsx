@@ -9,6 +9,7 @@ import { MdMailOutline } from "react-icons/md";
 import { LuUser } from "react-icons/lu";
 import { FiPhone } from "react-icons/fi";
 import { FaTransgender } from "react-icons/fa";
+import SearchInput from "../../../component-items/input/SearchInput";
 
 const PersonalInfo = ({ userInfo, errors, handleChange }) => {
   const hideEmail = (email) => {
@@ -89,7 +90,7 @@ const PersonalInfo = ({ userInfo, errors, handleChange }) => {
           />
         </InputField>
         <InputField label="Lokalizacja">
-          <Input
+          <SearchInput
             placeholder="np. Warszawa"
             type="text"
             icon={<GrLocation color="rgb(156, 163, 175)" size={20} />}
