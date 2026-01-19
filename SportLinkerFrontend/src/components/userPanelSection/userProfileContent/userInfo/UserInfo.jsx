@@ -15,6 +15,8 @@ const UserInfo = () => {
     location: "",
     favouriteSport: [],
     aboutMe: "",
+    profileImage: null,
+    backgroundImage: null,
     createdOffers: 0,
     joinedOffers: 0,
     invitations: 0,
@@ -41,6 +43,13 @@ const UserInfo = () => {
     setEditData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleChangeProfileImage = (image) => {
+    setUserInfo((prev) => ({
+      ...prev,
+      profileImage: image,
+    }));
+  };
+
   const handleSaveData = (setEditingFalse) => {
     setUserInfo((prev) => ({
       ...prev,
@@ -56,6 +65,7 @@ const UserInfo = () => {
         birthDate={userInfo.birthDate}
         location={userInfo.location}
         gender={userInfo.gender}
+        changeProfileImage={handleChangeProfileImage}
       />
       <UserDetailed
         isAboutMeEditing={isAboutMeEditing}

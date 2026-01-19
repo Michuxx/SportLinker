@@ -46,7 +46,7 @@
 
 .avatar-white-bg {
   background-color: #fff;
-  border-radius: 999999px;
+  border-radius: 50%;
   height: 8.75rem;
   width: 8.75rem;
   display: flex;
