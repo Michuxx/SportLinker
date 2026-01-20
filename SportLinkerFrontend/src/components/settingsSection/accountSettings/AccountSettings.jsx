@@ -14,7 +14,12 @@ const AccountSettings = () => {
     email: "John@example.pl",
     phoneNumber: "+48131675998",
     birthDate: "",
-    location: "",
+    location: {
+      coordinates: [21.0067249, 52.2319581],
+      country: "Poland",
+      name: "Warsaw",
+      state: "Masovian Voivodeship",
+    },
     gender: "NotDisclosed",
   });
 

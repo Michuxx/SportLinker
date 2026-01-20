@@ -11,9 +11,14 @@ const SearchInput = ({
   className = "",
   onCitySelect,
   placeholder,
+  value,
   ...props
 }) => {
-  const [query, setQuery] = useState("");
+  const getLocationValue = (city) => {
+    return `${city.name}, ${city.state}`;
+  };
+
+  const [query, setQuery] = useState(getLocationValue(value));
   const [suggestions, setSuggestions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
