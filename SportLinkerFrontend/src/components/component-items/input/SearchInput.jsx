@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./searchInput.css";
 import "./input.css";
+import Dropdown from "../dropdown/Dropdown";
 
 const SearchInput = ({
   icon,
@@ -94,19 +95,15 @@ const SearchInput = ({
             onFocus={() => setShowDropdown(true)}
             onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
           />
-
           {showDropdown && suggestions.length > 0 && (
-            <ul className="suggestions-list">
-              {suggestions.map((city, index) => (
-                <li
-                  key={`${city.name}-${index}`}
-                  onMouseDown={() => handleSelect(city)}
-                  className="suggestion-item"
-                >
-                  <span className="city-name">{city.name}</span>
-                </li>
-              ))}
-            </ul>
+            <Dropdown
+              options={suggestions}
+              textKey="name"
+              onMouseDown={handleSelect}
+              onClick={handleSelect}
+              dropdownWidth={100}
+              optionStyle="searchDropdownOptionButton"
+            />
           )}
           {error && <p className="input-error-text">{error}</p>}
         </div>

@@ -12,7 +12,12 @@ const UserInfo = () => {
       value: "Male",
       text: "Mężczyzna",
     },
-    location: "",
+    location: {
+      coordinates: [21.0067249, 52.2319581],
+      country: "Poland",
+      name: "Warsaw",
+      state: "Masovian Voivodeship",
+    },
     favouriteSport: [],
     aboutMe: "",
     profileImage: null,

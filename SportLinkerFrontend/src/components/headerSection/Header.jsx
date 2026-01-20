@@ -82,7 +82,7 @@ const Header = () => {
           </Button>
           {isOpenUserDropdown && (
             <div className="header-dropdown">
-              <Dropdown options={userDropdown} />
+              <Dropdown options={userDropdown} textKey="text" />
             </div>
           )}
         </div>
