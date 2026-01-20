@@ -3,19 +3,25 @@ import { useState } from "react";
 const useSearchCities = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [errorApi, setErrorApi] = useState(null);
 
-  const search = async (query) => {
+  const search = async (query, enableError) => {
     const trimmedQuery = query.trim();
+
+    if (enableError && trimmedQuery.length === 0) {
+      setSuggestions([]);
+      setErrorApi("Lokalizacja nie może być pusta. Wybierz ją z listy");
+      return;
+    }
 
     if (trimmedQuery.length < 3) {
       setSuggestions([]);
-      setError(null);
+      setErrorApi(null);
       return;
     }
 
     setLoading(true);
-    setError(null);
+    setErrorApi(null);
 
     try {
       const params = new URLSearchParams({
@@ -44,14 +50,14 @@ const useSearchCities = () => {
 
       setSuggestions(cities);
     } catch (err) {
-      setError("Nie udało się pobrać miast. Spróbuj ponownie.");
+      setErrorApi("Nie udało się pobrać miast. Spróbuj ponownie.");
       setSuggestions([]);
     } finally {
       setLoading(false);
     }
   };
 
-  return { suggestions, loading, error, search, setSuggestions };
+  return { suggestions, loading, errorApi, search, setSuggestions };
 };
 
 export default useSearchCities;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./searchInput.css";
 import "./input.css";
 import Dropdown from "../dropdown/Dropdown";
@@ -6,7 +6,7 @@ import useSearchCities from "../../../hooks/useSearchCities";
 
 const SearchInput = ({
   icon,
-  error: propError, // Zmiana nazwy, by nie kolidowała z błędem z hooka
+  enableError,
   width,
   type = "text",
   className = "",
@@ -22,13 +22,8 @@ const SearchInput = ({
   const [showDropdown, setShowDropdown] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
 
-  const {
-    suggestions,
-    loading,
-    error: apiError,
-    search,
-    setSuggestions,
-  } = useSearchCities(query);
+  const { suggestions, loading, apiError, search, setSuggestions } =
+    useSearchCities(query, enableError);
 
   useEffect(() => {
     if (!isTyping) return;
@@ -51,7 +46,7 @@ const SearchInput = ({
   const inputClasses = [
     "standard-input",
     icon ? "standard-input-with-icon" : "",
-    propError || apiError ? "input-error" : "",
+    apiError ? "input-error" : "",
     className,
   ]
     .filter(Boolean)
@@ -70,7 +65,6 @@ const SearchInput = ({
             type={type}
             placeholder={placeholder}
             value={query}
-            autoComplete="off"
             onChange={(e) => {
               setQuery(e.target.value);
               setIsTyping(true);
@@ -93,8 +87,8 @@ const SearchInput = ({
             </div>
           )}
 
-          {(propError || apiError) && (
-            <p className="input-error-text">{propError || apiError}</p>
+          {enableError && apiError && (
+            <p className="input-error-text">{apiError}</p>
           )}
         </div>
       </div>

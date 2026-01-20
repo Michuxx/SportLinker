@@ -1,6 +1,6 @@
 import "./modalBackground.css";
 
-const EditOfferModal = ({ title, description }) => {
+const ModalHeader = ({ title, description }) => {
   return (
     <div className="modal-header-wrapper">
       <h2>{title}</h2>
@@ -9,4 +9,4 @@ const EditOfferModal = ({ title, description }) => {
   );
 };
 
-export default EditOfferModal;
+export default ModalHeader;

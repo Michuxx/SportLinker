@@ -20,7 +20,12 @@ const OfferPageSection = () => {
       "Szukam osoby do regularnego grania w tenisa. Poziom średniozaawansowany, gra 2-3 razy w tygodniu.",
     date: "2025-01-20T18:00",
     creationDate: "04.12.2025",
-    location: "Warszawa, Mokotów",
+    location: {
+      coordinates: [21.0067249, 52.2319581],
+      country: "Poland",
+      name: "Warsaw",
+      state: "Masovian Voivodeship",
+    },
     maxPeople: 4,
     availability: "closed",
     mode: "private", // private, public
@@ -88,7 +93,6 @@ const OfferPageSection = () => {
     setErrors({
       title: "",
       description: "",
-      location: "",
       date: "",
       time: "",
       maxPeople: "",
@@ -103,6 +107,14 @@ const OfferPageSection = () => {
     setErrors((prev) => ({
       ...prev,
       [name]: "",
+    }));
+  };
+
+  const handleChangeLocation = (newLocation) => {
+    setEditData((prev) => ({ ...prev, location: newLocation }));
+    setErrors((prev) => ({
+      ...prev,
+      lcoation: "",
     }));
   };
 
@@ -133,12 +145,6 @@ const OfferPageSection = () => {
       isValid = false;
     } else if (editData.description.length > 180) {
       newErrors.description = "Opis nie może mieć więcej niż 180 znaków";
-      isValid = false;
-    }
-
-    // --- 3. LOKALIZACJA ---
-    if (!editData.location.trim()) {
-      newErrors.location = "Lokalizacja nie może być pusta";
       isValid = false;
     }
 
@@ -238,6 +244,7 @@ const OfferPageSection = () => {
             errors={errors}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
+            handleChangeLocation={handleChangeLocation}
           />
         </ModalBackground>
       )}

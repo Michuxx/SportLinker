@@ -16,8 +16,15 @@ import { BsDoorOpen } from "react-icons/bs";
 import Textarea from "../component-items/textarea/Textarea";
 import RadioButton from "../component-items/radio/RadioButton";
 import Button from "../component-items/button/button";
+import SearchInput from "../component-items/input/SearchInput";
 
-const EditOfferModal = ({ offerData, errors, handleChange, handleSubmit }) => {
+const EditOfferModal = ({
+  offerData,
+  errors,
+  handleChange,
+  handleSubmit,
+  handleChangeLocation,
+}) => {
   return (
     <div className="edit-offer-modal-container">
       <ModalHeader title="Edytuj ofertę" />
@@ -71,15 +78,15 @@ const EditOfferModal = ({ offerData, errors, handleChange, handleSubmit }) => {
         />
       </InputField>
       <InputField label="Lokalizacja">
-        <Input
-          placeholder="np. Warszawa, Centrum"
+        <SearchInput
+          placeholder="np. Warszawa, ul. Marszałkowska"
           type="text"
           icon={<GrLocation color="rgb(156, 163, 175)" size={20} />}
           width={100}
-          onChange={(e) => handleChange(e)}
+          onCitySelect={handleChangeLocation}
           name="location"
           value={offerData.location}
-          error={errors.location}
+          enableError={true}
         />
       </InputField>
       <div className="offer-modal-date-wrapper">
