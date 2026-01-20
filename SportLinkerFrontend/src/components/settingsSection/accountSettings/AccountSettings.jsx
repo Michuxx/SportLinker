@@ -71,6 +71,11 @@ const AccountSettings = () => {
     setUserInfo((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleChangeLocation = (value) => {
+    setUserInfo((prev) => ({ ...prev, location: value }));
+    console.log(userInfo);
+  };
+
   const handleSaveData = () => {
     const newErrors = {};
     let isValid = true;
@@ -128,6 +133,7 @@ const AccountSettings = () => {
           userInfo={userInfo}
           errors={errors}
           handleChange={handleChange}
+          handleChangeLocation={handleChangeLocation}
         />
       </UserDetailedBackground>
       <div className="acc-security-settings">

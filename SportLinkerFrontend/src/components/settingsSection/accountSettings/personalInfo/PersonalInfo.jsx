@@ -11,7 +11,12 @@ import { FiPhone } from "react-icons/fi";
 import { FaTransgender } from "react-icons/fa";
 import SearchInput from "../../../component-items/input/SearchInput";
 
-const PersonalInfo = ({ userInfo, errors, handleChange }) => {
+const PersonalInfo = ({
+  userInfo,
+  errors,
+  handleChange,
+  handleChangeLocation,
+}) => {
   const hideEmail = (email) => {
     if (!email || typeof email !== "string") return "";
 
@@ -91,11 +96,11 @@ const PersonalInfo = ({ userInfo, errors, handleChange }) => {
         </InputField>
         <InputField label="Lokalizacja">
           <SearchInput
-            placeholder="np. Warszawa"
+            placeholder="Podaj tylko miasto"
             type="text"
             icon={<GrLocation color="rgb(156, 163, 175)" size={20} />}
             width={100}
-            onChange={(e) => handleChange(e)}
+            onCitySelect={handleChangeLocation}
             name="location"
             value={userInfo.location}
           />

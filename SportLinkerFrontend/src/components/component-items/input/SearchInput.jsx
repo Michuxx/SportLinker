@@ -36,7 +36,9 @@ const SearchInput = ({
       try {
         const params = new URLSearchParams({
           q: trimmedQuery,
-          limit: "5", // Pobieramy więcej, by filtr lokalny miał z czego wybierać
+          limit: "5",
+          osm_tag: "place:city",
+          bbox: "14.1,49.0,24.1,54.9", // Only show Polish towns
         });
         const url = `https://photon.komoot.io/api/?${params.toString()}`;
 
@@ -44,31 +46,14 @@ const SearchInput = ({
         if (!response.ok) throw new Error("API Error");
 
         const data = await response.json();
-
-        // Skuteczniejsze filtrowanie miast
         const cities = data.features
-          .filter(
-            (f) =>
-              f.properties.type === "city" ||
-              f.properties.osm_value === "city" ||
-              f.properties.city ||
-              f.properties.extent // Miasta zazwyczaj mają zdefiniowany obszar (extent)
-          )
+          .filter((f) => f.properties.type === "city")
           .map((feature) => ({
             name: feature.properties.name,
             country: feature.properties.country,
-            state:
-              feature.properties.state ||
-              feature.properties.county ||
-              feature.properties.district,
+            state: feature.properties.state,
             coordinates: feature.geometry.coordinates,
-          }))
-          // Usuwanie duplikatów (np. jeśli API zwróci to samo miasto dwa razy)
-          .filter(
-            (v, i, a) =>
-              a.findIndex((t) => t.name === v.name && t.state === v.state) === i
-          )
-          .slice(0, 5); // Pokazujemy max 5 finalnych wyników
+          }));
 
         setSuggestions(cities);
       } catch (err) {
@@ -81,7 +66,7 @@ const SearchInput = ({
   }, [query]);
 
   const handleSelect = (city) => {
-    const fullText = `${city.name}, ${city.country}`;
+    const fullText = `${city.name}, ${city.state}`;
     setQuery(fullText);
     setSuggestions([]);
     setShowDropdown(false);
@@ -89,16 +74,14 @@ const SearchInput = ({
   };
 
   return (
-    <div
-      className="city-search-container"
-      style={{ width: width ? `${width}%` : "100%" }}
-    >
+    <div className="city-search-container">
       <div className={`input-wrapper ${icon ? "has-icon" : ""}`}>
         {icon && <span className="input-icon-wrapper">{icon}</span>}
 
         <div className="input-error-wrapper">
           <input
             {...props}
+            style={{ width: `${width}%` }}
             className={inputClasses}
             type={type}
             placeholder={placeholder}
