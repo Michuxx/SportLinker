@@ -49,3 +49,8 @@
   color: #64748b;
   margin-top: 2px;
 }
+
+.search-dropdown-wrapper {
+  position: absolute;
+  width: 100%;
+}

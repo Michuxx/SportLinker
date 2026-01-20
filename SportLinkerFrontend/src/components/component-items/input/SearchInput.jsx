@@ -101,14 +101,16 @@ const SearchInput = ({
             onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
           />
           {showDropdown && suggestions.length > 0 && (
-            <Dropdown
-              options={suggestions}
-              textKey="name"
-              onMouseDown={handleSelect}
-              onClick={handleSelect}
-              dropdownWidth={100}
-              optionStyle="searchDropdownOptionButton"
-            />
+            <div className="search-dropdown-wrapper">
+              <Dropdown
+                options={suggestions}
+                textKey="name"
+                onMouseDown={handleSelect}
+                onClick={handleSelect}
+                dropdownWidth={100}
+                optionStyle="searchDropdownOptionButton"
+              />
+            </div>
           )}
           {error && <p className="input-error-text">{error}</p>}
         </div>
