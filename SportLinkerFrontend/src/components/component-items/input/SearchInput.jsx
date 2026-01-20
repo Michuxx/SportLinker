@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./searchInput.css";
 import "./input.css";
 import Dropdown from "../dropdown/Dropdown";
+import useSearchCities from "../../../hooks/useSearchCities";
 
 const SearchInput = ({
   icon,
-  error,
+  error: propError, // Zmiana nazwy, by nie kolidowała z błędem z hooka
   width,
   type = "text",
   className = "",
@@ -14,70 +15,47 @@ const SearchInput = ({
   value,
   ...props
 }) => {
-  const getLocationValue = (city) => {
-    return `${city.name}, ${city.state}`;
-  };
+  const getLocationValue = (city) =>
+    city ? `${city.name}, ${city.state || ""}` : "";
 
   const [query, setQuery] = useState(getLocationValue(value));
-  const [suggestions, setSuggestions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+
+  const {
+    suggestions,
+    loading,
+    error: apiError,
+    search,
+    setSuggestions,
+  } = useSearchCities(query);
+
+  useEffect(() => {
+    if (!isTyping) return;
+
+    const timeoutId = setTimeout(() => {
+      search(query);
+    }, 400);
+
+    return () => clearTimeout(timeoutId);
+  }, [query, isTyping]);
+
+  const handleSelect = (city) => {
+    setQuery(getLocationValue(city));
+    setSuggestions([]);
+    setShowDropdown(false);
+    setIsTyping(false);
+    if (onCitySelect) onCitySelect(city);
+  };
 
   const inputClasses = [
     "standard-input",
     icon ? "standard-input-with-icon" : "",
-    error ? "input-error" : "",
+    propError || apiError ? "input-error" : "",
     className,
   ]
     .filter(Boolean)
     .join(" ");
-
-  useEffect(() => {
-    const fetchCities = async () => {
-      const trimmedQuery = query.trim();
-      if (trimmedQuery.length < 3) {
-        setSuggestions([]);
-        return;
-      }
-
-      try {
-        const params = new URLSearchParams({
-          q: trimmedQuery,
-          limit: "5",
-          osm_tag: "place:city",
-          bbox: "14.1,49.0,24.1,54.9", // Only show Polish towns
-        });
-        const url = `https://photon.komoot.io/api/?${params.toString()}`;
-
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("API Error");
-
-        const data = await response.json();
-        const cities = data.features
-          .filter((f) => f.properties.type === "city")
-          .map((feature) => ({
-            name: feature.properties.name,
-            country: feature.properties.country,
-            state: feature.properties.state,
-            coordinates: feature.geometry.coordinates,
-          }));
-
-        setSuggestions(cities);
-      } catch (err) {
-        console.error("Błąd API:", err.message);
-      }
-    };
-
-    const timeoutId = setTimeout(fetchCities, 400);
-    return () => clearTimeout(timeoutId);
-  }, [query]);
-
-  const handleSelect = (city) => {
-    const fullText = `${city.name}, ${city.state}`;
-    setQuery(fullText);
-    setSuggestions([]);
-    setShowDropdown(false);
-    if (onCitySelect) onCitySelect(city);
-  };
 
   return (
     <div className="city-search-container">
@@ -95,11 +73,13 @@ const SearchInput = ({
             autoComplete="off"
             onChange={(e) => {
               setQuery(e.target.value);
+              setIsTyping(true);
               setShowDropdown(true);
             }}
             onFocus={() => setShowDropdown(true)}
             onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
           />
+
           {showDropdown && suggestions.length > 0 && (
             <div className="search-dropdown-wrapper">
               <Dropdown
@@ -112,7 +92,10 @@ const SearchInput = ({
               />
             </div>
           )}
-          {error && <p className="input-error-text">{error}</p>}
+
+          {(propError || apiError) && (
+            <p className="input-error-text">{propError || apiError}</p>
+          )}
         </div>
       </div>
     </div>
