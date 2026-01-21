@@ -17,7 +17,7 @@ const useSearchPlaces = () => {
     try {
       const params = new URLSearchParams({
         q: trimmedQuery,
-        limit: "40",
+        limit: "50",
         bbox: "14.1,49.0,24.1,54.9",
       });
       const url = `https://photon.komoot.io/api/?${params.toString()}`;
@@ -30,13 +30,19 @@ const useSearchPlaces = () => {
       const places = data.features
         .filter((f) => {
           const t = f.properties.type;
+          const osmValue = f.properties.osm_value;
           return (
-            t === "house" || t === "street" || t === "amenity" || t === "poi"
+            t === "house" ||
+            t === "street" ||
+            osmValue === "village" ||
+            t === "amenity" ||
+            t === "poi"
           );
         })
         .map((feature) => {
           const p = feature.properties;
-          const city = p.city || p.town || p.village || "";
+          const city =
+            p.city || p.town || p.village || p.district || p.locality || "";
           const street = p.street || p.name || "";
           const houseNumber = p.housenumber || "";
           const name = p.name;
