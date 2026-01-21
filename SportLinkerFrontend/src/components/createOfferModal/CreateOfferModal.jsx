@@ -16,6 +16,7 @@ import RadioButton from "../component-items/radio/RadioButton.jsx";
 import Button from "../component-items/button/button.jsx";
 import { useState } from "react";
 import ModalHeader from "../component-items/modal/ModalHeader.jsx";
+import SearchInput from "../component-items/input/SearchInput.jsx";
 
 const CreateOfferModal = () => {
   const [offerData, setOfferData] = useState({
@@ -23,7 +24,18 @@ const CreateOfferModal = () => {
     level: "any",
     title: "",
     description: "",
-    localization: "",
+    location: {
+      city: "",
+      coordinates: [],
+      country: "",
+      displayLabel: "",
+      houseNumber: "",
+      name: "",
+      state: "",
+      street: "",
+      type: "",
+    },
+    locationQuery: "",
     date: "",
     time: "",
     players: 2,
@@ -34,7 +46,7 @@ const CreateOfferModal = () => {
     sport: "",
     title: "",
     description: "",
-    localization: "",
+    locationQuery: "",
     date: "",
     time: "",
     players: "",
@@ -46,6 +58,26 @@ const CreateOfferModal = () => {
     setErrors((prev) => ({
       ...prev,
       [name]: "",
+    }));
+  };
+
+  const handleChangeSearchQuery = (e) => {
+    setOfferData((prev) => ({
+      ...prev,
+      locationQuery: e,
+      location: null,
+    }));
+    setErrors((prev) => ({
+      ...prev,
+      locationQuery: "",
+    }));
+  };
+
+  const handleChangeLocation = (newLocation) => {
+    setOfferData((prev) => ({ ...prev, location: newLocation }));
+    setErrors((prev) => ({
+      ...prev,
+      locationQuery: "",
     }));
   };
 
@@ -85,8 +117,9 @@ const CreateOfferModal = () => {
     }
 
     // --- 4. LOKALIZACJA ---
-    if (!offerData.localization.trim()) {
-      newErrors.localization = "Lokalizacja nie może być pusta";
+    if (!offerData.locationQuery.trim() || offerData.location === null) {
+      newErrors.locationQuery =
+        "Lokalizacja nie może być pusta. Wybierz ją z listy";
       isValid = false;
     }
 
@@ -184,15 +217,15 @@ const CreateOfferModal = () => {
         />
       </InputField>
       <InputField label="Lokalizacja">
-        <Input
-          placeholder="np. Warszawa, Centrum"
-          type="text"
+        <SearchInput
+          placeholder="np. Katowice, Księdza Józefa Szafranka 9"
           icon={<GrLocation color="rgb(156, 163, 175)" size={20} />}
           width={100}
-          onChange={(e) => handleChange(e)}
-          name="localization"
-          value={offerData.localization}
-          error={errors.localization}
+          onCitySelect={handleChangeLocation}
+          name="location"
+          value={offerData.locationQuery}
+          setValue={handleChangeSearchQuery}
+          error={errors.locationQuery}
         />
       </InputField>
       <div className="offer-modal-date-wrapper">
