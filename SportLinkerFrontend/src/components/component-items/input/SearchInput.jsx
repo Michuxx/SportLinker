@@ -3,27 +3,33 @@ import "./searchInput.css";
 import "./input.css";
 import Dropdown from "../dropdown/Dropdown";
 import useSearchCities from "../../../hooks/useSearchCities";
+import useSearchPlaces from "../../../hooks/useSearchPlaces";
 
 const SearchInput = ({
   icon,
   width,
-  type = "text",
   className = "",
   onCitySelect,
   placeholder,
   value,
   setValue,
   error,
+  searchType,
   ...props
 }) => {
-  const getLocationValue = (city) =>
+  const getCityLocationValue = (city) =>
     city ? `${city.name}, ${city.state || ""}` : "";
+
+  const getPlaceLocationValue = (place) =>
+    place ? `${place.city}, ${place.name} ${place.houseNumber || ""}` : "";
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const citySearch = useSearchCities(value);
+  const placeSearch = useSearchPlaces(value);
 
   const { suggestions, loading, search, setSuggestions } =
-    useSearchCities(value);
+    searchType === "city" ? citySearch : placeSearch;
 
   useEffect(() => {
     if (!isTyping) return;
@@ -35,12 +41,16 @@ const SearchInput = ({
     return () => clearTimeout(timeoutId);
   }, [value, isTyping]);
 
-  const handleSelect = (city) => {
-    setValue(getLocationValue(city));
+  const handleSelect = (place) => {
+    setValue(
+      searchType === "city"
+        ? getCityLocationValue(place)
+        : getPlaceLocationValue(place)
+    );
     setSuggestions([]);
     setShowDropdown(false);
     setIsTyping(false);
-    onCitySelect(city);
+    onCitySelect(place);
   };
 
   const inputClasses = [
@@ -62,9 +72,10 @@ const SearchInput = ({
             {...props}
             style={{ width: `${width}%` }}
             className={inputClasses}
-            type={type}
+            type="text"
             placeholder={placeholder}
             value={value}
+            autoComplete="off"
             onChange={(e) => {
               setValue(e.target.value);
               setIsTyping(true);

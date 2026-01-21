@@ -81,7 +81,6 @@ const EditOfferModal = ({
       <InputField label="Lokalizacja">
         <SearchInput
           placeholder="np. Warszawa, ul. Marszałkowska"
-          type="text"
           icon={<GrLocation color="rgb(156, 163, 175)" size={20} />}
           width={100}
           onCitySelect={handleChangeLocation}

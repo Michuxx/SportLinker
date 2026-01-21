@@ -99,13 +99,13 @@ const PersonalInfo = ({
         <InputField label="Lokalizacja">
           <SearchInput
             placeholder="Podaj tylko miasto"
-            type="text"
             icon={<GrLocation color="rgb(156, 163, 175)" size={20} />}
             width={100}
             onCitySelect={handleChangeLocation}
             name="location"
             value={searchLocation}
             setValue={setSearchLocation}
+            searchType="city"
           />
         </InputField>
       </div>
