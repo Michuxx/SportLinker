@@ -5,7 +5,7 @@ const OfferCardLocation = ({ location }) => {
   return (
     <div>
       <GrLocation color="#3b82f6" size="22px" />
-      <p>{location}</p>
+      <p>{location.displayLabel}</p>
     </div>
   );
 };
