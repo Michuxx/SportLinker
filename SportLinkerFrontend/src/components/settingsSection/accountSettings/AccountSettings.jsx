@@ -23,6 +23,10 @@ const AccountSettings = () => {
     gender: "NotDisclosed",
   });
 
+  const [searchLocation, setSearchLocation] = useState(
+    userInfo.location && `${userInfo.location.name}, ${userInfo.location.state}`
+  );
+
   const [errors, setErrors] = useState({
     name: "",
     birthDate: "",
@@ -139,6 +143,8 @@ const AccountSettings = () => {
           errors={errors}
           handleChange={handleChange}
           handleChangeLocation={handleChangeLocation}
+          setSearchLocation={setSearchLocation}
+          searchLocation={searchLocation}
         />
       </UserDetailedBackground>
       <div className="acc-security-settings">

@@ -6,47 +6,47 @@ import useSearchCities from "../../../hooks/useSearchCities";
 
 const SearchInput = ({
   icon,
-  enableError,
   width,
   type = "text",
   className = "",
   onCitySelect,
   placeholder,
   value,
+  setValue,
+  error,
   ...props
 }) => {
   const getLocationValue = (city) =>
     city ? `${city.name}, ${city.state || ""}` : "";
 
-  const [query, setQuery] = useState(getLocationValue(value));
   const [showDropdown, setShowDropdown] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
 
-  const { suggestions, loading, apiError, search, setSuggestions } =
-    useSearchCities(query, enableError);
+  const { suggestions, loading, search, setSuggestions } =
+    useSearchCities(value);
 
   useEffect(() => {
     if (!isTyping) return;
 
     const timeoutId = setTimeout(() => {
-      search(query);
+      search(value);
     }, 400);
 
     return () => clearTimeout(timeoutId);
-  }, [query, isTyping]);
+  }, [value, isTyping]);
 
   const handleSelect = (city) => {
-    setQuery(getLocationValue(city));
+    setValue(getLocationValue(city));
     setSuggestions([]);
     setShowDropdown(false);
     setIsTyping(false);
-    if (onCitySelect) onCitySelect(city);
+    onCitySelect(city);
   };
 
   const inputClasses = [
     "standard-input",
     icon ? "standard-input-with-icon" : "",
-    apiError ? "input-error" : "",
+    error ? "input-error" : "",
     className,
   ]
     .filter(Boolean)
@@ -64,9 +64,9 @@ const SearchInput = ({
             className={inputClasses}
             type={type}
             placeholder={placeholder}
-            value={query}
+            value={value}
             onChange={(e) => {
-              setQuery(e.target.value);
+              setValue(e.target.value);
               setIsTyping(true);
               setShowDropdown(true);
             }}
@@ -87,9 +87,7 @@ const SearchInput = ({
             </div>
           )}
 
-          {enableError && apiError && (
-            <p className="input-error-text">{apiError}</p>
-          )}
+          {error && <p className="input-error-text">{error}</p>}
         </div>
       </div>
     </div>

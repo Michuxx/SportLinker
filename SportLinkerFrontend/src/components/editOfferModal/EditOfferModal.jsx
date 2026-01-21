@@ -24,6 +24,7 @@ const EditOfferModal = ({
   handleChange,
   handleSubmit,
   handleChangeLocation,
+  handleChangeSearchQuery,
 }) => {
   return (
     <div className="edit-offer-modal-container">
@@ -85,8 +86,9 @@ const EditOfferModal = ({
           width={100}
           onCitySelect={handleChangeLocation}
           name="location"
-          value={offerData.location}
-          enableError={true}
+          value={offerData.locationQuery}
+          setValue={handleChangeSearchQuery}
+          error={errors.locationQuery}
         />
       </InputField>
       <div className="offer-modal-date-wrapper">

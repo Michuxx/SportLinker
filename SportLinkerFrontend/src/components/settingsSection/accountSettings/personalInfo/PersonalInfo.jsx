@@ -16,6 +16,8 @@ const PersonalInfo = ({
   errors,
   handleChange,
   handleChangeLocation,
+  setSearchLocation,
+  searchLocation,
 }) => {
   const hideEmail = (email) => {
     if (!email || typeof email !== "string") return "";
@@ -102,7 +104,8 @@ const PersonalInfo = ({
             width={100}
             onCitySelect={handleChangeLocation}
             name="location"
-            value={userInfo.location}
+            value={searchLocation}
+            setValue={setSearchLocation}
           />
         </InputField>
       </div>

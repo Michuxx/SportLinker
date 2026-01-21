@@ -83,6 +83,7 @@ const OfferPageSection = () => {
       title: offerData.title,
       description: offerData.description,
       location: offerData.location,
+      locationQuery: `${offerData.location.name}, ${offerData.location.state}`,
       date: offerData.date.split("T")[0],
       time: offerData.date.split("T")[1],
       maxPeople: offerData.maxPeople,
@@ -93,6 +94,7 @@ const OfferPageSection = () => {
     setErrors({
       title: "",
       description: "",
+      locationQuery: "",
       date: "",
       time: "",
       maxPeople: "",
@@ -110,11 +112,23 @@ const OfferPageSection = () => {
     }));
   };
 
+  const handleChangeSearchQuery = (e) => {
+    setEditData((prev) => ({
+      ...prev,
+      locationQuery: e,
+      location: null,
+    }));
+    setErrors((prev) => ({
+      ...prev,
+      locationQuery: "",
+    }));
+  };
+
   const handleChangeLocation = (newLocation) => {
     setEditData((prev) => ({ ...prev, location: newLocation }));
     setErrors((prev) => ({
       ...prev,
-      lcoation: "",
+      locationQuery: "",
     }));
   };
 
@@ -145,6 +159,13 @@ const OfferPageSection = () => {
       isValid = false;
     } else if (editData.description.length > 180) {
       newErrors.description = "Opis nie może mieć więcej niż 180 znaków";
+      isValid = false;
+    }
+
+    // --- 3. LOCATION ---
+    if (!editData.locationQuery.trim() || editData.location === null) {
+      newErrors.locationQuery =
+        "Lokalizacja nie może być pusta. Wybierz ją z listy";
       isValid = false;
     }
 
@@ -245,6 +266,7 @@ const OfferPageSection = () => {
             handleChange={handleChange}
             handleSubmit={handleSubmit}
             handleChangeLocation={handleChangeLocation}
+            handleChangeSearchQuery={handleChangeSearchQuery}
           />
         </ModalBackground>
       )}
