@@ -27,17 +27,23 @@ const useSearchCities = () => {
 
       const data = await response.json();
 
-      const cities = data.features
-        .map((feature) => ({
-          name: feature.properties.name,
-          state: feature.properties.state,
-          country: feature.properties.country,
-          coordinates: feature.geometry.coordinates,
-        }))
-        .filter(
-          (v, i, a) => a.findIndex((t) => t.fullLabel === v.fullLabel) === i
-        )
-        .slice(0, 5);
+      const cities = data.features.map((feature) => {
+        const p = feature.properties;
+        const name = p.name;
+        const state = p.state;
+        const country = p.country;
+        const coordinates = feature.geometry.coordinates;
+
+        return {
+          displayLabel: `${name}, ${state}`,
+          name: name,
+          state: state,
+          country: country,
+          coordinates: coordinates,
+        };
+      });
+
+      console.log(cities);
 
       setSuggestions(cities);
     } catch (err) {

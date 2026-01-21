@@ -15,14 +15,9 @@ const SearchInput = ({
   setValue,
   error,
   searchType,
+  textKey,
   ...props
 }) => {
-  const getCityLocationValue = (city) =>
-    city ? `${city.name}, ${city.state || ""}` : "";
-
-  const getPlaceLocationValue = (place) =>
-    place ? `${place.city}, ${place.name} ${place.houseNumber || ""}` : "";
-
   const [showDropdown, setShowDropdown] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const citySearch = useSearchCities(value);
@@ -42,11 +37,7 @@ const SearchInput = ({
   }, [value, isTyping]);
 
   const handleSelect = (place) => {
-    setValue(
-      searchType === "city"
-        ? getCityLocationValue(place)
-        : getPlaceLocationValue(place)
-    );
+    setValue(place.displayLabel);
     setSuggestions([]);
     setShowDropdown(false);
     setIsTyping(false);
@@ -72,7 +63,7 @@ const SearchInput = ({
             {...props}
             style={{ width: `${width}%` }}
             className={inputClasses}
-            type="text"
+            type={textKey}
             placeholder={placeholder}
             value={value}
             autoComplete="off"
@@ -89,7 +80,7 @@ const SearchInput = ({
             <div className="search-dropdown-wrapper">
               <Dropdown
                 options={suggestions}
-                textKey="name"
+                textKey={"displayLabel"}
                 onMouseDown={handleSelect}
                 onClick={handleSelect}
                 dropdownWidth={100}

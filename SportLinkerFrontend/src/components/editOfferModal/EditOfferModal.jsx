@@ -88,6 +88,7 @@ const EditOfferModal = ({
           value={offerData.locationQuery}
           setValue={handleChangeSearchQuery}
           error={errors.locationQuery}
+          textKey={["city", "name", "houseNumber"]}
         />
       </InputField>
       <div className="offer-modal-date-wrapper">

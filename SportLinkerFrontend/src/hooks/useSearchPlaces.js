@@ -17,7 +17,7 @@ const useSearchPlaces = () => {
     try {
       const params = new URLSearchParams({
         q: trimmedQuery,
-        limit: "8",
+        limit: "40",
         bbox: "14.1,49.0,24.1,54.9",
       });
       const url = `https://photon.komoot.io/api/?${params.toString()}`;
@@ -28,23 +28,42 @@ const useSearchPlaces = () => {
       const data = await response.json();
 
       const places = data.features
-        .map((feature) => ({
-          name: feature.properties.name,
-          houseNumber: feature.properties.housenumber
-            ? `${feature.properties.housenumber}`
-            : null,
-          state: feature.properties.state,
-          country: feature.properties.country,
-          coordinates: feature.geometry.coordinates,
-          postCode: feature.properties.postcode
-            ? `${feature.properties.postcode}`
-            : null,
-          city:
-            feature.properties.city ||
-            feature.properties.town ||
-            feature.properties.village,
-        }))
-        .filter(Boolean);
+        .filter((f) => {
+          const t = f.properties.type;
+          return (
+            t === "house" || t === "street" || t === "amenity" || t === "poi"
+          );
+        })
+        .map((feature) => {
+          const p = feature.properties;
+          const city = p.city || p.town || p.village || "";
+          const street = p.street || p.name || "";
+          const houseNumber = p.housenumber || "";
+
+          const addressLine = houseNumber ? `${street} ${houseNumber}` : street;
+          const labelParts = [];
+          if (city) labelParts.push(city);
+          if (addressLine && addressLine !== city) labelParts.push(addressLine);
+
+          return {
+            displayLabel: labelParts.join(", "),
+            type: p.type,
+            coordinates: feature.geometry.coordinates,
+            city: city,
+            street: street,
+            houseNumber: houseNumber,
+          };
+        })
+        .filter(
+          (v, i, a) =>
+            a.findIndex((t) => t.displayLabel === v.displayLabel) === i
+        )
+        .sort((a, b) => {
+          if (a.type === "house" && b.type !== "house") return -1;
+          if (a.type !== "house" && b.type === "house") return 1;
+          return 0;
+        })
+        .slice(0, 8);
 
       setSuggestions(places);
     } catch (err) {
