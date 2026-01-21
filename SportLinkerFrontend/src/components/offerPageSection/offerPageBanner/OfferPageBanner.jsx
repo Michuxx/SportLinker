@@ -109,7 +109,7 @@ const OfferPageBanner = ({
       </div>
       <OfferMatchCards
         date={formattedDate}
-        location={offerData.location.name}
+        location={offerData.location.displayLabel}
         people={`${currentPeople}/${offerData.maxPeople}`}
       />
       {isLeaveModalOpen && (

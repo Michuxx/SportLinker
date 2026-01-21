@@ -15,7 +15,6 @@ const SearchInput = ({
   setValue,
   error,
   searchType,
-  textKey,
   ...props
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -42,6 +41,7 @@ const SearchInput = ({
     setShowDropdown(false);
     setIsTyping(false);
     onCitySelect(place);
+    console.log(place);
   };
 
   const inputClasses = [
@@ -63,7 +63,7 @@ const SearchInput = ({
             {...props}
             style={{ width: `${width}%` }}
             className={inputClasses}
-            type={textKey}
+            type="text"
             placeholder={placeholder}
             value={value}
             autoComplete="off"

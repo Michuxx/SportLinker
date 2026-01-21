@@ -29,17 +29,24 @@ const useSearchCities = () => {
 
       const cities = data.features.map((feature) => {
         const p = feature.properties;
+        const city = p.city || p.town || p.village || "";
         const name = p.name;
         const state = p.state;
         const country = p.country;
         const coordinates = feature.geometry.coordinates;
+        const street = p.street || p.name || "";
+        const houseNumber = p.housenumber || "";
 
         return {
           displayLabel: `${name}, ${state}`,
-          name: name,
-          state: state,
           country: country,
+          type: p.type,
           coordinates: coordinates,
+          name: name,
+          city: city,
+          street: street,
+          houseNumber: houseNumber,
+          state: state,
         };
       });
 

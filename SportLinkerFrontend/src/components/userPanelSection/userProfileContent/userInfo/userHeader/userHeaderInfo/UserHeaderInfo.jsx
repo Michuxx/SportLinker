@@ -10,7 +10,9 @@ const UserHeaderInfo = ({ birthDate, location, gender }) => {
 
   const birthDateText = age ? `${age} lat` : "Nie podano wieku";
 
-  const localizationText = location ? location.name : "Nie podano lokalizacji";
+  const localizationText = location
+    ? location.displayLabel
+    : "Nie podano lokalizacji";
 
   const genderText = gender ? gender.text : "Nie podano";
 

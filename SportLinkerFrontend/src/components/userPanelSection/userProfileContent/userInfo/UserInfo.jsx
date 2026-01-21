@@ -17,6 +17,7 @@ const UserInfo = () => {
       country: "Poland",
       name: "Warsaw",
       state: "Masovian Voivodeship",
+      displayLabel: "Warsaw, Masovian Voivodeship",
     },
     favouriteSport: [],
     aboutMe: "",

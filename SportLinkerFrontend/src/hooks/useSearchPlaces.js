@@ -39,7 +39,9 @@ const useSearchPlaces = () => {
           const city = p.city || p.town || p.village || "";
           const street = p.street || p.name || "";
           const houseNumber = p.housenumber || "";
-
+          const name = p.name;
+          const state = p.state;
+          const country = p.country;
           const addressLine = houseNumber ? `${street} ${houseNumber}` : street;
           const labelParts = [];
           if (city) labelParts.push(city);
@@ -47,11 +49,14 @@ const useSearchPlaces = () => {
 
           return {
             displayLabel: labelParts.join(", "),
+            country: country,
             type: p.type,
             coordinates: feature.geometry.coordinates,
+            name: name,
             city: city,
             street: street,
             houseNumber: houseNumber,
+            state: state,
           };
         })
         .filter(
@@ -64,6 +69,8 @@ const useSearchPlaces = () => {
           return 0;
         })
         .slice(0, 8);
+
+      console.log(places);
 
       setSuggestions(places);
     } catch (err) {
