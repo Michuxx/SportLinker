@@ -21,9 +21,33 @@ const SearchInput = ({
   const [isTyping, setIsTyping] = useState(false);
   const citySearch = useSearchCities(value);
   const placeSearch = useSearchPlaces(value);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   const { suggestions, loading, search, setSuggestions } =
     searchType === "city" ? citySearch : placeSearch;
+
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [suggestions]);
+
+  const handleKeyDown = (e) => {
+    if (suggestions.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : 0));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev > 0 ? prev - 1 : suggestions.length - 1));
+    } else if (e.key === "Enter") {
+      if (activeIndex >= 0) {
+        handleSelect(suggestions[activeIndex]);
+        setActiveIndex(-1);
+      }
+    } else if (e.key === "Escape") {
+      setActiveIndex(-1);
+    }
+  };
 
   useEffect(() => {
     if (!isTyping) return;
@@ -73,7 +97,8 @@ const SearchInput = ({
               setShowDropdown(true);
             }}
             onFocus={() => setShowDropdown(true)}
-            onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+            // onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+            onKeyDown={handleKeyDown}
           />
 
           {showDropdown && suggestions.length > 0 && (
@@ -85,6 +110,8 @@ const SearchInput = ({
                 onClick={handleSelect}
                 dropdownWidth={100}
                 optionStyle="searchDropdownOptionButton"
+                isScrollable={true}
+                activeIndex={activeIndex}
               />
             </div>
           )}

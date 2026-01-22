@@ -41,7 +41,7 @@ const OfferMapLocation = ({ location }) => {
           <MapView
             long={location.long}
             lat={location.lat}
-            markerText={location.name ? location.name : location.displayLabel}
+            markerText={location.name || location.displayLabel}
           />
 
           <h4>{location.displayLabel}</h4>
