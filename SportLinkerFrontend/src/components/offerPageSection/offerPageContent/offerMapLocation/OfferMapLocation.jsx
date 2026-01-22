@@ -7,10 +7,30 @@ import { TbMapPinShare } from "react-icons/tb";
 const OfferMapLocation = ({ location }) => {
   const long = location.coordinates[0];
   const lat = location.coordinates[1];
+  const url = `https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
 
   const openInGoogleMaps = () => {
-    const url = `https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
     window.open(url, "_blank");
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Moja lokalizacja",
+          text: `Sprawdź to miejsce: ${
+            location.displayLabel || "Wybrana lokalizacja"
+          }`,
+          url: url,
+        });
+        console.log("Udostępniono pomyślnie");
+      } catch (error) {
+        console.log("Błąd udostępniania:", error);
+      }
+    } else {
+      navigator.clipboard.writeText(url);
+      alert("Link do lokalizacji został skopiowany do schowka!");
+    }
   };
 
   return (
@@ -31,6 +51,7 @@ const OfferMapLocation = ({ location }) => {
           style="mapShareButton"
           Icon={<TbMapPinShare size={28} />}
           width={100}
+          onClick={handleShare}
         >
           Udostępnij lokalizację
         </Button>
