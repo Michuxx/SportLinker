@@ -5,7 +5,7 @@ import Logotype from "../component-items/logo/Logotype.jsx";
 import { IoIosArrowDown } from "react-icons/io";
 import { LuUser } from "react-icons/lu";
 import "./header.css";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Dropdown from "../component-items/dropdown/Dropdown.jsx";
 import ModalBackground from "../component-items/modal/ModalBackground.jsx";
 import AuthModal from "../authModal/AuthModal.jsx";
@@ -18,9 +18,24 @@ const Header = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoginSelection, setIsLoginSelection] = useState(true); // for security
 
+  const dropdownRef = useRef(null);
+
   const changeLocation = (url) => {
     navigate(url);
   };
+
+  const handleClickOutside = useCallback((event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpenUserDropdown(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
   const userDropdown = [
     {
@@ -52,7 +67,7 @@ const Header = () => {
           <Logo />
           <Logotype />
         </div>
-        <div className="btn-section">
+        <div className="btn-section" ref={dropdownRef}>
           <Button
             style="registerModalButton"
             width={80}
