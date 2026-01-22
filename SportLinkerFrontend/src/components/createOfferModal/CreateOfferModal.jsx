@@ -26,7 +26,8 @@ const CreateOfferModal = () => {
     description: "",
     location: {
       city: "",
-      coordinates: [],
+      long: null,
+      lat: null,
       country: "",
       displayLabel: "",
       houseNumber: "",

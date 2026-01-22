@@ -5,9 +5,7 @@ import { SiGooglestreetview } from "react-icons/si";
 import { TbMapPinShare } from "react-icons/tb";
 
 const OfferMapLocation = ({ location }) => {
-  const long = location.coordinates[0];
-  const lat = location.coordinates[1];
-  const url = `https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
+  const url = `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.long}`;
 
   const openInGoogleMaps = () => {
     window.open(url, "_blank");
@@ -36,7 +34,7 @@ const OfferMapLocation = ({ location }) => {
   return (
     <div className="offer-map-location-container">
       <h3>Mapa</h3>
-      <MapView long={long} lat={lat} />
+      <MapView long={location.long} lat={location.lat} />
       <h4>{location.displayLabel}</h4>
       <div className="map-location-btn-wrapper">
         <Button

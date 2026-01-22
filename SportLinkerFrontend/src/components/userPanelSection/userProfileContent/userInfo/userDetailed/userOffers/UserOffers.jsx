@@ -22,7 +22,8 @@ const UserOffers = () => {
         "Szukam osoby do regularnego grania w tenisa. Poziom średniozaawansowany, gra 2-3 razy w tygodniu.",
       date: "2025-01-20T18:00",
       location: {
-        coordinates: [21.0067249, 52.2319581],
+        long: 19.028552141007275,
+        lat: 50.25532955,
         country: "Poland",
         name: "Warsaw",
         state: "Masovian Voivodeship",
@@ -42,7 +43,8 @@ const UserOffers = () => {
         "Organizujemy turniej badmintona dla początkujących. Miła atmosfera gwarantowana!",
       date: "2025-01-20T18:00",
       location: {
-        coordinates: [21.0067249, 52.2319581],
+        long: 19.028552141007275,
+        lat: 50.25532955,
         country: "Poland",
         name: "Warsaw",
         state: "Masovian Voivodeship",
@@ -62,7 +64,8 @@ const UserOffers = () => {
         "Szukam osoby do regularnego grania w tenisa. Poziom średniozaawansowany, gra 2-3 razy w tygodniu.",
       date: "2025-01-20T18:00",
       location: {
-        coordinates: [21.0067249, 52.2319581],
+        long: 19.028552141007275,
+        lat: 50.25532955,
         country: "Poland",
         name: "Warsaw",
         state: "Masovian Voivodeship",

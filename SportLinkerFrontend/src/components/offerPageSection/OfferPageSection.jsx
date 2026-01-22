@@ -18,11 +18,12 @@ const OfferPageSection = () => {
     level: "expert",
     description:
       "Szukam osoby do regularnego grania w tenisa. Poziom średniozaawansowany, gra 2-3 razy w tygodniu.",
-    date: "2025-01-20T18:00",
+    date: "2027-01-20T18:00",
     creationDate: "04.12.2025",
     location: {
       city: "Katowice",
-      coordinates: [19.028552141007275, 50.25532955],
+      long: 19.028552141007275,
+      lat: 50.25532955,
       country: "Poland",
       displayLabel: "Katowice, Księdza Józefa Szafranka 9",
       houseNumber: "9",

@@ -11,7 +11,8 @@ const ForeignInvitations = () => {
       sport: "Tenis",
       date: "2025-01-20T18:00",
       location: {
-        coordinates: [21.0067249, 52.2319581],
+        long: 19.028552141007275,
+        lat: 50.25532955,
         country: "Poland",
         name: "Warsaw",
         state: "Masovian Voivodeship",
@@ -30,7 +31,8 @@ const ForeignInvitations = () => {
       sport: "Tenis",
       date: "2025-01-20T18:00",
       location: {
-        coordinates: [21.0067249, 52.2319581],
+        long: 19.028552141007275,
+        lat: 50.25532955,
         country: "Poland",
         name: "Warsaw",
         state: "Masovian Voivodeship",
@@ -49,7 +51,8 @@ const ForeignInvitations = () => {
       sport: "Tenis",
       date: "2025-01-20T18:00",
       location: {
-        coordinates: [21.0067249, 52.2319581],
+        long: 19.028552141007275,
+        lat: 50.25532955,
         country: "Poland",
         name: "Warsaw",
         state: "Masovian Voivodeship",

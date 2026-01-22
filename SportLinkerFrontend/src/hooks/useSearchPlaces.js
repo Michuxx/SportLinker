@@ -5,12 +5,16 @@ const useSearchPlaces = () => {
   const [loading, setLoading] = useState(false);
 
   const search = async (query) => {
-    const trimmedQuery = query.trim();
+    let trimmedQuery = query.trim();
 
     if (trimmedQuery.length < 3) {
       setSuggestions([]);
       return;
     }
+
+    const regexForStreets = /(ul\.|ulica|ul)\s*/gi;
+
+    trimmedQuery = trimmedQuery.replace(regexForStreets, "").trim();
 
     setLoading(true);
 
@@ -43,21 +47,24 @@ const useSearchPlaces = () => {
           const p = feature.properties;
           const city =
             p.city || p.town || p.village || p.district || p.locality || "";
-          const street = p.street || p.name || "";
+          const street = p.street || "";
           const houseNumber = p.housenumber || "";
-          const name = p.name;
+          const name = p.name || "";
           const state = p.state;
           const country = p.country;
           const addressLine = houseNumber ? `${street} ${houseNumber}` : street;
           const labelParts = [];
           if (city) labelParts.push(city);
-          if (addressLine && addressLine !== city) labelParts.push(addressLine);
+          if (addressLine && addressLine !== city)
+            labelParts.push(`ul. ${addressLine}`);
+          if (name) labelParts.push(name);
 
           return {
             displayLabel: labelParts.join(", "),
             country: country,
             type: p.type,
-            coordinates: feature.geometry.coordinates,
+            long: feature.geometry.coordinates[0],
+            lat: feature.geometry.coordinates[1],
             name: name,
             city: city,
             street: street,

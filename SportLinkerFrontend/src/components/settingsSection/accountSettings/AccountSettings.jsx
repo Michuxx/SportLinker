@@ -15,7 +15,8 @@ const AccountSettings = () => {
     phoneNumber: "+48131675998",
     birthDate: "",
     location: {
-      coordinates: [21.0067249, 52.2319581],
+      long: 19.028552141007275,
+      lat: 50.25532955,
       country: "Poland",
       name: "Warsaw",
       state: "Masovian Voivodeship",
