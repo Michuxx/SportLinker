@@ -1,5 +1,9 @@
 .offer-page-content-container {
-  display: flex;
   padding: 2rem;
+}
+
+.offer-page-content-wrapper {
+  display: flex;
   gap: 2rem;
+  margin-bottom: 1rem;
 }

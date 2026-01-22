@@ -4,9 +4,9 @@ import "./offerCard.css";
 const OfferCardBlock = ({ level, sport, availability }) => {
   return (
     <div className="offer-card-blocks">
-      <Tag styleType="sport" text={sport} />
-      <Tag styleType={level} />
-      <Tag styleType={availability} />
+      {sport && <Tag styleType="sport" text={sport} />}
+      {level && <Tag styleType={level} />}
+      {availability && <Tag styleType={availability} />}
     </div>
   );
 };
