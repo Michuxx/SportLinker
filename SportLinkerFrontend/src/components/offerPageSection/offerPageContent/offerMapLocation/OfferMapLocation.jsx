@@ -5,7 +5,7 @@ import { SiGooglestreetview } from "react-icons/si";
 import { TbMapPinShare } from "react-icons/tb";
 
 const OfferMapLocation = ({ location }) => {
-  const url = `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.long}`;
+  const url = `https://www.google.com/maps/search/?api=1&query=${location.displayLabel}`;
 
   const openInGoogleMaps = () => {
     window.open(url, "_blank");
