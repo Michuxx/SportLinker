@@ -14,6 +14,9 @@ const useSearchPlaces = () => {
 
     const regexForStreets = /(ul\.|ulica|ul)\s*/gi;
 
+    const queryParts = trimmedQuery.split(/[\s,]+/);
+    const cityContext = queryParts[0].toLowerCase();
+
     trimmedQuery = trimmedQuery.replace(regexForStreets, "").trim();
 
     setLoading(true);
@@ -57,7 +60,7 @@ const useSearchPlaces = () => {
           if (city) labelParts.push(city);
           if (addressLine && addressLine !== city)
             labelParts.push(`ul. ${addressLine}`);
-          if (name) labelParts.push(name);
+          if (name && name !== street && name !== city) labelParts.push(name);
 
           return {
             displayLabel: labelParts.join(", "),
@@ -77,6 +80,14 @@ const useSearchPlaces = () => {
             a.findIndex((t) => t.displayLabel === v.displayLabel) === i
         )
         .sort((a, b) => {
+          const aMatchesCity = a.city.toLowerCase().startsWith(cityContext);
+          const bMatchesCity = b.city.toLowerCase().startsWith(cityContext);
+
+          // 1. Priority: Is city is correct with beginning of the query?
+          if (aMatchesCity && !bMatchesCity) return -1;
+          if (!aMatchesCity && bMatchesCity) return 1;
+
+          // 2. Priority: is this a house?
           if (a.type === "house" && b.type !== "house") return -1;
           if (a.type !== "house" && b.type === "house") return 1;
           return 0;
