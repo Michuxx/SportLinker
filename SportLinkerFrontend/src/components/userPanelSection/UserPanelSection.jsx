@@ -53,7 +53,7 @@ const UserPanelSection = () => {
         >
           <div className="user-menu-option-wrapper">
             <LuMailQuestion size={24} />
-            Statusy ofert
+            Twoje Prośby o dołączenie
           </div>
         </NavLink>
       </Navbar>
