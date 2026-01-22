@@ -1,3 +1,4 @@
+import MapView from "../../../../component-items/mapView/MapView";
 import "./userDetailed.css";
 import UserDetailedBackground from "./UserDetailedBackground";
 import UserDetailedDescription from "./userDetailedDescription";
@@ -17,6 +18,7 @@ const UserDetailedCards = ({
   setIsSportEditing,
   cancelHandle,
   handleSaveData,
+  location,
 }) => {
   const handleCancelAboutMe = () => {
     cancelHandle(() => setIsAboutMeEditing(false));
@@ -83,6 +85,15 @@ const UserDetailedCards = ({
           text="Zaproszenia"
           bgColor="rgb(250 245 255)"
           textColor="rgb(147 51 234)"
+        />
+      </UserDetailedBackground>
+      <UserDetailedBackground title="Mapa">
+        <MapView
+          lat={location.lat}
+          long={location.long}
+          markerText={location.displayLabel}
+          mapHeight="350px"
+          initialZoomMap={12}
         />
       </UserDetailedBackground>
     </div>

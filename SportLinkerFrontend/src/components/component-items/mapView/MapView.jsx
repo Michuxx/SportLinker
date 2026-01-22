@@ -15,17 +15,23 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-function ChangeView({ center }) {
-  const map = useMap();
-  map.setView(center, 14);
-  return null;
-}
-
-const MapView = ({ long, lat, markerText }) => {
+const MapView = ({
+  long,
+  lat,
+  markerText,
+  mapHeight = `500px`,
+  initialZoomMap = 14,
+}) => {
   const position = [lat, long];
 
+  function ChangeView({ center }) {
+    const map = useMap();
+    map.setView(center, initialZoomMap);
+    return null;
+  }
+
   return (
-    <div className="map-view-container">
+    <div className="map-view-container" style={{ height: mapHeight }}>
       <MapContainer
         center={position}
         zoom={13}

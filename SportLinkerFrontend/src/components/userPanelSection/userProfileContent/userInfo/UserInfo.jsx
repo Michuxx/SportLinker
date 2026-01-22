@@ -97,6 +97,7 @@ const UserInfo = () => {
         createdOffers={userInfo.createdOffers}
         joinedOffers={userInfo.joinedOffers}
         invitations={userInfo.invitations}
+        location={userInfo.location}
       />
     </div>
   );

@@ -15,6 +15,7 @@ const UserDetailed = ({
   setIsAboutMeEditing,
   cancelHandle,
   handleSaveData,
+  location,
 }) => {
   const aboutText = aboutMe
     ? aboutMe
@@ -35,6 +36,7 @@ const UserDetailed = ({
         setIsSportEditing={setIsSportEditing}
         handleSaveData={handleSaveData}
         cancelHandle={cancelHandle}
+        location={location}
       />
       <UserOffers />
     </div>
