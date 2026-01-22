@@ -1,11 +1,13 @@
 import Button from "../../../component-items/button/button";
 import MapView from "../../../component-items/mapView/MapView";
+import NullMapView from "../../../component-items/mapView/NullMapView";
 import "./offerMapLocation.css";
 import { SiGooglestreetview } from "react-icons/si";
 import { TbMapPinShare } from "react-icons/tb";
 
 const OfferMapLocation = ({ location }) => {
-  const url = `https://www.google.com/maps/search/?api=1&query=${location.displayLabel}`;
+  const searchQueryGoogle = encodeURIComponent(location.displayLabel || "");
+  const url = `https://www.google.com/maps/search/?api=1&query=${searchQueryGoogle}`;
 
   const openInGoogleMaps = () => {
     window.open(url, "_blank");
@@ -34,26 +36,37 @@ const OfferMapLocation = ({ location }) => {
   return (
     <div className="offer-map-location-container">
       <h3>Mapa</h3>
-      <MapView long={location.long} lat={location.lat} />
-      <h4>{location.displayLabel}</h4>
-      <div className="map-location-btn-wrapper">
-        <Button
-          style="mapGoogleButton"
-          Icon={<SiGooglestreetview size={28} />}
-          onClick={openInGoogleMaps}
-          width={100}
-        >
-          Otwórz w mapach Google
-        </Button>
-        <Button
-          style="mapShareButton"
-          Icon={<TbMapPinShare size={28} />}
-          width={100}
-          onClick={handleShare}
-        >
-          Udostępnij lokalizację
-        </Button>
-      </div>
+      {location.long && location.lat ? (
+        <>
+          <MapView
+            long={location.long}
+            lat={location.lat}
+            markerText={location.name ? location.name : location.displayLabel}
+          />
+
+          <h4>{location.displayLabel}</h4>
+          <div className="map-location-btn-wrapper">
+            <Button
+              style="mapGoogleButton"
+              Icon={<SiGooglestreetview size={28} />}
+              onClick={openInGoogleMaps}
+              width={100}
+            >
+              Otwórz w mapach Google
+            </Button>
+            <Button
+              style="mapShareButton"
+              Icon={<TbMapPinShare size={28} />}
+              width={100}
+              onClick={handleShare}
+            >
+              Udostępnij lokalizację
+            </Button>
+          </div>
+        </>
+      ) : (
+        <NullMapView />
+      )}
     </div>
   );
 };

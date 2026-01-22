@@ -11,6 +11,7 @@ let DefaultIcon = L.icon({
   shadowUrl: markerShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
@@ -20,7 +21,7 @@ function ChangeView({ center }) {
   return null;
 }
 
-const MapView = ({ long, lat }) => {
+const MapView = ({ long, lat, markerText }) => {
   const position = [lat, long];
 
   return (
@@ -37,7 +38,7 @@ const MapView = ({ long, lat }) => {
         />
         <ChangeView center={position} />
         <Marker position={position}>
-          <Popup>Wybrane miejsce</Popup>
+          <Popup>{markerText}</Popup>
         </Marker>
       </MapContainer>
     </div>
