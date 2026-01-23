@@ -4,8 +4,9 @@ import { FiMessageCircle } from "react-icons/fi";
 import { BsShare } from "react-icons/bs";
 import { FiFlag } from "react-icons/fi";
 import { FiSettings } from "react-icons/fi";
+import { CgUserAdd } from "react-icons/cg";
 
-const OfferActionPanel = ({ openEditModal }) => {
+const OfferActionPanel = ({ openEditModal, openAddPeopleModal }) => {
   return (
     <div className="offer-action-panel-container">
       <h3>Akcje</h3>
@@ -34,6 +35,14 @@ const OfferActionPanel = ({ openEditModal }) => {
           onClick={openEditModal}
         >
           Edytuj ofertę
+        </Button>
+        <Button
+          style="actionAddPeopleButton"
+          width={100}
+          Icon={<CgUserAdd size={20} />}
+          onClick={openAddPeopleModal}
+        >
+          Prośby o dołączenie
         </Button>
       </div>
     </div>

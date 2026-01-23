@@ -5,9 +5,11 @@ import OfferPageContent from "./offerPageContent/OfferPageContent";
 import ModalBackground from "../component-items/modal/ModalBackground";
 import EditOfferModal from "../editOfferModal/EditOfferModal";
 import useDateFormat from "../../hooks/useDateFormat";
+import AddPeopleModal from "../addPeopleModal/AddPeopleModal";
 
 const OfferPageSection = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAddPeopleModalOpen, setIsAddPeopleModalOpen] = useState(false);
   const [currentPeople, setCurrentPeople] = useState();
   const [openSlots, setOpenSlots] = useState();
 
@@ -262,6 +264,7 @@ const OfferPageSection = () => {
         offerData={offerData}
         openSlots={openSlots}
         openEditModal={handleOpenEditModal}
+        openAddPeopleModal={() => setIsAddPeopleModalOpen((e) => !e)}
         kickPlayer={kickPlayer}
       />
       {isEditModalOpen && (
@@ -274,6 +277,11 @@ const OfferPageSection = () => {
             handleChangeLocation={handleChangeLocation}
             handleChangeSearchQuery={handleChangeSearchQuery}
           />
+        </ModalBackground>
+      )}
+      {isAddPeopleModalOpen && (
+        <ModalBackground closeModal={() => setIsAddPeopleModalOpen(false)}>
+          <AddPeopleModal />
         </ModalBackground>
       )}
     </div>

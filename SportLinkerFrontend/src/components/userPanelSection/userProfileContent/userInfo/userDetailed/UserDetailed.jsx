@@ -17,9 +17,7 @@ const UserDetailed = ({
   handleSaveData,
   location,
 }) => {
-  const aboutText = aboutMe
-    ? aboutMe
-    : `Brak opisu. Kliknij "Edytuj", aby dodać informacje o sobie`;
+  const aboutText = aboutMe || `Brak opisu`;
 
   return (
     <div className="user-detailed-wrapper">

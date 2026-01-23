@@ -27,6 +27,7 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     actionButton: "actionButton",
     actionWarningButton: "actionWarningButton",
     actionSettingsButton: "actionSettingsButton",
+    actionAddPeopleButton: "actionAddPeopleButton",
     offerPageJoinButton: "offerPageJoinButton",
     offerPageJoinedButton: "offerPageJoinedButton",
     offerPageRejectedButton: "offerPageRejectedButton",

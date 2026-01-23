@@ -7,6 +7,7 @@ const OfferPageContent = ({
   offerData,
   openSlots,
   openEditModal,
+  openAddPeopleModal,
   kickPlayer,
 }) => {
   return (
@@ -23,6 +24,7 @@ const OfferPageContent = ({
           status={offerData.availability}
           openSlots={openSlots}
           openEditModal={openEditModal}
+          openAddPeopleModal={openAddPeopleModal}
         />
       </div>
       <OfferMapLocation location={offerData.location} />
