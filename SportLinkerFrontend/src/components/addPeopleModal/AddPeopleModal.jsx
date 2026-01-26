@@ -1,3 +1,4 @@
+import ModalHeader from "../component-items/modal/ModalHeader";
 import AddPeopleCard from "./addPeopleCard/AddPeopleCard";
 import "./addPeopleModal.css";
 import NullRequest from "./nullRequest/NullRequest";
