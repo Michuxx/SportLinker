@@ -61,6 +61,20 @@ const OfferPageSection = () => {
         joinDate: "02.12.2025",
       },
     ],
+    requests: [
+      {
+        id: 6,
+        name: "Ola",
+      },
+      {
+        id: 8,
+        name: "Mariusz",
+      },
+      {
+        id: 16,
+        name: "Robert",
+      },
+    ],
   });
 
   const formattedDate = useDateFormat(offerData.date);
@@ -281,7 +295,7 @@ const OfferPageSection = () => {
       )}
       {isAddPeopleModalOpen && (
         <ModalBackground closeModal={() => setIsAddPeopleModalOpen(false)}>
-          <AddPeopleModal />
+          <AddPeopleModal requests={offerData.requests} />
         </ModalBackground>
       )}
     </div>
