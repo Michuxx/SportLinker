@@ -1,8 +1,8 @@
 import { useState } from "react";
-import OfferFilterSection from "../offerFilterSection/OfferFilterSection";
 import PageTitle from "../pageTitle/PageTitle";
 import OfferCardSection from "./offerCardSection/OfferCardSection";
 import "./offerSection.css";
+import OfferFilter from "../offerFilterSection/OfferFilter";
 
 const OfferSection = () => {
   const userOffers = [
@@ -109,7 +109,7 @@ const OfferSection = () => {
         header="Dostępne oferty"
         label="Znajdź idealnych partnerów do sportu w swojej okolicy"
       />
-      <OfferFilterSection filter={filter} onChangeFilter={onChangeFilter} />
+      <OfferFilter filter={filter} onChangeFilter={onChangeFilter} />
       <OfferCardSection userOffers={userOffers} />
     </div>
   );

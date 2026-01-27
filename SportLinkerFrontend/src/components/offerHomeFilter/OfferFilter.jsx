@@ -1,10 +1,10 @@
-import Input from "../../component-items/input/Input";
-import InputField from "../../component-items/inputField/InputField";
-import Select from "../../component-items/select/Select";
+import Input from "../component-items/input/Input.jsx";
+import InputField from "../component-items/inputField/InputField.jsx";
+import Select from "../component-items/select/Select.jsx";
 import "./offerFilter.css";
 import { IoSearchOutline } from "react-icons/io5";
 import { LuFilter } from "react-icons/lu";
-import { SPORT_OFFERS } from "../../../assets/SPORT_OFFERS.js";
+import { SPORT_OFFERS } from "../../assets/SPORT_OFFERS.js";
 import { GrLocation } from "react-icons/gr";
 
 const OfferFilter = ({ filter, onChangeFilter }) => {
