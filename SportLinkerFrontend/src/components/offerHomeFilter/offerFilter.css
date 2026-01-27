@@ -24,7 +24,8 @@
   font-family: "Poppins";
 }
 
-.filter-input-wrapper {
+.filter-simple-container,
+.filter-advanced-container {
   display: flex;
   justify-content: space-between;
 }

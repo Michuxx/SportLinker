@@ -23,13 +23,17 @@ const OfferFilter = ({ filter, onChangeFilter }) => {
         </Button>
       </div>
       <div className="filter-input-wrapper">
-        <SimpleOfferFilter filter={filter} onChangeFilter={onChangeFilter} />
-        {showAdvancedFilter && (
-          <AdvancedOfferFilter
-            filter={filter}
-            onChangeFilter={onChangeFilter}
-          />
-        )}
+        <div className="filter-simple-container">
+          <SimpleOfferFilter filter={filter} onChangeFilter={onChangeFilter} />
+        </div>
+        <div className="filter-advanced-container">
+          {showAdvancedFilter && (
+            <AdvancedOfferFilter
+              filter={filter}
+              onChangeFilter={onChangeFilter}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

@@ -96,6 +96,11 @@ const OfferSection = () => {
     title: "",
     sport: "all",
     location: "",
+    level: "all",
+    startDate: "",
+    endDate: "",
+    minPeople: null,
+    maxPeople: null,
   });
 
   const onChangeFilter = (e) => {
