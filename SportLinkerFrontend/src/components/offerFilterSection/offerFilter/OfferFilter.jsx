@@ -7,7 +7,7 @@ import { LuFilter } from "react-icons/lu";
 import { SPORT_OFFERS } from "../../../assets/SPORT_OFFERS.js";
 import { GrLocation } from "react-icons/gr";
 
-const OfferFilter = () => {
+const OfferFilter = ({ filter, onChangeFilter }) => {
   return (
     <div className="filter-wrapper">
       <div className="filter-headline">
@@ -17,6 +17,9 @@ const OfferFilter = () => {
       <div className="filter-input-wrapper">
         <InputField label="Szukaj">
           <Input
+            name="title"
+            value={filter.title}
+            onChange={(e) => onChangeFilter(e)}
             placeholder="Szukaj w ofertach..."
             type="text"
             icon={<IoSearchOutline color="rgb(156 163 175)" size="20px" />}
@@ -25,6 +28,9 @@ const OfferFilter = () => {
         </InputField>
         <InputField label="Sport">
           <Select
+            value={filter.sport}
+            name="sport"
+            onChange={(e) => onChangeFilter(e)}
             width={97}
             options={SPORT_OFFERS}
             defaultValue="all"
@@ -33,7 +39,10 @@ const OfferFilter = () => {
         </InputField>
         <InputField label="Lokalizacja">
           <Input
+            value={filter.location}
             placeholder="np. Warszawa"
+            name="location"
+            onChange={(e) => onChangeFilter(e)}
             type="text"
             width={97}
             icon={<GrLocation color="rgb(156 163 175)" size="20px" />}

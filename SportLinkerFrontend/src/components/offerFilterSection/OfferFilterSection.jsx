@@ -1,10 +1,10 @@
 import OfferFilter from "./offerFilter/OfferFilter";
 import "./offerFilterSection.css";
 
-const OfferFilterSection = () => {
+const OfferFilterSection = ({ filter, onChangeFilter }) => {
   return (
     <section>
-      <OfferFilter />
+      <OfferFilter filter={filter} onChangeFilter={onChangeFilter} />
     </section>
   );
 };
