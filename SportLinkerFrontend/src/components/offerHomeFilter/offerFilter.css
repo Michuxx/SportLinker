@@ -7,6 +7,12 @@
   margin-top: 2rem;
 }
 
+.filter-headline-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .filter-headline {
   margin-bottom: 1rem;
   display: flex;
