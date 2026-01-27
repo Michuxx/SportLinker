@@ -2,7 +2,7 @@ import { useState } from "react";
 import PageTitle from "../pageTitle/PageTitle";
 import OfferCardSection from "./offerCardSection/OfferCardSection";
 import "./offerSection.css";
-import OfferFilter from "../offerFilterSection/OfferFilter";
+import OfferFilter from "../offerHomeFilter/OfferFilter";
 
 const OfferSection = () => {
   const userOffers = [
