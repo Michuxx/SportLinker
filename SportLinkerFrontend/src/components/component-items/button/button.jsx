@@ -35,6 +35,8 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     offerPageCancelButton: "offerPageCancelButton",
     mapGoogleButton: "map-btn mapGoogleButton",
     mapShareButton: "map-btn mapShareButton",
+    acceptButton: "acceptButton",
+    rejectButton: "rejectButton",
   };
 
   const buttonStyle = buttonType[style];

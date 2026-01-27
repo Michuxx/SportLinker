@@ -287,15 +287,28 @@ button {
   background-color: #6846b9;
 }
 
-.deleteButton {
+.deleteButton,
+.rejectButton {
   width: 2.5rem;
   height: 2.5rem;
   color: rgb(220 38 38);
   background-color: transparent;
 }
 
-.deleteButton:hover {
+.deleteButton:hover,
+.rejectButton:hover {
   background-color: rgb(254 242 242);
+}
+
+.acceptButton {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #4caf50;
+  background-color: transparent;
+}
+
+.acceptButton:hover {
+  background-color: #f1f8e9;
 }
 
 .actionButton {

@@ -1,0 +1,16 @@
+.add-people-card-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-people-user-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.add-people-btn-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
