@@ -467,3 +467,31 @@ button {
   filter: brightness(1.1);
   box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
 }
+
+.filterAdvancedButton {
+  color: rgb(37 99 235);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  background-color: transparent;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: "Poppins";
+}
+
+.filterAdvancedButton:hover {
+  background-color: rgb(239 246 255);
+}
+
+.filterClearButton {
+  color: rgb(107 114 128);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: transparent;
+  font-family: "Poppins";
+}
+
+.filterClearButton:hover {
+  color: rgb(37 99 235);
+}

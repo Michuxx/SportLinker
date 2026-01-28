@@ -24,9 +24,14 @@ const OfferFilter = ({
         </div>
         <div className="filter-btn-wrapper">
           {isFilterDirty && (
-            <Button onClick={clearFilters}>Wyczyść filtry</Button>
+            <Button onClick={clearFilters} style="filterClearButton">
+              Wyczyść filtry
+            </Button>
           )}
-          <Button onClick={() => setShowAdvancedFilter((e) => !e)}>
+          <Button
+            onClick={() => setShowAdvancedFilter((e) => !e)}
+            style="filterAdvancedButton"
+          >
             Zaawansowane
             {showAdvancedFilter ? <IoIosArrowUp /> : <IoIosArrowDown />}
           </Button>
