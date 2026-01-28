@@ -6,7 +6,6 @@ import { FaCheck } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 
 const AddPeopleCard = ({ request, openSlots }) => {
-  console.log(openSlots);
   return (
     <div className="add-people-card-container">
       <div className="add-people-user-wrapper">

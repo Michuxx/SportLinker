@@ -62,21 +62,21 @@ const OfferPageSection = () => {
       },
     ],
     requests: [
-      {
-        id: 6,
-        name: "Ola",
-        image: null,
-      },
-      {
-        id: 8,
-        name: "Mariusz",
-        image: null,
-      },
-      {
-        id: 16,
-        name: "Robert",
-        image: null,
-      },
+      // {
+      //   id: 6,
+      //   name: "Ola",
+      //   image: null,
+      // },
+      // {
+      //   id: 8,
+      //   name: "Mariusz",
+      //   image: null,
+      // },
+      // {
+      //   id: 16,
+      //   name: "Robert",
+      //   image: null,
+      // },
     ],
   });
 

@@ -1,7 +1,9 @@
 import ModalHeader from "../component-items/modal/ModalHeader";
+import NullComponent from "../component-items/nullComponent/NullComponent";
 import AddPeopleCard from "./addPeopleCard/AddPeopleCard";
 import "./addPeopleModal.css";
 import NullRequest from "./nullRequest/NullRequest";
+import { PiSmileySadBold } from "react-icons/pi";
 
 const AddPeopleModal = ({ requests, openSlots }) => {
   return (
@@ -17,7 +19,7 @@ const AddPeopleModal = ({ requests, openSlots }) => {
             />
           ))
         ) : (
-          <NullRequest />
+          <NullComponent icon={<PiSmileySadBold size={50} />} title="Brak zapytań" text="Zerknij później"/>
         )}
       </div>
     </div>

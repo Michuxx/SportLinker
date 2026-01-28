@@ -1,6 +1,6 @@
 import "./nullRequest.css";
 
-const NullRequest = () => {
+const NullRequest = ({ icon }) => {
   return (
     <div className="null-request-container">
       <div className="null-icon-bg">{icon}</div>
