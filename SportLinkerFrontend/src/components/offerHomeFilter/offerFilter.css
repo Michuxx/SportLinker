@@ -29,3 +29,8 @@
 .advanced-filter-people-sorting {
   display: flex;
 }
+
+.filter-btn-wrapper {
+  display: flex;
+  gap: 1rem;
+}

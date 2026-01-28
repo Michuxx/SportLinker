@@ -8,6 +8,8 @@ import { SORT_ORDER } from "../../assets/SORT_ORDER.js";
 import { LuTrophy } from "react-icons/lu";
 import { FiCalendar } from "react-icons/fi";
 import { GoPeople } from "react-icons/go";
+import { MdSort } from "react-icons/md";
+import { TbSortAscendingLetters } from "react-icons/tb";
 
 const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
   return (
@@ -56,6 +58,7 @@ const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
             width={97}
             min={1}
             max={30}
+            placeholder="np. 1"
             onChange={(e) => handleChange(e)}
             name="minPlayers"
             value={filter.minPlayers}
@@ -67,6 +70,7 @@ const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
             icon={<GoPeople color="rgb(156, 163, 175)" size={20} />}
             width={97}
             min={1}
+            placeholder="np. 10"
             max={30}
             onChange={(e) => handleChange(e)}
             name="maxPlayers"
@@ -80,7 +84,7 @@ const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
             onChange={(e) => onChangeFilter(e)}
             width={97}
             options={SORT_OPTIONS}
-            icon={<LuTrophy color="rgb(156, 163, 175)" size={20} />}
+            icon={<MdSort color="rgb(156, 163, 175)" size={20} />}
           />
         </InputField>
         <InputField label="Kolejność sortowania">
@@ -90,7 +94,9 @@ const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
             onChange={(e) => onChangeFilter(e)}
             width={97}
             options={SORT_ORDER}
-            icon={<LuTrophy color="rgb(156, 163, 175)" size={20} />}
+            icon={
+              <TbSortAscendingLetters color="rgb(156, 163, 175)" size={20} />
+            }
           />
         </InputField>
       </div>

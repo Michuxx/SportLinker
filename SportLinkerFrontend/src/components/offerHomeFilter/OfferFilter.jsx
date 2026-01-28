@@ -7,7 +7,12 @@ import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
 
-const OfferFilter = ({ filter, onChangeFilter }) => {
+const OfferFilter = ({
+  filter,
+  onChangeFilter,
+  isFilterDirty,
+  clearFilters,
+}) => {
   const [showAdvancedFilter, setShowAdvancedFilter] = useState(false);
 
   return (
@@ -17,10 +22,15 @@ const OfferFilter = ({ filter, onChangeFilter }) => {
           <LuFilter color="#3b82f6" size="24px" />
           <h3>Filtruj oferty</h3>
         </div>
-        <Button onClick={() => setShowAdvancedFilter((e) => !e)}>
-          Zaawansowane
-          {showAdvancedFilter ? <IoIosArrowUp /> : <IoIosArrowDown />}
-        </Button>
+        <div className="filter-btn-wrapper">
+          {isFilterDirty && (
+            <Button onClick={clearFilters}>Wyczyść filtry</Button>
+          )}
+          <Button onClick={() => setShowAdvancedFilter((e) => !e)}>
+            Zaawansowane
+            {showAdvancedFilter ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </Button>
+        </div>
       </div>
       <div className="filter-input-wrapper">
         <div className="filter-simple-container">

@@ -92,7 +92,7 @@ const OfferSection = () => {
     },
   ];
 
-  const [filter, setFilter] = useState({
+  const INITIAL_FILTER = {
     title: "",
     sport: "all",
     location: "",
@@ -103,11 +103,19 @@ const OfferSection = () => {
     maxPlayers: null,
     sortType: "players",
     sortOrder: "ASC",
-  });
+  };
+
+  const [filter, setFilter] = useState(INITIAL_FILTER);
+
+  const isDirty = JSON.stringify(filter) !== JSON.stringify(INITIAL_FILTER);
 
   const onChangeFilter = (e) => {
     const { name, value } = e.target;
     setFilter((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const clearFilters = () => {
+    setFilter(INITIAL_FILTER);
   };
 
   return (
@@ -116,7 +124,12 @@ const OfferSection = () => {
         header="Dostępne oferty"
         label="Znajdź idealnych partnerów do sportu w swojej okolicy"
       />
-      <OfferFilter filter={filter} onChangeFilter={onChangeFilter} />
+      <OfferFilter
+        filter={filter}
+        onChangeFilter={onChangeFilter}
+        isFilterDirty={isDirty}
+        clearFilters={clearFilters}
+      />
       <OfferCardSection userOffers={userOffers} />
     </div>
   );
