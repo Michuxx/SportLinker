@@ -25,7 +25,7 @@
 }
 
 .filter-simple-container,
-.filter-advanced-container {
+.advanced-filter-level-dates,
+.advanced-filter-people-sorting {
   display: flex;
-  justify-content: space-between;
 }

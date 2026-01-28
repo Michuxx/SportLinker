@@ -99,8 +99,10 @@ const OfferSection = () => {
     level: "all",
     startDate: "",
     endDate: "",
-    minPeople: null,
-    maxPeople: null,
+    minPlayers: null,
+    maxPlayers: null,
+    sortType: "players",
+    sortOrder: "ASC",
   });
 
   const onChangeFilter = (e) => {
