@@ -118,6 +118,12 @@ const OfferSection = () => {
     setFilter(INITIAL_FILTER);
   };
 
+  const activeFiltersCount = Object.keys(filter).filter((key) => {
+    if (key === "sortType" || key === "sortOrder") return false;
+
+    return filter[key] !== INITIAL_FILTER[key];
+  }).length;
+
   return (
     <div className="offer-section-wrapper">
       <PageTitle
@@ -129,6 +135,7 @@ const OfferSection = () => {
         onChangeFilter={onChangeFilter}
         isFilterDirty={isDirty}
         clearFilters={clearFilters}
+        activeFiltersCount={activeFiltersCount}
       />
       <OfferCardSection userOffers={userOffers} />
     </div>

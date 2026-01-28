@@ -6,12 +6,14 @@ import AdvancedOfferFilter from "./AdvancedOfferFilter.jsx";
 import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
+import Tag from "../component-items/tags/Tag.jsx";
 
 const OfferFilter = ({
   filter,
   onChangeFilter,
   isFilterDirty,
   clearFilters,
+  activeFiltersCount,
 }) => {
   const [showAdvancedFilter, setShowAdvancedFilter] = useState(false);
 
@@ -21,6 +23,9 @@ const OfferFilter = ({
         <div className="filter-headline">
           <LuFilter color="#3b82f6" size="24px" />
           <h3>Filtruj oferty</h3>
+          {activeFiltersCount !== 0 && (
+            <Tag styleType="sport" text={`${activeFiltersCount} aktywne`} />
+          )}
         </div>
         <div className="filter-btn-wrapper">
           {isFilterDirty && (
