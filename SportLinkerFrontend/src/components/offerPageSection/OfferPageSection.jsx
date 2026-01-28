@@ -298,7 +298,7 @@ const OfferPageSection = () => {
       )}
       {isAddPeopleModalOpen && (
         <ModalBackground closeModal={() => setIsAddPeopleModalOpen(false)}>
-          <AddPeopleModal requests={offerData.requests} />
+          <AddPeopleModal requests={offerData.requests} openSlots={openSlots} />
         </ModalBackground>
       )}
     </div>

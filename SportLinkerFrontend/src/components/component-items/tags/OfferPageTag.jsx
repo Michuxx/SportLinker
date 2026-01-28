@@ -3,7 +3,7 @@ import { LuTrophy } from "react-icons/lu";
 import { FiLock } from "react-icons/fi";
 import { FiUnlock } from "react-icons/fi";
 
-const Tag = ({ styleType, text }) => {
+const OfferPageTag = ({ styleType, text }) => {
   const styleMap = {
     beginner: ["offer-beginner", "Początkujący", <LuTrophy />], //class, text, icon
     intermediate: ["offer-intermediate", "Średnio-zaawansowany", <LuTrophy />],
@@ -24,4 +24,4 @@ const Tag = ({ styleType, text }) => {
   );
 };
 
-export default Tag;
+export default OfferPageTag;

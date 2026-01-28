@@ -2,7 +2,8 @@ import "./nullRequest.css";
 
 const NullRequest = () => {
   return (
-    <div className="add-people-container">
+    <div className="null-request-container">
+      <div className="null-icon-bg">{icon}</div>
       <h3>Brak Zaproszeń</h3>
     </div>
   );
