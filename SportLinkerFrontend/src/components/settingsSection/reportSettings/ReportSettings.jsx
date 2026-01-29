@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./reportSettings.css";
 import ReportForm from "./reportForm/ReportForm";
 import UserDetailedBackground from "../../userPanelSection/userProfileContent/userInfo/userDetailed/UserDetailedBackground";
+import HistoryReports from "./historyReports/HistoryReports";
 
 const ReportSettings = () => {
   const [reportForm, setReportForm] = useState({
@@ -9,6 +10,35 @@ const ReportSettings = () => {
     title: "",
     description: "",
   });
+
+  const [historyReports, setHistoryReports] = useState([
+    {
+      type: "inappropriateContent",
+      status: "pending",
+      title: "Nieodpowiednia treść w ofercie",
+      description:
+        "Użytkownik zamieścił nieodpowiednią treść w opisie oferty tenisowej.",
+      date: "2027-01-20T18:00",
+      response: null,
+    },
+    {
+      type: "spam",
+      status: "solved",
+      title: "Spam w wiadomościach",
+      description: "Otrzymuję spam od użytkownika po dołączeniu do oferty.",
+      date: "2027-01-20T18:00",
+      response: "Sprawa została rozwiązana. Użytkownik otrzymał ostrzeżenie.",
+    },
+    {
+      type: "fakeProfile",
+      status: "rejected",
+      title: "Podejrzany profil użytkownika",
+      description:
+        "Profil wydaje się być fałszywy - brak zdjęcia, dziwne informacje.",
+      date: "2027-01-20T18:00",
+      response: "Po weryfikacji profil okazał się prawdziwy.",
+    },
+  ]);
 
   const [errors, setErrors] = useState({
     type: "",
@@ -66,6 +96,9 @@ const ReportSettings = () => {
           handleChange={handleChange}
           handleSubmit={handleSubmit}
         />
+      </UserDetailedBackground>
+      <UserDetailedBackground>
+        <HistoryReports />
       </UserDetailedBackground>
     </div>
   );
