@@ -6,13 +6,8 @@ import { GrLocation } from "react-icons/gr";
 import { IoPlayOutline } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
 import Button from "../component-items/button/button";
-import { useState } from "react";
-import CreateOfferModal from "../createOfferModal/CreateOfferModal";
-import ModalBackground from "../component-items/modal/ModalBackground";
 
-const WelcomeBanner = ({ handleClick }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+const WelcomeBanner = ({ handleClick, showOfferModal }) => {
   return (
     <div className="banner">
       <div className="banner-headline">
@@ -30,7 +25,7 @@ const WelcomeBanner = ({ handleClick }) => {
           style="createOfferModalButton"
           width={40}
           Icon={<FaPlus size="24px" />}
-          onClick={() => setIsModalOpen((e) => !e)}
+          onClick={showOfferModal}
         >
           Utwórz ofertę
         </Button>
@@ -60,11 +55,6 @@ const WelcomeBanner = ({ handleClick }) => {
           description="Znajdź aktywności sportowe w swojej okolicy"
         />
       </div>
-      {isModalOpen && (
-        <ModalBackground closeModal={() => setIsModalOpen(false)}>
-          <CreateOfferModal />
-        </ModalBackground>
-      )}
     </div>
   );
 };
