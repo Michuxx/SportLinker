@@ -13,6 +13,7 @@ const ReportSettings = () => {
 
   const [historyReports, setHistoryReports] = useState([
     {
+      id: 1,
       type: "inappropriateContent",
       status: "pending",
       title: "Nieodpowiednia treść w ofercie",
@@ -22,6 +23,7 @@ const ReportSettings = () => {
       response: null,
     },
     {
+      id: 2,
       type: "spam",
       status: "solved",
       title: "Spam w wiadomościach",
@@ -30,6 +32,7 @@ const ReportSettings = () => {
       response: "Sprawa została rozwiązana. Użytkownik otrzymał ostrzeżenie.",
     },
     {
+      id: 3,
       type: "fakeProfile",
       status: "rejected",
       title: "Podejrzany profil użytkownika",
@@ -97,8 +100,8 @@ const ReportSettings = () => {
           handleSubmit={handleSubmit}
         />
       </UserDetailedBackground>
-      <UserDetailedBackground>
-        <HistoryReports />
+      <UserDetailedBackground title="Historia zgłoszeń">
+        <HistoryReports historyReports={historyReports} />
       </UserDetailedBackground>
     </div>
   );
