@@ -86,7 +86,20 @@ const ReportSettings = () => {
     setErrors(newErrors);
 
     if (isValid) {
-      console.log("Stworzono!");
+      const newReport = {
+        ...reportForm,
+        id: Date.now(), // not temporal
+        status: "pending",
+        date: new Date().toISOString(),
+        response: null,
+      };
+
+      setHistoryReports((prev) => [newReport, ...prev]);
+      setReportForm({
+        type: "none",
+        title: "",
+        description: "",
+      });
     }
   };
 
