@@ -12,35 +12,35 @@ const ReportSettings = () => {
   });
 
   const [historyReports, setHistoryReports] = useState([
-    {
-      id: 1,
-      type: "inappropriateContent",
-      status: "pending",
-      title: "Nieodpowiednia treść w ofercie",
-      description:
-        "Użytkownik zamieścił nieodpowiednią treść w opisie oferty tenisowej.",
-      date: "2027-01-20T18:00",
-      response: null,
-    },
-    {
-      id: 2,
-      type: "spam",
-      status: "solved",
-      title: "Spam w wiadomościach",
-      description: "Otrzymuję spam od użytkownika po dołączeniu do oferty.",
-      date: "2027-01-20T18:00",
-      response: "Sprawa została rozwiązana. Użytkownik otrzymał ostrzeżenie.",
-    },
-    {
-      id: 3,
-      type: "fakeProfile",
-      status: "rejected",
-      title: "Podejrzany profil użytkownika",
-      description:
-        "Profil wydaje się być fałszywy - brak zdjęcia, dziwne informacje.",
-      date: "2027-01-20T18:00",
-      response: "Po weryfikacji profil okazał się prawdziwy.",
-    },
+    // {
+    //   id: 1,
+    //   type: "inappropriateContent",
+    //   status: "pending",
+    //   title: "Nieodpowiednia treść w ofercie",
+    //   description:
+    //     "Użytkownik zamieścił nieodpowiednią treść w opisie oferty tenisowej.",
+    //   date: "2027-01-20T18:00",
+    //   response: null,
+    // },
+    // {
+    //   id: 2,
+    //   type: "spam",
+    //   status: "solved",
+    //   title: "Spam w wiadomościach",
+    //   description: "Otrzymuję spam od użytkownika po dołączeniu do oferty.",
+    //   date: "2027-01-20T18:00",
+    //   response: "Sprawa została rozwiązana. Użytkownik otrzymał ostrzeżenie.",
+    // },
+    // {
+    //   id: 3,
+    //   type: "fakeProfile",
+    //   status: "rejected",
+    //   title: "Podejrzany profil użytkownika",
+    //   description:
+    //     "Profil wydaje się być fałszywy - brak zdjęcia, dziwne informacje.",
+    //   date: "2027-01-20T18:00",
+    //   response: "Po weryfikacji profil okazał się prawdziwy.",
+    // },
   ]);
 
   const [errors, setErrors] = useState({
@@ -88,7 +88,7 @@ const ReportSettings = () => {
     if (isValid) {
       const newReport = {
         ...reportForm,
-        id: Date.now(), // not temporal
+        id: Date.now(), //  temporal
         status: "pending",
         date: new Date().toISOString(),
         response: null,
