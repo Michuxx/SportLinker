@@ -9,6 +9,8 @@
 
 .history-report-headline {
   display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .report-description,

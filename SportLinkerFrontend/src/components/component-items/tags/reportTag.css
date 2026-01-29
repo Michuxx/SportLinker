@@ -1,0 +1,27 @@
+.reportTag {
+  font-size: 0.75rem;
+  padding: 2px 0.5rem 2px 0.5rem;
+  border-radius: 99999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.report-pending-tag {
+  color: rgb(133 77 14);
+  background-color: rgb(254 249 195);
+  border: 1px solid rgb(254 240 138);
+}
+
+.report-rejected-tag {
+  color: rgb(153 27 27);
+  background-color: rgb(254 226 226);
+  border: 1px solid rgb(254 202 202);
+}
+
+.report-solved-tag {
+  color: rgb(22 101 52);
+  background-color: rgb(220 252 231);
+  border: 1px solid rgb(187 247 208);
+}
