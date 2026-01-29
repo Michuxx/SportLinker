@@ -6,9 +6,9 @@ const HistoryReportCard = ({ report }) => {
       <div className="history-report-headline">
         <p>{report.type}</p>
       </div>
-      <h3>{report.title}</h3>
-      <p>{report.description}</p>
-      <p className="report-date">"{report.date}</p>
+      <h4>{report.title}</h4>
+      <p className="report-description">{report.description}</p>
+      <p className="report-date">{report.date}</p>
       {report.response && (
         <div className="history-report-response">
           <span>Odpowiedź administracji:</span>

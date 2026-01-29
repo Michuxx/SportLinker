@@ -1,0 +1,5 @@
+.history-report-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

@@ -1,0 +1,38 @@
+.history-report-card-wrapper {
+  padding: 1rem;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.history-report-headline {
+  display: flex;
+}
+
+.report-description,
+.history-report-headline p,
+.history-report-response p {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgb(75 85 99);
+}
+
+.report-date {
+  color: rgb(107 114 128);
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.history-report-response {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgb(229 231 235);
+}
+
+.history-report-response span {
+  color: rgb(17 24 39);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
