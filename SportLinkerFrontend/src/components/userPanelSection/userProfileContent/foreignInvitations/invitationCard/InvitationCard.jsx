@@ -7,7 +7,6 @@ import OfferCardLocation from "../../../../offerSection/offerCard/OfferCardLocat
 import OfferCardPeople from "../../../../offerSection/offerCard/OfferCardPeople";
 import { FaCheck } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
-import { FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router";
 
 const InvitationCard = ({ invitation, handleAccept, handleReject }) => {

@@ -8,54 +8,41 @@ import { MdClose } from "react-icons/md";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router";
 
-const OfferStatusCard = ({ offerStatus }) => {
-  const buttonSelection = () => {
-    if (
-      offerStatus.status === "rejected" ||
-      offerStatus.availability === "closed"
-    ) {
-      return (
-        <div className="invitation-btn-wrapper">
-          <Button
-            style="deleteButton"
-            Icon={<FaRegTrashAlt size={20} />}
-          ></Button>
-        </div>
-      );
-    } else {
-      return (
-        <div className="invitation-btn-wrapper">
-          <Button style="classicRedButton" Icon={<MdClose size={20} />}>
-            Zrezygnuj
-          </Button>
-        </div>
-      );
-    }
-  };
-
+const OfferStatusCard = ({ offerApplication, handleResign }) => {
   return (
     <Link
-      to={`/offer/${offerStatus.id}`}
+      to={`/offer/${offerApplication.offerId}`}
       style={{ textDecoration: `none`, color: `inherit` }}
     >
       <div className="offer-status-card-wrapper">
         <div className="invitation-card-tag-wrapper">
           <div className="invitation-card-block">
-            <Tag styleType="sport" text={offerStatus.sport} />
-            <Tag styleType={offerStatus.status} />
-            <Tag styleType={offerStatus.availability} />
+            <Tag styleType="sport" text={offerApplication.sport} />
+            <Tag styleType={offerApplication.status} />
+            <Tag styleType={offerApplication.availability} />
           </div>
-          <div className="invitation-btn-wrapper">{buttonSelection()}</div>
+          <div className="invitation-btn-wrapper">
+            <Button
+              style="classicRedButton"
+              onClick={(e) => {
+                e.preventDefault();
+                handleResign(offerApplication.id);
+              }}
+              Icon={<MdClose size={20} />}
+            >
+              Zrezygnuj
+            </Button>
+          </div>
         </div>
         <div className="offer-status-title">
-          <h3>{offerStatus.title}</h3>
+          <h3>{offerApplication.title}</h3>
         </div>
         <div className="user-offer-card-info-wrapper">
-          <OfferCardDate date={offerStatus.date} />
-          <OfferCardLocation location={offerStatus.location} />
+          <OfferCardDate date={offerApplication.date} />
+          <OfferCardLocation location={offerApplication.location} />
           <OfferCardPeople
-            currentPeople={offerStatus.currentPeople}
-            maxPeople={offerStatus.maxPeople}
+            currentPeople={offerApplication.currentPeople}
+            maxPeople={offerApplication.maxPeople}
           />
         </div>
       </div>

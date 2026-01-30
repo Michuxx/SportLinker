@@ -6,6 +6,7 @@ const OfferStatuses = () => {
   const [statuses, setStatuses] = useState([
     {
       id: 1,
+      offerId: 3,
       title: "Poszukuję osób do profesjonalnej rozgrywki w siatkówkę",
       sport: "volleyball",
       date: "2025-01-20T18:00",
@@ -24,6 +25,7 @@ const OfferStatuses = () => {
     },
     {
       id: 2,
+      offerId: 9,
       title: "Poszukuję osób do profesjonalnej rozgrywki w siatkówkę",
       sport: "volleyball",
       date: "2025-01-20T18:00",
@@ -42,6 +44,7 @@ const OfferStatuses = () => {
     },
     {
       id: 3,
+      offerId: 5,
       title: "Poszukuję osób do profesjonalnej rozgrywki w siatkówkę",
       sport: "volleyball",
       date: "2025-01-20T18:00",
@@ -59,11 +62,20 @@ const OfferStatuses = () => {
       status: "pending",
     },
   ]);
+
+  const handleResignApplications = (id) => {
+    setStatuses((prev) => prev.filter((app) => app.id !== id));
+  };
+
   return (
     <div className="user-offer-statuses-wrapper">
       {statuses.length > 0 ? (
         statuses.map((offerStatus) => (
-          <OfferStatusCard offerStatus={offerStatus} key={offerStatus.id} />
+          <OfferStatusCard
+            offerApplication={offerStatus}
+            key={offerStatus.id}
+            handleResign={handleResignApplications}
+          />
         ))
       ) : (
         <NullStatuses />
