@@ -10,13 +10,17 @@ import { MdClose } from "react-icons/md";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router";
 
-const InvitationCard = ({ invitation, handleAccept }) => {
+const InvitationCard = ({ invitation, handleAccept, handleReject }) => {
   const buttonSelection = () => {
     if (invitation.currentPeople === invitation.maxPeople) {
       return (
         <div className="invitation-btn-wrapper">
-          <Button style="classicRedButton" Icon={<FaRegTrashAlt size={20} />}>
-            Usuń
+          <Button
+            style="classicRedButton"
+            onClick={() => handleReject(invitation.id)}
+            Icon={<MdClose size={24} />}
+          >
+            Odrzuć
           </Button>
         </div>
       );
@@ -30,7 +34,11 @@ const InvitationCard = ({ invitation, handleAccept }) => {
           >
             Akceptuj
           </Button>
-          <Button style="classicRedButton" Icon={<MdClose size={24} />}>
+          <Button
+            style="classicRedButton"
+            onClick={() => handleReject(invitation.id)}
+            Icon={<MdClose size={24} />}
+          >
             Odrzuć
           </Button>
         </div>

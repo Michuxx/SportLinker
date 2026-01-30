@@ -43,7 +43,7 @@ const ForeignInvitations = () => {
       currentPeople: 1,
       maxPeople: 2,
       user: {
-        name: "Martusia",
+        name: "Romek",
       },
     },
     {
@@ -85,6 +85,10 @@ const ForeignInvitations = () => {
     });
   };
 
+  const handleRejectRequest = (id) => {
+    setInvitations((prev) => prev.filter((x) => x.id !== id));
+  };
+
   return (
     <div className="user-invitations-wrapper">
       {invitations.length > 0 ? (
@@ -93,6 +97,7 @@ const ForeignInvitations = () => {
             invitation={invitation}
             key={invitation.id}
             handleAccept={handleAcceptInvitation}
+            handleReject={handleRejectRequest}
           />
         ))
       ) : (
