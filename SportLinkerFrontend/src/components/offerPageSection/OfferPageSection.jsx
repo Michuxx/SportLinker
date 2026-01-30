@@ -21,7 +21,7 @@ const OfferPageSection = () => {
     description:
       "Szukam osoby do regularnego grania w tenisa. Poziom średniozaawansowany, gra 2-3 razy w tygodniu.",
     date: "2027-01-20T18:00",
-    creationDate: "04.12.2025",
+    creationDate: "04-12-2025",
     location: {
       city: "Wrocław",
       country: "Poland",
@@ -42,38 +42,48 @@ const OfferPageSection = () => {
     author: {
       id: 1,
       name: "Macius",
-      joinDate: "02.12.2025",
+      joinDate: "02-12-2025",
+      image: null,
     },
     members: [
       {
         id: 2,
+        playerId: 21,
         name: "Kuba",
-        joinDate: "02.12.2025",
+        joinDate: "02-12-2025",
+        image: null,
       },
       {
         id: 3,
+        playerId: 22,
         name: "Janusz",
-        joinDate: "02.12.2025",
+        joinDate: "02-12-2025",
+        image: null,
       },
       {
         id: 4,
+        playerId: 24,
         name: "Martusiem",
-        joinDate: "02.12.2025",
+        joinDate: "02-12-2025",
+        image: null,
       },
     ],
     requests: [
       {
         id: 6,
+        playerId: 11,
         name: "Ola",
         image: null,
       },
       {
         id: 8,
+        playerId: 8,
         name: "Mariusz",
         image: null,
       },
       {
         id: 16,
+        playerId: 123,
         name: "Robert",
         image: null,
       },
@@ -261,6 +271,30 @@ const OfferPageSection = () => {
     }));
   };
 
+  const rejectPlayerRequest = (playerId) => {
+    setOfferData((prev) => ({
+      ...prev,
+      requests: offerData.requests.filter((req) => req.id !== playerId),
+    }));
+  };
+
+  const acceptPlayerRequest = (player) => {
+    if (openSlots !== 0) {
+      const newPlayer = {
+        id: player.id,
+        playerId: player.playerId,
+        name: player.name,
+        image: player.image,
+        joinDate: new Date().toISOString().split("T")[0],
+      };
+      setOfferData((prev) => ({
+        ...prev,
+        members: [...prev.members, newPlayer],
+        requests: offerData.requests.filter((req) => req.id !== player.id),
+      }));
+    }
+  };
+
   useEffect(() => {
     let counter = 1;
     counter += offerData.members.length;
@@ -298,7 +332,12 @@ const OfferPageSection = () => {
       )}
       {isAddPeopleModalOpen && (
         <ModalBackground closeModal={() => setIsAddPeopleModalOpen(false)}>
-          <AddPeopleModal requests={offerData.requests} openSlots={openSlots} />
+          <AddPeopleModal
+            requests={offerData.requests}
+            openSlots={openSlots}
+            rejectPlayerRequest={rejectPlayerRequest}
+            acceptPlayerRequest={acceptPlayerRequest}
+          />
         </ModalBackground>
       )}
     </div>

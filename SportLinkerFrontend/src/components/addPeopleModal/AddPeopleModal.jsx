@@ -4,7 +4,12 @@ import AddPeopleCard from "./addPeopleCard/AddPeopleCard";
 import "./addPeopleModal.css";
 import { PiSmileySadBold } from "react-icons/pi";
 
-const AddPeopleModal = ({ requests, openSlots }) => {
+const AddPeopleModal = ({
+  requests,
+  openSlots,
+  rejectPlayerRequest,
+  acceptPlayerRequest,
+}) => {
   return (
     <div className="add-people-container">
       <ModalHeader title="Prośby o dołączenie do oferty" />
@@ -15,6 +20,8 @@ const AddPeopleModal = ({ requests, openSlots }) => {
               request={request}
               openSlots={openSlots}
               key={request.id}
+              rejectPlayerRequest={rejectPlayerRequest}
+              acceptPlayerRequest={acceptPlayerRequest}
             />
           ))
         ) : (

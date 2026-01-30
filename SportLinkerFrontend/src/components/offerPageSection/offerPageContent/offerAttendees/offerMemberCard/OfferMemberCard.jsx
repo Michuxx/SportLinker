@@ -8,6 +8,8 @@ import WarningModal from "../../../../warningModal/WarningModal";
 
 const OfferMemberCard = ({ member, offerAuthorId, kickPlayer }) => {
   const [isKickModalOpen, setIsKickModalOpen] = useState(false);
+  const dateObj = new Date(member.joinDate);
+  const normalizedDate = dateObj.toLocaleDateString("pl-PL");
 
   return (
     <div className="offer-member-card-container">
@@ -18,7 +20,7 @@ const OfferMemberCard = ({ member, offerAuthorId, kickPlayer }) => {
           {member.id === offerAuthorId ? (
             <p className="author-member">Organizator</p>
           ) : (
-            <p className="member-join-date">{member.joinDate}</p>
+            <p className="member-join-date">{normalizedDate}</p>
           )}
         </div>
       </div>
