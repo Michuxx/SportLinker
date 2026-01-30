@@ -1,6 +1,9 @@
 import { useState } from "react";
 import OfferStatusCard from "./offerStatusCard/OfferStatusCard";
 import NullStatuses from "./nullStatuses/nullStatuses";
+import ModalBackground from "../../../component-items/modal/ModalBackground";
+import WarningModal from "../../../warningModal/WarningModal";
+import { BsDoorOpenFill } from "react-icons/bs";
 
 const OfferStatuses = () => {
   const [statuses, setStatuses] = useState([
@@ -63,7 +66,22 @@ const OfferStatuses = () => {
     },
   ]);
 
-  const handleResignApplications = (id) => {
+  const [leaveModalText, setLeaveModalText] = useState("");
+  const [selectedOfferToDelete, setSelectedOfferToDelete] = useState(null);
+
+  const openLeaveModal = (id) => {
+    setLeaveModalText("Czy na pewno chcesz opuścić ofertę?");
+    setSelectedOfferToDelete(id);
+  };
+
+  const openLeavePendingModal = (id) => {
+    setLeaveModalText(
+      "Czy na pewno chcesz zrezygnować z dołączenia do oferty?"
+    );
+    setSelectedOfferToDelete(id);
+  };
+
+  const handleResignApplication = (id) => {
     setStatuses((prev) => prev.filter((app) => app.id !== id));
   };
 
@@ -74,11 +92,24 @@ const OfferStatuses = () => {
           <OfferStatusCard
             offerApplication={offerStatus}
             key={offerStatus.id}
-            handleResign={handleResignApplications}
+            openLeaveModal={openLeaveModal}
+            openLeavePendingModal={openLeavePendingModal}
+            handleResignApplication={handleResignApplication}
           />
         ))
       ) : (
         <NullStatuses />
+      )}
+      {selectedOfferToDelete && (
+        <ModalBackground closeModal={() => setSelectedOfferToDelete(null)}>
+          <WarningModal
+            headline={leaveModalText}
+            confirmText="Tak, chcę"
+            confirmIcon={<BsDoorOpenFill size={20} />}
+            onCancel={() => setSelectedOfferToDelete(null)}
+            onConfirm={() => handleResignApplication(selectedOfferToDelete)}
+          />
+        </ModalBackground>
       )}
     </div>
   );

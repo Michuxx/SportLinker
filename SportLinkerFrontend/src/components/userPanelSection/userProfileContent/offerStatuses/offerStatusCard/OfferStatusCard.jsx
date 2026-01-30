@@ -5,10 +5,14 @@ import OfferCardLocation from "../../../../offerSection/offerCard/OfferCardLocat
 import OfferCardPeople from "../../../../offerSection/offerCard/OfferCardPeople";
 import Button from "../../../../component-items/button/button";
 import { MdClose } from "react-icons/md";
-import { FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router";
 
-const OfferStatusCard = ({ offerApplication, handleResign }) => {
+const OfferStatusCard = ({
+  offerApplication,
+  openLeaveModal,
+  openLeavePendingModal,
+  handleResignApplication,
+}) => {
   return (
     <Link
       to={`/offer/${offerApplication.offerId}`}
@@ -26,7 +30,13 @@ const OfferStatusCard = ({ offerApplication, handleResign }) => {
               style="classicRedButton"
               onClick={(e) => {
                 e.preventDefault();
-                handleResign(offerApplication.id);
+                if (offerApplication.status === "accepted") {
+                  openLeaveModal(offerApplication.id);
+                } else if (offerApplication.status === "pending") {
+                  openLeavePendingModal(offerApplication.id);
+                } else {
+                  handleResignApplication(offerApplication.id);
+                }
               }}
               Icon={<MdClose size={20} />}
             >
