@@ -6,6 +6,7 @@ const ForeignInvitations = () => {
   const [invitations, setInvitations] = useState([
     {
       id: 1,
+      offerId: 1,
       status: "pending",
       offerTitle: "Poszukuje partnera do tenisa",
       sport: "Tenis",
@@ -26,6 +27,7 @@ const ForeignInvitations = () => {
     },
     {
       id: 2,
+      offerId: 1,
       status: "pending",
       offerTitle: "Poszukuje partnera do tenisa",
       sport: "Tenis",
@@ -46,6 +48,7 @@ const ForeignInvitations = () => {
     },
     {
       id: 4,
+      offerId: 3,
       status: "pending",
       offerTitle: "Koooooszykufka",
       sport: "Tenis",
@@ -66,11 +69,31 @@ const ForeignInvitations = () => {
     },
   ]);
 
+  const handleAcceptInvitation = (id, offerId) => {
+    setInvitations((prevInvitations) => {
+      return prevInvitations
+        .filter((inv) => inv.id !== id)
+        .map((invitation) => {
+          if (invitation.offerId === offerId) {
+            return {
+              ...invitation,
+              currentPeople: invitation.currentPeople + 1,
+            };
+          }
+          return invitation;
+        });
+    });
+  };
+
   return (
     <div className="user-invitations-wrapper">
       {invitations.length > 0 ? (
         invitations.map((invitation) => (
-          <InvitationCard invitation={invitation} key={invitation.id} />
+          <InvitationCard
+            invitation={invitation}
+            key={invitation.id}
+            handleAccept={handleAcceptInvitation}
+          />
         ))
       ) : (
         <NullInvitations />
