@@ -18,7 +18,7 @@ import { useState } from "react";
 import ModalHeader from "../component-items/modal/ModalHeader.jsx";
 import SearchInput from "../component-items/input/SearchInput.jsx";
 
-const CreateOfferModal = () => {
+const CreateOfferModal = ({ handleAddOffer }) => {
   const [offerData, setOfferData] = useState({
     sport: "none",
     level: "any",
@@ -157,7 +157,7 @@ const CreateOfferModal = () => {
     setErrors(newErrors);
 
     if (isValid) {
-      console.log("Stworzono!");
+      handleAddOffer(offerData);
     }
   };
 
