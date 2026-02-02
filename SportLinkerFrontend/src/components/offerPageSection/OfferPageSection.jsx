@@ -35,7 +35,7 @@ const OfferPageSection = () => {
       type: "house",
     },
     maxPeople: 4,
-    availability: "closed",
+    availability: "closed", // open, closed
     mode: "private", // private, public
     status: "pending", // pending, rejected, accepted, null
     authorId: 1,
@@ -279,19 +279,40 @@ const OfferPageSection = () => {
   };
 
   const acceptPlayerRequest = (player) => {
-    if (openSlots !== 0) {
-      const newPlayer = {
-        id: player.id,
-        playerId: player.playerId,
-        name: player.name,
-        image: player.image,
-        joinDate: new Date().toISOString().split("T")[0],
-      };
-      setOfferData((prev) => ({
-        ...prev,
-        members: [...prev.members, newPlayer],
-        requests: offerData.requests.filter((req) => req.id !== player.id),
-      }));
+    // Zakładam, że openSlots jest obliczane na bieżąco
+    if (openSlots > 0) {
+      setOfferData((prev) => {
+        // 1. Tworzymy nową listę członków
+        const updatedMembers = [
+          ...prev.members,
+          {
+            id: player.id,
+            playerId: player.playerId,
+            name: player.name,
+            image: player.image,
+            joinDate: new Date().toISOString().split("T")[0],
+          },
+        ];
+
+        // 2. Filtrujemy zapytania na bazie 'prev'
+        const updatedRequests = prev.requests.filter(
+          (req) => req.id !== player.id
+        );
+
+        // 3. Sprawdzamy dostępność na bazie nowej długości tablicy
+        const isFull = updatedMembers.length + 1 === prev.maxPeople;
+
+        console.log(isFull);
+        console.log(updatedMembers);
+        console.log(prev.maxPeople);
+
+        return {
+          ...prev,
+          members: updatedMembers,
+          requests: updatedRequests,
+          availability: isFull ? "closed" : "open",
+        };
+      });
     }
   };
 
