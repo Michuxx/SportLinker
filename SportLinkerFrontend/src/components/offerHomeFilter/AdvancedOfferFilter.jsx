@@ -33,8 +33,8 @@ const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
             icon={<FiCalendar color="rgb(156, 163, 175)" size={20} />}
             width={97}
             onChange={(e) => onChangeFilter(e)}
-            name="minDate"
-            value={filter.minDate}
+            name="startDate"
+            value={filter.startDate}
             min={new Date().toISOString().split("T")[0]}
           />
         </InputField>
@@ -44,8 +44,8 @@ const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
             icon={<FiCalendar color="rgb(156, 163, 175)" size={20} />}
             width={97}
             onChange={(e) => onChangeFilter(e)}
-            name="maxDate"
-            value={filter.maxDate}
+            name="endDate"
+            value={filter.endDate}
             min={new Date().toISOString().split("T")[0]}
           />
         </InputField>
@@ -59,7 +59,7 @@ const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
             min={1}
             max={30}
             placeholder="np. 1"
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => onChangeFilter(e)}
             name="minPlayers"
             value={filter.minPlayers}
           />
@@ -72,7 +72,7 @@ const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
             min={1}
             placeholder="np. 10"
             max={30}
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => onChangeFilter(e)}
             name="maxPlayers"
             value={filter.maxPlayers}
           />

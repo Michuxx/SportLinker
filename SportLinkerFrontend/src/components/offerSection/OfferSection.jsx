@@ -32,7 +32,7 @@ const OfferSection = ({ userOffers }) => {
   };
 
   const activeFiltersCount = Object.keys(filter).filter((key) => {
-    if (key === "sortType" || key === "sortOrder") return false;
+    // if (key === "sortType" || key === "sortOrder") return false;
 
     return filter[key] !== INITIAL_FILTER[key];
   }).length;
