@@ -17,7 +17,7 @@
 }
 
 .textarea-error-text {
-  color: red;
+  color: red !important;
 }
 
 .word-counter {

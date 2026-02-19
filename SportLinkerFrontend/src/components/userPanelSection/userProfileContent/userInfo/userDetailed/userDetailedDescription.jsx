@@ -8,6 +8,8 @@ const UserDetailedDescription = ({
   name,
   onChange,
   placeholder,
+  maxLetters,
+  error,
 }) => {
   return (
     <div className="user-detailed-description-wrapper">
@@ -19,6 +21,8 @@ const UserDetailedDescription = ({
           value={editData.aboutMe}
           width={100}
           rows={5}
+          maxLetters={maxLetters}
+          error={error}
         />
       ) : (
         <p>{text}</p>

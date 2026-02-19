@@ -19,6 +19,7 @@ const UserDetailedCards = ({
   cancelHandle,
   handleSaveData,
   location,
+  errors,
 }) => {
   const handleCancelAboutMe = () => {
     cancelHandle(() => setIsAboutMeEditing(false));
@@ -52,6 +53,8 @@ const UserDetailedCards = ({
           onChange={onChange}
           placeholder="Napisz coś o sobie :)"
           isEditing={isAboutMeEditing}
+          maxLetters={180}
+          error={errors.aboutMe}
         />
       </UserDetailedBackground>
       <UserDetailedBackground

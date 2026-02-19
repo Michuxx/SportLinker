@@ -16,6 +16,7 @@ const UserDetailed = ({
   cancelHandle,
   handleSaveData,
   location,
+  errors,
 }) => {
   const aboutText = aboutMe || `Brak opisu`;
 
@@ -35,6 +36,7 @@ const UserDetailed = ({
         handleSaveData={handleSaveData}
         cancelHandle={cancelHandle}
         location={location}
+        errors={errors}
       />
       <UserOffers />
     </div>

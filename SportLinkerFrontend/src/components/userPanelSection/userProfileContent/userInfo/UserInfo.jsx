@@ -37,17 +37,23 @@ const UserInfo = () => {
     aboutMe: userInfo.aboutMe,
   });
 
+  const [errors, setErrors] = useState({
+    aboutMe: userInfo.aboutMe,
+  });
+
   const cancelHandle = (setEditingFalse) => {
     setEditData({
       favouriteSport: userInfo.favouriteSport,
       aboutMe: userInfo.aboutMe,
     });
+    setErrors((prev) => ({ ...prev, aboutMe: "" }));
     setEditingFalse();
   };
 
   const handleChangeEditData = (e) => {
     const { name, value } = e.target;
     setEditData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleChangeProfileImage = (image) => {
@@ -65,6 +71,15 @@ const UserInfo = () => {
   };
 
   const handleSaveData = (setEditingFalse) => {
+    if (editData.aboutMe.length > 180) {
+      setErrors((prev) => ({
+        ...prev,
+        aboutMe: "Opis nie może przekaczać 180 słów",
+      }));
+
+      return;
+    }
+
     setUserInfo((prev) => ({
       ...prev,
       ...editData,
@@ -98,6 +113,7 @@ const UserInfo = () => {
         joinedOffers={userInfo.joinedOffers}
         invitations={userInfo.invitations}
         location={userInfo.location}
+        errors={errors}
       />
     </div>
   );

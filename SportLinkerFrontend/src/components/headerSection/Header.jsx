@@ -3,6 +3,7 @@ import Button from "../component-items/button/button.jsx";
 import Logo from "../component-items/logo/Logo.jsx";
 import Logotype from "../component-items/logo/Logotype.jsx";
 import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
 import { LuUser } from "react-icons/lu";
 import "./header.css";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -93,7 +94,8 @@ const Header = () => {
             Icon={<LuUser size={24} />}
             onClick={() => setIsOpenUserDropdown((e) => !e)}
           >
-            <IoIosArrowDown size={20} />
+            {isOpenUserDropdown ? <IoIosArrowUp size={20} /> : <IoIosArrowDown size={20} /> }
+            
           </Button>
           {isOpenUserDropdown && (
             <div className="header-dropdown">
