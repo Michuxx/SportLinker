@@ -47,6 +47,12 @@ const OfferPageSection = () => {
     },
     members: [
       {
+        id: 1,
+        name: "Macius",
+        joinDate: "02-12-2025",
+        image: null,
+      },
+      {
         id: 2,
         playerId: 21,
         name: "Kuba",
@@ -279,10 +285,8 @@ const OfferPageSection = () => {
   };
 
   const acceptPlayerRequest = (player) => {
-    // Zakładam, że openSlots jest obliczane na bieżąco
     if (openSlots > 0) {
       setOfferData((prev) => {
-        // 1. Tworzymy nową listę członków
         const updatedMembers = [
           ...prev.members,
           {
@@ -294,17 +298,11 @@ const OfferPageSection = () => {
           },
         ];
 
-        // 2. Filtrujemy zapytania na bazie 'prev'
         const updatedRequests = prev.requests.filter(
           (req) => req.id !== player.id
         );
 
-        // 3. Sprawdzamy dostępność na bazie nowej długości tablicy
-        const isFull = updatedMembers.length + 1 === prev.maxPeople;
-
-        console.log(isFull);
-        console.log(updatedMembers);
-        console.log(prev.maxPeople);
+        const isFull = updatedMembers.length === Number(prev.maxPeople);
 
         return {
           ...prev,
@@ -317,10 +315,9 @@ const OfferPageSection = () => {
   };
 
   useEffect(() => {
-    let counter = 1;
-    counter += offerData.members.length;
-    setCurrentPeople(counter);
-    setOpenSlots(offerData.maxPeople - counter);
+    let membersLength = offerData.members.length;
+    setCurrentPeople(membersLength);
+    setOpenSlots(offerData.maxPeople - membersLength);
   }, [offerData]);
 
   return (

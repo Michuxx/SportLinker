@@ -4,20 +4,17 @@ import OfferAuthorCard from "./offerAuthorCard/OfferAuthorCard";
 import OfferMemberCard from "./offerMemberCard/OfferMemberCard";
 
 const OfferAttendees = ({ author, members, offerAuthorId, kickPlayer }) => {
-  const [peopleCounter, setPeopleCoutner] = useState();
+  const [peopleCounter, setPeopleCoutner] = useState(members.length);
 
   useEffect(() => {
-    let counter = 1;
-    counter += members.length;
-    setPeopleCoutner(counter);
-  }, []);
+    setPeopleCoutner(members.length);
+  }, [members]);
 
   return (
     <div className="offer-attendees-container">
       <OfferAuthorCard author={author} />
       <h3>Uczestnicy ({peopleCounter})</h3>
       <div className="offer-member-list">
-        <OfferMemberCard member={author} offerAuthorId={offerAuthorId} />
         {members.map((member) => (
           <OfferMemberCard
             member={member}
