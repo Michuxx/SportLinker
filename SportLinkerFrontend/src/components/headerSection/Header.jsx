@@ -12,6 +12,7 @@ import ModalBackground from "../component-items/modal/ModalBackground.jsx";
 import AuthModal from "../authModal/AuthModal.jsx";
 import { LuLogIn } from "react-icons/lu";
 import { CgUserAdd } from "react-icons/cg";
+import { CiLogout } from "react-icons/ci";
 
 const Header = () => {
   let navigate = useNavigate();
@@ -50,9 +51,15 @@ const Header = () => {
       text: "Ustawienia",
     },
     {
+      style: "classicDropdownOptionButton",
+      onClick: () => changeLocation("/messages"),
+      text: "Wiadomości",
+    },
+    {
       style: "logoutDropdownOptionButton",
       onClick: () => changeLocation("/"),
       text: "Wyloguj się",
+      icon: <CiLogout size={22} />,
     },
   ];
 
@@ -94,12 +101,19 @@ const Header = () => {
             Icon={<LuUser size={24} />}
             onClick={() => setIsOpenUserDropdown((e) => !e)}
           >
-            {isOpenUserDropdown ? <IoIosArrowUp size={20} /> : <IoIosArrowDown size={20} /> }
-            
+            {isOpenUserDropdown ? (
+              <IoIosArrowUp size={20} />
+            ) : (
+              <IoIosArrowDown size={20} />
+            )}
           </Button>
           {isOpenUserDropdown && (
             <div className="header-dropdown">
-              <Dropdown options={userDropdown} textKey="text" />
+              <Dropdown
+                options={userDropdown}
+                textKey="text"
+                isScrollable={false}
+              />
             </div>
           )}
         </div>

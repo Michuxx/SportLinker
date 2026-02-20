@@ -39,6 +39,7 @@
 .container,
 .profile-container,
 .offer-container,
-.settings-container {
+.settings-container,
+.messages-container {
   background-color: rgba(249, 250, 251, 1);
 }

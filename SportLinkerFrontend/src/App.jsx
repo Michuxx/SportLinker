@@ -8,6 +8,7 @@ import Offer from "./components/Pages/Offer";
 import Settings from "./components/Pages/Settings";
 import AccountSettings from "./components/settingsSection/accountSettings/AccountSettings";
 import ReportSettings from "./components/settingsSection/reportSettings/ReportSettings";
+import Messages from "./components/Pages/Messages";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="account" element={<AccountSettings />} />
         <Route path="reports" element={<ReportSettings />} />
       </Route>
+      <Route path="messages" element={<Messages />} />
     </Routes>
   );
 }
