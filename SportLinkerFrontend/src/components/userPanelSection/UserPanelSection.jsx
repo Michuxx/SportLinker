@@ -10,7 +10,7 @@ import Navbar from "../component-items/navbar/Navbar";
 const UserPanelSection = () => {
   return (
     <div className="user-panel-section-wrapper">
-      <Navbar>
+      <Navbar className={"user"}>
         <NavLink
           to="userInfo"
           className={({ isActive }) =>

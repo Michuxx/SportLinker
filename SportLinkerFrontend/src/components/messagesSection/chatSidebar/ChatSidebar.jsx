@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from "react-router";
 import Navbar from "../../component-items/navbar/Navbar";
+import "./chatSidebar.css";
 
 const ChatSidebar = () => {
   return (
@@ -15,6 +16,7 @@ const ChatSidebar = () => {
                   : "inactive-nav-user-menu-option"
               }`
             }
+            style={{ flex: `1 1 0%` }}
           >
             <div className="user-menu-option-wrapper">Konwersacje</div>
           </NavLink>
@@ -27,6 +29,7 @@ const ChatSidebar = () => {
                   : "inactive-nav-user-menu-option"
               }`
             }
+            style={{ flex: `1 1 0%` }}
           >
             <div className="user-menu-option-wrapper">Znajomi</div>
           </NavLink>

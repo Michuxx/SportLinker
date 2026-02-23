@@ -1,7 +1,11 @@
 import "./navbar.css";
 
-const Navbar = ({ children }) => {
-  return <div className="user-navbar-wrapper">{children}</div>;
+const Navbar = ({ children, className }) => {
+  return (
+    <div className={`${className}-navbar-wrapper navbar-wrapper`}>
+      {children}
+    </div>
+  );
 };
 
 export default Navbar;

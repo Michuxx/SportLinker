@@ -6,7 +6,7 @@ import { FiFlag } from "react-icons/fi";
 const SettingsSection = () => {
   return (
     <div className="user-panel-section-wrapper">
-      <Navbar>
+      <Navbar className={"user"}>
         <NavLink
           to="account"
           className={({ isActive }) =>
