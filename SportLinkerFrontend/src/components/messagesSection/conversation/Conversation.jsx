@@ -1,3 +1,5 @@
+import "./conversation.css";
+
 const Conversation = () => {
   return <div className="conversation-wrapper"></div>;
 };

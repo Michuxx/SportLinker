@@ -1,3 +1,10 @@
 .chat-sidebar-wrapper {
   width: 20rem;
+  background-color: #fff;
+  border-right: 1px solid rgb(229 231 235);
+}
+
+.chat-search-wrapper {
+  padding: 1rem;
+  border-bottom: 1px solid rgb(229 231 235);
 }

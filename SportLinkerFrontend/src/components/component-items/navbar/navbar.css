@@ -7,10 +7,13 @@
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-.user-navbar-wrapper {
+.user-navbar {
   margin: 2rem 0 1.5rem;
 }
 
-.chat-navbar-wrapper {
-  margin-top: 2rem;
+.chat-navbar {
+  border-radius: 1rem 0 0 0;
+  border: none;
+  border-bottom: 1px #e5e7eb solid;
+  box-shadow: none;
 }
