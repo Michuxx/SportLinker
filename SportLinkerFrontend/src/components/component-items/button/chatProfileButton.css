@@ -1,0 +1,8 @@
+.chat-profile-btn {
+  padding: 1rem;
+}
+
+.chat-profile-wrapper {
+  display: flex;
+  align-items: center;
+}
