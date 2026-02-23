@@ -5,7 +5,9 @@ const ChatProfileButton = ({ onClick, name, date, text }) => {
   return (
     <button className="chat-profile-btn" onClick={onClick}>
       <div className="chat-profile-wrapper">
-        <Avatar size={2} />
+        <div className="chat-profile-avatar">
+          <Avatar size={3.1} />
+        </div>
         <div className="chat-profile-info-wrapper">
           <div className="chat-profile-profile-info">
             <h3>{name}</h3>
