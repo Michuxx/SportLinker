@@ -1,0 +1,6 @@
+.message-section-wrapper {
+  display: flex;
+  padding: 1.5rem;
+  max-width: 80rem;
+  margin: auto;
+}

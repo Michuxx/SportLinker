@@ -9,6 +9,8 @@ import Settings from "./components/Pages/Settings";
 import AccountSettings from "./components/settingsSection/accountSettings/AccountSettings";
 import ReportSettings from "./components/settingsSection/reportSettings/ReportSettings";
 import Messages from "./components/Pages/Messages";
+import FriendsSidebar from "./components/messagesSection/chatSidebar/friendsSidebar/FriendsSidebar";
+import ConversationSidebar from "./components/messagesSection/chatSidebar/conversationSidebar/ConversationSidebar";
 
 function App() {
   return (
@@ -26,7 +28,11 @@ function App() {
         <Route path="account" element={<AccountSettings />} />
         <Route path="reports" element={<ReportSettings />} />
       </Route>
-      <Route path="messages" element={<Messages />} />
+      <Route path="messages" element={<Messages />}>
+        <Route index element={<ConversationSidebar />} />
+        <Route path="conversations" element={<ConversationSidebar />} />
+        <Route path="friends" element={<FriendsSidebar />} />
+      </Route>
     </Routes>
   );
 }

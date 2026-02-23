@@ -52,7 +52,7 @@ const Header = () => {
     },
     {
       style: "classicDropdownOptionButton",
-      onClick: () => changeLocation("/messages"),
+      onClick: () => changeLocation("/messages/conversations"),
       text: "Wiadomości",
     },
     {
