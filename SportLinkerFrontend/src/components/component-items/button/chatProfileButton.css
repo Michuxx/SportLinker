@@ -2,22 +2,38 @@
   padding: 1rem;
   background-color: #fff;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0;
+}
+
+.chat-profile-btn:hover {
+  background-color: #f2f3f5;
 }
 
 .chat-profile-wrapper {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
+  width: 100%;
+  min-width: 0;
 }
 
-.chat-profile-profile-info {
+.chat-profile-info {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
-.chat-profile-profile-info span {
+.chat-profile-info-wrapper {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.chat-profile-info span {
   font-size: 0.75rem;
   line-height: 1rem;
   color: rgb(107 114 128);
@@ -31,9 +47,13 @@
   text-align: left;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: rgb(107 114 128);
+  color: rgb(75 85 99);
+  white-space: nowrap; /* Zapobiega przechodzeniu tekstu do nowej linii */
+  overflow: hidden; /* Ukrywa nadmiar tekstu wychodzący poza szerokość elementu */
+  text-overflow: ellipsis;
 }
 
 .chat-profile-avatar {
   display: flex;
+  flex-shrink: 0;
 }

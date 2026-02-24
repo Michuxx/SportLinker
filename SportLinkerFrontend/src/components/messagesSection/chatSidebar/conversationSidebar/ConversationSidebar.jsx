@@ -10,7 +10,7 @@ const ConversationSidebar = () => {
         <ChatProfileButton
           name={conversation.name}
           date={conversation.lastMessage.time}
-          text={conversation.lastMessage.text}
+          text={`${conversation.lastMessage.name}: ${conversation.lastMessage.text}`}
         />
       ))}
     </div>
