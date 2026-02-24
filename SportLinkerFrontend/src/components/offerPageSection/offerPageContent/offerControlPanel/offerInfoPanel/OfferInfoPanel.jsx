@@ -1,4 +1,4 @@
-import OfferInfoBlock from "./offerInfoBlock";
+import OfferInfoBlock from "./OfferInfoBlock";
 import "./offerInfoPanel.css";
 
 const OfferInfoPanel = ({ creationDate, status, openSlots }) => {
