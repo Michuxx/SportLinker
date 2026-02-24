@@ -15,6 +15,7 @@ const ConversationSidebar = () => {
           date={conversation.lastMessage.time}
           text={`${conversation.lastMessage.name}: ${conversation.lastMessage.text}`}
           onClick={() => onChatSelect(conversation.id)}
+          isOnline={conversation.isOnline}
         />
       ))}
     </div>

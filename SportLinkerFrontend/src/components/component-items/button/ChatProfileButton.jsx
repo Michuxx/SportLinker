@@ -1,10 +1,19 @@
 import useDateFormat from "../../../hooks/useDateFormat";
 import Avatar from "../avatar/Avatar";
+import OnlineDot from "../avatar/OnlineDot";
 import "./chatProfileButton.css";
 
-const ChatProfileButton = ({ onClick, name, date, text, activeChatId, id }) => {
+const ChatProfileButton = ({
+  onClick,
+  name,
+  date,
+  text,
+  activeChatId,
+  id,
+  isOnline,
+}) => {
   const formattedDate = useDateFormat(date);
-  
+
   return (
     <button
       className={`${
@@ -24,6 +33,7 @@ const ChatProfileButton = ({ onClick, name, date, text, activeChatId, id }) => {
           <p>{text}</p>
         </div>
       </div>
+      {isOnline && <OnlineDot />}
     </button>
   );
 };

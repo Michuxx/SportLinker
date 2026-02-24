@@ -49,3 +49,14 @@
   object-fit: cover;
   display: block;
 }
+
+.online-dot-wrapper {
+  position: absolute;
+  background-color: rgb(34 197 94);
+  border-radius: 99999px;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #fff;
+  left: 3.3rem;
+  bottom: 0.9rem;
+}
