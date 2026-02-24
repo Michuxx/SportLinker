@@ -1,0 +1,66 @@
+.chat-profile-btn {
+  padding: 1rem;
+  background-color: #fff;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0;
+  border-left: 4px solid transparent;
+  position: relative;
+}
+
+.chat-profile-btn:hover {
+  background-color: #f2f3f5;
+}
+
+.active-chat-profile-btn {
+  background-color: rgb(239 246 255);
+  border-left-color: rgb(59 130 246);
+}
+
+.chat-profile-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+.chat-profile-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat-profile-info-wrapper {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.chat-profile-info span {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgb(107 114 128);
+}
+
+.chat-profile-info-wrapper h3 {
+  text-align: left;
+}
+
+.chat-profile-info-wrapper p {
+  text-align: left;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgb(75 85 99);
+  white-space: nowrap; /* Zapobiega przechodzeniu tekstu do nowej linii */
+  overflow: hidden; /* Ukrywa nadmiar tekstu wychodzący poza szerokość elementu */
+  text-overflow: ellipsis;
+}
+
+.chat-profile-avatar {
+  display: flex;
+  flex-shrink: 0;
+}

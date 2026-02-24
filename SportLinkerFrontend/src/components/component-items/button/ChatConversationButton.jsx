@@ -1,9 +1,9 @@
 import useDateFormat from "../../../hooks/useDateFormat";
 import Avatar from "../avatar/Avatar";
 import OnlineDot from "../avatar/OnlineDot";
-import "./chatProfileButton.css";
+import "./chatConversationButton.css";
 
-const ChatProfileButton = ({
+const ChatConversationButton = ({
   onClick,
   name,
   date,
@@ -38,4 +38,4 @@ const ChatProfileButton = ({
   );
 };
 
-export default ChatProfileButton;
+export default ChatConversationButton;
