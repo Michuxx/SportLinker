@@ -1,9 +1,17 @@
+import useDateFormat from "../../../hooks/useDateFormat";
 import Avatar from "../avatar/Avatar";
 import "./chatProfileButton.css";
 
-const ChatProfileButton = ({ onClick, name, date, text }) => {
+const ChatProfileButton = ({ onClick, name, date, text, activeChatId, id }) => {
+  const formattedDate = useDateFormat(date);
+  
   return (
-    <button className="chat-profile-btn" onClick={onClick}>
+    <button
+      className={`${
+        activeChatId === id ? "active-chat-profile-btn" : ""
+      } chat-profile-btn`}
+      onClick={onClick}
+    >
       <div className="chat-profile-wrapper">
         <div className="chat-profile-avatar">
           <Avatar size={3} />
@@ -11,7 +19,7 @@ const ChatProfileButton = ({ onClick, name, date, text }) => {
         <div className="chat-profile-info-wrapper">
           <div className="chat-profile-info">
             <h3>{name}</h3>
-            <span>{date}</span>
+            <span>{formattedDate.date}</span>
           </div>
           <p>{text}</p>
         </div>

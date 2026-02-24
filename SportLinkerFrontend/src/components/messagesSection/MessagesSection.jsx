@@ -65,7 +65,11 @@ const MessagesSection = () => {
 
   return (
     <div className="message-section-wrapper">
-      <ChatSidebar chatPeople={chatPeople} onChatSelect={setActiveChatId} />
+      <ChatSidebar
+        chatPeople={chatPeople}
+        onChatSelect={setActiveChatId}
+        activeChatId={activeChatId}
+      />
       <Conversation chatId={activeChatId} />
     </div>
   );
