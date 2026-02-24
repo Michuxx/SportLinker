@@ -1,4 +1,4 @@
-namespace SportLinkerBackend
+namespace API
 {
     public class WeatherForecast
     {
