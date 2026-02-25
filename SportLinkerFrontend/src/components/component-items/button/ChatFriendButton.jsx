@@ -1,10 +1,15 @@
-import useDateFormat from "../../../hooks/useDateFormat";
+import useDifferenceDates from "../../../hooks/useDifferenceDates";
 import Avatar from "../avatar/Avatar";
 import OnlineDot from "../avatar/OnlineDot";
 import "./chatFriendButton.css";
 
 const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
-  const formattedDate = useDateFormat(date);
+  const formattedDate = useDifferenceDates(date);
+
+  const formattedDateText =
+    formattedDate !== 0
+      ? `Ostatnio ${formattedDate} dni temu`
+      : `Ostatnio dzisiaj online`;
 
   return (
     <button className="chat-friend-btn" onClick={onClick}>
@@ -15,9 +20,7 @@ const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
         <div className="chat-friend-info-wrapper">
           <div className="chat-friend-info">
             <h3>{name}</h3>
-            <span>
-              {isOnline ? `Online` : `Ostatnio: ${formattedDate.date} dni temu`}
-            </span>
+            <span>{isOnline ? `Online` : formattedDateText}</span>
           </div>
         </div>
       </div>

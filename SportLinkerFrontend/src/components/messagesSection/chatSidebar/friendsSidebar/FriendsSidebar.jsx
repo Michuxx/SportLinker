@@ -7,6 +7,7 @@ const FriendsSidebar = () => {
     <div className="friends-sidebar-wrapper">
       {chatPeople.friends.map((friend) => (
         <ChatFriendButton
+          key={friend.id}
           name={friend.name}
           date={friend.lastTimeOnline}
           isOnline={friend.isOnline}

@@ -58,7 +58,7 @@ const MessagesSection = () => {
         id: 9,
         name: "Piotr Zieliński",
         isOnline: false,
-        lastTimeOnline: "2026-01-22T18:00",
+        lastTimeOnline: "2026-02-25T18:00",
       },
     ],
   });
