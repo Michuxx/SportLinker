@@ -1,5 +1,6 @@
 import useDateFormat from "../../../hooks/useDateFormat";
 import Avatar from "../avatar/Avatar";
+import OnlineAvatar from "../avatar/OnlineAvatar";
 import OnlineDot from "../avatar/OnlineDot";
 import "./chatConversationButton.css";
 
@@ -23,7 +24,7 @@ const ChatConversationButton = ({
     >
       <div className="chat-profile-wrapper">
         <div className="chat-profile-avatar">
-          <Avatar size={3} />
+          <OnlineAvatar size={3} isOnline={isOnline} />
         </div>
         <div className="chat-profile-info-wrapper">
           <div className="chat-profile-info">
@@ -33,7 +34,6 @@ const ChatConversationButton = ({
           <p>{text}</p>
         </div>
       </div>
-      {isOnline && <OnlineDot />}
     </button>
   );
 };
