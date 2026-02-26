@@ -12,6 +12,7 @@ const MessagesSection = () => {
         type: "private",
         name: "Maciek",
         isOnline: true,
+        lastTimeOnline: "2024-03-22T18:00",
         lastMessage: {
           name: "Kamil",
           text: "Świetnie! Do zobaczenia jutro kolego",
@@ -23,6 +24,7 @@ const MessagesSection = () => {
         type: "private",
         name: "Martuuusia",
         isOnline: false,
+        lastTimeOnline: "2024-03-22T18:00",
         lastMessage: {
           name: "Martuuusia",
           text: "Lovjuuuu",
@@ -34,6 +36,7 @@ const MessagesSection = () => {
         type: "group",
         name: "Szukam osób do koszykówki",
         isOnline: false,
+        lastTimeOnline: "2024-03-22T18:00",
         lastMessage: {
           name: "Robert",
           text: "Co ja robię tuuuu",

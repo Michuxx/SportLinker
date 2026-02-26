@@ -57,6 +57,12 @@
   width: 1rem;
   height: 1rem;
   border: 2px solid #fff;
-  left: 3.3rem;
-  bottom: 0.9rem;
+  bottom: 0;
+  right: 0;
+  transform: translate(5%, 5%);
+}
+
+.online-avatar-wrapper {
+  display: inline-block;
+  position: relative;
 }

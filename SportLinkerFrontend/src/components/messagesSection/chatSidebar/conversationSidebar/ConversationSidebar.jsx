@@ -18,6 +18,7 @@ const ConversationSidebar = () => {
               id: conversation.id,
               name: conversation.name,
               isOnline: conversation.isOnline,
+              lastTimeOnline: conversation.lastTimeOnline,
             })
           }
           isOnline={conversation.isOnline}
