@@ -10,4 +10,14 @@
   width: 100%;
   background-color: #fff;
   padding: 1rem;
+  gap: 0.75rem;
+}
+
+.user-info-header-wrapper h3 {
+  color: rgb(17 24 39);
+}
+.user-info-header-wrapper span {
+  color: rgb(75 85 99);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }

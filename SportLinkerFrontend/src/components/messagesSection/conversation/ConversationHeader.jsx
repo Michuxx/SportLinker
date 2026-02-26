@@ -13,7 +13,7 @@ const ConversationHeader = ({ chatUser }) => {
   return (
     <div className="conversation-header-wrapper">
       <OnlineAvatar size={3} isOnline={chatUser.isOnline} />
-      <div className="user-info-wrapper">
+      <div className="user-info-header-wrapper">
         <h3>{chatUser.name}</h3>
         <span>{chatUser.isOnline ? "Online" : formattedDateText}</span>
       </div>
