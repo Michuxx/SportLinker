@@ -2,7 +2,6 @@ import { NavLink, Outlet } from "react-router";
 import UserProfileContent from "./userProfileContent/UserProfileContent";
 import "./userPanelSection.css";
 import { LuUser } from "react-icons/lu";
-import { GrNotes } from "react-icons/gr";
 import { FiMail } from "react-icons/fi";
 import { LuMailQuestion } from "react-icons/lu";
 import Navbar from "../component-items/navbar/Navbar";

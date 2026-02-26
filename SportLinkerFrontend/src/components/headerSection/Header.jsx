@@ -13,6 +13,8 @@ import AuthModal from "../authModal/AuthModal.jsx";
 import { LuLogIn } from "react-icons/lu";
 import { CgUserAdd } from "react-icons/cg";
 import { CiLogout } from "react-icons/ci";
+import { TiMessages } from "react-icons/ti";
+import { FiSettings } from "react-icons/fi";
 
 const Header = () => {
   let navigate = useNavigate();
@@ -44,16 +46,19 @@ const Header = () => {
       style: "classicDropdownOptionButton",
       onClick: () => changeLocation("/profile/userInfo"),
       text: "Mój profil",
+      icon: <LuUser size={22} />,
     },
     {
       style: "classicDropdownOptionButton",
       onClick: () => changeLocation("/settings/account"),
       text: "Ustawienia",
+      icon: <FiSettings size={22} />,
     },
     {
       style: "classicDropdownOptionButton",
       onClick: () => changeLocation("/messages/conversations"),
       text: "Wiadomości",
+      icon: <TiMessages size={22} />,
     },
     {
       style: "logoutDropdownOptionButton",
