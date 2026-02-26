@@ -50,4 +50,16 @@
 }
 
 .null-conversation-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.5rem;
+  color: rgb(107 114 128);
+}
+
+.null-conversation-wrapper span {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
