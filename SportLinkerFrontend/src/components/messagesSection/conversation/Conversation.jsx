@@ -2,6 +2,8 @@ import { useState } from "react";
 import "./conversation.css";
 import NullConversation from "./NullConversation";
 import ConversationHeader from "./ConversationHeader";
+import ConversationContent from "./ConversationContent";
+import ConversationChatBar from "./ConversationChatBar";
 
 const Conversation = ({ chatUser }) => {
   const [messages, setMessages] = useState([
@@ -34,6 +36,8 @@ const Conversation = ({ chatUser }) => {
       ) : (
         <>
           <ConversationHeader chatUser={chatUser} />
+          <ConversationContent />
+          <ConversationChatBar />
         </>
       )}
     </div>

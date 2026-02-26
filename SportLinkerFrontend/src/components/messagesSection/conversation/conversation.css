@@ -21,3 +21,12 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
+
+.conversation-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+}
+
+.null-conversation-wrapper {
+}
