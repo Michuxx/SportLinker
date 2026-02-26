@@ -4,7 +4,7 @@ import Conversation from "./conversation/Conversation";
 import "./messagesSection.css";
 
 const MessagesSection = () => {
-  const [activeChatId, setActiveChatId] = useState(null);
+  const [activeChat, setActiveChat] = useState(null);
   const [chatPeople, setChatPeople] = useState({
     conversations: [
       {
@@ -67,10 +67,10 @@ const MessagesSection = () => {
     <div className="message-section-wrapper">
       <ChatSidebar
         chatPeople={chatPeople}
-        onChatSelect={setActiveChatId}
-        activeChatId={activeChatId}
+        onChatSelect={setActiveChat}
+        activeChat={activeChat}
       />
-      <Conversation chatId={activeChatId} />
+      <Conversation chatUser={activeChat} />
     </div>
   );
 };

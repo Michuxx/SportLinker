@@ -3,7 +3,7 @@ import "./conversation.css";
 import NullConversation from "./NullConversation";
 import ConversationHeader from "./ConversationHeader";
 
-const Conversation = ({ chatId }) => {
+const Conversation = ({ chatUser }) => {
   const [messages, setMessages] = useState([
     {
       id: "msg_1", // Unikalne ID (niezbędne dla atrybutu "key" przy mapowaniu w React)
@@ -29,11 +29,11 @@ const Conversation = ({ chatId }) => {
   ]);
   return (
     <div className="conversation-wrapper">
-      {!chatId ? (
+      {!chatUser?.id ? (
         <NullConversation />
       ) : (
         <>
-          <ConversationHeader />
+          <ConversationHeader chatUser={chatUser} />
         </>
       )}
     </div>

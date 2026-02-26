@@ -6,7 +6,7 @@ import { GoPeople } from "react-icons/go";
 import { IoSearchOutline } from "react-icons/io5";
 import Input from "../../component-items/input/Input";
 
-const ChatSidebar = ({ chatPeople, onChatSelect, activeChatId }) => {
+const ChatSidebar = ({ chatPeople, onChatSelect, activeChat }) => {
   return (
     <div className="chat-sidebar-wrapper">
       <div className="chat-switcher">
@@ -56,7 +56,7 @@ const ChatSidebar = ({ chatPeople, onChatSelect, activeChatId }) => {
           width={100}
         />
       </div>
-      <Outlet context={{ chatPeople, onChatSelect, activeChatId }} />
+      <Outlet context={{ chatPeople, onChatSelect, activeChat }} />
     </div>
   );
 };

@@ -1,13 +1,13 @@
 import OnlineAvatar from "../../component-items/avatar/OnlineAvatar";
 import "./conversation.css";
 
-const ConversationHeader = ({ name, isOnline, lastActivityText }) => {
+const ConversationHeader = ({ chatUser }) => {
   return (
     <div className="conversation-header-wrapper">
-      <OnlineAvatar size={2} isOnline={isOnline} />
+      <OnlineAvatar size={2} isOnline={chatUser.isOnline} />
       <div className="user-info-wrapper">
-        <h3>{name}</h3>
-        {lastActivityText}
+        <h3>{chatUser.name}</h3>
+        {chatUser.lastActivityText}
       </div>
     </div>
   );
