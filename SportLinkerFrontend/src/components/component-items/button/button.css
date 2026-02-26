@@ -495,3 +495,21 @@ button {
 .filterClearButton:hover {
   color: rgb(37 99 235);
 }
+
+.sendMessageButton {
+  border-radius: 9999px;
+  padding: 0.5rem;
+  background: linear-gradient(to right, #3b82f6, #4f46e5);
+  color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.sendMessageButton:hover {
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+  filter: brightness(1.1);
+}
+
+.sendMessageButton:active {
+  transform: translateY(0) scale(0.95);
+  box-shadow: 0 2px 5px rgba(79, 70, 229, 0.4);
+}
