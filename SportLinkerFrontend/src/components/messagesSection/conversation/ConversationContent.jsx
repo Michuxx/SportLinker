@@ -10,7 +10,7 @@ const ConversationContent = ({ messages }) => {
           <p>Napisz pierwszy</p>
         </div>
       ) : (
-        messages.map((message) => <Message />)
+        messages.map((message) => <Message message={message} />)
       )}
     </div>
   );
