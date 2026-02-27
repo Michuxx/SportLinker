@@ -74,6 +74,18 @@ const Conversation = ({ chatUser }) => {
 
   const [messages, setMessages] = useState([]);
 
+  const sendMessage = (message) => {
+    const newMessage = {
+      id: 9000,
+      senderName: "Kamil",
+      text: message,
+      timestamp: new Date().toISOString(),
+      isOwnMessage: true,
+    };
+
+    setMessages((prev) => [...prev, newMessage]);
+  };
+
   useEffect(() => {
     if (chatUser?.id) {
       //Endpoint to get messages
@@ -92,7 +104,7 @@ const Conversation = ({ chatUser }) => {
         <>
           <ConversationHeader chatUser={chatUser} />
           <ConversationContent messages={messages} />
-          <ConversationChatBar />
+          <ConversationChatBar sendMessage={sendMessage} />
         </>
       )}
     </div>
