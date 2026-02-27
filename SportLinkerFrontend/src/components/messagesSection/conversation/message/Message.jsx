@@ -14,7 +14,7 @@ const Message = ({ message }) => {
         <Avatar size={2} />
       </div>
       <div className="message-info-wrapper">
-        <p>{message.senderName}</p>
+        <p>{`${message.isOwnMessage ? "Ja" : message.senderName}`}</p>
         <div className="message-content">
           <p>{message.text}</p>
           <div className="message-date">
