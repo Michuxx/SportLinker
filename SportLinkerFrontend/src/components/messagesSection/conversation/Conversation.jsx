@@ -6,7 +6,7 @@ import ConversationContent from "./ConversationContent";
 import ConversationChatBar from "./ConversationChatBar";
 
 const Conversation = ({ chatUser }) => {
-  const [messages, setMessages] = useState([
+  const DUMMY_MESSAGES = [
     {
       id: "msg_1", // Unikalne ID (niezbędne dla atrybutu "key" przy mapowaniu w React)
       senderName: "Jan Kowalski",
@@ -70,11 +70,18 @@ const Conversation = ({ chatUser }) => {
       timestamp: "2026-02-26T10:17:48.000Z",
       isOwnMessage: false,
     },
-  ]);
+  ];
+
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    //Endpoint to get messages
-    setMessages([]);
+    if (chatUser?.id) {
+      //Endpoint to get messages
+      setMessages(DUMMY_MESSAGES);
+    } else {
+      // will be creating conversation but not in the db. After a first message, a conversation will be created.
+      setMessages([]);
+    }
   }, [chatUser]);
 
   return (
