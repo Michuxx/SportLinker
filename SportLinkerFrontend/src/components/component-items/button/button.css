@@ -513,3 +513,18 @@ button {
   transform: translateY(0) scale(0.95);
   box-shadow: 0 2px 5px rgba(79, 70, 229, 0.4);
 }
+
+.popupSettingsButton {
+  background-color: transparent;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.popupSettingsButton:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.popupSettingsButton:active {
+  background-color: rgba(0, 0, 0, 0.12);
+}

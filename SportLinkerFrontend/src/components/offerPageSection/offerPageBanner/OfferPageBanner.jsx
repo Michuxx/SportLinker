@@ -7,7 +7,7 @@ import { MdClose } from "react-icons/md";
 import { MdOutlineAccessTime } from "react-icons/md";
 import { BsDoorOpenFill } from "react-icons/bs";
 import ModalBackground from "../../component-items/modal/ModalBackground";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import WarningModal from "../../warningModal/WarningModal";
 
 const OfferPageBanner = ({
@@ -19,6 +19,11 @@ const OfferPageBanner = ({
 }) => {
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
   const [leaveModalText, setLeaveModalText] = useState("");
+  const scrollRef = useRef(false);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "auto" });
+  }, []);
 
   const openLeaveModal = () => {
     setLeaveModalText("Czy na pewno chcesz opuścić ofertę?");
@@ -92,7 +97,7 @@ const OfferPageBanner = ({
   };
 
   return (
-    <div className="offer-banner-container">
+    <div className="offer-banner-container" ref={scrollRef}>
       <div className="offer-btn-tag-wrapper">
         <OfferPageTags
           sport={offerData.sport}

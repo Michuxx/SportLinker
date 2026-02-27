@@ -1,6 +1,8 @@
 import useDifferenceDates from "../../../hooks/useDifferenceDates";
 import OnlineAvatar from "../avatar/OnlineAvatar";
+import Button from "./button";
 import "./chatFriendButton.css";
+import { HiDotsVertical } from "react-icons/hi";
 
 const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
   const formattedDate = useDifferenceDates(date);
@@ -23,6 +25,8 @@ const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
           </div>
         </div>
       </div>
+
+      <Button style="popupSettingsButton" Icon={<HiDotsVertical size={18} />} />
     </button>
   );
 };

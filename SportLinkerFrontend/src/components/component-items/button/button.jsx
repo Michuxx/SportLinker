@@ -40,6 +40,7 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     filterAdvancedButton: "filterAdvancedButton",
     filterClearButton: "filterClearButton",
     sendMessageButton: "sendMessageButton",
+    popupSettingsButton: "popupSettingsButton",
   };
 
   const buttonStyle = buttonType[style];
