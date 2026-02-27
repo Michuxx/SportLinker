@@ -3,7 +3,9 @@ import "./message.css";
 
 const Message = ({ message }) => {
   return (
-    <div className="message-wrapper">
+    <div
+      className={`message-wrapper ${message.isOwnMessage ? "own-message" : ""}`}
+    >
       <div className="avatar-message-wrapper">
         <Avatar size={2} />
       </div>
