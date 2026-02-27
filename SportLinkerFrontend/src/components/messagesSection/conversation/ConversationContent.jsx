@@ -1,7 +1,18 @@
 import "./conversation.css";
 import Message from "./message/Message";
+import React, { useEffect, useRef } from "react";
 
 const ConversationContent = ({ messages }) => {
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <div className="conversation-content-wrapper">
       {messages.length === 0 ? (
@@ -12,6 +23,7 @@ const ConversationContent = ({ messages }) => {
       ) : (
         messages.map((message) => <Message message={message} />)
       )}
+      <div ref={messagesEndRef}></div>
     </div>
   );
 };

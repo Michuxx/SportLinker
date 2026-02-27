@@ -59,7 +59,7 @@ const Conversation = ({ chatUser }) => {
     {
       id: "msg_2",
       senderName: "Kamil",
-      text: "Cześć, Jan! Middleware to warstwy, przez które przechodzi żądanie HTTP, zanim dotrze do endpointu.",
+      text: "Cześć, Jan! Middleware to warstwy, przez które przechodzi żądanie HTTP, zanim dotrze do endpointu. Jak długi będzie teskt jak sie zawienie tescik, tralalalalalalalalal",
       timestamp: "2026-02-26T10:16:30.000Z",
       isOwnMessage: true,
     },

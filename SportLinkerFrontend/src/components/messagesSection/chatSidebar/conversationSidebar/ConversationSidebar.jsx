@@ -18,6 +18,7 @@ const ConversationSidebar = () => {
             onChatSelect({
               id: conversation.id,
               name: conversation.name,
+              type: conversation.type,
               isOnline: conversation.isOnline,
               lastTimeOnline: conversation.lastTimeOnline,
             })

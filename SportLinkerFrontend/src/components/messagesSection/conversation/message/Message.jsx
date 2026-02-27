@@ -4,7 +4,6 @@ import "./message.css";
 
 const Message = ({ message }) => {
   const formattedDate = useDateFormat(message.timestamp);
-  console.log(formattedDate);
 
   return (
     <div
