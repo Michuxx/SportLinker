@@ -2,7 +2,7 @@ import { useOutletContext } from "react-router";
 import ChatFriendButton from "../../../component-items/button/ChatFriendButton";
 
 const FriendsSidebar = () => {
-  const { chatPeople, onChatSelect } = useOutletContext();
+  const { chatPeople, setActiveChatFromFriends } = useOutletContext();
   return (
     <div className="friends-sidebar-wrapper">
       {chatPeople.friends.map((friend) => (
@@ -11,6 +11,7 @@ const FriendsSidebar = () => {
           name={friend.name}
           date={friend.lastTimeOnline}
           isOnline={friend.isOnline}
+          onClick={() => setActiveChatFromFriends(friend)}
         />
       ))}
     </div>

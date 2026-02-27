@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./conversation.css";
 import NullConversation from "./NullConversation";
 import ConversationHeader from "./ConversationHeader";
@@ -71,9 +71,15 @@ const Conversation = ({ chatUser }) => {
       isOwnMessage: false,
     },
   ]);
+
+  useEffect(() => {
+    //Endpoint to get messages
+    setMessages([]);
+  }, [chatUser]);
+
   return (
     <div className="conversation-wrapper">
-      {!chatUser?.id ? (
+      {!chatUser ? (
         <NullConversation />
       ) : (
         <>
