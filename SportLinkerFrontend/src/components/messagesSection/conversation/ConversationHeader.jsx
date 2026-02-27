@@ -12,6 +12,21 @@ const ConversationHeader = ({ chatUser }) => {
       ? `Ostatnio aktywny ${formattedDate} dni temu`
       : `Ostatnio dzisiaj online`;
 
+  const conversationDropdown = [
+    {
+      style: "classicDropdownOptionButton",
+      // onClick: () => changeLocation("/profile/userInfo"),
+      text: "Uczestnicy",
+      // icon: <LuUser size={22} />,
+    },
+    {
+      style: "logoutDropdownOptionButton",
+      // onClick: () => changeLocation("/"),
+      text: "Zablokuj",
+      // icon: <CiLogout size={22} />,
+    },
+  ];
+
   return (
     <div className="conversation-header-wrapper">
       <div className="avatar-info-wrapper">
