@@ -1,7 +1,11 @@
+import useDateFormat from "../../../../hooks/useDateFormat";
 import Avatar from "../../../component-items/avatar/Avatar";
 import "./message.css";
 
 const Message = ({ message }) => {
+  const formattedDate = useDateFormat(message.timestamp);
+  console.log(formattedDate);
+
   return (
     <div
       className={`message-wrapper ${message.isOwnMessage ? "own-message" : ""}`}
@@ -14,7 +18,7 @@ const Message = ({ message }) => {
         <div className="message-content">
           <p>{message.text}</p>
           <div className="message-date">
-            <span>{message.timestamp}</span>
+            <span>{`${formattedDate.date} ${formattedDate.time}`}</span>
           </div>
         </div>
       </div>
