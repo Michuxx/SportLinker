@@ -1,10 +1,16 @@
+import { useCallback, useEffect, useRef, useState } from "react";
 import useDifferenceDates from "../../../hooks/useDifferenceDates";
 import OnlineAvatar from "../avatar/OnlineAvatar";
+import Dropdown from "../dropdown/Dropdown";
 import Button from "./button";
 import "./chatFriendButton.css";
 import { HiDotsVertical } from "react-icons/hi";
+import { FiFlag } from "react-icons/fi";
 
 const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
+  const [isFriendDropdownOpen, setIsFriendDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const formattedDate = useDifferenceDates(date);
 
   const formattedDateText =
@@ -12,8 +18,42 @@ const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
       ? `Ostatnio aktywny ${formattedDate} dni temu`
       : `Ostatnio dzisiaj online`;
 
+  const friendDropdownOptions = [
+    {
+      style: "classicDropdownOptionButton",
+      onClick: () => setIsParticipantsModalOpen(true),
+      text: "Usuń znajomego",
+      // icon: <GrGroup size={22} />,
+    },
+    {
+      style: "logoutDropdownOptionButton",
+      // onClick: () => changeLocation("/"),
+      text: "Zgłoś",
+      icon: <FiFlag size={22} />,
+    },
+  ];
+
+  const handleClickOutside = useCallback((event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsFriendDropdownOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClickOutside]);
+
   return (
-    <button className="chat-friend-btn" onClick={onClick}>
+    <div
+      className="chat-friend-btn"
+      role="button"
+      tabIndex={0}
+      onClick={onClick}
+      ref={dropdownRef}
+    >
       <div className="chat-friend-wrapper">
         <div className="chat-friend-avatar">
           <OnlineAvatar size={3} isOnline={isOnline} />
@@ -25,9 +65,25 @@ const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
           </div>
         </div>
       </div>
+      <Button
+        style="popupSettingsButton"
+        Icon={<HiDotsVertical size={18} />}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsFriendDropdownOpen(true);
+        }}
+      />
 
-      <Button style="popupSettingsButton" Icon={<HiDotsVertical size={18} />} />
-    </button>
+      {isFriendDropdownOpen && (
+        <div className="friend-dropdown">
+          <Dropdown
+            options={friendDropdownOptions}
+            textKey="text"
+            isScrollable={false}
+          />
+        </div>
+      )}
+    </div>
   );
 };
 

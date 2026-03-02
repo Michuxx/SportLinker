@@ -517,7 +517,7 @@ button {
 .popupSettingsButton {
   background-color: transparent;
   padding: 8px;
-  border-radius: 50%;
+  border-radius: 99999px;
   transition: background-color 0.2s ease;
 }
 

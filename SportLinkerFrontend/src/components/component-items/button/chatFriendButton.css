@@ -8,6 +8,7 @@
   border-radius: 0;
   border-left: 4px solid transparent;
   position: relative;
+  cursor: pointer;
 }
 
 .chat-friend-btn:hover {
@@ -40,6 +41,7 @@
 }
 
 .chat-friend-info h3 {
+  font-size: 1rem;
   text-align: left;
 }
 
@@ -48,4 +50,11 @@
   line-height: 1rem;
   color: rgb(107 114 128);
   text-align: left;
+}
+
+.friend-dropdown {
+  position: absolute;
+  right: 0;
+  top: 4rem;
+  z-index: 11;
 }
