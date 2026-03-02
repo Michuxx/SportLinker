@@ -5,7 +5,7 @@ import "./friendInvitation.css";
 import { FaCheck } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 
-const FriendInvitation = ({ invitation }) => {
+const FriendInvitation = ({ invitation, cancelInvitation }) => {
   const formattedDate = useDateFormat(invitation.date);
 
   return (
@@ -14,14 +14,18 @@ const FriendInvitation = ({ invitation }) => {
         <Avatar size={3} image={invitation.img} />
         <div className="friend-invitation-info">
           <h3>{invitation.name}</h3>
-          <p>Wysłano {formattedDate.date}</p>
+          <p>Wysłał zaproszenie {formattedDate.date}</p>
         </div>
       </div>
       <div className="friend-invitation-btn">
         <Button style="classicGreenButton" Icon={<FaCheck size={24} />}>
           Akceptuj
         </Button>
-        <Button style="classicRedButton" Icon={<MdClose size={24} />}>
+        <Button
+          style="classicRedButton"
+          Icon={<MdClose size={24} />}
+          onClick={() => cancelInvitation(invitation.id)}
+        >
           Odrzuć
         </Button>
       </div>

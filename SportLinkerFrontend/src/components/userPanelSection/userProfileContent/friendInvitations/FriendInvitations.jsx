@@ -27,10 +27,17 @@ const FriendInvitations = () => {
     },
   ]);
 
+  const cancelInvitation = (id) => {
+    setFriendInvitations((prev) => [...prev.filter((inv) => inv.id !== id)]);
+  };
+
   return (
     <div className="friend-invitations-wrapper">
       {friendInvitations.map((invitation) => (
-        <FriendInvitation invitation={invitation} />
+        <FriendInvitation
+          invitation={invitation}
+          cancelInvitation={cancelInvitation}
+        />
       ))}
     </div>
   );
