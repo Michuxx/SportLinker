@@ -1,6 +1,7 @@
 import { useState } from "react";
 import FriendInvitation from "./friendInvitation/FriendInvitation";
 import "./friendInvitations.css";
+import NullFriends from "./nullFriends/NullFriends";
 
 const FriendInvitations = () => {
   const [friendInvitations, setFriendInvitations] = useState([
@@ -33,12 +34,16 @@ const FriendInvitations = () => {
 
   return (
     <div className="friend-invitations-wrapper">
-      {friendInvitations.map((invitation) => (
-        <FriendInvitation
-          invitation={invitation}
-          cancelInvitation={cancelInvitation}
-        />
-      ))}
+      {friendInvitations?.length <= 0 ? (
+        <NullFriends />
+      ) : (
+        friendInvitations.map((invitation) => (
+          <FriendInvitation
+            invitation={invitation}
+            cancelInvitation={cancelInvitation}
+          />
+        ))
+      )}
     </div>
   );
 };
