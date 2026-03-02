@@ -11,6 +11,7 @@ import ReportSettings from "./components/settingsSection/reportSettings/ReportSe
 import Messages from "./components/Pages/Messages";
 import FriendsSidebar from "./components/messagesSection/chatSidebar/friendsSidebar/FriendsSidebar";
 import ConversationSidebar from "./components/messagesSection/chatSidebar/conversationSidebar/ConversationSidebar";
+import FriendInvitations from "./components/userPanelSection/userProfileContent/friendInvitations/FriendInvitations";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="userInfo" element={<UserInfo />} />
         <Route path="foreignInvitations" element={<ForeignInvitations />} />
         <Route path="offerStatuses" element={<OfferStatuses />} />
+        <Route path="friendInvitations" element={<FriendInvitations />} />
       </Route>
       <Route path="/offer/:id" element={<Offer />} />
       <Route path="settings" element={<Settings />}>

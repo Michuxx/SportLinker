@@ -9,8 +9,6 @@ import { MdPersonRemove } from "react-icons/md";
 const FriendsSidebar = () => {
   const { chatPeople, setActiveChatFromFriends } = useOutletContext();
 
-  // ZMIANA 1: Zamiast true/false, przechowujemy dane znajomego do usunięcia.
-  // Jeśli jest null, modal się nie wyświetla.
   const [friendToRemove, setFriendToRemove] = useState(null);
 
   return (

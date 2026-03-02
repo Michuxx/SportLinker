@@ -4,6 +4,7 @@ import "./userPanelSection.css";
 import { LuUser } from "react-icons/lu";
 import { FiMail } from "react-icons/fi";
 import { LuMailQuestion } from "react-icons/lu";
+import { MdGroupAdd } from "react-icons/md";
 import Navbar from "../component-items/navbar/Navbar";
 
 const UserPanelSection = () => {
@@ -53,6 +54,21 @@ const UserPanelSection = () => {
           <div className="user-menu-option-wrapper">
             <LuMailQuestion size={24} />
             Twoje Prośby o dołączenie
+          </div>
+        </NavLink>
+        <NavLink
+          to="friendInvitations"
+          className={({ isActive }) =>
+            `nav-user-menu-option ${
+              isActive
+                ? "active-nav-user-menu-option"
+                : "inactive-nav-user-menu-option"
+            }`
+          }
+        >
+          <div className="user-menu-option-wrapper">
+            <MdGroupAdd size={24} />
+            Zaproszenia do znajomych
           </div>
         </NavLink>
       </Navbar>
