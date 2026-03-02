@@ -1,4 +1,6 @@
 import { useState } from "react";
+import FriendInvitation from "./friendInvitation/FriendInvitation";
+import "./friendInvitations.css";
 
 const FriendInvitations = () => {
   const [friendInvitations, setFriendInvitations] = useState([
@@ -25,7 +27,13 @@ const FriendInvitations = () => {
     },
   ]);
 
-  return <div className="friend-invitations-wrapper"></div>;
+  return (
+    <div className="friend-invitations-wrapper">
+      {friendInvitations.map((invitation) => (
+        <FriendInvitation invitation={invitation} />
+      ))}
+    </div>
+  );
 };
 
 export default FriendInvitations;
