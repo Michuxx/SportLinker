@@ -10,6 +10,7 @@
   width: 100%;
   background-color: #fff;
   justify-content: space-between;
+  position: relative;
 }
 
 .avatar-info-wrapper {
@@ -85,4 +86,11 @@
   align-items: center;
   justify-content: center;
   margin-right: 1rem;
+}
+
+.conversation-dropdown {
+  position: absolute;
+  z-index: 11;
+  right: 1rem;
+  top: 4rem;
 }

@@ -1,10 +1,29 @@
+import { useCallback, useEffect, useRef, useState } from "react";
 import useDifferenceDates from "../../../hooks/useDifferenceDates";
 import OnlineAvatar from "../../component-items/avatar/OnlineAvatar";
 import Button from "../../component-items/button/button";
 import "./conversation.css";
 import { HiDotsHorizontal } from "react-icons/hi";
+import Dropdown from "../../component-items/dropdown/Dropdown";
 
 const ConversationHeader = ({ chatUser }) => {
+  const [isOpenChatDropdown, setIsOpenChatDropdown] = useState(false);
+
+  const handleClickOutside = useCallback((event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpenChatDropdown(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClickOutside]);
+
+  const dropdownRef = useRef(null);
+
   const formattedDate = useDifferenceDates(chatUser.lastTimeOnline);
 
   const formattedDateText =
@@ -12,7 +31,22 @@ const ConversationHeader = ({ chatUser }) => {
       ? `Ostatnio aktywny ${formattedDate} dni temu`
       : `Ostatnio dzisiaj online`;
 
-  const conversationDropdown = [
+  const privateConversationDropdown = [
+    {
+      style: "classicDropdownOptionButton",
+      // onClick: () => changeLocation("/"),
+      text: "Zablokuj",
+      // icon: <CiLogout size={22} />,
+    },
+    {
+      style: "logoutDropdownOptionButton",
+      // onClick: () => changeLocation("/"),
+      text: "Zgłoś",
+      // icon: <CiLogout size={22} />,
+    },
+  ];
+
+  const groupConversationDropdown = [
     {
       style: "classicDropdownOptionButton",
       // onClick: () => changeLocation("/profile/userInfo"),
@@ -22,13 +56,13 @@ const ConversationHeader = ({ chatUser }) => {
     {
       style: "logoutDropdownOptionButton",
       // onClick: () => changeLocation("/"),
-      text: "Zablokuj",
+      text: "Zgłoś",
       // icon: <CiLogout size={22} />,
     },
   ];
 
   return (
-    <div className="conversation-header-wrapper">
+    <div className="conversation-header-wrapper" ref={dropdownRef}>
       <div className="avatar-info-wrapper">
         <OnlineAvatar size={3} isOnline={chatUser.isOnline} />
         <div className="user-info-header-wrapper">
@@ -42,8 +76,22 @@ const ConversationHeader = ({ chatUser }) => {
         <Button
           style="popupSettingsButton"
           Icon={<HiDotsHorizontal size={25} />}
+          onClick={() => setIsOpenChatDropdown(true)}
         />
       </div>
+      {isOpenChatDropdown && (
+        <div className="conversation-dropdown">
+          <Dropdown
+            options={
+              chatUser.type === "private"
+                ? privateConversationDropdown
+                : groupConversationDropdown
+            }
+            textKey="text"
+            isScrollable={false}
+          />
+        </div>
+      )}
     </div>
   );
 };
