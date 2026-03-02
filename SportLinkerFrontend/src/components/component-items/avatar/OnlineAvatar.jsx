@@ -6,7 +6,7 @@ const OnlineAvatar = ({ isOnline, size }) => {
   return (
     <div className="online-avatar-wrapper">
       <Avatar size={size} />
-      {isOnline && <OnlineDot />}
+      {isOnline && <OnlineDot size={size} />}
     </div>
   );
 };

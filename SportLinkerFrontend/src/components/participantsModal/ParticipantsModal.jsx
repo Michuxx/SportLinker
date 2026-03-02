@@ -6,9 +6,11 @@ const ParticipantsModal = ({ participants }) => {
   return (
     <div className="patricipants-modal-wrapper">
       <ModalHeader title={"Uczestnicy konwersacji"} />
-      {participants.map((participant) => (
-        <ParticipantBlock participant={participant} />
-      ))}
+      <div className="participants-wrapper">
+        {participants.map((participant) => (
+          <ParticipantBlock participant={participant} key={participant.id} />
+        ))}
+      </div>
     </div>
   );
 };
