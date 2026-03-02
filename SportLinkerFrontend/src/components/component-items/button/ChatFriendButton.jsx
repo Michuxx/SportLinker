@@ -6,9 +6,14 @@ import Button from "./button";
 import "./chatFriendButton.css";
 import { HiDotsVertical } from "react-icons/hi";
 import { FiFlag } from "react-icons/fi";
+import { MdPersonRemove } from "react-icons/md";
+import WarningModal from "../../warningModal/WarningModal";
+import ModalBackground from "../modal/ModalBackground";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
   const [isFriendDropdownOpen, setIsFriendDropdownOpen] = useState(false);
+  const [isRemoveFriendModalOpen, setIsRemoveFriendModalOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const formattedDate = useDifferenceDates(date);
@@ -21,9 +26,9 @@ const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
   const friendDropdownOptions = [
     {
       style: "classicDropdownOptionButton",
-      onClick: () => setIsParticipantsModalOpen(true),
+      onClick: () => setIsRemoveFriendModalOpen(true),
       text: "Usuń znajomego",
-      // icon: <GrGroup size={22} />,
+      icon: <MdPersonRemove size={22} />,
     },
     {
       style: "logoutDropdownOptionButton",
@@ -75,13 +80,24 @@ const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
       />
 
       {isFriendDropdownOpen && (
-        <div className="friend-dropdown">
+        <div className="friend-dropdown" onClick={(e) => e.stopPropagation()}>
           <Dropdown
             options={friendDropdownOptions}
             textKey="text"
             isScrollable={false}
           />
         </div>
+      )}
+      {isRemoveFriendModalOpen && (
+        <ModalBackground closeModal={() => setIsRemoveFriendModalOpen(false)}>
+          <WarningModal
+            onCancel={() => setIsRemoveFriendModalOpen(false)}
+            mainIcon={<MdPersonRemove size={96} color="rgb(220 38 38)" />}
+            headline={`Czy na pewno chcesz usunąć ${name} z listy znajomych?`}
+            confirmText={"Tak, usuń"}
+            confirmIcon={<FaRegTrashAlt size={20} />}
+          />
+        </ModalBackground>
       )}
     </div>
   );
