@@ -11,9 +11,14 @@ import WarningModal from "../../warningModal/WarningModal";
 import ModalBackground from "../modal/ModalBackground";
 import { FaRegTrashAlt } from "react-icons/fa";
 
-const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
+const ChatFriendButton = ({
+  onClick,
+  name,
+  date,
+  isOnline,
+  openWarningModal,
+}) => {
   const [isFriendDropdownOpen, setIsFriendDropdownOpen] = useState(false);
-  const [isRemoveFriendModalOpen, setIsRemoveFriendModalOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const formattedDate = useDifferenceDates(date);
@@ -26,7 +31,10 @@ const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
   const friendDropdownOptions = [
     {
       style: "classicDropdownOptionButton",
-      onClick: () => setIsRemoveFriendModalOpen(true),
+      onClick: () => {
+        openWarningModal();
+        setIsFriendDropdownOpen(false);
+      },
       text: "Usuń znajomego",
       icon: <MdPersonRemove size={22} />,
     },
@@ -78,7 +86,6 @@ const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
           setIsFriendDropdownOpen(true);
         }}
       />
-
       {isFriendDropdownOpen && (
         <div className="friend-dropdown" onClick={(e) => e.stopPropagation()}>
           <Dropdown
@@ -87,17 +94,6 @@ const ChatFriendButton = ({ onClick, name, date, isOnline }) => {
             isScrollable={false}
           />
         </div>
-      )}
-      {isRemoveFriendModalOpen && (
-        <ModalBackground closeModal={() => setIsRemoveFriendModalOpen(false)}>
-          <WarningModal
-            onCancel={() => setIsRemoveFriendModalOpen(false)}
-            mainIcon={<MdPersonRemove size={96} color="rgb(220 38 38)" />}
-            headline={`Czy na pewno chcesz usunąć ${name} z listy znajomych?`}
-            confirmText={"Tak, usuń"}
-            confirmIcon={<FaRegTrashAlt size={20} />}
-          />
-        </ModalBackground>
       )}
     </div>
   );
