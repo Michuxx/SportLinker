@@ -2,8 +2,11 @@ import { useState } from "react";
 import ChatSidebar from "./chatSidebar/ChatSidebar";
 import Conversation from "./conversation/Conversation";
 import "./messagesSection.css";
+import { useNavigate } from "react-router";
 
 const MessagesSection = () => {
+  let navigate = useNavigate();
+
   const [activeChat, setActiveChat] = useState(null);
   const [chatPeople, setChatPeople] = useState({
     conversations: [
@@ -138,15 +141,26 @@ const MessagesSection = () => {
         type: existingConv.type,
         isOnline: existingConv.isOnline,
         lastTimeOnline: existingConv.lastTimeOnline,
+        participants: existingConv.participants,
       });
+      navigate("/messages/conversations");
     } else {
       const preNewConversation = {
         name: friend.name,
         type: "private",
         isOnline: friend.isOnline,
         lastTimeOnline: friend.lastTimeOnline,
+        participants: [
+          {
+            id: 19,
+            name: "Kamil",
+            isOnline: true,
+            lastTimeOnline: "2024-03-22T18:00",
+            // Your account
+          },
+          friend,
+        ],
       };
-
       setActiveChat(preNewConversation);
     }
   };

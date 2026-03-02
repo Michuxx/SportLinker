@@ -20,6 +20,7 @@ const ConversationSidebar = () => {
               type: conversation.type,
               isOnline: conversation.isOnline,
               lastTimeOnline: conversation.lastTimeOnline,
+              participants: conversation.participants,
             })
           }
           isOnline={conversation.isOnline}

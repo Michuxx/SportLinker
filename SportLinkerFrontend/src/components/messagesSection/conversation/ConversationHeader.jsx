@@ -8,9 +8,12 @@ import Dropdown from "../../component-items/dropdown/Dropdown";
 import { FiFlag } from "react-icons/fi";
 import { GrGroup } from "react-icons/gr";
 import { MdOutlineBlock } from "react-icons/md";
+import ModalBackground from "../../component-items/modal/ModalBackground";
+import ParticipantsModal from "../../participantsModal/ParticipantsModal";
 
 const ConversationHeader = ({ chatUser }) => {
   const [isOpenChatDropdown, setIsOpenChatDropdown] = useState(false);
+  const [isParticipantsModalOpen, setIsParticipantsModalOpen] = useState(false);
 
   const handleClickOutside = useCallback((event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -52,7 +55,7 @@ const ConversationHeader = ({ chatUser }) => {
   const groupConversationDropdown = [
     {
       style: "classicDropdownOptionButton",
-      // onClick: () => changeLocation("/profile/userInfo"),
+      onClick: () => setIsParticipantsModalOpen(true),
       text: "Uczestnicy",
       icon: <GrGroup size={22} />,
     },
@@ -94,6 +97,11 @@ const ConversationHeader = ({ chatUser }) => {
             isScrollable={false}
           />
         </div>
+      )}
+      {isParticipantsModalOpen && (
+        <ModalBackground closeModal={() => setIsParticipantsModalOpen(false)}>
+          <ParticipantsModal participants={chatUser.participants} />
+        </ModalBackground>
       )}
     </div>
   );
