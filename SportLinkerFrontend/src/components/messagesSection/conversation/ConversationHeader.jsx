@@ -5,6 +5,9 @@ import Button from "../../component-items/button/button";
 import "./conversation.css";
 import { HiDotsHorizontal } from "react-icons/hi";
 import Dropdown from "../../component-items/dropdown/Dropdown";
+import { FiFlag } from "react-icons/fi";
+import { GrGroup } from "react-icons/gr";
+import { MdOutlineBlock } from "react-icons/md";
 
 const ConversationHeader = ({ chatUser }) => {
   const [isOpenChatDropdown, setIsOpenChatDropdown] = useState(false);
@@ -36,13 +39,13 @@ const ConversationHeader = ({ chatUser }) => {
       style: "classicDropdownOptionButton",
       // onClick: () => changeLocation("/"),
       text: "Zablokuj",
-      // icon: <CiLogout size={22} />,
+      icon: <MdOutlineBlock size={22} />,
     },
     {
       style: "logoutDropdownOptionButton",
       // onClick: () => changeLocation("/"),
       text: "Zgłoś",
-      // icon: <CiLogout size={22} />,
+      icon: <FiFlag size={22} />,
     },
   ];
 
@@ -51,13 +54,13 @@ const ConversationHeader = ({ chatUser }) => {
       style: "classicDropdownOptionButton",
       // onClick: () => changeLocation("/profile/userInfo"),
       text: "Uczestnicy",
-      // icon: <LuUser size={22} />,
+      icon: <GrGroup size={22} />,
     },
     {
       style: "logoutDropdownOptionButton",
       // onClick: () => changeLocation("/"),
       text: "Zgłoś",
-      // icon: <CiLogout size={22} />,
+      icon: <FiFlag size={22} />,
     },
   ];
 
