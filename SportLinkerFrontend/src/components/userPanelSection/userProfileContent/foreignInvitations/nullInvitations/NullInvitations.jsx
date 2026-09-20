@@ -6,7 +6,7 @@ const NullInvitations = () => {
       <NullComponent
         icon="📨"
         title="Brak zaproszeń do twoich ofert"
-        text="Nie ma żadnych zaproszeń do twoich zamkniętych ofert"
+        text="Nie ma żadnych zaproszeń do twoich prywatnych ofert"
       ></NullComponent>
     </div>
   );

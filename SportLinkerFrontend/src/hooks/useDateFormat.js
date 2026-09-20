@@ -19,7 +19,11 @@ const useDateFormat = (dateISO) => {
       month: "2-digit",
       year: "numeric",
     }).format(dateObj);
-    const timePart = dateISO.split("T")[1]?.substring(0, 5);
+
+    const timePart = new Intl.DateTimeFormat("pl-PL", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(dateObj);
 
     return {
       date: datePart,

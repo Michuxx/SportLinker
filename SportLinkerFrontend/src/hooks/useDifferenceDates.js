@@ -7,29 +7,13 @@ const useDifferenceDates = (dateISO) => {
     const dateObj = new Date(dateISO);
     const todaysDate = new Date();
 
-    if (isNaN(dateObj.getTime())) {
-      return { date: "", time: "", weekday: "Błędna data" };
-    }
+    const diffInMs = todaysDate.getTime() - dateObj.getTime();
+    const diffInDay = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 
-    const weekday = new Intl.DateTimeFormat("pl-PL", {
-      weekday: "long",
-    }).format(dateObj);
-
-    const datePart = new Intl.DateTimeFormat("pl-PL", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }).format(dateObj);
-    const timePart = dateISO.split("T")[1]?.substring(0, 5);
-
-    return {
-      date: datePart,
-      time: timePart,
-      weekday: weekday,
-    };
+    return diffInDay;
   }, [dateISO]);
 
-  return formattedDate;
+  return formattedDate + 1;
 };
 
 export default useDifferenceDates;

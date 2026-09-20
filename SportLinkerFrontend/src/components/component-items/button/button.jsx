@@ -39,6 +39,8 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
     rejectButton: "rejectButton",
     filterAdvancedButton: "filterAdvancedButton",
     filterClearButton: "filterClearButton",
+    sendMessageButton: "sendMessageButton",
+    popupSettingsButton: "popupSettingsButton",
   };
 
   const buttonStyle = buttonType[style];

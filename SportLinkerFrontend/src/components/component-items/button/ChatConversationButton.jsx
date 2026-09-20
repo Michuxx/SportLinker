@@ -1,6 +1,5 @@
 import useDateFormat from "../../../hooks/useDateFormat";
-import Avatar from "../avatar/Avatar";
-import OnlineDot from "../avatar/OnlineDot";
+import OnlineAvatar from "../avatar/OnlineAvatar";
 import "./chatConversationButton.css";
 
 const ChatConversationButton = ({
@@ -8,7 +7,7 @@ const ChatConversationButton = ({
   name,
   date,
   text,
-  activeChatId,
+  activeChat,
   id,
   isOnline,
 }) => {
@@ -17,13 +16,13 @@ const ChatConversationButton = ({
   return (
     <button
       className={`${
-        activeChatId === id ? "active-chat-profile-btn" : ""
+        activeChat?.id === id ? "active-chat-profile-btn" : ""
       } chat-profile-btn`}
       onClick={onClick}
     >
       <div className="chat-profile-wrapper">
         <div className="chat-profile-avatar">
-          <Avatar size={3} />
+          <OnlineAvatar size={3} isOnline={isOnline} />
         </div>
         <div className="chat-profile-info-wrapper">
           <div className="chat-profile-info">
@@ -33,7 +32,6 @@ const ChatConversationButton = ({
           <p>{text}</p>
         </div>
       </div>
-      {isOnline && <OnlineDot />}
     </button>
   );
 };

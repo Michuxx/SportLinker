@@ -1,9 +1,8 @@
 import React, { useRef, useState } from "react";
 import "./avatar.css";
 import { LuUser, LuCamera } from "react-icons/lu";
-import OnlineDot from "./OnlineDot";
 
-const Avatar = ({ size, onImageSelected, image, isOnline }) => {
+const Avatar = ({ size, onImageSelected, image }) => {
   const fileInputRef = useRef(null);
   const [preview, setPreview] = useState(null);
 
