@@ -12,7 +12,7 @@ builder.Services.AddOpenApi();
 
 builder.Services
         .AddApplication()
-        .AddInfrastructure()
+        .AddInfrastructure(builder.Configuration)
         .AddPresentation();
 
 builder.Host.UseSerilog((context, conf) =>
