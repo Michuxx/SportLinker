@@ -1,26 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Domain.Enums;
+using Domain.ValueObjects;
+using System.Net.Mail;
 
 namespace Domain.Entities
 {
     public class User
     {
-        public int Id {  get; set; }
-        public string Name { get; set; } = default!;
+        public int Id { get; set; }
         public string Email { get; set; } = default!;
-        public DateOnly? BirthDate { get; set; }
-        public string? Gender { get; set; }
-        public string? AboutMe { get; set; } 
-        public string? ProfileImage { get; set; }
-        public string? BackgroundImage { get; set; } 
-        public int? PhoneNumber { get; set; }
-        public int? PhoneExtension { get; set; }
-        public int CreatedOffers { get; set; }
-        public int JoinedOffers { get; set; }
-        public int Invitations { get; set; }
+        public PersonalData PersonalData { get; set; } = default!;
+        public UserImages? Images { get; set; }
+        public Phone? Phone { get; set; }
+        public UserStatistics? Statistics { get; set; }
         public int? LocationId { get; set; }
         public Location? Location { get; set; }
-        public string Role { get; set; } = "User";
+        public Role Role { get; set; } = Role.User;
+        
+        public void ChangeEmail(string newEmail)
+        {
+
+            if (string.IsNullOrWhiteSpace(newEmail))
+            {
+                throw new ArgumentException("Adres e-mail nie może być pusty.", nameof(newEmail));
+            }
+
+            try
+            {
+                var mailAddress = new MailAddress(newEmail);
+
+                if (mailAddress.Address != newEmail)
+                {
+                    throw new FormatException("Niepoprawny format adresu e-mail.");
+                }
+            }
+            catch (Exception ex) when (ex is FormatException || ex is ArgumentException)
+            {
+                throw new ArgumentException("Podany adres e-mail jest nieprawidłowy.", nameof(newEmail), ex);
+            }
+
+            Email = newEmail;
+        }
     }
 }
+
+
+
