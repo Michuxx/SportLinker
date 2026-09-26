@@ -1,5 +1,7 @@
 ﻿using Application.Abstractions.Storage;
 using Domain.Enums;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace Infrastructure.Storage
 {
@@ -7,8 +9,10 @@ namespace Infrastructure.Storage
     {
         public async Task<string> UploadImageAsync(Stream fileStream, string fileName, ImageType imageType, CancellationToken cancellationToken = default)
         {
+            int maxWidth = GetMaxWidthForImageType(imageType);
+
             var fileExtension = Path.GetExtension(fileName);
-            var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+            var uniqueFileName = $"{Guid.NewGuid()}.webp";
             var subfolder = imageType.ToString().ToLower() + "s";
 
             var uploadPath = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot" ,subfolder);
@@ -20,9 +24,14 @@ namespace Infrastructure.Storage
 
             var filePath = Path.Combine(uploadPath, uniqueFileName);
 
-            using (var fileStreamOnDisk = new FileStream(filePath, FileMode.Create))
+            using (var image = await Image.LoadAsync(fileStream, cancellationToken))
             {
-                await fileStream.CopyToAsync(fileStreamOnDisk, cancellationToken);
+                image.Mutate(x => x.Resize(new ResizeOptions
+                {
+                    Size = new Size(maxWidth, maxWidth),
+                    Mode = ResizeMode.Max 
+                }));
+                await image.SaveAsWebpAsync(filePath, cancellationToken);
             }
 
             return $"/{subfolder}/{uniqueFileName}";
@@ -41,6 +50,16 @@ namespace Infrastructure.Storage
             }
 
             return Task.CompletedTask;
+        }
+
+        private int GetMaxWidthForImageType(ImageType imageType)
+        {
+            return imageType switch
+            {
+                ImageType.Profile => 400,
+                ImageType.Background => 1920,
+                _ => throw new ArgumentOutOfRangeException(nameof(imageType), $"Unsupported image type: {imageType}")
+            };
         }
     }
 }
