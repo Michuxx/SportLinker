@@ -1,5 +1,5 @@
 ﻿using Domain.Enums;
-using Domain.ValueObjects;
+using Domain.ValueObjects.User;
 using System.Net.Mail;
 
 namespace Domain.Entities

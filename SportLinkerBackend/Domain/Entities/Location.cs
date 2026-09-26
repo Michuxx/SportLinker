@@ -1,10 +1,11 @@
-﻿namespace Domain.Entities
+﻿using Domain.ValueObjects.Location;
+
+namespace Domain.Entities
 {
     public class Location
     {
         public int Id { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        public Coordinates Coordinates { get; set; } = new Coordinates(0, 0);
         public string? Country { get; set; }
         public string? State { get; set; }
         public string? City { get; set; }

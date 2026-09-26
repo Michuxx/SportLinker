@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace Domain.ValueObjects
+namespace Domain.ValueObjects.User
 {
     public record PersonalData
     {

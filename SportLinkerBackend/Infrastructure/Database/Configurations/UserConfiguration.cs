@@ -4,47 +4,25 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Database.Configurations
 {
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+    public class LocationConfiguration : IEntityTypeConfiguration<Location>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Location> builder)
         {
-            builder.HasKey(u => u.Id);
+            builder.HasKey(l => l.Id);
 
-            builder.Property(u => u.Email).IsRequired().HasMaxLength(255);
+            builder.Property(l => l.Country).HasMaxLength(100);
+            builder.Property(l => l.State).HasMaxLength(100);
+            builder.Property(l => l.City).HasMaxLength(100);
+            builder.Property(l => l.Name).HasMaxLength(100);
+            builder.Property(l => l.Street).HasMaxLength(100);
+            builder.Property(l => l.HouseNumber).HasMaxLength(20);
+            builder.Property(l => l.Type).HasMaxLength(50);
 
-            builder.Property(u => u.Role).IsRequired().HasConversion<string>();
-
-            builder.OwnsOne(u => u.PersonalData, pd =>
+            builder.OwnsOne(l => l.Coordinates, coord =>
             {
-                pd.Property(p => p.AboutMe).HasMaxLength(100);
-                pd.Property(p => p.BirthDate).HasMaxLength(100);
-                pd.Property(p => p.Name).IsRequired().HasMaxLength(100);
-                pd.Property(p => p.Gender).HasConversion<string>();
+                coord.Property(c => c.Latitude).IsRequired();
+                coord.Property(c => c.Longitude).IsRequired();
             });
-
-            builder.OwnsOne(u => u.Images, img =>
-            {
-                img.Property(i => i.BackgroundImage);
-                img.Property(i => i.ProfileImage);
-            });
-
-            builder.OwnsOne(u => u.Phone, phone =>
-            {
-                phone.Property(p => p.Number).HasMaxLength(20);
-                phone.Property(p => p.Extension).HasMaxLength(5);
-            });
-
-            builder.OwnsOne(u => u.Statistics, stats =>
-            {
-                stats.Property(s => s.CreatedOffers);
-                stats.Property(s => s.JoinedOffers);
-                stats.Property(s => s.Invitations);
-            });
-
-            builder.HasOne(u => u.Location)
-                   .WithMany(l => l.Users)
-                   .HasForeignKey(u => u.LocationId)
-                   .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
