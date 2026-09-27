@@ -1,6 +1,10 @@
 ﻿using Application.Abstractions.Data;
+using Application.Abstractions.Security;
 using Domain.Abstractions;
+using Domain.Abstractions.Interfaces;
 using Infrastructure.Database;
+using Infrastructure.Repositories;
+using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +23,8 @@ namespace Infrastructure
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
             services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }

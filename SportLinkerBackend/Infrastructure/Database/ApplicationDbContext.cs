@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Domain.Abstractions;
+﻿using Domain.Abstractions;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database
 {
@@ -8,11 +9,12 @@ namespace Infrastructure.Database
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Location> Locations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-
             base.OnModelCreating(modelBuilder);
         }
     }
