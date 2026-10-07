@@ -1,6 +1,7 @@
 ﻿using Application.Users.CreateUser;
 using Application.Users.LoginUser;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -29,6 +30,13 @@ namespace Presentation.Controllers
         {
             var result = await _sender.Send(command, cancellationToken);
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("secret")]
+        public IActionResult SecretEndpoint()
+        {
+            return Ok("Gratulacje! Twój token działa i masz dostęp do chronionych danych!");
         }
     }
 }
