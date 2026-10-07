@@ -1,4 +1,5 @@
-﻿using Application.Abstractions.Data;
+﻿using Application.Abstractions.Authentication;
+using Application.Abstractions.Data;
 using Application.Abstractions.Security;
 using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
@@ -25,6 +26,8 @@ namespace Infrastructure
             services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddSingleton<IJwtProvider, JwtProvider>();
 
             return services;
         }

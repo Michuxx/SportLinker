@@ -15,6 +15,7 @@ namespace Domain.Entities
         public UserStatistics Statistics { get; set; } = new UserStatistics();
         public int? LocationId { get; set; }
         public Location? Location { get; set; }
+        public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
         public Role Role { get; set; } = Role.User;
         
         public void ChangeEmail(string newEmail)

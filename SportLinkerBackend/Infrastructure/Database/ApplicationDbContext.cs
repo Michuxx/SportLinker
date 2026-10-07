@@ -11,7 +11,7 @@ namespace Infrastructure.Database
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Location> Locations { get; set; }
-
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
