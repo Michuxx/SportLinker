@@ -1,5 +1,5 @@
 ﻿
-using Infrastructure.Abstractions;
+using Application.Abstractions;
 
 namespace Application.Users.CreateUser
 {

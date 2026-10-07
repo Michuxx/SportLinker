@@ -8,5 +8,6 @@ namespace Domain.Abstractions.Interfaces
     public interface IUserRepository
     {
         void AddUser(User user);
+        Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken);
     }
 }

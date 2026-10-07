@@ -48,5 +48,11 @@ namespace Infrastructure.Security
             rng.GetBytes(randomBytes);
             return Convert.ToBase64String(randomBytes);
         }
+
+        public DateTime GetRefreshTokenExpirationDate()
+        {
+            var days = int.Parse(_configuration["Jwt:RefreshTokenExpirationDays"] ?? "7");
+            return DateTime.UtcNow.AddDays(days);
+        }
     }
 }

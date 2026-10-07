@@ -6,5 +6,6 @@ namespace Application.Abstractions.Authentication
     {
         string GenerateToken(User user);
         string GenerateRefreshToken();
+        DateTime GetRefreshTokenExpirationDate();
     }
 }

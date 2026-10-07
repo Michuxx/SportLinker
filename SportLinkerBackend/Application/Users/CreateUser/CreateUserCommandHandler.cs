@@ -1,10 +1,10 @@
 ﻿
+using Application.Abstractions;
 using Application.Abstractions.Security;
 using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
 using Domain.Entities;
 using Domain.ValueObjects.User;
-using Infrastructure.Abstractions;
 
 namespace Application.Users.CreateUser
 {
