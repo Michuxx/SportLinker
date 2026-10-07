@@ -16,11 +16,11 @@ namespace Domain.Entities
         public int? LocationId { get; set; }
         public Location? Location { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+        public ICollection<FavouriteUserSport> FavouriteUserSports { get; set; } = new List<FavouriteUserSport>();
         public Role Role { get; set; } = Role.User;
         
         public void ChangeEmail(string newEmail)
         {
-
             if (string.IsNullOrWhiteSpace(newEmail))
             {
                 throw new ArgumentException("Adres e-mail nie może być pusty.", nameof(newEmail));

@@ -12,6 +12,8 @@ namespace Infrastructure.Database
         public DbSet<User> Users { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Sport> Sports { get; set; }
+        public DbSet<FavouriteUserSport> FavouriteUserSports { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
