@@ -7,7 +7,8 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+                    .AddApplicationPart(typeof(Presentation.DependencyInjection).Assembly);
 builder.Services.AddOpenApi();
 
 builder.Services

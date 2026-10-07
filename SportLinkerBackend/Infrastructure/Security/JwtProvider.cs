@@ -20,7 +20,7 @@ namespace Infrastructure.Security
 
         public string GenerateToken(User user)
         {
-            string secretKey = _configuration["Jwt:SecretKey"] ?? throw new InvalidOperationException("JWT secret key is not configured.");
+            string secretKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT secret key is not configured.");
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
