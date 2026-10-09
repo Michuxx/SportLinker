@@ -3,7 +3,7 @@ import { FiCalendar } from "react-icons/fi";
 import UserInfoMeta from "./UserInfoMeta";
 import "./userHeaderInfo.css";
 import useAgeCalculate from "../../../../../../hooks/useAgeCalculate";
-import { FaTransgender } from "react-icons/fa";
+import { TbGenderMale } from "react-icons/tb";
 
 const UserHeaderInfo = ({ birthDate, location, gender }) => {
   const age = useAgeCalculate(birthDate);
@@ -27,7 +27,7 @@ const UserHeaderInfo = ({ birthDate, location, gender }) => {
         text={localizationText}
       />
       <UserInfoMeta
-        icon={<FaTransgender size={24} color="rgb(59 130 246)" />}
+        icon={<TbGenderMale size={24} color="rgb(59 130 246)" />}
         text={genderText}
       />
     </div>

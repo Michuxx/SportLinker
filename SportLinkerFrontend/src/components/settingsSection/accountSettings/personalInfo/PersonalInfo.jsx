@@ -8,7 +8,7 @@ import { FiCalendar } from "react-icons/fi";
 import { MdMailOutline } from "react-icons/md";
 import { LuUser } from "react-icons/lu";
 import { FiPhone } from "react-icons/fi";
-import { FaTransgender } from "react-icons/fa";
+import { TbGenderMale } from "react-icons/tb";
 import SearchInput from "../../../component-items/input/SearchInput";
 
 const PersonalInfo = ({
@@ -123,7 +123,7 @@ const PersonalInfo = ({
         </InputField>
         <InputField label="Płeć">
           <Select
-            icon={<FaTransgender color="rgb(156, 163, 175)" size={20} />}
+            icon={<TbGenderMale color="rgb(156, 163, 175)" size={20} />}
             width={100}
             options={GENDERS}
             defaultValue="NotDisclosed"
