@@ -1,4 +1,5 @@
-﻿using Application.Users.CreateUser;
+﻿using Application.Abstractions;
+using Application.Users.CreateUser;
 using Application.Users.LoginUser;
 using Application.Users.UserRefreshToken;
 using MediatR;
@@ -22,22 +23,38 @@ namespace Presentation.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] CreateUserCommand command, CancellationToken cancellationToken)
         {
-            await _sender.Send(command, cancellationToken);
+
+            Result<bool> result = await _sender.Send(command, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
+
             return Ok();
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserCommand command, CancellationToken cancellationToken)
         {
-            var result = await _sender.Send(command, cancellationToken);
-            return Ok(result);
+            Result<LoggedUserDto> result = await _sender.Send(command, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return Unauthorized(new { message = result.Error });
+            }
+
+            return Ok(result.Value);
         }
 
         [HttpPost("refreshToken")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command, CancellationToken cancellationToken)
         {
-            var result = await _sender.Send(command, cancellationToken);
-            return Ok(result);
+            Result<LoggedUserDto> result = await _sender.Send(command, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return Unauthorized(new { message = result.Error });
+            }
+
+            return Ok(result.Value);
         }
 
         [Authorize]

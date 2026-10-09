@@ -7,7 +7,7 @@ using Domain.Entities;
 
 namespace Application.Users.LoginUser
 {
-    public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, LoggedUserDto>
+    public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, Result<LoggedUserDto>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
@@ -22,12 +22,12 @@ namespace Application.Users.LoginUser
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<LoggedUserDto> Handle(LoginUserCommand command, CancellationToken cancellationToken)
+        public async Task<Result<LoggedUserDto>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetUserByEmailAsync(command.email, cancellationToken);
             if (user == null || !_passwordHasher.VerifyPassword(command.password, user.PasswordHash))
             {
-                throw new UnauthorizedAccessException("Invalid email or password.");
+                return Result<LoggedUserDto>.Failure("Invalid email or password.");
             }
 
             var accessToken = _jwtProvider.GenerateToken(user);
@@ -44,11 +44,11 @@ namespace Application.Users.LoginUser
             user.RefreshTokens.Add(refreshToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return new LoggedUserDto
+            return Result<LoggedUserDto>.Success(new LoggedUserDto
             {
                 AccessUserToken = accessToken,
                 RefreshUserToken = refreshTokenValue
-            };
+            });
         }
     }
 }

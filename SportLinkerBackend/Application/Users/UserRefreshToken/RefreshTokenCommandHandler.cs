@@ -7,7 +7,7 @@ using Domain.Entities;
 
 namespace Application.Users.UserRefreshToken
 {
-    public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, LoggedUserDto>
+    public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, Result<LoggedUserDto>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtProvider _jwtProvider;
@@ -19,13 +19,13 @@ namespace Application.Users.UserRefreshToken
             _jwtProvider = jwtProvider;
             _unitOfWork = unitOfWork;
         }
-        public async Task<LoggedUserDto> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
+        public async Task<Result<LoggedUserDto>> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
         {
             var existingToken = await _userRepository.GetRefreshTokenAsync(command.refreshToken, cancellationToken);
 
             if(existingToken is null || !existingToken.IsActive)
             {
-                throw new UnauthorizedAccessException("Nieprawidłowy lub wygasły token odświeżający.");
+                return Result<LoggedUserDto>.Failure("Nieprawidłowy lub wygasły token odświeżający.");
             }
 
             var user = existingToken.User;
@@ -47,11 +47,11 @@ namespace Application.Users.UserRefreshToken
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             
-            return new LoggedUserDto
+            return Result<LoggedUserDto>.Success(new LoggedUserDto
             {
                 AccessUserToken = newAccessToken,
                 RefreshUserToken = newRefreshToken
-            };
+            });
         }
 
 

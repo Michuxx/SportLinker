@@ -8,7 +8,7 @@ using Domain.ValueObjects.User;
 
 namespace Application.Users.CreateUser
 {
-    internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
+    internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Result<bool>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -21,8 +21,15 @@ namespace Application.Users.CreateUser
             _passwordHasher = passwordHasher;
         }
 
-        public async Task Handle(CreateUserCommand command, CancellationToken cancellationToken)
+        public async Task<Result<bool>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
+            var userExists = await _userRepository.IsUserWithEmailExists(command.email, cancellationToken);
+
+            if (userExists)
+            {
+                return Result<bool>.Failure("Użytkownik o podanym adresie e-mail już istnieje.");
+            }
+
             var personalData = new PersonalData(command.name, null, null, null);
             var user = new User
             {
@@ -34,6 +41,7 @@ namespace Application.Users.CreateUser
 
             _userRepository.AddUser(user);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+            return Result<bool>.Success(true);
         }
     }
 }

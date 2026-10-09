@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using Infrastructure.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Presentation;
@@ -27,6 +28,9 @@ builder.Services.AddCors(options => {
     });
 });
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -51,6 +55,7 @@ builder.Host.UseSerilog((context, conf) =>
     conf.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {

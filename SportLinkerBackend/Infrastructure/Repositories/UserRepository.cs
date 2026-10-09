@@ -28,5 +28,10 @@ namespace Infrastructure.Repositories
                 .Include(rt => rt.User)
                 .FirstOrDefaultAsync(rt => rt.Token == refreshToken, cancellationToken);
         }
+
+        public async Task<bool> IsUserWithEmailExists(string email, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Users.AnyAsync(x => x.Email == email);
+        }
     }
 }
