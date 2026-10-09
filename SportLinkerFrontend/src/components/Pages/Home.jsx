@@ -114,7 +114,7 @@ const Home = () => {
       <OfferSection userOffers={userOffers} />
       {isAuthModalOpen && (
         <ModalBackground closeModal={() => setIsAuthModalOpen(false)}>
-          <AuthModal />
+          <AuthModal closeModal={() => setIsAuthModalOpen(false)} />
         </ModalBackground>
       )}
       {isCreateOfferModalOpen && (

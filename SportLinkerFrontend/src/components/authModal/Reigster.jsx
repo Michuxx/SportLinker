@@ -7,8 +7,11 @@ import { MdMailOutline } from "react-icons/md";
 import { GoLock } from "react-icons/go";
 import { LuUser } from "react-icons/lu";
 import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
-const Register = () => {
+const Register = ({ closeModal, onRegisterSuccess }) => {
+  const { register, login, isLoading } = useAuth();
+
   const [loginData, setLoginData] = useState({
     name: "",
     email: "",
@@ -21,12 +24,16 @@ const Register = () => {
     password: "",
   });
 
+  const [generalError, setGeneralError] = useState("");
+  const [generalSuccess, setGeneralSuccess] = useState("");
+
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
+    setGeneralError("");
   };
 
   const emailValidation = () => {
@@ -62,13 +69,45 @@ const Register = () => {
     return true;
   };
 
-  const registerSubmit = () => {
+  const registerSubmit = async () => {
+    setGeneralError("");
+    setGeneralSuccess("");
     const validatedName = nameValidation();
     const validatedEmail = emailValidation();
     const validatedPassword = passwordValidation();
 
-    if (validatedEmail && validatedPassword && validatedName) {
-      console.log("Zarejestrowano");
+    if (!validatedEmail || !validatedPassword || !validatedName) {
+      return;
+    }
+
+    try {
+      await register({
+        name: loginData.name,
+        email: loginData.email,
+        password: loginData.password,
+      });
+
+      // Po udanej rejestracji logujemy użytkownika automatycznie
+      try {
+        await login(loginData.email, loginData.password);
+        if (closeModal) {
+          closeModal();
+        }
+      } catch {
+        // Jeśli automatyczne logowanie się nie powiedzie, przełączamy na ekran logowania
+        setGeneralSuccess("Konto zostało utworzone! Możesz się teraz zalogować.");
+        if (onRegisterSuccess) {
+          setTimeout(() => onRegisterSuccess(), 1200);
+        }
+      }
+    } catch (err) {
+      console.error("Błąd rejestracji:", err);
+      const serverMsg =
+        err.response?.data?.message ||
+        err.response?.data?.title ||
+        (typeof err.response?.data === "string" ? err.response?.data : null) ||
+        "Wystąpił błąd podczas rejestracji. Sprawdź, czy email nie jest już zarejestrowany.";
+      setGeneralError(serverMsg);
     }
   };
 
@@ -78,6 +117,10 @@ const Register = () => {
         <Logo />
       </div>
       <h2>Utwórz konto w SportLinker</h2>
+
+      {generalError && <div className="auth-general-error">{generalError}</div>}
+      {generalSuccess && <div className="auth-general-success">{generalSuccess}</div>}
+
       <InputField label="Imię i nazwisko">
         <Input
           placeholder="John Doe"
@@ -88,6 +131,7 @@ const Register = () => {
           value={loginData.name}
           error={errors.name}
           name="name"
+          disabled={isLoading}
         />
       </InputField>
       <InputField label="Email">
@@ -100,6 +144,7 @@ const Register = () => {
           value={loginData.email}
           error={errors.email}
           name="email"
+          disabled={isLoading}
         />
       </InputField>
       <InputField label="Hasło">
@@ -112,10 +157,16 @@ const Register = () => {
           value={loginData.password}
           error={errors.password}
           name="password"
+          disabled={isLoading}
         />
       </InputField>
-      <Button style="loginButton" width={100} onClick={registerSubmit}>
-        Utwórz konto
+      <Button
+        style="loginButton"
+        width={100}
+        onClick={registerSubmit}
+        disabled={isLoading}
+      >
+        {isLoading ? "Tworzenie konta..." : "Utwórz konto"}
       </Button>
     </div>
   );

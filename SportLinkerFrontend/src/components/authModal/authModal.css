@@ -6,3 +6,26 @@
   justify-content: center;
   margin-top: 1rem;
 }
+
+.auth-general-error {
+  color: #ef4444;
+  font-size: 0.875rem;
+  text-align: center;
+  margin: 0.5rem 0 1rem;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.auth-general-success {
+  color: #16a34a;
+  font-size: 0.875rem;
+  text-align: center;
+  margin: 0.5rem 0 1rem;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+

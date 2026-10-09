@@ -15,16 +15,19 @@ import { CgUserAdd } from "react-icons/cg";
 import { CiLogout } from "react-icons/ci";
 import { TiMessages } from "react-icons/ti";
 import { FiSettings } from "react-icons/fi";
+import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
   let navigate = useNavigate();
+  const { isAuthenticated, user, logout } = useAuth();
   const [isOpenUserDropdown, setIsOpenUserDropdown] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isLoginSelection, setIsLoginSelection] = useState(true); // for security
+  const [isLoginSelection, setIsLoginSelection] = useState(true);
 
   const dropdownRef = useRef(null);
 
   const changeLocation = (url) => {
+    setIsOpenUserDropdown(false);
     navigate(url);
   };
 
@@ -41,11 +44,17 @@ const Header = () => {
     };
   }, [handleClickOutside]);
 
+  const handleLogout = () => {
+    logout();
+    setIsOpenUserDropdown(false);
+    navigate("/");
+  };
+
   const userDropdown = [
     {
       style: "classicDropdownOptionButton",
       onClick: () => changeLocation("/profile/userInfo"),
-      text: "Mój profil",
+      text: user?.email ? `Profil (${user.email})` : "Mój profil",
       icon: <LuUser size={22} />,
     },
     {
@@ -62,7 +71,7 @@ const Header = () => {
     },
     {
       style: "logoutDropdownOptionButton",
-      onClick: () => changeLocation("/"),
+      onClick: handleLogout,
       text: "Wyloguj się",
       icon: <CiLogout size={22} />,
     },
@@ -81,51 +90,61 @@ const Header = () => {
           <Logotype />
         </div>
         <div className="btn-section" ref={dropdownRef}>
-          <Button
-            style="registerModalButton"
-            width={80}
-            height={50}
-            Icon={<CgUserAdd size={24} />}
-            onClick={() => handleModal(false)}
-          >
-            Załóż konto
-          </Button>
-          <Button
-            style="loginModalButton"
-            width={80}
-            height={50}
-            Icon={<LuLogIn size={24} />}
-            onClick={() => handleModal(true)}
-          >
-            Zaloguj się
-          </Button>
-          <Button
-            style="dropDownButton"
-            width={60}
-            height={50}
-            Icon={<LuUser size={24} />}
-            onClick={() => setIsOpenUserDropdown((e) => !e)}
-          >
-            {isOpenUserDropdown ? (
-              <IoIosArrowUp size={20} />
-            ) : (
-              <IoIosArrowDown size={20} />
-            )}
-          </Button>
-          {isOpenUserDropdown && (
-            <div className="header-dropdown">
-              <Dropdown
-                options={userDropdown}
-                textKey="text"
-                isScrollable={false}
-              />
-            </div>
+          {!isAuthenticated ? (
+            <>
+              <Button
+                style="registerModalButton"
+                width={80}
+                height={50}
+                Icon={<CgUserAdd size={24} />}
+                onClick={() => handleModal(false)}
+              >
+                Załóż konto
+              </Button>
+              <Button
+                style="loginModalButton"
+                width={80}
+                height={50}
+                Icon={<LuLogIn size={24} />}
+                onClick={() => handleModal(true)}
+              >
+                Zaloguj się
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                style="dropDownButton"
+                width={60}
+                height={50}
+                Icon={<LuUser size={24} />}
+                onClick={() => setIsOpenUserDropdown((e) => !e)}
+              >
+                {isOpenUserDropdown ? (
+                  <IoIosArrowUp size={20} />
+                ) : (
+                  <IoIosArrowDown size={20} />
+                )}
+              </Button>
+              {isOpenUserDropdown && (
+                <div className="header-dropdown">
+                  <Dropdown
+                    options={userDropdown}
+                    textKey="text"
+                    isScrollable={false}
+                  />
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
       {isLoginModalOpen && (
         <ModalBackground closeModal={() => setIsLoginModalOpen(false)}>
-          <AuthModal loginSelection={isLoginSelection} />
+          <AuthModal
+            loginSelection={isLoginSelection}
+            closeModal={() => setIsLoginModalOpen(false)}
+          />
         </ModalBackground>
       )}
     </header>

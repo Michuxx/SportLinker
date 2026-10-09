@@ -6,8 +6,11 @@ import { GoLock } from "react-icons/go";
 import "./login.css";
 import Button from "../component-items/button/button";
 import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
-const Login = () => {
+const Login = ({ closeModal }) => {
+  const { login, isLoading } = useAuth();
+
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -18,12 +21,15 @@ const Login = () => {
     password: "",
   });
 
+  const [generalError, setGeneralError] = useState("");
+
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
+    setGeneralError("");
   };
 
   const emailValidation = () => {
@@ -48,11 +54,30 @@ const Login = () => {
     return true;
   };
 
-  const loginSubmit = () => {
+  const loginSubmit = async () => {
+    setGeneralError("");
     const validatedEmail = emailValidation();
     const validatedPassword = passwordValidation();
-    if (validatedEmail && validatedPassword) {
-      console.log("Zalogowano");
+
+    if (!validatedEmail || !validatedPassword) {
+      return;
+    }
+
+    try {
+      await login(loginData.email, loginData.password);
+      if (closeModal) {
+        closeModal();
+      }
+    } catch (err) {
+      console.error("Błąd logowania:", err);
+      const serverMsg =
+        err.response?.data?.message ||
+        err.response?.data?.title ||
+        (typeof err.response?.data === "string" ? err.response?.data : null) ||
+        (err.response?.status === 401
+          ? "Nieprawidłowy adres email lub hasło."
+          : "Nie udało się połączyć z serwerem. Sprawdź, czy backend działa.");
+      setGeneralError(serverMsg);
     }
   };
 
@@ -62,6 +87,9 @@ const Login = () => {
         <Logo />
       </div>
       <h2>Zaloguj się do SportLinker</h2>
+
+      {generalError && <div className="auth-general-error">{generalError}</div>}
+
       <InputField label="Email">
         <Input
           placeholder="John@example.com"
@@ -72,6 +100,7 @@ const Login = () => {
           value={loginData.email}
           error={errors.email}
           name="email"
+          disabled={isLoading}
         />
       </InputField>
       <InputField label="Hasło">
@@ -84,10 +113,16 @@ const Login = () => {
           value={loginData.password}
           error={errors.password}
           name="password"
+          disabled={isLoading}
         />
       </InputField>
-      <Button style="loginButton" width={100} onClick={loginSubmit}>
-        Zaloguj się
+      <Button
+        style="loginButton"
+        width={100}
+        onClick={loginSubmit}
+        disabled={isLoading}
+      >
+        {isLoading ? "Logowanie..." : "Zaloguj się"}
       </Button>
     </div>
   );
