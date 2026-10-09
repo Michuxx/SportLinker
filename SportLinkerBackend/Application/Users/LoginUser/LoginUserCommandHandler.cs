@@ -1,9 +1,10 @@
-﻿using Application.Abstractions;
+using Application.Abstractions;
 using Application.Abstractions.Authentication;
 using Application.Abstractions.Security;
 using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
 using Domain.Entities;
+using Domain.Errors;
 
 namespace Application.Users.LoginUser
 {
@@ -27,7 +28,7 @@ namespace Application.Users.LoginUser
             var user = await _userRepository.GetUserByEmailAsync(command.email, cancellationToken);
             if (user == null || !_passwordHasher.VerifyPassword(command.password, user.PasswordHash))
             {
-                return Result<LoggedUserDto>.Failure("Invalid email or password.");
+                return Result<LoggedUserDto>.Failure(UserErrors.InvalidCredentials);
             }
 
             var accessToken = _jwtProvider.GenerateToken(user);

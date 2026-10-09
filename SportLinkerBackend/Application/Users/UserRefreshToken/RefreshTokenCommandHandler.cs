@@ -4,6 +4,7 @@ using Application.Users.LoginUser;
 using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
 using Domain.Entities;
+using Domain.Errors;
 
 namespace Application.Users.UserRefreshToken
 {
@@ -25,7 +26,7 @@ namespace Application.Users.UserRefreshToken
 
             if(existingToken is null || !existingToken.IsActive)
             {
-                return Result<LoggedUserDto>.Failure("Nieprawidłowy lub wygasły token odświeżający.");
+                return Result<LoggedUserDto>.Failure(UserErrors.RefreshTokenExpiredOrRevoked);
             }
 
             var user = existingToken.User;

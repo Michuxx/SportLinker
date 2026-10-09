@@ -4,6 +4,7 @@ using Application.Abstractions.Security;
 using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
 using Domain.Entities;
+using Domain.Errors;
 using Domain.ValueObjects.User;
 
 namespace Application.Users.CreateUser
@@ -27,7 +28,7 @@ namespace Application.Users.CreateUser
 
             if (userExists)
             {
-                return Result<bool>.Failure("Użytkownik o podanym adresie e-mail już istnieje.");
+                return Result<bool>.Failure(UserErrors.EmailAlreadyInUse);
             }
 
             var personalData = new PersonalData(command.name, null, null, null);
