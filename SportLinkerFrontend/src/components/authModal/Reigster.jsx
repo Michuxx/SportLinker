@@ -8,6 +8,8 @@ import { GoLock } from "react-icons/go";
 import { LuUser } from "react-icons/lu";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
+import { getErrorCode, getErrorMessage } from "../../utils/apiErrorHelper";
+import { USER_ERROR_CODES } from "../../constants/userErrors";
 
 const Register = ({ closeModal, onRegisterSuccess }) => {
   const { register, login, isLoading } = useAuth();
@@ -102,12 +104,14 @@ const Register = ({ closeModal, onRegisterSuccess }) => {
       }
     } catch (err) {
       console.error("Błąd rejestracji:", err);
-      const serverMsg =
-        err.response?.data?.message ||
-        err.response?.data?.title ||
-        (typeof err.response?.data === "string" ? err.response?.data : null) ||
-        "Wystąpił błąd podczas rejestracji. Sprawdź, czy email nie jest już zarejestrowany.";
-      setGeneralError(serverMsg);
+      const errorCode = getErrorCode(err);
+      const serverMsg = getErrorMessage(err);
+
+      if (errorCode === USER_ERROR_CODES.EMAIL_ALREADY_IN_USE) {
+        setErrors((prev) => ({ ...prev, email: serverMsg }));
+      } else {
+        setGeneralError(serverMsg);
+      }
     }
   };
 

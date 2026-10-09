@@ -7,6 +7,7 @@ import "./login.css";
 import Button from "../component-items/button/button";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
+import { getErrorMessage } from "../../utils/apiErrorHelper";
 
 const Login = ({ closeModal }) => {
   const { login, isLoading } = useAuth();
@@ -70,13 +71,7 @@ const Login = ({ closeModal }) => {
       }
     } catch (err) {
       console.error("Błąd logowania:", err);
-      const serverMsg =
-        err.response?.data?.message ||
-        err.response?.data?.title ||
-        (typeof err.response?.data === "string" ? err.response?.data : null) ||
-        (err.response?.status === 401
-          ? "Nieprawidłowy adres email lub hasło."
-          : "Nie udało się połączyć z serwerem. Sprawdź, czy backend działa.");
+      const serverMsg = getErrorMessage(err);
       setGeneralError(serverMsg);
     }
   };
