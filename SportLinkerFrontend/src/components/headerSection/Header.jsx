@@ -53,7 +53,7 @@ const Header = () => {
   const userDropdown = [
     {
       style: "classicDropdownOptionButton",
-      onClick: () => changeLocation(`/profile/userInfo/${user?.id}`),
+      onClick: () => changeLocation(user?.id ? `/profile/userInfo/${user.id}` : "/"),
       text: "Mój profil",
       icon: <LuUser size={22} />,
     },

@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useLocation } from "react-router";
+import { NavLink, Outlet, useLocation, useParams } from "react-router";
 import UserProfileContent from "./userProfileContent/UserProfileContent";
 import "./userPanelSection.css";
 import { LuUser } from "react-icons/lu";
@@ -11,12 +11,22 @@ import useAuth from "../../hooks/useAuth";
 const UserPanelSection = () => {
   const { user } = useAuth();
   const location = useLocation();
+  const { id } = useParams();
+
+  const match = location.pathname.match(/\/userInfo\/([^/?#]+)/);
+  const currentProfileId = id || (match ? match[1] : null);
+
+  const isOwner = Boolean(
+    user?.id && (!currentProfileId || String(user.id) === String(currentProfileId))
+  );
+
   const profileId = user?.id;
   const isUserInfoActive = location.pathname.includes("/profile/userInfo");
 
   return (
     <div className="user-panel-section-wrapper">
-      <Navbar className={"user"}>
+      {isOwner && (
+        <Navbar className={"user"}>
         <NavLink
           to={`userInfo/${profileId}`}
           className={({ isActive }) =>
@@ -78,6 +88,7 @@ const UserPanelSection = () => {
           </div>
         </NavLink>
       </Navbar>
+      )}
       <UserProfileContent>
         <Outlet />
       </UserProfileContent>

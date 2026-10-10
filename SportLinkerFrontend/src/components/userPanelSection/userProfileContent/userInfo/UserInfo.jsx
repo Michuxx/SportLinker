@@ -15,6 +15,10 @@ const UserInfo = ({ userId: propUserId }) => {
   const activeUserId =
     id || propUserId || searchParams.get("userId") || user?.id;
 
+  const isOwner = Boolean(
+    user?.id && String(user.id) === String(activeUserId),
+  );
+
   const [userInfo, setUserInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,7 +36,10 @@ const UserInfo = ({ userId: propUserId }) => {
   });
 
   const fetchUserData = useCallback(async () => {
-    if (!activeUserId) return;
+    if (!activeUserId) {
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     setError(null);
     try {
@@ -98,6 +105,7 @@ const UserInfo = ({ userId: propUserId }) => {
   };
 
   const handleChangeProfileImage = (image) => {
+    if (!isOwner) return;
     setUserInfo((prev) => ({
       ...prev,
       profileImage: image,
@@ -105,6 +113,7 @@ const UserInfo = ({ userId: propUserId }) => {
   };
 
   const handleChangeBackgroundImage = (image) => {
+    if (!isOwner) return;
     setUserInfo((prev) => ({
       ...prev,
       backgroundImage: image,
@@ -112,6 +121,7 @@ const UserInfo = ({ userId: propUserId }) => {
   };
 
   const handleSaveData = (setEditingFalse) => {
+    if (!isOwner) return;
     if (editData.aboutMe && editData.aboutMe.length > 180) {
       setErrors((prev) => ({
         ...prev,
@@ -170,9 +180,10 @@ const UserInfo = ({ userId: propUserId }) => {
         location={locationData}
         gender={userInfo.gender}
         profileImage={userInfo.profileImage}
-        changeProfileImage={handleChangeProfileImage}
+        changeProfileImage={isOwner ? handleChangeProfileImage : undefined}
         backgroundImage={userInfo.backgroundImage}
-        changeBackgroundImage={handleChangeBackgroundImage}
+        changeBackgroundImage={isOwner ? handleChangeBackgroundImage : undefined}
+        isOwner={isOwner}
       />
       <UserDetailed
         isAboutMeEditing={isAboutMeEditing}
@@ -189,6 +200,7 @@ const UserInfo = ({ userId: propUserId }) => {
         invitations={userInfo.invitations}
         location={locationData}
         errors={errors}
+        isOwner={isOwner}
       />
     </div>
   );

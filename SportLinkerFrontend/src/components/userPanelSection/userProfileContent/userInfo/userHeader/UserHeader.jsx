@@ -13,6 +13,7 @@ const UserHeader = ({
   profileImage,
   changeBackgroundImage,
   backgroundImage,
+  isOwner = false,
 }) => {
   const displayName = userName || name || "Użytkownik";
 
@@ -20,14 +21,14 @@ const UserHeader = ({
     <div className="user-header-wrapper">
       <UserBanner
         bannerImage={backgroundImage}
-        changeBackgroundImage={changeBackgroundImage}
+        changeBackgroundImage={isOwner ? changeBackgroundImage : undefined}
       />
       <div className="user-header-info-wrapper">
         <div className="user-header-detailed-wrapper">
           <div className="avatar-white-bg">
             <Avatar
               size={8}
-              onImageSelected={changeProfileImage}
+              onImageSelected={isOwner ? changeProfileImage : undefined}
               image={profileImage}
             />
           </div>

@@ -9,7 +9,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router";
 import OfferCardMode from "../../../../../../offerSection/offerCard/OfferCardMode";
 
-const UserOfferCard = ({ offer, setSelectedOfferToDelete }) => {
+const UserOfferCard = ({ offer, setSelectedOfferToDelete, isOwner = false }) => {
   return (
     <Link
       to={`/offer/${offer.id}`}
@@ -22,16 +22,18 @@ const UserOfferCard = ({ offer, setSelectedOfferToDelete }) => {
             sport={offer.sport}
             availability={offer.availability}
           />
-          <div className="user-offer-card-btn-wrapper">
-            <Button
-              style="deleteButton"
-              Icon={<FaRegTrashAlt size={20} />}
-              onClick={(e) => {
-                e.preventDefault();
-                setSelectedOfferToDelete();
-              }}
-            ></Button>
-          </div>
+          {isOwner && (
+            <div className="user-offer-card-btn-wrapper">
+              <Button
+                style="deleteButton"
+                Icon={<FaRegTrashAlt size={20} />}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSelectedOfferToDelete();
+                }}
+              ></Button>
+            </div>
+          )}
         </div>
         <h3>{offer.title}</h3>
         <OfferCardDescription text={offer.description} />

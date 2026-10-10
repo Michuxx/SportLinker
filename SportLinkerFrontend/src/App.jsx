@@ -17,8 +17,10 @@ import useAuth from "./hooks/useAuth";
 
 const ProfileRedirect = () => {
   const { user } = useAuth();
-  const targetId = user?.id;
-  return <Navigate to={`userInfo/${targetId}`} replace />;
+  if (!user?.id) {
+    return <Navigate to="/" replace />;
+  }
+  return <Navigate to={`userInfo/${user.id}`} replace />;
 };
 
 function App() {

@@ -9,7 +9,7 @@ import PageTitle from "../../../../../pageTitle/PageTitle";
 import Button from "../../../../../component-items/button/button";
 import CreateOfferModal from "../../../../../createOfferModal/CreateOfferModal";
 
-const UserOffers = () => {
+const UserOffers = ({ isOwner = false }) => {
   const [selectedOfferToDelete, setSelectedOfferToDelete] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [offers, setOffers] = useState([
@@ -86,20 +86,26 @@ const UserOffers = () => {
   return (
     <div className="user-offers-wrapper">
       <div className="profile-offer-header-wrapper">
-        <PageTitle header="Moje oferty" label="Oferty, które utworzyłeś" />
-        <Button
-          style="gradientButton"
-          width={20}
-          onClick={() => setIsCreateModalOpen(true)}
-        >
-          Utwórz ofertę
-        </Button>
+        <PageTitle
+          header={isOwner ? "Moje oferty" : "Oferty użytkownika"}
+          label={isOwner ? "Oferty, które utworzyłeś" : "Oferty utworzone przez użytkownika"}
+        />
+        {isOwner && (
+          <Button
+            style="gradientButton"
+            width={20}
+            onClick={() => setIsCreateModalOpen(true)}
+          >
+            Utwórz ofertę
+          </Button>
+        )}
       </div>
       {offers.length > 0 ? (
         offers.map((offer) => (
           <UserOfferCard
             offer={offer}
             setSelectedOfferToDelete={() => setSelectedOfferToDelete(offer.id)}
+            isOwner={isOwner}
             key={offer.id}
           />
         ))

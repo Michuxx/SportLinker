@@ -17,6 +17,7 @@ const UserDetailed = ({
   handleSaveData,
   location,
   errors,
+  isOwner = false,
 }) => {
   const aboutText = aboutMe || `Brak opisu`;
 
@@ -37,8 +38,9 @@ const UserDetailed = ({
         cancelHandle={cancelHandle}
         location={location}
         errors={errors}
+        isOwner={isOwner}
       />
-      <UserOffers />
+      <UserOffers isOwner={isOwner} />
     </div>
   );
 };

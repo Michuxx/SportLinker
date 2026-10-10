@@ -20,6 +20,7 @@ const UserDetailedCards = ({
   handleSaveData,
   location,
   errors,
+  isOwner = false,
 }) => {
   const handleCancelAboutMe = () => {
     cancelHandle(() => setIsAboutMeEditing(false));
@@ -42,9 +43,9 @@ const UserDetailedCards = ({
       <UserDetailedBackground
         title="O mnie"
         isEditing={isAboutMeEditing}
-        setEditing={() => setIsAboutMeEditing(true)}
-        cancelEdit={handleCancelAboutMe}
-        saveEdit={handleSaveAboutMe}
+        setEditing={isOwner ? () => setIsAboutMeEditing(true) : undefined}
+        cancelEdit={isOwner ? handleCancelAboutMe : undefined}
+        saveEdit={isOwner ? handleSaveAboutMe : undefined}
       >
         <UserDetailedDescription
           text={aboutText}
@@ -60,9 +61,9 @@ const UserDetailedCards = ({
       <UserDetailedBackground
         title="Ulubione sporty"
         isEditing={isSportEditing}
-        setEditing={() => setIsSportEditing(true)}
-        cancelEdit={handleCancelSport}
-        saveEdit={handleSaveSport}
+        setEditing={isOwner ? () => setIsSportEditing(true) : undefined}
+        cancelEdit={isOwner ? handleCancelSport : undefined}
+        saveEdit={isOwner ? handleSaveSport : undefined}
       >
         <UserDetailedSport
           isEditing={isSportEditing}
