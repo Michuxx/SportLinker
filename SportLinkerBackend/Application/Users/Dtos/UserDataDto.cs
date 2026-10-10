@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace Application.Users.GetUserData
+namespace Application.Users.Dtos
 {
     public class UserDataDto
     {

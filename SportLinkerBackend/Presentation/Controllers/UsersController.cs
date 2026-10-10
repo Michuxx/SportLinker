@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Users.CreateUser;
+using Application.Users.Dtos;
 using Application.Users.GetUserData;
 using Application.Users.LoginUser;
 using Application.Users.UserRefreshToken;

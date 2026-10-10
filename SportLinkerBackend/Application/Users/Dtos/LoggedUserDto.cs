@@ -1,4 +1,4 @@
-﻿namespace Application.Users.LoginUser
+﻿namespace Application.Users.Dtos
 {
     public class LoggedUserDto
     {

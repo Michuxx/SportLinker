@@ -1,5 +1,6 @@
 ﻿
 using Application.Abstractions;
+using Application.Users.Dtos;
 
 namespace Application.Users.LoginUser
 {

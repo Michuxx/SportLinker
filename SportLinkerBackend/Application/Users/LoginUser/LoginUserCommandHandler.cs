@@ -1,6 +1,7 @@
 using Application.Abstractions;
 using Application.Abstractions.Authentication;
 using Application.Abstractions.Security;
+using Application.Users.Dtos;
 using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
 using Domain.Entities;

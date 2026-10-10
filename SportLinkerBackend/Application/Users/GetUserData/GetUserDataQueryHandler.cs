@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Abstractions.Data;
+using Application.Users.Dtos;
 using Dapper;
 using Domain.Abstractions;
 using Domain.Errors;
