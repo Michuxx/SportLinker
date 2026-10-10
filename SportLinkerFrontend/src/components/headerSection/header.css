@@ -30,7 +30,6 @@ header {
 }
 .header-dropdown {
   position: absolute;
-  right: 0px;
   top: 6rem;
   z-index: 11;
 }
