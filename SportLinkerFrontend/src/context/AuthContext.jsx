@@ -7,6 +7,7 @@ import {
 } from "react";
 import authService from "../api/authService";
 import {
+  getStoredUser,
   getAccessToken,
   getRefreshToken,
   setTokens,
@@ -19,41 +20,71 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => getAccessToken());
   const [user, setUser] = useState(() => {
-    const initialToken = getAccessToken();
-    return initialToken ? getUserFromToken(initialToken) : null;
+    const stored = getStoredUser();
+    if (!stored) return null;
+    const currentToken = stored.token || stored.accessToken || stored.accessUserToken;
+    const decoded = currentToken ? getUserFromToken(currentToken) : null;
+    return {
+      ...stored,
+      ...(decoded || {}),
+      id: stored.id || decoded?.id,
+      email: stored.email || decoded?.email,
+      role: stored.role || decoded?.role,
+    };
   });
   const [isLoading, setIsLoading] = useState(false);
 
   // Weryfikacja i ciche odświeżanie tokena przy starcie aplikacji
   useEffect(() => {
     const initAuth = async () => {
+      const stored = getStoredUser();
       const savedToken = getAccessToken();
       const savedRefreshToken = getRefreshToken();
 
       if (savedToken) {
         const decodedUser = getUserFromToken(savedToken);
         if (decodedUser) {
-          setUser(decodedUser);
+          const merged = {
+            ...stored,
+            ...decodedUser,
+            id: stored?.id || decodedUser.id,
+            email: stored?.email || decodedUser.email,
+          };
+          setUser(merged);
           setToken(savedToken);
           return;
         }
       }
 
-      // Jeśli accessToken wygasł lub nie istnieje, ale mamy refreshToken:
+      // Jeśli accessToken wygasł lub nie został zdekodowany, ale mamy refreshToken:
       if (savedRefreshToken) {
         try {
           const data = await authService.refreshToken(savedRefreshToken);
-          setTokens(data.accessUserToken, data.refreshUserToken);
+          const updatedUser = setTokens(data.accessUserToken, data.refreshUserToken);
           setToken(data.accessUserToken);
           const decodedUser = getUserFromToken(data.accessUserToken);
-          setUser(decodedUser);
+          setUser({
+            ...updatedUser,
+            ...(decodedUser || {}),
+            id: updatedUser.id || decodedUser?.id,
+          });
+          return;
         } catch {
-          // Refresh token również wygasł lub jest nieważny
           clearTokens();
           setToken(null);
           setUser(null);
+          return;
         }
-      } else {
+      }
+
+      // Jeśli w localStorage jest już zapisany user z tokenem:
+      if (stored && savedToken) {
+        setUser(stored);
+        setToken(savedToken);
+        return;
+      }
+
+      if (!stored) {
         clearTokens();
         setToken(null);
         setUser(null);
@@ -70,7 +101,12 @@ export const AuthProvider = ({ children }) => {
       if (newToken) {
         setToken(newToken);
         const decodedUser = getUserFromToken(newToken);
-        setUser(decodedUser);
+        const currentStored = getStoredUser();
+        setUser({
+          ...currentStored,
+          ...(decodedUser || {}),
+          id: currentStored?.id || decodedUser?.id,
+        });
       }
     };
 
@@ -92,10 +128,14 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const data = await authService.login({ email, password });
-      setTokens(data.accessUserToken, data.refreshUserToken);
+      const updatedUser = setTokens(data.accessUserToken, data.refreshUserToken);
       setToken(data.accessUserToken);
       const decodedUser = getUserFromToken(data.accessUserToken);
-      setUser(decodedUser);
+      setUser({
+        ...updatedUser,
+        ...(decodedUser || {}),
+        id: updatedUser.id || decodedUser?.id,
+      });
       return data;
     } finally {
       setIsLoading(false);
