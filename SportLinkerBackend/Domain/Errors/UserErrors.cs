@@ -13,5 +13,9 @@ namespace Domain.Errors
         public static readonly Error RefreshTokenExpiredOrRevoked = new(
             "REFRESH_TOKEN_EXPIRED_OR_REVOKED",
             "Token odświeżający wygasł lub został unieważniony.");
+
+        public static readonly Error UserNotFound = new(
+            "USER_NOT_FOUND",
+            "Użytkownik nie istnieje.");
     }
 }

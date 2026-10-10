@@ -15,7 +15,7 @@ const UserDetailedSport = ({ selectedSports, onChange, isEditing }) => {
           onChange={(e) => onChange(e)}
           options={SPORT_OFFERS}
           optionLabel="text"
-          name="favouriteSport"
+          name="favouriteSports"
           placeholder="Wybierz sporty..."
           filter
           filterDelay={400}
@@ -24,9 +24,13 @@ const UserDetailedSport = ({ selectedSports, onChange, isEditing }) => {
         />
       )}
       <div className="user-detailed-selected-sports-wrapper">
-        {selectedSports.length > 0 ? (
-          selectedSports.map((sport) => (
-            <Tag styleType="sport" text={sport.text} />
+        {selectedSports && selectedSports.length > 0 ? (
+          selectedSports.map((sport, index) => (
+            <Tag
+              key={sport?.id || index}
+              styleType="sport"
+              text={sport?.name || sport?.text || (typeof sport === "string" ? sport : "")}
+            />
           ))
         ) : (
           <p>Brak ulubionych sportów</p>

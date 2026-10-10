@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Users.CreateUser;
+using Application.Users.GetUserData;
 using Application.Users.LoginUser;
 using Application.Users.UserRefreshToken;
 using MediatR;
@@ -52,6 +53,18 @@ namespace Presentation.Controllers
             if (!result.IsSuccess)
             {
                 return Unauthorized(new { message = result.Error });
+            }
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet("getUserData")]
+        public async Task<IActionResult> GetUserData([FromQuery] GetUserDataQuery query, CancellationToken cancellationToken)
+        {
+            Result<UserDataDto> result = await _sender.Send(query, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
             }
 
             return Ok(result.Value);

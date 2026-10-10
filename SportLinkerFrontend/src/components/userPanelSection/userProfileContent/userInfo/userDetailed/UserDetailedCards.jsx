@@ -66,7 +66,7 @@ const UserDetailedCards = ({
       >
         <UserDetailedSport
           isEditing={isSportEditing}
-          selectedSports={editData.favouriteSport}
+          selectedSports={editData.favouriteSports || editData.favouriteSport || []}
           onChange={onChange}
         />
       </UserDetailedBackground>
@@ -91,13 +91,25 @@ const UserDetailedCards = ({
         />
       </UserDetailedBackground>
       <UserDetailedBackground title="Mapa">
-        <MapView
-          lat={location.lat}
-          long={location.long}
-          markerText={location.displayLabel}
-          mapHeight="350px"
-          initialZoomMap={12}
-        />
+        {location && location.lat != null && location.long != null ? (
+          <MapView
+            lat={location.lat}
+            long={location.long}
+            markerText={
+              location.displayLabel &&
+              location.displayLabel.trim() !== "," &&
+              location.displayLabel.trim() !== ", "
+                ? location.displayLabel
+                : "Twoja lokalizacja"
+            }
+            mapHeight="350px"
+            initialZoomMap={12}
+          />
+        ) : (
+          <div className="null-map-wrapper">
+            <p>Brak ustawionej lokalizacji na mapie</p>
+          </div>
+        )}
       </UserDetailedBackground>
     </div>
   );

@@ -4,6 +4,7 @@ import UserHeaderInfo from "./userHeaderInfo/UserHeaderInfo";
 import UserBanner from "./userHeaderInfo/userBanner/UserBanner";
 
 const UserHeader = ({
+  userName,
   name,
   birthDate,
   location,
@@ -13,6 +14,8 @@ const UserHeader = ({
   changeBackgroundImage,
   backgroundImage,
 }) => {
+  const displayName = userName || name || "Użytkownik";
+
   return (
     <div className="user-header-wrapper">
       <UserBanner
@@ -29,7 +32,7 @@ const UserHeader = ({
             />
           </div>
           <div className="user-header-info">
-            <h1>{name}</h1>
+            <h1>{displayName}</h1>
             <UserHeaderInfo
               birthDate={birthDate}
               location={location}

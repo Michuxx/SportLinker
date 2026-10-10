@@ -66,3 +66,15 @@
   display: flex;
   gap: 1rem;
 }
+
+.null-map-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  background-color: #f9fafb;
+  border: 1px dashed #e5e7eb;
+  border-radius: 0.5rem;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}

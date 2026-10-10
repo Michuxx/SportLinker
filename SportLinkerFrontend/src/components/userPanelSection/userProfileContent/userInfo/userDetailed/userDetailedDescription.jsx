@@ -18,7 +18,7 @@ const UserDetailedDescription = ({
           placeholder={placeholder}
           name={name}
           onChange={(e) => onChange(e)}
-          value={editData.aboutMe}
+          value={editData.aboutMe || ""}
           width={100}
           rows={5}
           maxLetters={maxLetters}

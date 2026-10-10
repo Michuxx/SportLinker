@@ -9,7 +9,7 @@ const useAgeCalculate = (dateISO) => {
     const birthDate = new Date(dateISO);
 
     var age = today.getFullYear() - birthDate.getFullYear();
-    var month = today.getMonth - birthDate.getMonth();
+    var month = today.getMonth() - birthDate.getMonth();
     if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
