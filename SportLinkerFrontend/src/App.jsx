@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import Home from "./components/Pages/Home";
 import Profile from "./components/Pages/Profile";
 import UserInfo from "./components/userPanelSection/userProfileContent/userInfo/UserInfo";
@@ -12,18 +12,28 @@ import Messages from "./components/Pages/Messages";
 import FriendsSidebar from "./components/messagesSection/chatSidebar/friendsSidebar/FriendsSidebar";
 import ConversationSidebar from "./components/messagesSection/chatSidebar/conversationSidebar/ConversationSidebar";
 import FriendInvitations from "./components/userPanelSection/userProfileContent/friendInvitations/FriendInvitations";
+import UserNotFound from "./components/Pages/UserNotFound";
+import useAuth from "./hooks/useAuth";
+
+const ProfileRedirect = () => {
+  const { user } = useAuth();
+  const targetId = user?.id;
+  return <Navigate to={`userInfo/${targetId}`} replace />;
+};
 
 function App() {
   return (
     <Routes>
       <Route index element={<Home />} />
       <Route path="profile" element={<Profile />}>
-        <Route index element={<UserInfo />} />
-        <Route path="userInfo" element={<UserInfo />} />
+        <Route index element={<ProfileRedirect />} />
+        <Route path="userInfo" element={<ProfileRedirect />} />
+        <Route path="userInfo/:id" element={<UserInfo />} />
         <Route path="foreignInvitations" element={<ForeignInvitations />} />
         <Route path="offerStatuses" element={<OfferStatuses />} />
         <Route path="friendInvitations" element={<FriendInvitations />} />
       </Route>
+      <Route path="user-not-found" element={<UserNotFound />} />
       <Route path="/offer/:id" element={<Offer />} />
       <Route path="settings" element={<Settings />}>
         <Route index element={<AccountSettings />} />
@@ -40,4 +50,3 @@ function App() {
 }
 
 export default App;
-1;

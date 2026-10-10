@@ -1,47 +1,92 @@
 import "./userInfo.css";
 import UserHeader from "./userHeader/UserHeader";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useParams, useSearchParams, useNavigate } from "react-router";
 import UserDetailed from "./userDetailed/UserDetailed";
+import useAuth from "../../../../hooks/useAuth";
+import userService from "../../../../api/userService";
 
-const UserInfo = () => {
-  const [userInfo, setUserInfo] = useState({
-    userName: "Admin",
-    email: "test@wp.pl",
-    birthDate: null,
-    gender: "male",
-    aboutMe: null,
-    profileImage: null,
-    backgroundImage: null,
-    createdOffers: 0,
-    joinedOffers: 0,
-    invitations: 0,
-    long: null,
-    lat: null,
-    city: null,
-    country: null,
-    state: null,
-    name: null,
-    displayLabel: ", ",
-    favouriteSports: [],
-  });
+const UserInfo = ({ userId: propUserId }) => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { user } = useAuth();
+  const [searchParams] = useSearchParams();
+
+  const activeUserId =
+    id || propUserId || searchParams.get("userId") || user?.id;
+
+  const [userInfo, setUserInfo] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [isAboutMeEditing, setIsAboutMeEditing] = useState(false);
   const [isSportEditing, setIsSportEditing] = useState(false);
 
   const [editData, setEditData] = useState({
-    favouriteSports: userInfo.favouriteSports || [],
-    aboutMe: userInfo.aboutMe || "",
+    favouriteSports: [],
+    aboutMe: "",
   });
 
   const [errors, setErrors] = useState({
     aboutMe: "",
   });
 
+  const fetchUserData = useCallback(async () => {
+    if (!activeUserId) return;
+    setIsLoading(true);
+    setError(null);
+    try {
+      const data = await userService.getUserData(activeUserId);
+      setUserInfo(data);
+      setEditData({
+        favouriteSports: data.favouriteSports || [],
+        aboutMe: data.aboutMe || "",
+      });
+    } catch (err) {
+      const responseData = err.response?.data;
+      const errorObj = responseData?.message;
+      const errorCode =
+        (typeof errorObj === "object" ? errorObj?.code : null) ||
+        responseData?.code;
+      const errorMsg =
+        (typeof errorObj === "object" ? errorObj?.message : null) ||
+        (typeof errorObj === "string" ? errorObj : null) ||
+        responseData?.message ||
+        "Nie udało się pobrać danych użytkownika.";
+
+      if (errorCode === "USER_NOT_FOUND") {
+        navigate("/user-not-found", {
+          replace: true,
+          state: {
+            code: errorCode,
+            message: errorMsg,
+            searchedId: activeUserId,
+          },
+        });
+        return;
+      }
+
+      setError(
+        typeof errorMsg === "string"
+          ? errorMsg
+          : "Wystąpił błąd podczas pobierania danych profilu.",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, [activeUserId]);
+
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData]);
+
   const cancelHandle = (setEditingFalse) => {
-    setEditData({
-      favouriteSports: userInfo.favouriteSports || [],
-      aboutMe: userInfo.aboutMe || "",
-    });
+    if (userInfo) {
+      setEditData({
+        favouriteSports: userInfo.favouriteSports || [],
+        aboutMe: userInfo.aboutMe || "",
+      });
+    }
     setErrors((prev) => ({ ...prev, aboutMe: "" }));
     setEditingFalse();
   };
@@ -81,6 +126,30 @@ const UserInfo = () => {
     }));
     setEditingFalse();
   };
+
+  if (isLoading) {
+    return (
+      <div className="user-info-wrapper user-info-loading">
+        <div className="user-info-spinner" />
+        <p>Ładowanie danych profilu...</p>
+      </div>
+    );
+  }
+
+  if (error && !userInfo) {
+    return (
+      <div className="user-info-wrapper user-info-error">
+        <p>{error}</p>
+        <button className="user-info-retry-btn" onClick={fetchUserData}>
+          Spróbuj ponownie
+        </button>
+      </div>
+    );
+  }
+
+  if (!userInfo) {
+    return null;
+  }
 
   const locationData = {
     long: userInfo.long,
