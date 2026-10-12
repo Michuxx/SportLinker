@@ -26,8 +26,8 @@ namespace Application.Users.LoginUser
 
         public async Task<Result<LoggedUserDto>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUserByEmailAsync(command.email, cancellationToken);
-            if (user == null || !_passwordHasher.VerifyPassword(command.password, user.PasswordHash))
+            var user = await _userRepository.GetUserByEmailAsync(command.Email, cancellationToken);
+            if (user == null || !_passwordHasher.VerifyPassword(command.Password, user.PasswordHash))
             {
                 return Result<LoggedUserDto>.Failure(UserErrors.InvalidCredentials);
             }

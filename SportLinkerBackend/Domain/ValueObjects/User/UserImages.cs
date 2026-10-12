@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,8 +13,12 @@ namespace Domain.ValueObjects.User
         {
             ProfileImage = profileImage;
             BackgroundImage = backgroundImage;
-        } 
-    }
+        }
 
-   
+        public UserImages UpdateProfileImage(string? profileImage) =>
+            new UserImages(profileImage, this.BackgroundImage);
+
+        public UserImages UpdateBackgroundImage(string? backgroundImage) =>
+            new UserImages(this.ProfileImage, backgroundImage);
+    }
 }

@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,7 +16,7 @@ namespace Infrastructure.Database.Configurations
 
             builder.OwnsOne(u => u.PersonalData, pd =>
             {
-                pd.Property(p => p.AboutMe).HasMaxLength(100);
+                pd.Property(p => p.AboutMe).HasMaxLength(180);
                 pd.Property(p => p.BirthDate).HasMaxLength(100);
                 pd.Property(p => p.Name).IsRequired().HasMaxLength(100);
                 pd.Property(p => p.Gender).HasConversion<string>();

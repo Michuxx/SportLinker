@@ -1,3 +1,4 @@
+using Application.Abstractions.Behaviors;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +10,10 @@ namespace Application
         {
             var assembly = typeof(DependencyInjection).Assembly;
 
-            services.AddMediatR(conf => conf.RegisterServicesFromAssembly(assembly));
+            services.AddMediatR(conf => {
+                conf.RegisterServicesFromAssembly(assembly);
+                conf.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                });
 
             services.AddAutoMapper(cfg => cfg.AddMaps(assembly));
 

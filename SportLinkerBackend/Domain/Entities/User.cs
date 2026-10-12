@@ -1,4 +1,4 @@
-﻿using Domain.Enums;
+using Domain.Enums;
 using Domain.ValueObjects.User;
 using System.Net.Mail;
 
@@ -18,7 +18,7 @@ namespace Domain.Entities
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
         public ICollection<FavouriteUserSport> FavouriteUserSports { get; set; } = new List<FavouriteUserSport>();
         public Role Role { get; set; } = Role.User;
-        
+
         public void ChangeEmail(string newEmail)
         {
             if (string.IsNullOrWhiteSpace(newEmail))
@@ -41,6 +41,57 @@ namespace Domain.Entities
             }
 
             Email = newEmail;
+        }
+
+        public void UpdateBasicInfo(string name, DateOnly? birthDate, Gender? gender, Location? location)
+        {
+            PersonalData = PersonalData.UpdateBasicInfo(name, birthDate, gender);
+
+            if (location == null)
+            {
+                Location = null;
+                LocationId = null;
+            }
+            else if (Location != null)
+            {
+                Location.Coordinates = location.Coordinates;
+                Location.Country = location.Country;
+                Location.State = location.State;
+                Location.City = location.City;
+                Location.Name = location.Name;
+            }
+            else
+            {
+                Location = location;
+            }
+        }
+
+        public void UpdateAboutMe(string? aboutMe)
+        {
+            PersonalData = PersonalData.UpdateAboutMe(aboutMe);
+        }
+
+        public void UpdateFavouriteSports(IEnumerable<int> sportIds)
+        {
+            FavouriteUserSports.Clear();
+            if (sportIds != null)
+            {
+                foreach (var sportId in sportIds.Distinct())
+                {
+                    FavouriteUserSports.Add(new FavouriteUserSport { UserId = Id, SportId = sportId });
+                }
+            }
+        }
+
+        public void UpdateImage(string? imageUrl, ImageType imageType)
+        {
+            var currentImages = Images ?? new UserImages(null, null);
+            Images = imageType switch
+            {
+                ImageType.Profile => currentImages.UpdateProfileImage(imageUrl),
+                ImageType.Background => currentImages.UpdateBackgroundImage(imageUrl),
+                _ => throw new ArgumentOutOfRangeException(nameof(imageType), $"Nieobsługiwany typ zdjęcia: {imageType}")
+            };
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+using Application.Abstractions;
 using Application.Abstractions.Data;
 using Application.Users.Dtos;
 using Dapper;
@@ -31,8 +31,8 @@ namespace Application.Users.GetUserData
                 u.Statistics_CreatedOffers AS CreatedOffers,
                 u.Statistics_JoinedOffers AS JoinedOffers,
                 u.Statistics_Invitations AS Invitations,
-                l.Coordinates_Longitude AS Longitude,
-                l.Coordinates_Latitude AS Latitude,
+                l.Coordinates_Longitude AS [Long],
+                l.Coordinates_Latitude AS Lat,
                 l.City,
                 l.Country,
                 l.State,

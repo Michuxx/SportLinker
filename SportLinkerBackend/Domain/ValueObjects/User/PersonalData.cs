@@ -1,4 +1,4 @@
-﻿using Domain.Enums;
+using Domain.Enums;
 
 namespace Domain.ValueObjects.User
 {
@@ -15,6 +15,26 @@ namespace Domain.ValueObjects.User
             BirthDate = birthDate;
             Gender = gender;
             AboutMe = aboutMe;
+        }
+
+        public PersonalData UpdateBasicInfo(string name, DateOnly? birthDate, Gender? gender)
+        {
+            return new PersonalData(
+                name,
+                birthDate,
+                gender,
+                this.AboutMe
+            );
+        }
+
+        public PersonalData UpdateAboutMe(string? aboutMe)
+        {
+            return new PersonalData(
+                this.Name,
+                this.BirthDate,
+                this.Gender,
+                aboutMe
+            );
         }
     }
 }

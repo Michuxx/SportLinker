@@ -8,5 +8,6 @@ namespace Domain.Abstractions.Interfaces
         Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken);
         Task<bool> IsUserWithEmailExists(string email, CancellationToken cancellationToken);
         Task<RefreshToken?> GetRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken);
+        Task<User?> GetUserByIdAsync(int userId, CancellationToken cancellationToken);
     }
 }

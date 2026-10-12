@@ -1,4 +1,4 @@
-﻿using Domain.Abstractions.Interfaces;
+using Domain.Abstractions.Interfaces;
 using Domain.Entities;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +32,14 @@ namespace Infrastructure.Repositories
         public async Task<bool> IsUserWithEmailExists(string email, CancellationToken cancellationToken)
         {
             return await _dbContext.Users.AnyAsync(x => x.Email == email);
+        }
+
+        public async Task<User?> GetUserByIdAsync(int userId, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Users
+                .Include(u => u.Location)
+                .Include(u => u.FavouriteUserSports)
+                .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
         }
     }
 }

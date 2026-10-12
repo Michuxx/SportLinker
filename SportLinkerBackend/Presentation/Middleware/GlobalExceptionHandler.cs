@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+using FluentValidation;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -23,6 +24,7 @@ namespace Infrastructure.Middleware
             _logger.LogError(exception, "An unhandled exception occurred. {message}", exception.Message);
             var (statusCode, title) = exception switch
             {
+                ValidationException => (StatusCodes.Status400BadRequest, "Błąd walidacji"),
                 UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Nieautoryzowany dostęp"),
                 ArgumentException => (StatusCodes.Status400BadRequest, "Niepoprawne dane"),
                 KeyNotFoundException => (StatusCodes.Status404NotFound, "Nie znaleziono zasobu"),
