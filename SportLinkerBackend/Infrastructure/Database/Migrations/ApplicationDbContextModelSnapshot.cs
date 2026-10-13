@@ -86,6 +86,121 @@ namespace Infrastructure.Database.Migrations
                     b.ToTable("Locations");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Offer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AvailabilityEnum")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(190)
+                        .HasColumnType("nvarchar(190)");
+
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxPeople")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModeEnum")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PlanningDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SportId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("SportId");
+
+                    b.ToTable("Offer");
+                });
+
+            modelBuilder.Entity("Domain.Entities.OfferParticipant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OfferId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfferId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OfferParticipant");
+                });
+
+            modelBuilder.Entity("Domain.Entities.OfferRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OfferId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfferId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OfferRequest");
+                });
+
             modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
@@ -211,6 +326,71 @@ namespace Infrastructure.Database.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Entities.Offer", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "Author")
+                        .WithMany("Offers")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Location", "Location")
+                        .WithMany("Offers")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Sport", "Sport")
+                        .WithMany("Offers")
+                        .HasForeignKey("SportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Sport");
+                });
+
+            modelBuilder.Entity("Domain.Entities.OfferParticipant", b =>
+                {
+                    b.HasOne("Domain.Entities.Offer", "Offer")
+                        .WithMany("Participants")
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("OfferParticipants")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Offer");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.OfferRequest", b =>
+                {
+                    b.HasOne("Domain.Entities.Offer", "Offer")
+                        .WithMany("OfferRequests")
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("OfferRequests")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Offer");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
@@ -235,8 +415,8 @@ namespace Infrastructure.Database.Migrations
                                 .HasColumnType("int");
 
                             b1.Property<string>("AboutMe")
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
+                                .HasMaxLength(180)
+                                .HasColumnType("nvarchar(180)");
 
                             b1.Property<DateOnly?>("BirthDate")
                                 .HasMaxLength(100)
@@ -337,17 +517,34 @@ namespace Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Domain.Entities.Location", b =>
                 {
+                    b.Navigation("Offers");
+
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Offer", b =>
+                {
+                    b.Navigation("OfferRequests");
+
+                    b.Navigation("Participants");
                 });
 
             modelBuilder.Entity("Domain.Entities.Sport", b =>
                 {
                     b.Navigation("FavouriteUserSports");
+
+                    b.Navigation("Offers");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("FavouriteUserSports");
+
+                    b.Navigation("OfferParticipants");
+
+                    b.Navigation("OfferRequests");
+
+                    b.Navigation("Offers");
 
                     b.Navigation("RefreshTokens");
                 });

@@ -6,5 +6,6 @@ namespace Domain.Entities
         public int Id { get; set; }
         public string Name { get; set; } = default!;
         public ICollection<FavouriteUserSport> FavouriteUserSports { get; set; } = new List<FavouriteUserSport>();
+        public ICollection<Offer> Offers { get; set; } = new List<Offer>();
     }
 }

@@ -15,9 +15,12 @@ namespace Domain.Entities
         public UserStatistics Statistics { get; set; } = new UserStatistics();
         public int? LocationId { get; set; }
         public Location? Location { get; set; }
+        public Role Role { get; set; } = Role.User;
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
         public ICollection<FavouriteUserSport> FavouriteUserSports { get; set; } = new List<FavouriteUserSport>();
-        public Role Role { get; set; } = Role.User;
+        public ICollection<Offer> Offers { get; set; } = new List<Offer>();
+        public ICollection<OfferParticipant> OfferParticipants { get; set; } = new List<OfferParticipant>();
+        public ICollection<OfferRequest> OfferRequests { get; set; } = new List<OfferRequest>();
 
         public void ChangeEmail(string newEmail)
         {
