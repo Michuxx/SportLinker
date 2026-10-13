@@ -1,10 +1,10 @@
 export const OFFER_AVAILABILITY = [
   {
-    value: "open",
+    value: "Available",
     text: "Dostępna",
   },
   {
-    value: "closed",
-    text: "Zamknięta",
+    value: "Unavailable",
+    text: "Niedostępna",
   },
 ];

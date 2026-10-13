@@ -13,7 +13,7 @@ const Tag = ({ styleType, text }) => {
     any: ["any", "Dowolny poziom", <LuTrophy />],
     sport: ["sport", `${text}`],
     open: ["open", "Dostępna"],
-    closed: ["closed", "Zamknięta"],
+    closed: ["closed", "Niedostępna"],
     pending: ["pending", "Oczekuje na zaakceptowanie", <MdOutlineAccessTime />],
     accepted: ["accepted", "Zaakceptowano", <FaCheck />],
     rejected: ["rejected", "Odrzucono", <RiCloseCircleLine />],
