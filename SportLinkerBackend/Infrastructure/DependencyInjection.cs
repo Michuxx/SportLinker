@@ -1,11 +1,13 @@
-﻿using Application.Abstractions.Authentication;
+using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
 using Application.Abstractions.Security;
+using Application.Abstractions.Storage;
 using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
 using Infrastructure.Database;
 using Infrastructure.Repositories;
 using Infrastructure.Security;
+using Infrastructure.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +28,7 @@ namespace Infrastructure
             services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IImageStorageService, ImageStorageService>();
 
             services.AddSingleton<IJwtProvider, JwtProvider>();
 

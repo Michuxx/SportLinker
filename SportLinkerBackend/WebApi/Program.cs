@@ -54,6 +54,13 @@ builder.Services.AddAuthentication(options =>
 builder.Host.UseSerilog((context, conf) =>
     conf.ReadFrom.Configuration(context.Configuration));
 
+var webRootPath = Path.Combine(builder.Environment.ContentRootPath, "wwwroot");
+if (!Directory.Exists(webRootPath))
+{
+    Directory.CreateDirectory(webRootPath);
+}
+builder.Environment.WebRootPath = webRootPath;
+
 var app = builder.Build();
 app.UseExceptionHandler();
 
@@ -65,9 +72,17 @@ if (app.Environment.IsDevelopment())
 
 app.UseSerilogRequestLogging();
 
-app.UseStaticFiles();
-
 app.UseCors();
+
+var contentTypeProvider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+contentTypeProvider.Mappings[".webp"] = "image/webp";
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(webRootPath),
+    RequestPath = "",
+    ContentTypeProvider = contentTypeProvider
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,5 +1,6 @@
-﻿using Application.Abstractions.Storage;
+using Application.Abstractions.Storage;
 using Domain.Enums;
+using Microsoft.AspNetCore.Hosting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 
@@ -7,6 +8,16 @@ namespace Infrastructure.Storage
 {
     public sealed class ImageStorageService : IImageStorageService
     {
+        private readonly IWebHostEnvironment _environment;
+
+        public ImageStorageService(IWebHostEnvironment environment)
+        {
+            _environment = environment;
+        }
+
+        private string GetWebRootPath() =>
+            _environment.WebRootPath ?? Path.Combine(_environment.ContentRootPath, "wwwroot");
+
         public async Task<string> UploadImageAsync(Stream fileStream, string fileName, ImageType imageType, CancellationToken cancellationToken = default)
         {
             int maxWidth = GetMaxWidthForImageType(imageType);
@@ -15,7 +26,7 @@ namespace Infrastructure.Storage
             var uniqueFileName = $"{Guid.NewGuid()}.webp";
             var subfolder = imageType.ToString().ToLower() + "s";
 
-            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot" ,subfolder);
+            var uploadPath = Path.Combine(GetWebRootPath(), subfolder);
 
             if(!Directory.Exists(uploadPath))
             {
@@ -42,7 +53,7 @@ namespace Infrastructure.Storage
             if (string.IsNullOrWhiteSpace(fileUrl)) return Task.CompletedTask;
 
             var relativePath = fileUrl.TrimStart('/'); 
-            var physicalPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", relativePath);
+            var physicalPath = Path.Combine(GetWebRootPath(), relativePath);
 
             if (File.Exists(physicalPath))
             {
