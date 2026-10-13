@@ -16,6 +16,8 @@ const UserDetailedCards = ({
   setIsAboutMeEditing,
   isSportEditing,
   setIsSportEditing,
+  isAboutMeSaving = false,
+  isSportSaving = false,
   cancelHandle,
   handleSaveData,
   location,
@@ -27,7 +29,7 @@ const UserDetailedCards = ({
   };
 
   const handleSaveAboutMe = () => {
-    handleSaveData(() => setIsAboutMeEditing(false));
+    handleSaveData(() => setIsAboutMeEditing(false), "aboutMe");
   };
 
   const handleCancelSport = () => {
@@ -35,7 +37,7 @@ const UserDetailedCards = ({
   };
 
   const handleSaveSport = () => {
-    handleSaveData(() => setIsSportEditing(false));
+    handleSaveData(() => setIsSportEditing(false), "favouriteSports");
   };
 
   return (
@@ -43,6 +45,7 @@ const UserDetailedCards = ({
       <UserDetailedBackground
         title="O mnie"
         isEditing={isAboutMeEditing}
+        isSaving={isAboutMeSaving}
         setEditing={isOwner ? () => setIsAboutMeEditing(true) : undefined}
         cancelEdit={isOwner ? handleCancelAboutMe : undefined}
         saveEdit={isOwner ? handleSaveAboutMe : undefined}
@@ -61,6 +64,7 @@ const UserDetailedCards = ({
       <UserDetailedBackground
         title="Ulubione sporty"
         isEditing={isSportEditing}
+        isSaving={isSportSaving}
         setEditing={isOwner ? () => setIsSportEditing(true) : undefined}
         cancelEdit={isOwner ? handleCancelSport : undefined}
         saveEdit={isOwner ? handleSaveSport : undefined}

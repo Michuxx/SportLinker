@@ -5,11 +5,33 @@ import { useParams, useSearchParams, useNavigate } from "react-router";
 import UserDetailed from "./userDetailed/UserDetailed";
 import useAuth from "../../../../hooks/useAuth";
 import userService from "../../../../api/userService";
+import { useToast } from "../../../../context/ToastContext";
+
+const normalizeFavouriteSports = (sports, referenceSports = []) => {
+  if (!Array.isArray(sports)) return [];
+  return sports.map((sport) => {
+    if (typeof sport === "object" && sport !== null) {
+      return {
+        id: sport.id,
+        name: sport.name || sport.text || "",
+      };
+    }
+    const sportId = Number(sport);
+    const matched = referenceSports.find(
+      (item) => typeof item === "object" && Number(item?.id) === sportId,
+    );
+    return {
+      id: sportId,
+      name: matched?.name || matched?.text || "",
+    };
+  });
+};
 
 const UserInfo = ({ userId: propUserId }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useAuth();
+  const { showToast } = useToast();
   const [searchParams] = useSearchParams();
 
   const activeUserId =
@@ -25,6 +47,8 @@ const UserInfo = ({ userId: propUserId }) => {
 
   const [isAboutMeEditing, setIsAboutMeEditing] = useState(false);
   const [isSportEditing, setIsSportEditing] = useState(false);
+  const [isAboutMeSaving, setIsAboutMeSaving] = useState(false);
+  const [isSportSaving, setIsSportSaving] = useState(false);
 
   const [editData, setEditData] = useState({
     favouriteSports: [],
@@ -44,9 +68,13 @@ const UserInfo = ({ userId: propUserId }) => {
     setError(null);
     try {
       const data = await userService.getUserData(activeUserId);
-      setUserInfo(data);
+      const normalizedSports = normalizeFavouriteSports(data.favouriteSports);
+      setUserInfo({
+        ...data,
+        favouriteSports: normalizedSports,
+      });
       setEditData({
-        favouriteSports: data.favouriteSports || [],
+        favouriteSports: normalizedSports,
         aboutMe: data.aboutMe || "",
       });
     } catch (err) {
@@ -81,7 +109,7 @@ const UserInfo = ({ userId: propUserId }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [activeUserId]);
+  }, [activeUserId, navigate]);
 
   useEffect(() => {
     fetchUserData();
@@ -104,37 +132,166 @@ const UserInfo = ({ userId: propUserId }) => {
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleChangeProfileImage = (image) => {
-    if (!isOwner) return;
-    setUserInfo((prev) => ({
-      ...prev,
-      profileImage: image,
-    }));
-  };
-
-  const handleChangeBackgroundImage = (image) => {
-    if (!isOwner) return;
-    setUserInfo((prev) => ({
-      ...prev,
-      backgroundImage: image,
-    }));
-  };
-
-  const handleSaveData = (setEditingFalse) => {
-    if (!isOwner) return;
-    if (editData.aboutMe && editData.aboutMe.length > 180) {
-      setErrors((prev) => ({
+  const handleChangeProfileImage = async (file) => {
+    if (!isOwner || !file) return;
+    try {
+      const data = await userService.updateImage(activeUserId, "Profile", file);
+      setUserInfo((prev) => ({
         ...prev,
-        aboutMe: "Opis nie może przekraczać 180 znaków",
+        profileImage: data.imageUrl,
       }));
+      showToast({
+        severity: "success",
+        summary: "Zdjęcie profilowe",
+        detail: "Zdjęcie profilowe zostało zaktualizowane.",
+        life: 3000,
+      });
+    } catch (err) {
+      console.error("Błąd podczas przesyłania zdjęcia profilowego:", err);
+      showToast({
+        severity: "error",
+        summary: "Błąd",
+        detail: "Nie udało się przesłać zdjęcia profilowego.",
+        life: 3500,
+      });
+    }
+  };
+
+  const handleChangeBackgroundImage = async (file) => {
+    if (!isOwner || !file) return;
+    try {
+      const data = await userService.updateImage(
+        activeUserId,
+        "Background",
+        file,
+      );
+      setUserInfo((prev) => ({
+        ...prev,
+        backgroundImage: data.imageUrl,
+      }));
+      showToast({
+        severity: "success",
+        summary: "Zdjęcie w tle",
+        detail: "Zdjęcie w tle zostało zaktualizowane.",
+        life: 3000,
+      });
+    } catch (err) {
+      console.error("Błąd podczas przesyłania zdjęcia w tle:", err);
+      showToast({
+        severity: "error",
+        summary: "Błąd",
+        detail: "Nie udało się przesłać zdjęcia w tle.",
+        life: 3500,
+      });
+    }
+  };
+
+  const handleSaveData = async (setEditingFalse, fieldType) => {
+    if (!isOwner) return;
+
+    if (!fieldType || fieldType === "aboutMe") {
+      if (editData.aboutMe && editData.aboutMe.length > 180) {
+        setErrors((prev) => ({
+          ...prev,
+          aboutMe: "Opis nie może przekraczać 180 znaków",
+        }));
+        return;
+      }
+
+      setIsAboutMeSaving(true);
+      try {
+        const result = await userService.updateAboutMe(
+          activeUserId,
+          editData.aboutMe,
+        );
+        const updatedAboutMe =
+          result?.aboutMe !== undefined ? result.aboutMe : editData.aboutMe;
+
+        setUserInfo((prev) => ({
+          ...prev,
+          aboutMe: updatedAboutMe,
+        }));
+        setEditData((prev) => ({
+          ...prev,
+          aboutMe: updatedAboutMe || "",
+        }));
+        setEditingFalse();
+        showToast({
+          severity: "success",
+          summary: "Sukces",
+          detail: "Opis został pomyślnie zapisany.",
+          life: 3000,
+        });
+      } catch (err) {
+        const errMsg =
+          err.response?.data?.message?.message ||
+          err.response?.data?.message ||
+          "Nie udało się zapisać opisu.";
+        setErrors((prev) => ({
+          ...prev,
+          aboutMe:
+            typeof errMsg === "string"
+              ? errMsg
+              : "Nie udało się zapisać opisu.",
+        }));
+        showToast({
+          severity: "error",
+          summary: "Błąd",
+          detail:
+            typeof errMsg === "string"
+              ? errMsg
+              : "Nie udało się zapisać opisu.",
+          life: 3500,
+        });
+      } finally {
+        setIsAboutMeSaving(false);
+      }
       return;
     }
 
-    setUserInfo((prev) => ({
-      ...prev,
-      ...editData,
-    }));
-    setEditingFalse();
+    if (fieldType === "favouriteSports") {
+      setIsSportSaving(true);
+      try {
+        const sportIds = (editData.favouriteSports || [])
+          .map((s) => (typeof s === "object" ? s.id : Number(s)))
+          .filter(Boolean);
+
+        const updatedIds = await userService.updateFavouriteSports(
+          activeUserId,
+          sportIds,
+        );
+        const normalizedSports = normalizeFavouriteSports(
+          Array.isArray(updatedIds) ? updatedIds : editData.favouriteSports,
+          editData.favouriteSports,
+        );
+
+        setUserInfo((prev) => ({
+          ...prev,
+          favouriteSports: normalizedSports,
+        }));
+        setEditData((prev) => ({
+          ...prev,
+          favouriteSports: normalizedSports,
+        }));
+        setEditingFalse();
+        showToast({
+          severity: "success",
+          summary: "Sukces",
+          detail: "Ulubione sporty zostały pomyślnie zapisane.",
+          life: 3000,
+        });
+      } catch (err) {
+        console.error("Błąd podczas aktualizacji ulubionych sportów:", err);
+        showToast({
+          severity: "error",
+          summary: "Błąd",
+          detail: "Nie udało się zaktualizować ulubionych sportów.",
+          life: 3500,
+        });
+      } finally {
+        setIsSportSaving(false);
+      }
+    }
   };
 
   if (isLoading) {
@@ -182,7 +339,9 @@ const UserInfo = ({ userId: propUserId }) => {
         profileImage={userInfo.profileImage}
         changeProfileImage={isOwner ? handleChangeProfileImage : undefined}
         backgroundImage={userInfo.backgroundImage}
-        changeBackgroundImage={isOwner ? handleChangeBackgroundImage : undefined}
+        changeBackgroundImage={
+          isOwner ? handleChangeBackgroundImage : undefined
+        }
         isOwner={isOwner}
       />
       <UserDetailed
@@ -190,6 +349,8 @@ const UserInfo = ({ userId: propUserId }) => {
         isSportEditing={isSportEditing}
         setIsAboutMeEditing={setIsAboutMeEditing}
         setIsSportEditing={setIsSportEditing}
+        isAboutMeSaving={isAboutMeSaving}
+        isSportSaving={isSportSaving}
         handleSaveData={handleSaveData}
         cancelHandle={cancelHandle}
         onChange={handleChangeEditData}

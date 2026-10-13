@@ -7,3 +7,35 @@
 .acc-security-settings {
   margin-top: 1rem;
 }
+
+.acc-settings-loading {
+  padding: 2rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.p-toast .p-toast-message {
+  margin: 0 0 1rem 0;
+  border-radius: 8px;
+}
+
+.p-toast .p-toast-message .p-toast-message-content {
+  padding: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.p-toast .p-toast-message .p-toast-message-text {
+  flex: 1 1 auto;
+}
+
+.p-toast .p-toast-message .p-toast-detail {
+  margin-top: 0.25rem;
+}
+
+.p-toast .p-toast-icon-close {
+  width: 1.75rem;
+  height: 1.75rem;
+  background: transparent;
+}

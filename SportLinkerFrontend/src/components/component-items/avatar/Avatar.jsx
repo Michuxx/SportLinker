@@ -1,10 +1,19 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "./avatar.css";
 import { LuUser, LuCamera } from "react-icons/lu";
+import { resolveImageUrl } from "../../../api/userService";
+import { useToast } from "../../../context/ToastContext";
 
 const Avatar = ({ size, onImageSelected, image }) => {
   const fileInputRef = useRef(null);
   const [preview, setPreview] = useState(null);
+  const [hasError, setHasError] = useState(false);
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    setPreview(null);
+    setHasError(false);
+  }, [image]);
 
   const handleOverlayClick = () => {
     fileInputRef.current.click();
@@ -15,12 +24,27 @@ const Avatar = ({ size, onImageSelected, image }) => {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
       setPreview(objectUrl);
-      onImageSelected(file);
+      setHasError(false);
+      if (onImageSelected) {
+        onImageSelected(file);
+      }
     }
   };
 
+  const handleImageError = () => {
+    if (hasError) return;
+    setHasError(true);
+    showToast({
+      severity: "warn",
+      summary: "Zdjęcie profilowe",
+      detail: "Obrazek nie istnieje.",
+      life: 3500,
+    });
+  };
+
   const iconSize = size * 7.5;
-  const imageSource = preview || image;
+  const rawImageSource = preview || resolveImageUrl(image);
+  const imageSource = hasError ? null : rawImageSource;
 
   return (
     <div
@@ -29,7 +53,12 @@ const Avatar = ({ size, onImageSelected, image }) => {
     >
       <div className="avatar-image-wrapper">
         {imageSource ? (
-          <img src={imageSource} alt="profile" className="avatar-img" />
+          <img
+            src={imageSource}
+            alt="profile"
+            className="avatar-img"
+            onError={handleImageError}
+          />
         ) : (
           <LuUser size={iconSize} color="white" />
         )}
@@ -45,7 +74,7 @@ const Avatar = ({ size, onImageSelected, image }) => {
         type="file"
         ref={fileInputRef}
         onChange={handleFileChange}
-        accept="image/png, image/jpeg, image/jpg"
+        accept="image/png, image/jpeg, image/jpg, image/webp"
         style={{ display: "none" }}
       />
     </div>

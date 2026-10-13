@@ -1,3 +1,4 @@
+import "./userDetailed.css";
 import Button from "../../../../component-items/button/button";
 import { BiEditAlt } from "react-icons/bi";
 import { FiSave } from "react-icons/fi";
@@ -11,7 +12,14 @@ const UserDetailedBackground = ({
   cancelEdit,
   saveEdit,
   saveEdited,
+  isSaving = false,
 }) => {
+  const saveIcon = isSaving ? (
+    <span className="save-btn-spinner" />
+  ) : (
+    <FiSave size={22} />
+  );
+
   return (
     <div className="user-detailed-background">
       <div className="title-btn-wrapper">
@@ -21,14 +29,14 @@ const UserDetailedBackground = ({
             {isEditing ? (
               <div className="user-detailed-btn-wrapper">
                 <Button
-                  Icon={<FiSave size={22} />}
+                  Icon={saveIcon}
                   style="classicGreenButton"
-                  onClick={saveEdit}
+                  onClick={isSaving ? undefined : saveEdit}
                 />
                 <Button
                   Icon={<MdClose size={22} />}
                   style="classicGreyButton"
-                  onClick={cancelEdit}
+                  onClick={isSaving ? undefined : cancelEdit}
                 />
               </div>
             ) : (
@@ -42,9 +50,9 @@ const UserDetailedBackground = ({
         )}
         {saveEdited && (
           <Button
-            Icon={<FiSave size={22} />}
+            Icon={saveIcon}
             style={"gradientButton"}
-            onClick={saveEdited}
+            onClick={isSaving ? undefined : saveEdited}
           >
             Zapisz
           </Button>

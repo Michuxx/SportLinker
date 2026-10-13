@@ -507,4 +507,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-/SportLinkerBackend/WebApi/wwwroot/profiles/7aa57df8-b482-4805-8b6a-d44e85c5af9f.webp
+/SportLinkerBackend/WebApi/wwwroot/profiles/*
+/SportLinkerBackend/WebApi/wwwroot/backgrounds/*

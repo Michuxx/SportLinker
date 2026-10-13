@@ -1,10 +1,21 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./userBanner.css";
 import { LuCamera } from "react-icons/lu";
+import { resolveImageUrl } from "../../../../../../../api/userService";
+import { useToast } from "../../../../../../../context/ToastContext";
 
-const UserBanner = ({ image, changeBackgroundImage }) => {
+const UserBanner = ({ image, bannerImage, changeBackgroundImage }) => {
   const fileInputRef = useRef(null);
   const [preview, setPreview] = useState(null);
+  const [hasError, setHasError] = useState(false);
+  const { showToast } = useToast();
+
+  const sourceProp = image || bannerImage;
+
+  useEffect(() => {
+    setPreview(null);
+    setHasError(false);
+  }, [sourceProp]);
 
   const handleEditClick = () => {
     fileInputRef.current.click();
@@ -16,6 +27,7 @@ const UserBanner = ({ image, changeBackgroundImage }) => {
       if (preview) URL.revokeObjectURL(preview);
       const objectUrl = URL.createObjectURL(file);
       setPreview(objectUrl);
+      setHasError(false);
 
       if (changeBackgroundImage) {
         changeBackgroundImage(file);
@@ -29,7 +41,38 @@ const UserBanner = ({ image, changeBackgroundImage }) => {
     };
   }, [preview]);
 
-  const currentBanner = preview || image;
+  const resolvedUrl = preview || resolveImageUrl(sourceProp);
+
+  useEffect(() => {
+    if (!resolvedUrl || preview) {
+      setHasError(false);
+      return;
+    }
+
+    let isMounted = true;
+    const img = new Image();
+    img.src = resolvedUrl;
+    img.onload = () => {
+      if (isMounted) setHasError(false);
+    };
+    img.onerror = () => {
+      if (isMounted) {
+        setHasError(true);
+        showToast({
+          severity: "warn",
+          summary: "Zdjęcie w tle",
+          detail: "Obrazek nie istnieje.",
+          life: 3500,
+        });
+      }
+    };
+
+    return () => {
+      isMounted = false;
+    };
+  }, [resolvedUrl, preview, showToast]);
+
+  const currentBanner = hasError ? null : resolvedUrl;
 
   return (
     <div

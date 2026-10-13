@@ -13,6 +13,8 @@ const UserDetailed = ({
   setIsSportEditing,
   isAboutMeEditing,
   setIsAboutMeEditing,
+  isAboutMeSaving = false,
+  isSportSaving = false,
   cancelHandle,
   handleSaveData,
   location,
@@ -34,6 +36,8 @@ const UserDetailed = ({
         isSportEditing={isSportEditing}
         setIsAboutMeEditing={setIsAboutMeEditing}
         setIsSportEditing={setIsSportEditing}
+        isAboutMeSaving={isAboutMeSaving}
+        isSportSaving={isSportSaving}
         handleSaveData={handleSaveData}
         cancelHandle={cancelHandle}
         location={location}

@@ -5,6 +5,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { PrimeReactProvider } from "primereact/api";
 import { AuthProvider } from "./context/AuthContext";
+import { ToastProvider } from "./context/ToastContext";
 
 const value = {
   hideOverlaysOnDocumentScrolling: true,
@@ -13,13 +14,15 @@ const value = {
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <PrimeReactProvider value={value}>
-      <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/*" element={<App />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+      <ToastProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/*" element={<App />} />
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </ToastProvider>
     </PrimeReactProvider>
   </StrictMode>,
 );

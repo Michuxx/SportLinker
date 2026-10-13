@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import UserDetailedBackground from "../../userPanelSection/userProfileContent/userInfo/userDetailed/UserDetailedBackground";
 import "./accountSettings.css";
 import PersonalInfo from "./personalInfo/PersonalInfo";
@@ -7,31 +7,81 @@ import { MdOutlineAlternateEmail } from "react-icons/md";
 import { MdOutlineContactPhone } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegTrashAlt } from "react-icons/fa";
+import useAuth from "../../../hooks/useAuth";
+import userService from "../../../api/userService";
+import { setStoredUser } from "../../../utils/tokenStorage";
+import { useToast } from "../../../context/ToastContext";
 
 const AccountSettings = () => {
+  const { user } = useAuth();
+  const { showToast } = useToast();
+
   const [userInfo, setUserInfo] = useState({
-    name: "John Snow",
-    email: "John@example.pl",
-    phoneNumber: "+48131675998",
+    name: "",
+    email: "",
+    phoneNumber: "",
     birthDate: "",
-    location: {
-      long: 19.028552141007275,
-      lat: 50.25532955,
-      country: "Poland",
-      name: "Warsaw",
-      state: "Masovian Voivodeship",
-    },
+    location: null,
     gender: "NotDisclosed",
   });
 
-  const [searchLocation, setSearchLocation] = useState(
-    userInfo.location && `${userInfo.location.name}, ${userInfo.location.state}`
-  );
+  const [searchLocation, setSearchLocation] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
 
   const [errors, setErrors] = useState({
     name: "",
     birthDate: "",
   });
+
+  const fetchCurrentUserData = useCallback(async () => {
+    if (!user?.id) {
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const data = await userService.getUserData(user.id);
+      const hasValidCoords = data.lat != null && data.long != null;
+      const locObj = hasValidCoords
+        ? {
+            long: data.long,
+            lat: data.lat,
+            country: data.country || null,
+            name: data.name || data.city || null,
+            state: data.state || null,
+            displayLabel: data.displayLabel || null,
+          }
+        : null;
+
+      const cleanLabel =
+        data.displayLabel &&
+        data.displayLabel.trim() !== "," &&
+        data.displayLabel.trim() !== ", "
+          ? data.displayLabel
+          : [data.name || data.city, data.state].filter(Boolean).join(", ");
+
+      setUserInfo({
+        name: data.userName || "",
+        email: data.email || "",
+        phoneNumber: data.phoneNumber || "",
+        birthDate: data.birthDate || "",
+        location: locObj,
+        gender: data.gender ? data.gender.toLowerCase() : "NotDisclosed",
+      });
+
+      setSearchLocation(cleanLabel || "");
+    } catch (err) {
+      console.error("Błąd podczas pobierania danych konta:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user?.id]);
+
+  useEffect(() => {
+    fetchCurrentUserData();
+  }, [fetchCurrentUserData]);
 
   const securityOptions = [
     {
@@ -79,14 +129,16 @@ const AccountSettings = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserInfo((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleChangeLocation = (value) => {
     setUserInfo((prev) => ({ ...prev, location: value }));
-    console.log(userInfo);
   };
 
-  const handleSaveData = () => {
+  const handleSaveData = async () => {
+    if (!user?.id || isSaving) return;
+
     const newErrors = {};
     let isValid = true;
 
@@ -101,7 +153,7 @@ const AccountSettings = () => {
     date80.setFullYear(now.getFullYear() - 80);
     const tooOldDate = date80.toLocaleDateString("en-CA");
 
-    // --- 1.. NAME ---
+    // --- 1. NAME ---
     if (!userInfo.name.trim()) {
       newErrors.name = "Imię i nazwisko nie może być puste";
       isValid = false;
@@ -127,9 +179,72 @@ const AccountSettings = () => {
 
     setErrors(newErrors);
 
-    console.log(userInfo.birthDate);
-    if (isValid) {
-      console.log("zapisano");
+    if (!isValid) return;
+
+    const locationToSend =
+      searchLocation?.trim() &&
+      userInfo.location &&
+      userInfo.location.lat != null &&
+      userInfo.location.long != null
+        ? {
+            long: Number(userInfo.location.long),
+            lat: Number(userInfo.location.lat),
+            country: userInfo.location.country || null,
+            name: userInfo.location.name || userInfo.location.city || null,
+            state: userInfo.location.state || null,
+            displayLabel:
+              userInfo.location.displayLabel || searchLocation.trim(),
+          }
+        : null;
+
+    setIsSaving(true);
+    try {
+      const updated = await userService.updateProfile({
+        userId: Number(user.id),
+        name: userInfo.name.trim(),
+        birthDate: userInfo.birthDate || null,
+        gender: userInfo.gender,
+        location: locationToSend,
+      });
+
+      setUserInfo((prev) => ({
+        ...prev,
+        name: updated.name ?? prev.name.trim(),
+        birthDate: updated.birthDate ?? prev.birthDate,
+        gender: updated.gender ? updated.gender.toLowerCase() : "NotDisclosed",
+        location: updated.location ?? locationToSend,
+      }));
+
+      if (updated.location?.displayLabel) {
+        setSearchLocation(updated.location.displayLabel);
+      } else if (!locationToSend) {
+        setSearchLocation("");
+      }
+
+      setStoredUser({ name: updated.name ?? userInfo.name.trim() });
+
+      showToast({
+        severity: "success",
+        summary: "Sukces",
+        detail: "Dane profilowe zostały pomyślnie zapisane.",
+        life: 3000,
+      });
+    } catch (err) {
+      const errMsg =
+        err.response?.data?.message?.message ||
+        err.response?.data?.message ||
+        "Wystąpił błąd podczas zapisywania zmian.";
+      showToast({
+        severity: "error",
+        summary: "Błąd",
+        detail:
+          typeof errMsg === "string"
+            ? errMsg
+            : "Wystąpił błąd podczas zapisywania zmian.",
+        life: 4000,
+      });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -138,15 +253,20 @@ const AccountSettings = () => {
       <UserDetailedBackground
         title="Informacje podstawowe"
         saveEdited={handleSaveData}
+        isSaving={isSaving}
       >
-        <PersonalInfo
-          userInfo={userInfo}
-          errors={errors}
-          handleChange={handleChange}
-          handleChangeLocation={handleChangeLocation}
-          setSearchLocation={setSearchLocation}
-          searchLocation={searchLocation}
-        />
+        {isLoading ? (
+          <div className="acc-settings-loading">Ładowanie danych konta...</div>
+        ) : (
+          <PersonalInfo
+            userInfo={userInfo}
+            errors={errors}
+            handleChange={handleChange}
+            handleChangeLocation={handleChangeLocation}
+            setSearchLocation={setSearchLocation}
+            searchLocation={searchLocation}
+          />
+        )}
       </UserDetailedBackground>
       <div className="acc-security-settings">
         <UserDetailedBackground title="Prywatność">
