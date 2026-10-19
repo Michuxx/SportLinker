@@ -29,6 +29,7 @@ namespace Infrastructure
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IImageStorageService, ImageStorageService>();
+            services.AddScoped<IOfferRepository, OfferRepository>();
 
             services.AddSingleton<IJwtProvider, JwtProvider>();
 

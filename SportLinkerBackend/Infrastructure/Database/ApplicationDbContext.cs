@@ -14,6 +14,9 @@ namespace Infrastructure.Database
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Sport> Sports { get; set; }
         public DbSet<FavouriteUserSport> FavouriteUserSports { get; set; }
+        public DbSet<Offer> Offers { get; set; }
+        public DbSet<OfferParticipant> OfferParticipants { get; set; }
+        public DbSet<OfferRequest> OfferRequests { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);

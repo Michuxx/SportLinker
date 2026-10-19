@@ -29,14 +29,7 @@ namespace Application.Users.UpdateUserData
             }
 
             Location? newLocation = command.Location is not null
-                ? new Location
-                {
-                    Coordinates = new Coordinates(command.Location.Lat, command.Location.Long),
-                    Country = command.Location.Country,
-                    State = command.Location.State,
-                    City = command.Location.Name,
-                    Name = command.Location.Name
-                }
+                ? new Location(command.Location.Lat, command.Location.Long, command.Location.Country, command.Location.State, null, command.Location.Name, null, null, null)
                 : null;
 
             Gender? newGender = command.Gender?.Trim().ToLowerInvariant() switch

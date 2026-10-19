@@ -21,7 +21,7 @@ namespace Domain.Entities
         public User Author { get; private set; } = default!;
         public ICollection<OfferParticipant> Participants { get; set; } = new List<OfferParticipant>();
         public ICollection<OfferRequest> OfferRequests { get; set; } = new List<OfferRequest>();
-        public Offer CreateOffer(string title, string description, LevelEnum level, DateTime planningDate, int maxPeople, ModeEnum modeEnum, int sportId, Location location, int userId)
+        public static Offer CreateOffer(string title, string description, LevelEnum level, DateTime planningDate, int maxPeople, ModeEnum modeEnum, int sportId, Location location, int userId)
         {
             var offer = new Offer
             {
