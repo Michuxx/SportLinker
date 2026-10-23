@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import OfferPageBanner from "./offerPageBanner/OfferPageBanner";
 import "./offerPageSection.css";
 import OfferPageContent from "./offerPageContent/OfferPageContent";
@@ -7,97 +8,61 @@ import EditOfferModal from "../editOfferModal/EditOfferModal";
 import useDateFormat from "../../hooks/useDateFormat";
 import AddPeopleModal from "../addPeopleModal/AddPeopleModal";
 import { localDateTimeToUtc, toLocalDateFields } from "../../utils/dateTime";
+import offerService from "../../api/offerService";
+import { normalizeOfferDetails } from "../../utils/offerDetails";
+import { getErrorMessage } from "../../utils/apiErrorHelper";
+import useAuth from "../../hooks/useAuth";
 
 const OfferPageSection = () => {
+  const { id } = useParams();
+  const { user } = useAuth();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddPeopleModalOpen, setIsAddPeopleModalOpen] = useState(false);
-  const [currentPeople, setCurrentPeople] = useState();
-  const [openSlots, setOpenSlots] = useState();
+  const [offerData, setOfferData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [loadedId, setLoadedId] = useState(null);
+  const [reloadCount, setReloadCount] = useState(0);
 
-  const [offerData, setOfferData] = useState({
-    id: 1,
-    title: "Poszukuję partnera do tenisa",
-    sport: "Tenis",
-    level: "expert",
-    description:
-      "Szukam osoby do regularnego grania w tenisa. Poziom średniozaawansowany, gra 2-3 razy w tygodniu.",
-    date: "2027-01-20T18:00",
-    creationDate: "04-12-2025",
-    location: {
-      city: "Wrocław",
-      country: "Poland",
-      displayLabel: "Wrocław, ul. Góralska, Hasta La Vista",
-      houseNumber: "",
-      lat: 51.1088336,
-      long: 17.0020515,
-      name: "Hasta La Vista",
-      state: "Lower Silesian Voivodeship",
-      street: "Góralska",
-      type: "house",
-    },
-    maxPeople: 4,
-    availability: "closed", // open, closed
-    mode: "private", // private, public
-    status: "pending", // pending, rejected, accepted, null
-    authorId: 1,
-    author: {
-      id: 1,
-      name: "Macius",
-      joinDate: "02-12-2025",
-      image: null,
-    },
-    members: [
-      {
-        id: 1,
-        name: "Macius",
-        joinDate: "02-12-2025",
-        image: null,
-      },
-      {
-        id: 2,
-        playerId: 21,
-        name: "Kuba",
-        joinDate: "02-12-2025",
-        image: null,
-      },
-      {
-        id: 3,
-        playerId: 22,
-        name: "Janusz",
-        joinDate: "02-12-2025",
-        image: null,
-      },
-      {
-        id: 4,
-        playerId: 24,
-        name: "Martusiem",
-        joinDate: "02-12-2025",
-        image: null,
-      },
-    ],
-    requests: [
-      {
-        id: 6,
-        playerId: 11,
-        name: "Ola",
-        image: null,
-      },
-      {
-        id: 8,
-        playerId: 8,
-        name: "Mariusz",
-        image: null,
-      },
-      {
-        id: 16,
-        playerId: 123,
-        name: "Robert",
-        image: null,
-      },
-    ],
-  });
+  useEffect(() => {
+    const controller = new AbortController();
+    setIsLoading(true);
+    setError(null);
+    setIsEditModalOpen(false);
+    setIsAddPeopleModalOpen(false);
 
-  const formattedDate = useDateFormat(offerData.date);
+    const fetchOffer = async () => {
+      try {
+        const data = await offerService.getOfferDetails(id, {
+          signal: controller.signal,
+        });
+        if (!controller.signal.aborted) {
+          setOfferData(normalizeOfferDetails(data));
+        }
+      } catch (err) {
+        if (!controller.signal.aborted) {
+          setOfferData(null);
+          setError(
+            err.response?.status === 404
+              ? "Nie znaleziono oferty."
+              : getErrorMessage(err, "Nie udało się pobrać danych oferty."),
+          );
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoadedId(id);
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchOffer();
+    return () => controller.abort();
+  }, [id, user?.id, reloadCount]);
+
+  const currentPeople = offerData?.members.length ?? 0;
+  const openSlots = Math.max(0, (offerData?.maxPeople ?? 0) - currentPeople);
+  const formattedDate = useDateFormat(offerData?.date);
 
   const [errors, setErrors] = useState({
     title: "",
@@ -240,7 +205,7 @@ const OfferPageSection = () => {
     }
 
     // --- 7. DOSTEPNOSC ---
-    if (playersAmount <= currentPeople && editData.availability === "open") {
+    if (playersAmount <= currentPeople && editData.availability === "Available") {
       newErrors.availability = "Oferta ma już komplet graczy";
       isValid = false;
     }
@@ -302,17 +267,30 @@ const OfferPageSection = () => {
           ...prev,
           members: updatedMembers,
           requests: updatedRequests,
-          availability: isFull ? "closed" : "open",
+          availability: isFull ? "Unavailable" : "Available",
         };
       });
     }
   };
 
-  useEffect(() => {
-    let membersLength = offerData.members.length;
-    setCurrentPeople(membersLength);
-    setOpenSlots(offerData.maxPeople - membersLength);
-  }, [offerData]);
+  if (isLoading || loadedId !== id) {
+    return (
+      <div className="offer-page-section-container offer-page-state" role="status">
+        Ładowanie oferty...
+      </div>
+    );
+  }
+
+  if (error || !offerData) {
+    return (
+      <div className="offer-page-section-container offer-page-state" role="alert">
+        <p>{error || "Nie znaleziono oferty."}</p>
+        <button type="button" onClick={() => setReloadCount((count) => count + 1)}>
+          Spróbuj ponownie
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="offer-page-section-container">

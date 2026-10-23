@@ -38,7 +38,7 @@ const OfferPageBanner = ({
   };
 
   const buttonSelection = () => {
-    if (offerData.availability === "closed") {
+    if (offerData.availability === "Unavailable") {
       return (
         <div className="offer-status-btn-wrapper">
           <Button style="offerPageRejectedButton" Icon={<MdClose size={18} />}>

@@ -1,6 +1,14 @@
 import apiClient from "./apiClient";
 
 export const offerService = {
+  /** Pobiera szczegóły oferty; zalogowany użytkownik jest rozpoznawany po JWT. */
+  async getOfferDetails(offerId, { signal } = {}) {
+    const response = await apiClient.get(`/Offer/${encodeURIComponent(offerId)}`, {
+      signal,
+    });
+    return response.data;
+  },
+
   /**
    * Tworzy nową ofertę sportową w bazie danych
    * @param {{

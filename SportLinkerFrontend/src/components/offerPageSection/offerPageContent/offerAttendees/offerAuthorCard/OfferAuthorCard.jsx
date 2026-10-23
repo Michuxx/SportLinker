@@ -9,7 +9,7 @@ const OfferAuthorCard = ({ author }) => {
     <div className="offer-author-card-container">
       <h3>Organizator</h3>
       <div className="author-info-wrapper">
-        <Avatar size={4} />
+        <Avatar size={4} image={author.image} />
         <div className="author-info">
           <p className="author-name">{author.name}</p>
           <p className="author-join-date">Dołączył: {normalizedDate}</p>

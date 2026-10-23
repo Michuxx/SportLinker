@@ -15,7 +15,7 @@ const OfferMemberCard = ({ member, offerAuthorId, kickPlayer }) => {
   return (
     <div className="offer-member-card-container">
       <div className="member-info-block">
-        <Avatar size={3} />
+        <Avatar size={3} image={member.image} />
         <div className="member-info-wrapper">
           <p className="member-name">{member.name}</p>
           {member.id === offerAuthorId ? (
