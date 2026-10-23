@@ -14,11 +14,21 @@ import Textarea from "../component-items/textarea/Textarea.jsx";
 import { CREATE_OFFER_VALUES } from "../../assets/CREATE_OFFER_VALUES.js";
 import RadioButton from "../component-items/radio/RadioButton.jsx";
 import Button from "../component-items/button/button.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalHeader from "../component-items/modal/ModalHeader.jsx";
 import SearchInput from "../component-items/input/SearchInput.jsx";
+import sportService from "../../api/sportService";
+import offerService from "../../api/offerService";
+import useAuth from "../../hooks/useAuth";
 
-const CreateOfferModal = ({ handleAddOffer }) => {
+const CreateOfferModal = ({ handleAddOffer, closeModal }) => {
+  const { user } = useAuth();
+
+  const [sports, setSports] = useState([]);
+  const [isSportsLoading, setIsSportsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [apiError, setApiError] = useState("");
+
   const [offerData, setOfferData] = useState({
     sport: "none",
     level: "any",
@@ -53,6 +63,32 @@ const CreateOfferModal = ({ handleAddOffer }) => {
     players: "",
   });
 
+  // Pobieranie listy sportów z bazy danych
+  useEffect(() => {
+    let isMounted = true;
+    const fetchSports = async () => {
+      setIsSportsLoading(true);
+      try {
+        const data = await sportService.getSports();
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          setSports(data);
+        }
+      } catch (err) {
+        console.warn(
+          "Nie udało się pobrać sportów z API, fallback do stałych lokalnych:",
+          err
+        );
+      } finally {
+        if (isMounted) setIsSportsLoading(false);
+      }
+    };
+
+    fetchSports();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setOfferData((prev) => ({ ...prev, [name]: value }));
@@ -60,6 +96,7 @@ const CreateOfferModal = ({ handleAddOffer }) => {
       ...prev,
       [name]: "",
     }));
+    setApiError("");
   };
 
   const handleChangeSearchQuery = (e) => {
@@ -72,6 +109,7 @@ const CreateOfferModal = ({ handleAddOffer }) => {
       ...prev,
       locationQuery: "",
     }));
+    setApiError("");
   };
 
   const handleChangeLocation = (newLocation) => {
@@ -80,11 +118,13 @@ const CreateOfferModal = ({ handleAddOffer }) => {
       ...prev,
       locationQuery: "",
     }));
+    setApiError("");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newErrors = {};
     let isValid = true;
+    setApiError("");
 
     const now = new Date();
     const todaysDate = now.toLocaleDateString("en-CA");
@@ -94,7 +134,7 @@ const CreateOfferModal = ({ handleAddOffer }) => {
     });
 
     // --- 1. SPORT ---
-    if (offerData.sport === "none") {
+    if (offerData.sport === "none" || !offerData.sport) {
       newErrors.sport = "Wybierz sport";
       isValid = false;
     }
@@ -150,16 +190,83 @@ const CreateOfferModal = ({ handleAddOffer }) => {
     } else if (playersAmount < 2) {
       newErrors.players = "Musi być co najmniej 2 graczy";
       isValid = false;
-    } else if (playersAmount > 30) {
-      newErrors.maxPeople = "Może być maksymalnie 30 graczy";
+    } else if (playersAmount > 100) {
+      newErrors.players = "Może być maksymalnie 100 graczy";
       isValid = false;
     }
+
     setErrors(newErrors);
 
-    if (isValid) {
-      handleAddOffer(offerData);
+    if (!isValid) return;
+
+    // --- WYSYŁKA DO BACKENDU ---
+    setIsSubmitting(true);
+    try {
+      const dateString = `${offerData.date}T${offerData.time}:00`;
+
+      const payload = {
+        sportId: Number(offerData.sport),
+        level: offerData.level,
+        title: offerData.title.trim(),
+        description: offerData.description.trim(),
+        date: dateString,
+        location: {
+          city: offerData.location?.city || offerData.location?.name || "",
+          street: offerData.location?.street || "",
+          houseNumber: offerData.location?.houseNumber || "",
+          country: offerData.location?.country || "",
+          lat: Number(offerData.location?.lat || 0),
+          long: Number(offerData.location?.long || 0),
+          state: offerData.location?.state || "",
+          type: offerData.location?.type || "",
+          name: offerData.location?.name || "",
+        },
+        maxParticipants: playersAmount,
+        mode: offerData.mode,
+        userId: Number(user?.id || 0),
+      };
+
+      const response = await offerService.createOffer(payload);
+      const createdId = response?.offerId || response?.id || response;
+
+      if (handleAddOffer) {
+        handleAddOffer({
+          ...offerData,
+          id: createdId,
+          sportId: Number(offerData.sport),
+          author: user?.name || user?.userName || "Użytkownik",
+          currentPeople: 1,
+          maxPeople: playersAmount,
+        });
+      }
+
+      if (closeModal) {
+        closeModal();
+      }
+    } catch (err) {
+      const responseData = err.response?.data;
+      const errorMsg =
+        responseData?.message?.message ||
+        responseData?.message ||
+        responseData?.detail ||
+        "Wystąpił błąd podczas dodawania oferty. Spróbuj ponownie.";
+
+      setApiError(typeof errorMsg === "string" ? errorMsg : JSON.stringify(errorMsg));
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  const sportOptions =
+    sports.length > 0
+      ? sports.map((s) => ({
+          value: String(s.id),
+          text: s.name,
+        }))
+      : SPORT_OFFERS.map((s) => ({
+          value: String(s.id),
+          text: s.text || s.optionValue || s.name,
+        }));
 
   return (
     <div className="offer-modal-wrapper">
@@ -167,13 +274,20 @@ const CreateOfferModal = ({ handleAddOffer }) => {
         title="Utwórz nową ofertę"
         description="Znajdź partnerów do swojego ulubionego sportu"
       />
+
+      {apiError && (
+        <div style={{ color: "#ef4444", fontSize: "14px", marginBottom: "10px", textAlign: "center" }}>
+          {apiError}
+        </div>
+      )}
+
       <div className="offer-modal-select-wrapper">
         <InputField label="Sport">
           <Select
             width={100}
-            options={SPORT_OFFERS}
+            options={sportOptions}
             defaultValue="none"
-            defaultText="Wybierz Sport"
+            defaultText={isSportsLoading ? "Ładowanie sportów..." : "Wybierz Sport"}
             onChange={(e) => handleChange(e)}
             name="sport"
             error={errors.sport}
@@ -258,7 +372,7 @@ const CreateOfferModal = ({ handleAddOffer }) => {
             icon={<GoPeople color="rgb(156, 163, 175)" size={20} />}
             width={100}
             min={2}
-            max={30}
+            max={100}
             onChange={(e) => handleChange(e)}
             name="players"
             value={offerData.players}
@@ -287,8 +401,13 @@ const CreateOfferModal = ({ handleAddOffer }) => {
           />
         </div>
       </InputField>
-      <Button style="createOfferButton" width={100} onClick={handleSubmit}>
-        Dodaj ofertę
+      <Button 
+        style="createOfferButton" 
+        width={100} 
+        onClick={handleSubmit}
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? "Tworzenie oferty..." : "Dodaj ofertę"}
       </Button>
     </div>
   );

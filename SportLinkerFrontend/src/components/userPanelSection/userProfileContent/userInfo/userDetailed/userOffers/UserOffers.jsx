@@ -126,7 +126,10 @@ const UserOffers = ({ isOwner = false }) => {
       )}
       {isCreateModalOpen && (
         <ModalBackground closeModal={() => setIsCreateModalOpen(false)}>
-          <CreateOfferModal />
+          <CreateOfferModal 
+            handleAddOffer={(newOffer) => setOffers((prev) => [newOffer, ...prev])}
+            closeModal={() => setIsCreateModalOpen(false)} 
+          />
         </ModalBackground>
       )}
     </div>

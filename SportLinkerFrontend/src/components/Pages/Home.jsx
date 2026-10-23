@@ -119,7 +119,10 @@ const Home = () => {
       )}
       {isCreateOfferModalOpen && (
         <ModalBackground closeModal={() => setIsCreateOfferModalOpen(false)}>
-          <CreateOfferModal handleAddOffer={handleAddOffer} />
+          <CreateOfferModal 
+            handleAddOffer={handleAddOffer} 
+            closeModal={() => setIsCreateOfferModalOpen(false)} 
+          />
         </ModalBackground>
       )}
     </div>
