@@ -6,6 +6,7 @@ import ModalBackground from "../component-items/modal/ModalBackground";
 import EditOfferModal from "../editOfferModal/EditOfferModal";
 import useDateFormat from "../../hooks/useDateFormat";
 import AddPeopleModal from "../addPeopleModal/AddPeopleModal";
+import { localDateTimeToUtc, toLocalDateFields } from "../../utils/dateTime";
 
 const OfferPageSection = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -125,8 +126,7 @@ const OfferPageSection = () => {
       description: offerData.description,
       location: offerData.location,
       locationQuery: `${offerData.location.displayLabel}`,
-      date: offerData.date.split("T")[0],
-      time: offerData.date.split("T")[1],
+      ...toLocalDateFields(offerData.date),
       maxPeople: offerData.maxPeople,
       level: offerData.level,
       mode: offerData.mode,
@@ -176,14 +176,9 @@ const OfferPageSection = () => {
   const handleSubmit = () => {
     const newErrors = {};
     let isValid = true;
-    let normalizedDate;
 
     const now = new Date();
-    const todaysDate = now.toLocaleDateString("en-CA");
-    const currentTime = now.toLocaleTimeString("pl-PL", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    const { date: todaysDate, time: currentTime } = toLocalDateFields(now);
 
     // --- 1. TYTUŁ ---
     if (!editData.title.trim()) {
@@ -252,9 +247,8 @@ const OfferPageSection = () => {
 
     setErrors(newErrors);
 
-    normalizedDate = `${editData.date}T${editData.time}`;
-
     if (isValid) {
+      const normalizedDate = localDateTimeToUtc(editData.date, editData.time);
       setOfferData((prev) => ({ ...prev, ...editData, date: normalizedDate }));
       setIsEditModalOpen(false);
     }
@@ -294,7 +288,7 @@ const OfferPageSection = () => {
             playerId: player.playerId,
             name: player.name,
             image: player.image,
-            joinDate: new Date().toISOString().split("T")[0],
+            joinDate: new Date().toISOString(),
           },
         ];
 

@@ -1,10 +1,11 @@
 import { useMemo } from "react";
+import { parseApiDate } from "../utils/dateTime";
 
 const useDifferenceDates = (dateISO) => {
   const formattedDate = useMemo(() => {
     if (!dateISO) return null;
 
-    const dateObj = new Date(dateISO);
+    const dateObj = parseApiDate(dateISO);
     const todaysDate = new Date();
 
     const diffInMs = todaysDate.getTime() - dateObj.getTime();

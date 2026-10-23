@@ -20,6 +20,7 @@ import SearchInput from "../component-items/input/SearchInput.jsx";
 import sportService from "../../api/sportService";
 import offerService from "../../api/offerService";
 import useAuth from "../../hooks/useAuth";
+import { localDateTimeToUtc, toLocalDateFields } from "../../utils/dateTime";
 
 const CreateOfferModal = ({ handleAddOffer, closeModal }) => {
   const { user } = useAuth();
@@ -127,11 +128,7 @@ const CreateOfferModal = ({ handleAddOffer, closeModal }) => {
     setApiError("");
 
     const now = new Date();
-    const todaysDate = now.toLocaleDateString("en-CA");
-    const currentTime = now.toLocaleTimeString("pl-PL", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    const { date: todaysDate, time: currentTime } = toLocalDateFields(now);
 
     // --- 1. SPORT ---
     if (offerData.sport === "none" || !offerData.sport) {
@@ -202,7 +199,7 @@ const CreateOfferModal = ({ handleAddOffer, closeModal }) => {
     // --- WYSYŁKA DO BACKENDU ---
     setIsSubmitting(true);
     try {
-      const dateString = `${offerData.date}T${offerData.time}:00`;
+      const dateString = localDateTimeToUtc(offerData.date, offerData.time);
 
       const payload = {
         sportId: Number(offerData.sport),
@@ -231,6 +228,7 @@ const CreateOfferModal = ({ handleAddOffer, closeModal }) => {
       if (handleAddOffer) {
         handleAddOffer({
           ...offerData,
+          date: dateString,
           id: createdId,
           sportId: Number(offerData.sport),
           author: user?.name || user?.userName || "Użytkownik",
@@ -352,7 +350,7 @@ const CreateOfferModal = ({ handleAddOffer, closeModal }) => {
             name="date"
             value={offerData.date}
             error={errors.date}
-            min={new Date().toISOString().split("T")[0]}
+            min={toLocalDateFields().date}
           />
         </InputField>
         <InputField label="Godzina">

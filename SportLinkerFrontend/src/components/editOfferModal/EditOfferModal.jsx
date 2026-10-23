@@ -17,6 +17,7 @@ import Textarea from "../component-items/textarea/Textarea";
 import RadioButton from "../component-items/radio/RadioButton";
 import Button from "../component-items/button/button";
 import SearchInput from "../component-items/input/SearchInput";
+import { toLocalDateFields } from "../../utils/dateTime";
 
 const EditOfferModal = ({
   offerData,
@@ -100,7 +101,7 @@ const EditOfferModal = ({
             name="date"
             value={offerData.date}
             error={errors.date}
-            min={new Date().toISOString().split("T")[0]}
+            min={toLocalDateFields().date}
           />
         </InputField>
         <InputField label="Godzina">

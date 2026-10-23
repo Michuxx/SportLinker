@@ -5,10 +5,11 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { useState } from "react";
 import BackgroundModal from "../../../../component-items/modal/ModalBackground";
 import WarningModal from "../../../../warningModal/WarningModal";
+import { parseApiDate } from "../../../../../utils/dateTime";
 
 const OfferMemberCard = ({ member, offerAuthorId, kickPlayer }) => {
   const [isKickModalOpen, setIsKickModalOpen] = useState(false);
-  const dateObj = new Date(member.joinDate);
+  const dateObj = parseApiDate(member.joinDate);
   const normalizedDate = dateObj.toLocaleDateString("pl-PL");
 
   return (

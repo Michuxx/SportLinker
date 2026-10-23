@@ -10,6 +10,7 @@ import { FiCalendar } from "react-icons/fi";
 import { GoPeople } from "react-icons/go";
 import { MdSort } from "react-icons/md";
 import { TbSortAscendingLetters } from "react-icons/tb";
+import { toLocalDateFields } from "../../utils/dateTime";
 
 const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
   return (
@@ -35,7 +36,7 @@ const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
             onChange={(e) => onChangeFilter(e)}
             name="startDate"
             value={filter.startDate}
-            min={new Date().toISOString().split("T")[0]}
+            min={toLocalDateFields().date}
           />
         </InputField>
         <InputField label="Data do">
@@ -46,7 +47,7 @@ const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
             onChange={(e) => onChangeFilter(e)}
             name="endDate"
             value={filter.endDate}
-            min={new Date().toISOString().split("T")[0]}
+            min={toLocalDateFields().date}
           />
         </InputField>
       </div>

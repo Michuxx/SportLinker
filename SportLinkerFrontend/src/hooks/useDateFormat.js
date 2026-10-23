@@ -1,10 +1,11 @@
 import { useMemo } from "react";
+import { parseApiDate } from "../utils/dateTime";
 
 const useDateFormat = (dateISO) => {
   const formattedDate = useMemo(() => {
     if (!dateISO) return null;
 
-    const dateObj = new Date(dateISO);
+    const dateObj = parseApiDate(dateISO);
 
     if (isNaN(dateObj.getTime())) {
       return { date: "", time: "", weekday: "Błędna data" };

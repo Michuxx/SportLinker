@@ -1,8 +1,9 @@
 import "./offerAuthorCard.css";
 import Avatar from "../../../../component-items/avatar/Avatar";
+import { parseApiDate } from "../../../../../utils/dateTime";
 
 const OfferAuthorCard = ({ author }) => {
-  const dateObj = new Date(author.joinDate);
+  const dateObj = parseApiDate(author.joinDate);
   const normalizedDate = dateObj.toLocaleDateString("pl-PL");
   return (
     <div className="offer-author-card-container">

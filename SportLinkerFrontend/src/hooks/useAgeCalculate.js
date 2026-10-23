@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { parseApiDate } from "../utils/dateTime";
 
 const useAgeCalculate = (dateISO) => {
   const calculateAge = useMemo(() => {
@@ -6,7 +7,7 @@ const useAgeCalculate = (dateISO) => {
 
     var today = new Date();
 
-    const birthDate = new Date(dateISO);
+    const birthDate = parseApiDate(dateISO);
 
     var age = today.getFullYear() - birthDate.getFullYear();
     var month = today.getMonth() - birthDate.getMonth();
