@@ -1,4 +1,5 @@
 using Application.Abstractions;
+using Application.Abstractions.Authentication;
 using Application.Abstractions.Storage;
 using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
@@ -12,20 +13,23 @@ namespace Application.Users.UpdateUserImage
         private readonly IUserRepository _userRepository;
         private readonly IImageStorageService _imageStorageService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrentUser _currentUser;
 
         public UpdateUserImageCommandHandler(
             IUserRepository userRepository,
             IImageStorageService imageStorageService,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ICurrentUser currentUser)
         {
             _userRepository = userRepository;
             _imageStorageService = imageStorageService;
             _unitOfWork = unitOfWork;
+            _currentUser = currentUser;
         }
 
         public async Task<Result<string>> Handle(UpdateUserImageCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUserByIdAsync(command.UserId, cancellationToken);
+            var user = await _userRepository.GetUserByIdAsync(_currentUser.UserId, cancellationToken);
             if (user == null)
             {
                 return Result<string>.Failure(UserErrors.UserNotFound);

@@ -142,7 +142,7 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasIndex("SportId");
 
-                    b.ToTable("Offer");
+                    b.ToTable("Offers");
                 });
 
             modelBuilder.Entity("Domain.Entities.OfferParticipant", b =>
@@ -168,7 +168,7 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OfferParticipant");
+                    b.ToTable("OfferParticipants");
                 });
 
             modelBuilder.Entity("Domain.Entities.OfferRequest", b =>
@@ -198,7 +198,7 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OfferRequest");
+                    b.ToTable("OfferRequests");
                 });
 
             modelBuilder.Entity("Domain.Entities.RefreshToken", b =>

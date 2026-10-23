@@ -4,6 +4,7 @@ using Application.Abstractions.Security;
 using Application.Abstractions.Storage;
 using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
+using Infrastructure.Authentication;
 using Infrastructure.Database;
 using Infrastructure.Repositories;
 using Infrastructure.Security;
@@ -23,6 +24,8 @@ namespace Infrastructure
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
+            services.AddHttpContextAccessor();
+
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
             services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
@@ -32,6 +35,7 @@ namespace Infrastructure
             services.AddScoped<IOfferRepository, OfferRepository>();
 
             services.AddSingleton<IJwtProvider, JwtProvider>();
+            services.AddSingleton<ICurrentUser, CurrentUser>();
 
             return services;
         }

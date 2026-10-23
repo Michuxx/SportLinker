@@ -18,8 +18,7 @@ namespace Presentation.Controllers
             _sender = sender;
         }
 
-        [Authorize]
-        [HttpGet()]
+        [HttpGet]
         public async Task<IActionResult> GetSports(CancellationToken cancellationToken)
         {
             var query = new GetSportsQuery();

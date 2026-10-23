@@ -77,6 +77,7 @@ namespace Presentation.Controllers
             return Ok(result.Value);
         }
 
+        [Authorize]
         [HttpPut("updateProfile")]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserProfileCommand command, CancellationToken cancellationToken)
         {
@@ -89,6 +90,7 @@ namespace Presentation.Controllers
             return Ok(result.Value);
         }
 
+        [Authorize]
         [HttpPatch("updateAboutMe")]
         public async Task<IActionResult> UpdateAboutMe([FromBody] UpdateAboutMeCommand command, CancellationToken cancellationToken)
         {
@@ -101,6 +103,7 @@ namespace Presentation.Controllers
             return Ok(new { aboutMe = result.Value });
         }
 
+        [Authorize]
         [HttpPut("updateFavouriteSports")]
         public async Task<IActionResult> UpdateFavouriteSports([FromBody] UpdateFavouriteSportsCommand command, CancellationToken cancellationToken)
         {
@@ -113,9 +116,9 @@ namespace Presentation.Controllers
             return Ok(result.Value);
         }
 
+        [Authorize]
         [HttpPost("updateImage")]
         public async Task<IActionResult> UpdateImage(
-            [FromForm] int userId,
             [FromForm] ImageType imageType,
             IFormFile file,
             CancellationToken cancellationToken)
@@ -126,7 +129,7 @@ namespace Presentation.Controllers
             }
 
             await using var stream = file.OpenReadStream();
-            var command = new UpdateUserImageCommand(userId, stream, file.FileName, imageType);
+            var command = new UpdateUserImageCommand(stream, file.FileName, imageType);
 
             Result<string> result = await _sender.Send(command, cancellationToken);
             if (!result.IsSuccess)
@@ -135,13 +138,6 @@ namespace Presentation.Controllers
             }
 
             return Ok(new { imageUrl = result.Value });
-        }
-
-        [Authorize]
-        [HttpGet("secret")]
-        public IActionResult SecretEndpoint()
-        {
-            return Ok("Gratulacje! Twój token działa i masz dostęp do chronionych danych!");
         }
     }
 }

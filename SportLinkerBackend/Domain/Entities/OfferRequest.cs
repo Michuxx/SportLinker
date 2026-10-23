@@ -1,4 +1,4 @@
-﻿using Domain.Enums;
+using Domain.Enums;
 
 namespace Domain.Entities
 {
@@ -10,7 +10,11 @@ namespace Domain.Entities
         public int UserId { get; set; }
         public User User { get; set; } = default!;
         public RequestStatusEnum Status { get; set; } = RequestStatusEnum.Pending;
-        public DateTime RequestDate { get; } = DateTime.UtcNow;
+        public DateTime RequestDate { get; set; } = DateTime.UtcNow;
+
+        public OfferRequest()
+        {
+        }
 
         public OfferRequest(int offerId, int userId)
         {

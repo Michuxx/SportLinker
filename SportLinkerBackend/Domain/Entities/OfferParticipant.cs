@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities
+namespace Domain.Entities
 {
     public class OfferParticipant
     {
@@ -7,7 +7,11 @@
         public Offer Offer { get; set; } = default!;
         public int UserId { get; set; }
         public User User { get; set; } = default!;
-        public DateTime JoinDate { get; } = DateTime.UtcNow;
+        public DateTime JoinDate { get; set; } = DateTime.UtcNow;
+
+        public OfferParticipant()
+        {
+        }
 
         public OfferParticipant(int offerId, int userId)
         {

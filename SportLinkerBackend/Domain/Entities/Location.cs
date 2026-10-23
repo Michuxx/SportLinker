@@ -1,4 +1,4 @@
-﻿using Domain.ValueObjects.Location;
+using Domain.ValueObjects.Location;
 
 namespace Domain.Entities
 {
@@ -13,6 +13,11 @@ namespace Domain.Entities
         public string? Street { get; set; }
         public string? HouseNumber { get; set; }
         public string? Type { get; set; }
+
+        public Location()
+        {
+        }
+
         public Location(double latitude, double longitude, string? Country, string? State, string? City, string? Name, string? Street, string? HouseNumber, string? Type)
         {
             Coordinates = new Coordinates(latitude, longitude);

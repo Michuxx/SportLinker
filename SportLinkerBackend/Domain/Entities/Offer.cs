@@ -44,7 +44,7 @@ namespace Domain.Entities
         public bool TransferAuthorship(int newAuthorId)
         {
             if (newAuthorId <= 0) return false;
-            if (newAuthorId == AuthorId)
+            if (newAuthorId != AuthorId)
             {
                 bool isParticipant = Participants.Any(p => p.UserId == newAuthorId);
                 if (!isParticipant) return false;
