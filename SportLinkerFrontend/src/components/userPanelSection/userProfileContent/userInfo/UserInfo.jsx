@@ -135,7 +135,7 @@ const UserInfo = ({ userId: propUserId }) => {
   const handleChangeProfileImage = async (file) => {
     if (!isOwner || !file) return;
     try {
-      const data = await userService.updateImage(activeUserId, "Profile", file);
+      const data = await userService.updateImage("Profile", file);
       setUserInfo((prev) => ({
         ...prev,
         profileImage: data.imageUrl,
@@ -161,7 +161,6 @@ const UserInfo = ({ userId: propUserId }) => {
     if (!isOwner || !file) return;
     try {
       const data = await userService.updateImage(
-        activeUserId,
         "Background",
         file,
       );
@@ -201,7 +200,6 @@ const UserInfo = ({ userId: propUserId }) => {
       setIsAboutMeSaving(true);
       try {
         const result = await userService.updateAboutMe(
-          activeUserId,
           editData.aboutMe,
         );
         const updatedAboutMe =
@@ -257,7 +255,6 @@ const UserInfo = ({ userId: propUserId }) => {
           .filter(Boolean);
 
         const updatedIds = await userService.updateFavouriteSports(
-          activeUserId,
           sportIds,
         );
         const normalizedSports = normalizeFavouriteSports(

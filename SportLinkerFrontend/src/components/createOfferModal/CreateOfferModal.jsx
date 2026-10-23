@@ -223,7 +223,6 @@ const CreateOfferModal = ({ handleAddOffer, closeModal }) => {
         },
         maxParticipants: playersAmount,
         mode: offerData.mode,
-        userId: Number(user?.id || 0),
       };
 
       const response = await offerService.createOffer(payload);

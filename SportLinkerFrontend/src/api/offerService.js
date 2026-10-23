@@ -21,8 +21,7 @@ export const offerService = {
    *     name?: string
    *   },
    *   maxParticipants: number,
-   *   mode: string,
-   *   userId?: number
+   *   mode: string
    * }} offerData
    * @returns {Promise<{ offerId: number }>}
    */

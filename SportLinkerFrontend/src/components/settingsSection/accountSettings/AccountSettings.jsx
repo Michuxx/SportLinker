@@ -200,7 +200,6 @@ const AccountSettings = () => {
     setIsSaving(true);
     try {
       const updated = await userService.updateProfile({
-        userId: Number(user.id),
         name: userInfo.name.trim(),
         birthDate: userInfo.birthDate || null,
         gender: userInfo.gender,

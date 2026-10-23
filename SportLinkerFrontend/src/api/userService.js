@@ -37,7 +37,6 @@ export const userService = {
   /**
    * Aktualizuje podstawowe informacje o profilu (Ustawienia konta)
    * @param {{
-   *   userId: number,
    *   name: string,
    *   birthDate: string | null,
    *   gender: string | null,
@@ -52,9 +51,8 @@ export const userService = {
    * }} profileData
    * @returns {Promise<any>}
    */
-  async updateProfile({ userId, name, birthDate, gender, location }) {
+  async updateProfile({ name, birthDate, gender, location }) {
     const response = await apiClient.put("/users/updateProfile", {
-      userId: Number(userId),
       name,
       birthDate: birthDate || null,
       gender: gender || null,
@@ -65,13 +63,11 @@ export const userService = {
 
   /**
    * Aktualizuje opis "O mnie" na profilu użytkownika
-   * @param {number|string} userId
    * @param {string|null} aboutMe
    * @returns {Promise<{ aboutMe: string | null }>}
    */
-  async updateAboutMe(userId, aboutMe) {
+  async updateAboutMe(aboutMe) {
     const response = await apiClient.patch("/users/updateAboutMe", {
-      userId: Number(userId),
       aboutMe: aboutMe ?? null,
     });
     return response.data;
@@ -79,13 +75,11 @@ export const userService = {
 
   /**
    * Aktualizuje listę ulubionych sportów użytkownika
-   * @param {number|string} userId
    * @param {number[]} sportIds
    * @returns {Promise<number[]>}
    */
-  async updateFavouriteSports(userId, sportIds) {
+  async updateFavouriteSports(sportIds) {
     const response = await apiClient.put("/users/updateFavouriteSports", {
-      userId: Number(userId),
       sportIds,
     });
     return response.data;
@@ -93,14 +87,12 @@ export const userService = {
 
   /**
    * Przesyła nowe zdjęcie profilowe lub zdjęcie w tle
-   * @param {number|string} userId
    * @param {"Profile" | "Background"} imageType
    * @param {File} file
    * @returns {Promise<{ imageUrl: string }>}
    */
-  async updateImage(userId, imageType, file) {
+  async updateImage(imageType, file) {
     const formData = new FormData();
-    formData.append("userId", String(userId));
     formData.append("imageType", imageType);
     formData.append("file", file);
 
