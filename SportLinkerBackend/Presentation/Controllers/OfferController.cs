@@ -1,5 +1,5 @@
 using Application.Offers.CreateOffer;
-using Application.Users.GetSports;
+using Application.Offers.GetOfferDetails;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +29,34 @@ namespace Presentation.Controllers
             }
 
             return Ok(new { offerId = result.Value });
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{offerId:int}")]
+        public async Task<IActionResult> GetOfferDetails(int offerId ,CancellationToken cancellationToken)
+        {
+            int? userId = null;
+
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                if (!int.TryParse(User.FindFirst("id")?.Value, out var id)
+                    || id <= 0)
+                {
+                    return Unauthorized();
+                }
+
+                userId = id;
+            }
+
+            var query = new GetOfferDetailsQuery(offerId, userId);
+            var result = await _sender.Send(query, cancellationToken);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
+
+            return Ok(result.Value);
         }
     }
 }

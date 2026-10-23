@@ -1,4 +1,4 @@
-﻿namespace Application.Users.Dtos
+﻿namespace Application.Sports.Dtos
 {
     public class SportDto
     {

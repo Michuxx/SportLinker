@@ -1,10 +1,10 @@
 ﻿using Application.Abstractions;
 using Application.Abstractions.Data;
-using Application.Users.Dtos;
+using Application.Sports.Dtos;
 using Dapper;
 using System.Data;
 
-namespace Application.Users.GetSports
+namespace Application.Sports.GetSports
 {
     public class GetSportsQueryHandler : IQueryHandler<GetSportsQuery, List<SportDto>>
     {

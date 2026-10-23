@@ -1,4 +1,5 @@
-﻿using Domain.Enums;
+﻿using Application.Sports.Dtos;
+using Domain.Enums;
 
 namespace Application.Users.Dtos
 {

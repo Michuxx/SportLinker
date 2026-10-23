@@ -1,7 +1,6 @@
-using Application.Users.Dtos;
-using Application.Users.GetSports;
+using Application.Sports.Dtos;
+using Application.Sports.GetSports;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 

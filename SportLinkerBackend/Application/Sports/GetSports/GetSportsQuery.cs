@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions;
-using Application.Users.Dtos;
+using Application.Sports.Dtos;
 
-namespace Application.Users.GetSports
+namespace Application.Sports.GetSports
 {
     public sealed record GetSportsQuery : IQuery<List<SportDto>>
     {

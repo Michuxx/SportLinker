@@ -7,12 +7,17 @@ using Presentation;
 using Scalar.AspNetCore;
 using Serilog;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers()
-                    .AddApplicationPart(typeof(Presentation.DependencyInjection).Assembly);
+                    .AddApplicationPart(typeof(Presentation.DependencyInjection).Assembly)
+                    .AddJsonOptions(options =>
+                        options.JsonSerializerOptions.Converters.Add(
+                            new JsonStringEnumConverter())); 
+
 builder.Services.AddOpenApi();
 
 builder.Services
