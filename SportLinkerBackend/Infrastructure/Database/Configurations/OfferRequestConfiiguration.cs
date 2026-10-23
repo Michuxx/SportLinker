@@ -11,7 +11,10 @@ namespace Infrastructure.Database.Configurations
             builder.HasKey(or => or.Id);
             builder.Property(or => or.UserId).IsRequired();
             builder.Property(or => or.OfferId).IsRequired();
-            builder.Property(or => or.RequestDate).IsRequired();
+            builder.Property(or => or.RequestDate)
+                .IsRequired()
+                .HasConversion(
+                    value => value, value => DateTime.SpecifyKind(value, DateTimeKind.Utc));
 
             builder.HasOne(or => or.Offer)
                 .WithMany(o => o.OfferRequests)

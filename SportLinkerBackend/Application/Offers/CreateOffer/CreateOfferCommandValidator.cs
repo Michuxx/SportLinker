@@ -21,7 +21,7 @@ namespace Application.Offers.CreateOffer
             RuleFor(x => x.Date)
                 .NotEmpty()
                 .WithMessage("Data jest wymagana.")
-                .Must(BeAValidDate)
+                .Must(date => date > DateTimeOffset.UtcNow)
                 .WithMessage("Date cannot be earlier date");
 
             RuleFor(x => x.MaxParticipants)
@@ -58,16 +58,6 @@ namespace Application.Offers.CreateOffer
                          .NotEmpty()
                          .WithMessage("Miasto jest wymagane.");
                  });
-        }
-
-
-        private bool BeAValidDate(string date)
-        {
-            if (DateTime.TryParse(date, out DateTime parsedDate))
-            {
-                return parsedDate >= DateTime.Now;
-            }
-            return false;
         }
     }
 }

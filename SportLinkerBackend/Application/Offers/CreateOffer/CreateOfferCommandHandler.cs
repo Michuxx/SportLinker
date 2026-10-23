@@ -22,7 +22,7 @@ namespace Application.Offers.CreateOffer
         {
             LevelEnum level = Enum.Parse<LevelEnum>(command.Level, ignoreCase: true);
             ModeEnum mode = Enum.Parse<ModeEnum>(command.Mode, ignoreCase: true);
-            DateTime parsedDate = DateTime.Parse(command.Date);
+            DateTime parsedDate = command.Date.UtcDateTime;
 
             Location location = new Location(command.Location.Lat, command.Location.Long, command.Location.Country, command.Location.State, command.Location.City, command.Location.Name, command.Location.Street, command.Location.HouseNumber, command.Location.Type);
 

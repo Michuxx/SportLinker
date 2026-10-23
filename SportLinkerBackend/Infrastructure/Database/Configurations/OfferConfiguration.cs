@@ -15,7 +15,11 @@ namespace Infrastructure.Database.Configurations
             builder.Property(o => o.Level).IsRequired()
                 .HasConversion<string>();
 
-            builder.Property(o => o.PlanningDate).IsRequired();
+            builder.Property(o => o.PlanningDate)
+                .IsRequired()
+                .HasConversion(
+                    value => value, value => DateTime.SpecifyKind(value, DateTimeKind.Utc));
+
             builder.Property(o => o.CreatedAt).IsRequired();
             builder.Property(o => o.MaxPeople).IsRequired();
 
