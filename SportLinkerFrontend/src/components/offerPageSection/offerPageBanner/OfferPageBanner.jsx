@@ -100,7 +100,7 @@ const OfferPageBanner = ({
     <div className="offer-banner-container" ref={scrollRef}>
       <div className="offer-btn-tag-wrapper">
         <OfferPageTags
-          sport={offerData.sport}
+          sport={offerData.sportName}
           level={offerData.level}
           mode={offerData.mode}
         />

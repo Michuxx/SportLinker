@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import OfferPageBanner from "./offerPageBanner/OfferPageBanner";
 import "./offerPageSection.css";
@@ -7,15 +7,20 @@ import ModalBackground from "../component-items/modal/ModalBackground";
 import EditOfferModal from "../editOfferModal/EditOfferModal";
 import useDateFormat from "../../hooks/useDateFormat";
 import AddPeopleModal from "../addPeopleModal/AddPeopleModal";
-import { localDateTimeToUtc, toLocalDateFields } from "../../utils/dateTime";
+import { toLocalDateFields } from "../../utils/dateTime";
 import offerService from "../../api/offerService";
 import { normalizeOfferDetails } from "../../utils/offerDetails";
 import { getErrorMessage } from "../../utils/apiErrorHelper";
 import useAuth from "../../hooks/useAuth";
+import { useToast } from "../../context/ToastContext";
+import { prepareOfferUpdate } from "../../utils/offerUpdate";
 
 const OfferPageSection = () => {
   const { id } = useParams();
   const { user } = useAuth();
+  const { showToast } = useToast();
+  const [isSaving, setIsSaving] = useState(false);
+  const updateControllerRef = useRef(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddPeopleModalOpen, setIsAddPeopleModalOpen] = useState(false);
   const [offerData, setOfferData] = useState(null);
@@ -30,6 +35,7 @@ const OfferPageSection = () => {
     setError(null);
     setIsEditModalOpen(false);
     setIsAddPeopleModalOpen(false);
+    setIsSaving(false);
 
     const fetchOffer = async () => {
       try {
@@ -57,7 +63,10 @@ const OfferPageSection = () => {
     };
 
     fetchOffer();
-    return () => controller.abort();
+    return () => {
+      controller.abort();
+      updateControllerRef.current?.abort();
+    };
   }, [id, user?.id, reloadCount]);
 
   const currentPeople = offerData?.members.length ?? 0;
@@ -138,7 +147,8 @@ const OfferPageSection = () => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (isSaving || updateControllerRef.current) return;
     const newErrors = {};
     let isValid = true;
 
@@ -189,18 +199,18 @@ const OfferPageSection = () => {
     }
 
     // --- 6. GRACZE ---
-    const playersAmount = parseInt(editData.maxPeople);
-    if (isNaN(playersAmount)) {
+    const playersAmount = Number(editData.maxPeople);
+    if (!Number.isInteger(playersAmount)) {
       newErrors.maxPeople = "Nieprawidłowa ilość graczy";
-      isValid = false;
-    } else if (playersAmount < currentPeople) {
-      newErrors.maxPeople = "Jest obecnie za dużo graczy";
       isValid = false;
     } else if (playersAmount < 2) {
       newErrors.maxPeople = "Musi być co najmniej 2 graczy";
       isValid = false;
-    } else if (playersAmount > 30) {
-      newErrors.maxPeople = "Może być maksymalnie 30 graczy";
+    } else if (playersAmount < currentPeople) {
+      newErrors.maxPeople = "Jest obecnie za dużo graczy";
+      isValid = false;
+    } else if (playersAmount > 100) {
+      newErrors.maxPeople = "Może być maksymalnie 100 graczy";
       isValid = false;
     }
 
@@ -212,10 +222,45 @@ const OfferPageSection = () => {
 
     setErrors(newErrors);
 
-    if (isValid) {
-      const normalizedDate = localDateTimeToUtc(editData.date, editData.time);
-      setOfferData((prev) => ({ ...prev, ...editData, date: normalizedDate }));
+    if (!isValid) {
+      showToast({
+        severity: "error",
+        summary: "Błąd",
+        detail: "Popraw błędy w formularzu oferty.",
+      });
+      return;
+    }
+
+    const controller = new AbortController();
+    updateControllerRef.current = controller;
+    setIsSaving(true);
+    try {
+      const { payload, changes } = prepareOfferUpdate(offerData.id, editData);
+      await offerService.updateOffer(payload, { signal: controller.signal });
+      if (controller.signal.aborted) return;
+
+      setOfferData((prev) =>
+        prev?.id === payload.offerId ? { ...prev, ...changes } : prev,
+      );
       setIsEditModalOpen(false);
+      showToast({
+        severity: "success",
+        summary: "Sukces",
+        detail: "Oferta została zaktualizowana.",
+      });
+    } catch (err) {
+      if (!controller.signal.aborted) {
+        showToast({
+          severity: "error",
+          summary: "Błąd",
+          detail: getErrorMessage(err, "Nie udało się zaktualizować oferty."),
+        });
+      }
+    } finally {
+      if (updateControllerRef.current === controller) {
+        updateControllerRef.current = null;
+      }
+      if (!controller.signal.aborted) setIsSaving(false);
     }
   };
 
@@ -309,12 +354,13 @@ const OfferPageSection = () => {
         kickPlayer={kickPlayer}
       />
       {isEditModalOpen && (
-        <ModalBackground closeModal={() => setIsEditModalOpen(false)}>
+        <ModalBackground closeModal={() => !isSaving && setIsEditModalOpen(false)}>
           <EditOfferModal
             offerData={editData}
             errors={errors}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
+            isSaving={isSaving}
             handleChangeLocation={handleChangeLocation}
             handleChangeSearchQuery={handleChangeSearchQuery}
           />

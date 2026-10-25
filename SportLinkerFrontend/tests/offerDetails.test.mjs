@@ -4,6 +4,8 @@ import { normalizeOfferDetails } from "../src/utils/offerDetails.js";
 
 const response = {
   offerId: 1,
+  sportId: 7,
+  sportName: "Tenis",
   title: "TEST",
   level: "Any",
   description: "pierwsza oferta",
@@ -32,6 +34,8 @@ test("offer response supplies the page's location, identities and enum values", 
   const original = structuredClone(response);
   const offer = normalizeOfferDetails(response);
   assert.equal(offer.id, 1);
+  assert.equal(offer.sportId, 7);
+  assert.equal(offer.sportName, "Tenis");
   assert.equal(offer.title, "TEST");
   assert.equal(offer.level, "any");
   assert.equal(offer.mode, "public");

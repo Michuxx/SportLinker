@@ -1,6 +1,16 @@
 import apiClient from "./apiClient";
 
 export const offerService = {
+  /** Aktualizuje ofertę. Endpoint potwierdza zapis odpowiedzią 204 bez body. */
+  async updateOffer(payload, { signal } = {}) {
+    const response = await apiClient.patch("/Offer", payload, { signal });
+    if (response.status !== 204) {
+      throw Object.assign(new Error("Nie potwierdzono zapisu oferty."), {
+        response,
+      });
+    }
+  },
+
   /** Pobiera szczegóły oferty; zalogowany użytkownik jest rozpoznawany po JWT. */
   async getOfferDetails(offerId, { signal } = {}) {
     const response = await apiClient.get(`/Offer/${encodeURIComponent(offerId)}`, {

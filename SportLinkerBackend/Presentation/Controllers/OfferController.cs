@@ -70,7 +70,7 @@ namespace Presentation.Controllers
                 return BadRequest(new { message = result.Error });
             }
 
-            return Ok();
+            return NoContent();
         }
     }
 }

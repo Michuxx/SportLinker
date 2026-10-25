@@ -24,11 +24,12 @@ const EditOfferModal = ({
   errors,
   handleChange,
   handleSubmit,
+  isSaving = false,
   handleChangeLocation,
   handleChangeSearchQuery,
 }) => {
   return (
-    <div className="edit-offer-modal-container">
+    <fieldset className="edit-offer-modal-container" disabled={isSaving} style={{ border: 0, margin: 0, padding: 0, minWidth: 0 }}>
       <ModalHeader title="Edytuj ofertę" />
       <div className="edit-offer-modal-select-wrapper">
         <InputField label="Dostępność oferty">
@@ -120,7 +121,7 @@ const EditOfferModal = ({
             icon={<GoPeople color="rgb(156, 163, 175)" size={20} />}
             width={100}
             min={2}
-            max={30}
+            max={100}
             onChange={(e) => handleChange(e)}
             name="maxPeople"
             value={offerData.maxPeople}
@@ -150,9 +151,9 @@ const EditOfferModal = ({
         </div>
       </InputField>
       <Button style="createOfferButton" width={100} onClick={handleSubmit}>
-        Zapisz zmiany
+        {isSaving ? "Zapisywanie..." : "Zapisz zmiany"}
       </Button>
-    </div>
+    </fieldset>
   );
 };
 
