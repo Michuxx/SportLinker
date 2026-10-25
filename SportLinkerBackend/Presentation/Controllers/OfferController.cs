@@ -1,5 +1,6 @@
 using Application.Offers.CreateOffer;
 using Application.Offers.GetOfferDetails;
+using Application.Offers.UpdateOffer;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +58,19 @@ namespace Presentation.Controllers
             }
 
             return Ok(result.Value);
+        }
+
+        [Authorize]
+        [HttpPatch]
+        public async Task<IActionResult> UpdateOfferDetails(UpdateOfferCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            if(!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
+
+            return Ok();
         }
     }
 }

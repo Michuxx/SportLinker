@@ -1,4 +1,6 @@
-﻿using Domain.Enums;
+﻿using Application.Abstractions;
+using Domain.Enums;
+using Domain.Errors;
 
 namespace Domain.Entities
 {
@@ -41,6 +43,41 @@ namespace Domain.Entities
 
             return offer;
         }
+
+        public Result<bool> UpdateDetails(
+            string title,
+            string description,
+            LevelEnum level,
+            DateTime planningDateUtc,
+            int maxPeople,
+            ModeEnum mode,
+            AvailabilityEnum availability,
+            Location location)
+        {
+            int joinedParticipants = Participants.Count;
+
+            if (maxPeople < joinedParticipants)
+            {
+                return Result<bool>.Failure(OfferErrors.CapacityTooLow);
+            }
+
+            if (maxPeople == joinedParticipants && availability == AvailabilityEnum.Available)
+            {
+                return Result<bool>.Failure(OfferErrors.FullOfferCannotBeAvailable);
+            }
+
+            Title = title;
+            Description = description;
+            Level = level;
+            PlanningDate = planningDateUtc;
+            MaxPeople = maxPeople;
+            ModeEnum = mode;
+            AvailabilityEnum = availability;
+            Location = location;
+
+            return Result<bool>.Success(true);
+        }
+
         public bool TransferAuthorship(int newAuthorId)
         {
             if (newAuthorId <= 0) return false;

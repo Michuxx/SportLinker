@@ -30,6 +30,8 @@ namespace Application.Offers.Dtos
         public ModeEnum Mode { get; set; } = default!;
         public RequestStatusEnum? Status { get; set; }
         public int AuthorId { get; set; }
+        public string SportName { get; set; } = default!;
+        public int SportId { get; set; }
         public OfferMemberDto Author { get; set; } = default!;
         public List<OfferMemberDto> Members { get; set; } = new List<OfferMemberDto>();
     }

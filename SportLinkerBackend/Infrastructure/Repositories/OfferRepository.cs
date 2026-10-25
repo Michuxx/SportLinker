@@ -1,6 +1,7 @@
 ﻿using Domain.Abstractions.Interfaces;
 using Domain.Entities;
 using Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -16,6 +17,13 @@ namespace Infrastructure.Repositories
         public void AddOffer(Offer offer)
         {
             _dbContext.Offers.Add(offer);
+        }
+
+        public async Task<Offer?> GetOfferByIdAsync(int offerId)
+        {
+            return await _dbContext.Offers
+                .Include(o => o.Participants)
+                .FirstOrDefaultAsync(x => x.Id == offerId);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Application.Abstractions;
-using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
 using Application.Offers.Dtos;
 using Dapper;
@@ -41,8 +40,12 @@ namespace Application.Offers.GetOfferDetails
                     l.Name,
                     l.State,
                     l.Street,
-                    l.Type
+                    l.Type,
+                    s.Name as SportName,
+                    s.Id as SportId
                 FROM Offers o
+                INNER JOIN Sports s
+                ON o.SportId = s.Id
                 INNER JOIN Locations l ON l.Id = o.LocationId
                 OUTER APPLY (
                     SELECT TOP (1)
