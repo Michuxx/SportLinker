@@ -23,10 +23,10 @@ namespace Infrastructure.Database.Configurations
             builder.Property(o => o.CreatedAt).IsRequired();
             builder.Property(o => o.MaxPeople).IsRequired();
 
-            builder.Property(o => o.AvailabilityEnum).IsRequired()
+            builder.Property(o => o.Availability).IsRequired()
                 .HasConversion<string>();
 
-            builder.Property(o => o.ModeEnum).IsRequired()
+            builder.Property(o => o.Mode).IsRequired()
                 .HasConversion<string>();
 
             builder.HasOne(o => o.Sport)

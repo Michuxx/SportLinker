@@ -6,10 +6,7 @@ export const applyOfferJoin = (offer, user, joinDate) => {
   const alreadyJoined = offer.members.some(
     (member) => String(member.id) === String(user.id),
   );
-  return {
-    ...offer,
-    status: "accepted",
-    members: alreadyJoined ? offer.members : [
+  const members = alreadyJoined ? offer.members : [
       ...offer.members,
       {
         id: user.id,
@@ -18,6 +15,11 @@ export const applyOfferJoin = (offer, user, joinDate) => {
         image: user.profileImage || user.image || null,
         joinDate,
       },
-    ],
+    ];
+  return {
+    ...offer,
+    status: "accepted",
+    members,
+    availability: members.length >= offer.maxPeople ? "Unavailable" : offer.availability,
   };
 };

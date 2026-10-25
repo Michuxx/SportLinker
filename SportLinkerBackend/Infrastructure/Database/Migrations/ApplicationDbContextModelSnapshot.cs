@@ -42,7 +42,7 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FavouriteUserSports", (string)null);
+                    b.ToTable("FavouriteUserSports");
                 });
 
             modelBuilder.Entity("Domain.Entities.Location", b =>
@@ -83,7 +83,7 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("Domain.Entities.Offer", b =>
@@ -97,7 +97,7 @@ namespace Infrastructure.Database.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
-                    b.Property<string>("AvailabilityEnum")
+                    b.Property<string>("Availability")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -119,7 +119,7 @@ namespace Infrastructure.Database.Migrations
                     b.Property<int>("MaxPeople")
                         .HasColumnType("int");
 
-                    b.Property<string>("ModeEnum")
+                    b.Property<string>("Mode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -142,7 +142,7 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasIndex("SportId");
 
-                    b.ToTable("Offers", (string)null);
+                    b.ToTable("Offers");
                 });
 
             modelBuilder.Entity("Domain.Entities.OfferParticipant", b =>
@@ -168,7 +168,7 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OfferParticipants", (string)null);
+                    b.ToTable("OfferParticipants");
                 });
 
             modelBuilder.Entity("Domain.Entities.OfferRequest", b =>
@@ -198,7 +198,7 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OfferRequests", (string)null);
+                    b.ToTable("OfferRequests");
                 });
 
             modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
@@ -248,7 +248,7 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sports", (string)null);
+                    b.ToTable("Sports");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -279,7 +279,7 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Domain.Entities.FavouriteUserSport", b =>
@@ -316,7 +316,7 @@ namespace Infrastructure.Database.Migrations
 
                             b1.HasKey("LocationId");
 
-                            b1.ToTable("Locations", (string)null);
+                            b1.ToTable("Locations");
 
                             b1.WithOwner()
                                 .HasForeignKey("LocationId");
@@ -409,25 +409,6 @@ namespace Infrastructure.Database.Migrations
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.OwnsOne("Domain.ValueObjects.User.UserImages", "Images", b1 =>
-                        {
-                            b1.Property<int>("UserId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("BackgroundImage")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("ProfileImage")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("Users", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
                     b.OwnsOne("Domain.ValueObjects.User.PersonalData", "PersonalData", b1 =>
                         {
                             b1.Property<int>("UserId")
@@ -451,7 +432,7 @@ namespace Infrastructure.Database.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("Users", (string)null);
+                            b1.ToTable("Users");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
@@ -474,7 +455,26 @@ namespace Infrastructure.Database.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("Users", (string)null);
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.OwnsOne("Domain.ValueObjects.User.UserImages", "Images", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("BackgroundImage")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("ProfileImage")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
@@ -496,7 +496,7 @@ namespace Infrastructure.Database.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("Users", (string)null);
+                            b1.ToTable("Users");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");

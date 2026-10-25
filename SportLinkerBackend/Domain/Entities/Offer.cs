@@ -13,8 +13,8 @@ namespace Domain.Entities
         public DateTime PlanningDate { get; set; }
         public DateTime CreatedAt { get; } = DateTime.UtcNow;
         public int MaxPeople { get; set; } = 2;
-        public AvailabilityEnum AvailabilityEnum { get; set; } = AvailabilityEnum.Available;
-        public ModeEnum ModeEnum { get; set; }
+        public AvailabilityEnum Availability { get; set; } = AvailabilityEnum.Available;
+        public ModeEnum Mode { get; set; }
         public int SportId { get; set; }
         public Sport Sport { get; set; } = default!;
         public int LocationId { get; set; }
@@ -32,7 +32,7 @@ namespace Domain.Entities
                 Level = level,
                 PlanningDate = planningDate,
                 MaxPeople = maxPeople,
-                ModeEnum = modeEnum,
+                Mode = modeEnum,
                 SportId = sportId,
                 Location = location,
                 AuthorId = userId
@@ -71,8 +71,8 @@ namespace Domain.Entities
             Level = level;
             PlanningDate = planningDateUtc;
             MaxPeople = maxPeople;
-            ModeEnum = mode;
-            AvailabilityEnum = availability;
+            Mode = mode;
+            Availability = availability;
             Location = location;
 
             return Result<bool>.Success(true);
@@ -93,7 +93,7 @@ namespace Domain.Entities
 
         public Result<bool> JoinToOffer(int userId)
         {
-            if (AvailabilityEnum == AvailabilityEnum.Unavailable)
+            if (Availability == AvailabilityEnum.Unavailable)
             {
                 return Result<bool>.Failure(OfferErrors.OfferIsNotAvailable);
             }
@@ -110,7 +110,7 @@ namespace Domain.Entities
                 return Result<bool>.Failure(OfferErrors.AlreadyJoinedToOffer);
             }
 
-            if (ModeEnum == ModeEnum.Private)
+            if (Mode == ModeEnum.Private)
             {
                 OfferRequest offerRequest = new OfferRequest(Id, userId);
                 if (OfferRequests.Contains(offerRequest))
@@ -123,6 +123,10 @@ namespace Domain.Entities
             else
             {
                 Participants.Add(participant);
+                if(Participants.Count >= MaxPeople)
+                {
+                    Availability = AvailabilityEnum.Unavailable;
+                }
             }
 
             return Result<bool>.Success(true);
