@@ -16,6 +16,10 @@ const OfferPageBanner = ({
   formattedDate,
   leaveOffer,
   joinOffer,
+  isJoining = false,
+  isSaving = false,
+  isMember = false,
+  isAuthor = false,
 }) => {
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
   const [leaveModalText, setLeaveModalText] = useState("");
@@ -38,13 +42,25 @@ const OfferPageBanner = ({
   };
 
   const buttonSelection = () => {
-    if (offerData.availability === "Unavailable") {
+    const status = isMember ? "accepted" : offerData.status;
+    if (isAuthor) {
+      return <Button style="offerPageJoinedButton" disabled>Organizator</Button>;
+    }
+    if (isJoining) {
+      return (
+        <Button style="offerPageJoinButton" disabled>
+          {offerData.mode === "private" ? "Wysyłanie prośby..." : "Dołączanie..."}
+        </Button>
+      );
+    }
+    if ((offerData.availability === "Unavailable" || currentPeople >= offerData.maxPeople)
+      && status !== "accepted" && status !== "pending") {
       return (
         <div className="offer-status-btn-wrapper">
           <Button style="offerPageRejectedButton" Icon={<MdClose size={18} />}>
             Zapisy zamknięte
           </Button>
-          {offerData.status !== null && (
+          {status !== null && (
             <Button
               style="offerPageCancelButton"
               onClick={openLeavePendingModal}
@@ -54,13 +70,13 @@ const OfferPageBanner = ({
           )}
         </div>
       );
-    } else if (offerData.status === "rejected") {
+    } else if (status === "rejected") {
       return (
         <Button style="offerPageRejectedButton" Icon={<MdClose size={18} />}>
           Odrzucono
         </Button>
       );
-    } else if (offerData.status === "accepted") {
+    } else if (status === "accepted") {
       return (
         <div className="offer-status-btn-wrapper">
           <Button style="offerPageJoinedButton" Icon={<FaCheck size={18} />}>
@@ -71,7 +87,7 @@ const OfferPageBanner = ({
           </Button>
         </div>
       );
-    } else if (offerData.status === "pending") {
+    } else if (status === "pending") {
       return (
         <div className="offer-status-btn-wrapper">
           <Button
@@ -87,7 +103,7 @@ const OfferPageBanner = ({
       );
     } else {
       return (
-        <Button style="offerPageJoinButton" onClick={joinOffer}>
+        <Button style="offerPageJoinButton" onClick={joinOffer} disabled={isSaving}>
           {offerData.mode === "public"
             ? "Dołącz"
             : "Wyślij prośbę o dołączenie"}

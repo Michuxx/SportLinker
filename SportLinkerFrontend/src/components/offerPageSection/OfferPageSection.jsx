@@ -14,6 +14,7 @@ import { getErrorMessage } from "../../utils/apiErrorHelper";
 import useAuth from "../../hooks/useAuth";
 import { useToast } from "../../context/ToastContext";
 import { prepareOfferUpdate } from "../../utils/offerUpdate";
+import { applyOfferJoin } from "../../utils/offerJoin";
 
 const OfferPageSection = () => {
   const { id } = useParams();
@@ -21,6 +22,8 @@ const OfferPageSection = () => {
   const { showToast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
   const updateControllerRef = useRef(null);
+  const joinControllerRef = useRef(null);
+  const [isJoining, setIsJoining] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddPeopleModalOpen, setIsAddPeopleModalOpen] = useState(false);
   const [offerData, setOfferData] = useState(null);
@@ -36,6 +39,7 @@ const OfferPageSection = () => {
     setIsEditModalOpen(false);
     setIsAddPeopleModalOpen(false);
     setIsSaving(false);
+    setIsJoining(false);
 
     const fetchOffer = async () => {
       try {
@@ -66,12 +70,19 @@ const OfferPageSection = () => {
     return () => {
       controller.abort();
       updateControllerRef.current?.abort();
+      joinControllerRef.current?.abort();
     };
   }, [id, user?.id, reloadCount]);
 
   const currentPeople = offerData?.members.length ?? 0;
   const openSlots = Math.max(0, (offerData?.maxPeople ?? 0) - currentPeople);
   const formattedDate = useDateFormat(offerData?.date);
+  const isMember = Boolean(
+    user?.id && offerData?.members.some((member) => String(member.id) === String(user.id)),
+  );
+  const isAuthor = Boolean(
+    user?.id && String(offerData?.authorId) === String(user.id),
+  );
 
   const [errors, setErrors] = useState({
     title: "",
@@ -148,7 +159,7 @@ const OfferPageSection = () => {
   };
 
   const handleSubmit = async () => {
-    if (isSaving || updateControllerRef.current) return;
+    if (isSaving || updateControllerRef.current || isJoining) return;
     const newErrors = {};
     let isValid = true;
 
@@ -264,13 +275,49 @@ const OfferPageSection = () => {
     }
   };
 
-  const joinOffer = () => {
-    switch (offerData.mode) {
-      case "public":
-        setOfferData((prev) => ({ ...prev, status: "accepted" }));
-        break;
-      case "private":
-        setOfferData((prev) => ({ ...prev, status: "pending" }));
+  const joinOffer = async () => {
+    if (isJoining || joinControllerRef.current || isSaving || isMember || isAuthor) return;
+    if (!user?.id) {
+      showToast({
+        severity: "error",
+        summary: "Wymagane logowanie",
+        detail: "Zaloguj się, aby dołączyć do oferty.",
+      });
+      return;
+    }
+
+    const controller = new AbortController();
+    joinControllerRef.current = controller;
+    setIsJoining(true);
+    const offerId = offerData.id;
+    const isPrivate = offerData.mode === "private";
+    try {
+      await offerService.joinOffer(offerId, { signal: controller.signal });
+      if (controller.signal.aborted) return;
+
+      const joinDate = new Date().toISOString();
+      setOfferData((prev) => prev?.id === offerId
+        ? applyOfferJoin(prev, user, joinDate)
+        : prev);
+      showToast({
+        severity: "success",
+        summary: "Sukces",
+        detail: isPrivate ? "Prośba o dołączenie została wysłana." : "Dołączono do oferty.",
+      });
+
+    } catch (err) {
+      if (!controller.signal.aborted) {
+        showToast({
+          severity: "error",
+          summary: "Błąd",
+          detail: getErrorMessage(err, isPrivate
+            ? "Nie udało się wysłać prośby o dołączenie."
+            : "Nie udało się dołączyć do oferty."),
+        });
+      }
+    } finally {
+      if (joinControllerRef.current === controller) joinControllerRef.current = null;
+      if (!controller.signal.aborted) setIsJoining(false);
     }
   };
 
@@ -345,6 +392,10 @@ const OfferPageSection = () => {
         formattedDate={formattedDate}
         leaveOffer={() => setOfferData((prev) => ({ ...prev, status: null }))}
         joinOffer={joinOffer}
+        isJoining={isJoining}
+        isSaving={isSaving}
+        isMember={isMember}
+        isAuthor={isAuthor}
       />
       <OfferPageContent
         offerData={offerData}

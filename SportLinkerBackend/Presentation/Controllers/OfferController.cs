@@ -1,5 +1,6 @@
 using Application.Offers.CreateOffer;
 using Application.Offers.GetOfferDetails;
+using Application.Offers.JoinToOffer;
 using Application.Offers.UpdateOffer;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -71,6 +72,19 @@ namespace Presentation.Controllers
             }
 
             return NoContent();
+        }
+
+        [Authorize]
+        [HttpPost("Join")]
+        public async Task<IActionResult> JoinToOffer(JoinToOfferCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
+
+            return Ok();
         }
     }
 }

@@ -16,5 +16,17 @@ namespace Domain.Errors
         public static readonly Error FullOfferCannotBeAvailable = new(
             "FULL_OFFER_FOR_AVAILABLE",
             "Niepoprawna ilośc osób na otwarcie oferty");
+        public static readonly Error AlreadyJoinedToOffer = new(
+            "JOINED_TO_OFFER",
+            "Dołączono już do oferty");
+        public static readonly Error AlreadySentRequestToOffer = new(
+            "SENT_REQUEST_TO_OFFER",
+            "wysłano już zapytanie o dołączenie");
+        public static readonly Error OfferIsNotAvailable = new(
+            "NOT_AVAILABLE",
+            "Oferta jest niedostępna");
+        public static readonly Error MaximumCapacityOfOffer = new(
+            "MAXIMUM_CAPACITY_OF_OFFER",
+            "W ofercie nie ma już miejsca");
     }
 }

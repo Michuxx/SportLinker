@@ -91,24 +91,41 @@ namespace Domain.Entities
             return false;
         }
 
-        public bool JoinToOffer(int userId)
+        public Result<bool> JoinToOffer(int userId)
         {
-            if (AvailabilityEnum == AvailabilityEnum.Unavailable) return false;
-            if (Participants.Count >= MaxPeople) return false;
+            if (AvailabilityEnum == AvailabilityEnum.Unavailable)
+            {
+                return Result<bool>.Failure(OfferErrors.OfferIsNotAvailable);
+            }
+
+            if (Participants.Count >= MaxPeople)
+            {
+                return Result<bool>.Failure(OfferErrors.MaximumCapacityOfOffer);
+            }
 
             var participant = new OfferParticipant(Id, userId);
-            Participants.Add(participant);
-            return true;
-        }
 
-        public bool SendRequestToJoin(int userId)
-        {
-            if (AvailabilityEnum == AvailabilityEnum.Unavailable) return false;
-            if (Participants.Count >= MaxPeople) return false;
+            if (Participants.Contains(participant))
+            {
+                return Result<bool>.Failure(OfferErrors.AlreadyJoinedToOffer);
+            }
 
-            var participant = new OfferRequest(Id, userId);
-            OfferRequests.Add(participant);
-            return true;
+            if (ModeEnum == ModeEnum.Private)
+            {
+                OfferRequest offerRequest = new OfferRequest(Id, userId);
+                if (OfferRequests.Contains(offerRequest))
+                {
+                    return Result<bool>.Failure(OfferErrors.AlreadySentRequestToOffer);
+                }
+
+                OfferRequests.Add(offerRequest);
+            }
+            else
+            {
+                Participants.Add(participant);
+            }
+
+            return Result<bool>.Success(true);
         }
     }
 

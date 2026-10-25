@@ -1,6 +1,6 @@
 import "./button.css";
 
-const Button = ({ children, style, width, height, onClick, Icon }) => {
+const Button = ({ children, style, width, height, onClick, Icon, disabled = false }) => {
   const buttonType = {
     loginModalButton: "loginModalButton",
     loginButton: "loginButton",
@@ -50,6 +50,7 @@ const Button = ({ children, style, width, height, onClick, Icon }) => {
       className={buttonStyle}
       style={{ width: `${width}%`, height: `${height}%` }}
       onClick={onClick}
+      disabled={disabled}
     >
       {Icon || ""}
       {children || ""}

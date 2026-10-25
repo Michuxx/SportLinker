@@ -1,6 +1,11 @@
 import apiClient from "./apiClient";
 
 export const offerService = {
+  /** Dołącza do publicznej oferty albo wysyła prośbę do prywatnej. */
+  async joinOffer(offerId, { signal } = {}) {
+    await apiClient.post("/Offer/Join", { offerId: Number(offerId) }, { signal });
+  },
+
   /** Aktualizuje ofertę. Endpoint potwierdza zapis odpowiedzią 204 bez body. */
   async updateOffer(payload, { signal } = {}) {
     const response = await apiClient.patch("/Offer", payload, { signal });
