@@ -15,6 +15,7 @@ import useAuth from "../../hooks/useAuth";
 import { useToast } from "../../context/ToastContext";
 import { prepareOfferUpdate } from "../../utils/offerUpdate";
 import { applyOfferJoin } from "../../utils/offerJoin";
+import { normalizeOfferRequests } from "../../utils/offerRequests";
 
 const OfferPageSection = () => {
   const { id } = useParams();
@@ -31,6 +32,51 @@ const OfferPageSection = () => {
   const [error, setError] = useState(null);
   const [loadedId, setLoadedId] = useState(null);
   const [reloadCount, setReloadCount] = useState(0);
+  const [isRequestsLoading, setIsRequestsLoading] = useState(true);
+  const [requestsError, setRequestsError] = useState(null);
+  const [requestsReloadCount, setRequestsReloadCount] = useState(0);
+
+  useEffect(() => {
+    if (!isAddPeopleModalOpen) return;
+    const controller = new AbortController();
+
+    const fetchRequests = async () => {
+      try {
+        const data = await offerService.getOfferRequests(id, {
+          signal: controller.signal,
+        });
+        if (!controller.signal.aborted) {
+          const requests = normalizeOfferRequests(data);
+          setOfferData((prev) => String(prev?.id) === String(id)
+            ? { ...prev, requests }
+            : prev);
+        }
+      } catch (err) {
+        if (!controller.signal.aborted) {
+          const message = getErrorMessage(err, "Nie udało się pobrać próśb o dołączenie.");
+          setRequestsError(message);
+          showToast({ severity: "error", summary: "Błąd", detail: message });
+        }
+      } finally {
+        if (!controller.signal.aborted) setIsRequestsLoading(false);
+      }
+    };
+
+    fetchRequests();
+    return () => controller.abort();
+  }, [id, isAddPeopleModalOpen, requestsReloadCount, showToast]);
+
+  const handleOpenRequestsModal = () => {
+    setIsRequestsLoading(true);
+    setRequestsError(null);
+    setIsAddPeopleModalOpen(true);
+  };
+
+  const retryRequests = () => {
+    setIsRequestsLoading(true);
+    setRequestsError(null);
+    setRequestsReloadCount((count) => count + 1);
+  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -401,7 +447,7 @@ const OfferPageSection = () => {
         offerData={offerData}
         openSlots={openSlots}
         openEditModal={handleOpenEditModal}
-        openAddPeopleModal={() => setIsAddPeopleModalOpen((e) => !e)}
+        openAddPeopleModal={handleOpenRequestsModal}
         kickPlayer={kickPlayer}
       />
       {isEditModalOpen && (
@@ -421,6 +467,9 @@ const OfferPageSection = () => {
         <ModalBackground closeModal={() => setIsAddPeopleModalOpen(false)}>
           <AddPeopleModal
             requests={offerData.requests}
+            isLoading={isRequestsLoading}
+            error={requestsError}
+            retryRequests={retryRequests}
             openSlots={openSlots}
             rejectPlayerRequest={rejectPlayerRequest}
             acceptPlayerRequest={acceptPlayerRequest}

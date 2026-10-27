@@ -1,9 +1,22 @@
 import apiClient from "./apiClient";
 
 export const offerService = {
+  /** Pobiera prośby o dołączenie podczas otwierania modalu. */
+  async getOfferRequests(offerId, { signal } = {}) {
+    const response = await apiClient.get("/Offer/requests", {
+      params: { offerId: Number(offerId) },
+      signal,
+    });
+    return response.data;
+  },
+
   /** Dołącza do publicznej oferty albo wysyła prośbę do prywatnej. */
   async joinOffer(offerId, { signal } = {}) {
-    await apiClient.post("/Offer/Join", { offerId: Number(offerId) }, { signal });
+    await apiClient.post(
+      "/Offer/Join",
+      { offerId: Number(offerId) },
+      { signal },
+    );
   },
 
   /** Aktualizuje ofertę. Endpoint potwierdza zapis odpowiedzią 204 bez body. */
@@ -18,9 +31,12 @@ export const offerService = {
 
   /** Pobiera szczegóły oferty; zalogowany użytkownik jest rozpoznawany po JWT. */
   async getOfferDetails(offerId, { signal } = {}) {
-    const response = await apiClient.get(`/Offer/${encodeURIComponent(offerId)}`, {
-      signal,
-    });
+    const response = await apiClient.get(
+      `/Offer/${encodeURIComponent(offerId)}`,
+      {
+        signal,
+      },
+    );
     return response.data;
   },
 

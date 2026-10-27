@@ -2,6 +2,7 @@
 using Application.Abstractions.Data;
 using Application.Offers.Dtos;
 using Dapper;
+using Domain.Errors;
 using System.Data;
 
 namespace Application.Offers.GetOfferDetails
@@ -93,7 +94,7 @@ namespace Application.Offers.GetOfferDetails
 
             if (offer is null)
             {
-                throw new KeyNotFoundException("Oferta nie istnieje.");
+                return Result<OfferDetailsDto>.Failure(OfferErrors.OfferNotFound);
             }
 
             offer.Author = await results.ReadSingleAsync<OfferMemberDto>();

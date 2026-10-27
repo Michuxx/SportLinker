@@ -1,5 +1,6 @@
 using Application.Offers.CreateOffer;
 using Application.Offers.GetOfferDetails;
+using Application.Offers.GetOfferRequests;
 using Application.Offers.JoinToOffer;
 using Application.Offers.UpdateOffer;
 using MediatR;
@@ -85,6 +86,14 @@ namespace Presentation.Controllers
             }
 
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("requests")]
+        public async Task<IActionResult> GetOfferRequests([FromQuery] GetOfferRequestsQuery query, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(query, cancellationToken);
+            return Ok(result);
         }
     }
 }

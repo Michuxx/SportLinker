@@ -9,12 +9,22 @@ const AddPeopleModal = ({
   openSlots,
   rejectPlayerRequest,
   acceptPlayerRequest,
+  isLoading = false,
+  error = null,
+  retryRequests,
 }) => {
   return (
     <div className="add-people-container">
       <ModalHeader title="Prośby o dołączenie do oferty" />
       <div className="request-people-wrapper">
-        {requests && requests.length > 0 ? (
+        {isLoading ? (
+          <p role="status">Ładowanie próśb o dołączenie...</p>
+        ) : error ? (
+          <div role="alert">
+            <p>{error}</p>
+            <button type="button" onClick={retryRequests}>Spróbuj ponownie</button>
+          </div>
+        ) : requests && requests.length > 0 ? (
           requests.map((request) => (
             <AddPeopleCard
               request={request}
