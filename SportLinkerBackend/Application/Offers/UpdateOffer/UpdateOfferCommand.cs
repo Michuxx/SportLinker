@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Offers.Dtos;
+using Domain.Abstractions;
 using Domain.Enums;
 
 namespace Application.Offers.UpdateOffer

@@ -7,6 +7,9 @@ namespace Domain.Errors
         public static readonly Error OfferNotFound = new(
             "OFFER_NOT_FOUND",
             "Oferta nie istnieje.");
+        public static readonly Error OfferRequestNotFound = new(
+            "OFFER_REQUEST_NOT_FOUND",
+            "Zapytanie o dołączenie nie istnieje.");
         public static readonly Error NotAuthorOfOffer = new(
             "NOT_AUTHOR_OF_OFFER",
             "Osoba nie jest autorem oferty.");
@@ -28,5 +31,11 @@ namespace Domain.Errors
         public static readonly Error MaximumCapacityOfOffer = new(
             "MAXIMUM_CAPACITY_OF_OFFER",
             "W ofercie nie ma już miejsca");
+        public static readonly Error AlreadyParticipant = new(
+            "ALREADY_PARTICIPANT",
+            "Użytkownik jest już uczestnikiem oferty.");
+        public static readonly Error WrongRequestStatus = new(
+            "WRONG_REQUEST_STATUS",
+            "Uzytkownik ma zły status");
     }
 }

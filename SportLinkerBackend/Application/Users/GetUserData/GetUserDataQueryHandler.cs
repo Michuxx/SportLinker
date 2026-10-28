@@ -3,6 +3,7 @@ using Application.Abstractions.Data;
 using Application.Sports.Dtos;
 using Application.Users.Dtos;
 using Dapper;
+using Domain.Abstractions;
 using Domain.Errors;
 using System.Data;
 

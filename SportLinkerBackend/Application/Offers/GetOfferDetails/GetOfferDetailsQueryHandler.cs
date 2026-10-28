@@ -2,6 +2,7 @@
 using Application.Abstractions.Data;
 using Application.Offers.Dtos;
 using Dapper;
+using Domain.Abstractions;
 using Domain.Errors;
 using System.Data;
 

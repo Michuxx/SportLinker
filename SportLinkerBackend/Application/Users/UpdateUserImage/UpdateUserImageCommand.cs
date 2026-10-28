@@ -1,4 +1,5 @@
 using Application.Abstractions;
+using Domain.Abstractions;
 using Domain.Enums;
 
 namespace Application.Users.UpdateUserImage

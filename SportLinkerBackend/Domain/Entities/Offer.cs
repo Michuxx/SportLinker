@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Domain.Abstractions;
 using Domain.Enums;
 using Domain.Errors;
 
@@ -98,22 +98,16 @@ namespace Domain.Entities
                 return Result<bool>.Failure(OfferErrors.OfferIsNotAvailable);
             }
 
-            if (Participants.Count >= MaxPeople)
+            if (Participants.Any(p => p.UserId == userId))
             {
-                return Result<bool>.Failure(OfferErrors.MaximumCapacityOfOffer);
-            }
-
-            var participant = new OfferParticipant(Id, userId);
-
-            if (Participants.Contains(participant))
-            {
-                return Result<bool>.Failure(OfferErrors.AlreadyJoinedToOffer);
+                return Result<bool>.Failure(OfferErrors.AlreadyParticipant);
             }
 
             if (Mode == ModeEnum.Private)
             {
                 OfferRequest offerRequest = new OfferRequest(Id, userId);
-                if (OfferRequests.Contains(offerRequest))
+
+                if (OfferRequests.Any(r => r.UserId == userId))
                 {
                     return Result<bool>.Failure(OfferErrors.AlreadySentRequestToOffer);
                 }
@@ -122,11 +116,58 @@ namespace Domain.Entities
             }
             else
             {
-                Participants.Add(participant);
-                if(Participants.Count >= MaxPeople)
-                {
-                    Availability = AvailabilityEnum.Unavailable;
-                }
+                return AddParticipant(userId);
+            }
+
+            return Result<bool>.Success(true);
+        }
+
+        public Result<bool> AddParticipantFromRequest(int userId)
+        {
+            var offerRequest = OfferRequests.FirstOrDefault(x => x.UserId == userId);
+
+            if(offerRequest is null)
+            {
+                return Result<bool>.Failure(OfferErrors.OfferRequestNotFound);
+            }
+
+            if(Participants.Any(x => x.UserId == userId))
+            {
+                return Result<bool>.Failure(OfferErrors.AlreadyParticipant);
+            }
+
+            if(offerRequest.Status != RequestStatusEnum.Pending)
+            {
+                return Result<bool>.Failure(OfferErrors.WrongRequestStatus);
+            }
+
+            var result = AddParticipant(userId);
+
+            if (!result.IsSuccess)
+            {
+                return result;
+            }
+
+            OfferRequests.Remove(offerRequest);
+            return result;
+        }
+
+        private Result<bool> AddParticipant(int userId)
+        {
+            if (Participants.Any(p => p.UserId == userId))
+            {
+                return Result<bool>.Failure(OfferErrors.AlreadyParticipant);
+            }
+
+            if (Participants.Count >= MaxPeople)
+            {
+                return Result<bool>.Failure(OfferErrors.MaximumCapacityOfOffer);
+            }
+
+            Participants.Add(new OfferParticipant(Id, userId));
+            if (Participants.Count >= MaxPeople)
+            {
+                Availability = AvailabilityEnum.Unavailable;
             }
 
             return Result<bool>.Success(true);

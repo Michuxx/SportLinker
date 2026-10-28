@@ -1,6 +1,4 @@
-﻿using Domain.Abstractions;
-
-namespace Application.Abstractions
+﻿namespace Domain.Abstractions
 {
     public class Result<T>
     {

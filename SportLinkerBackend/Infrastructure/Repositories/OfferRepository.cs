@@ -23,6 +23,7 @@ namespace Infrastructure.Repositories
         {
             return await _dbContext.Offers
                 .Include(o => o.Participants)
+                .Include(o => o.OfferRequests)
                 .FirstOrDefaultAsync(x => x.Id == offerId);
         }
     }

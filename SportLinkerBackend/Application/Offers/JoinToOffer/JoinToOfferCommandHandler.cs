@@ -2,8 +2,6 @@
 using Application.Abstractions.Authentication;
 using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
-using Domain.Entities;
-using Domain.Enums;
 using Domain.Errors;
 
 namespace Application.Offers.JoinToOffer

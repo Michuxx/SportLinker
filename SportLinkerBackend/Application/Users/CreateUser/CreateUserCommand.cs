@@ -1,5 +1,6 @@
 ﻿
 using Application.Abstractions;
+using Domain.Abstractions;
 
 namespace Application.Users.CreateUser
 {

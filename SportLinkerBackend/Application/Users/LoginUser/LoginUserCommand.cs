@@ -1,6 +1,6 @@
-﻿
-using Application.Abstractions;
+﻿using Application.Abstractions;
 using Application.Users.Dtos;
+using Domain.Abstractions;
 
 namespace Application.Users.LoginUser
 {

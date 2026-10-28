@@ -5,7 +5,6 @@ using Domain.Abstractions.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Errors;
-using Domain.ValueObjects.Location;
 
 namespace Application.Users.UpdateUserData
 {

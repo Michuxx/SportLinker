@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Offers.Dtos;
+using Domain.Abstractions;
 
 namespace Application.Offers.CreateOffer
 {
