@@ -9,6 +9,8 @@ const OfferPageContent = ({
   openEditModal,
   openAddPeopleModal,
   kickPlayer,
+  isAuthor = false,
+  isBusy = false,
 }) => {
   return (
     <div className="offer-page-content-container">
@@ -18,6 +20,8 @@ const OfferPageContent = ({
           members={offerData.members}
           offerAuthorId={offerData.authorId}
           kickPlayer={kickPlayer}
+          isAuthor={isAuthor}
+          isBusy={isBusy}
         />
         <OfferControlPanel
           creationDate={offerData.creationDate}
@@ -25,6 +29,8 @@ const OfferPageContent = ({
           openSlots={openSlots}
           openEditModal={openEditModal}
           openAddPeopleModal={openAddPeopleModal}
+          isAuthor={isAuthor}
+          isBusy={isBusy}
         />
       </div>
       <OfferMapLocation location={offerData.location} />

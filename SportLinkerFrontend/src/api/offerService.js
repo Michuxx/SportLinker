@@ -1,6 +1,21 @@
 import apiClient from "./apiClient";
 
 export const offerService = {
+  async deleteParticipant(offerId, userId, { signal } = {}) {
+    await apiClient.post("/Offer/participants/delete", {
+      offerId: Number(offerId),
+      userId: Number(userId),
+    }, { signal });
+  },
+
+  async leaveOffer(offerId, { signal } = {}) {
+    await apiClient.post("/Offer/leave", { offerId: Number(offerId) }, { signal });
+  },
+
+  async cancelOfferRequest(offerId, { signal } = {}) {
+    await apiClient.post("/Offer/requests/cancel", { offerId: Number(offerId) }, { signal });
+  },
+
   async acceptOfferRequest(offerId, userId, { signal } = {}) {
     await apiClient.post("/Offer/requests/accept", {
       userId: Number(userId),

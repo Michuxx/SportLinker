@@ -15,14 +15,15 @@ const OfferPageBanner = ({
   currentPeople,
   formattedDate,
   leaveOffer,
+  cancelOfferRequest,
   joinOffer,
   isJoining = false,
   isSaving = false,
   isMember = false,
   isAuthor = false,
+  isBusy = false,
 }) => {
-  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
-  const [leaveModalText, setLeaveModalText] = useState("");
+  const [exitAction, setExitAction] = useState(null);
   const scrollRef = useRef(false);
 
   useEffect(() => {
@@ -30,21 +31,24 @@ const OfferPageBanner = ({
   }, []);
 
   const openLeaveModal = () => {
-    setLeaveModalText("Czy na pewno chcesz opuścić ofertę?");
-    setIsLeaveModalOpen(true);
+    setExitAction("leave");
   };
 
   const openLeavePendingModal = () => {
-    setLeaveModalText(
-      "Czy na pewno chcesz zrezygnować z dołączenia do oferty?"
-    );
-    setIsLeaveModalOpen(true);
+    setExitAction("cancel");
   };
 
   const buttonSelection = () => {
     const status = isMember ? "accepted" : offerData.status;
     if (isAuthor) {
-      return <Button style="offerPageJoinedButton" disabled>Organizator</Button>;
+      return (
+        <div className="offer-status-btn-wrapper">
+          <Button style="offerPageJoinedButton" disabled>Organizator</Button>
+          <Button style="offerPageCancelButton" onClick={openLeaveModal} disabled={isBusy}>
+            Opuść ofertę
+          </Button>
+        </div>
+      );
     }
     if (isJoining) {
       return (
@@ -53,37 +57,25 @@ const OfferPageBanner = ({
         </Button>
       );
     }
-    if ((offerData.availability === "Unavailable" || currentPeople >= offerData.maxPeople)
-      && status !== "accepted" && status !== "pending") {
+    if (status === "accepted") {
       return (
         <div className="offer-status-btn-wrapper">
-          <Button style="offerPageRejectedButton" Icon={<MdClose size={18} />}>
-            Zapisy zamknięte
+          <Button style="offerPageJoinedButton" Icon={<FaCheck size={18} />} disabled>
+            Dołączono
           </Button>
-          {status !== null && (
-            <Button
-              style="offerPageCancelButton"
-              onClick={openLeavePendingModal}
-            >
-              Anuluj
-            </Button>
-          )}
+          <Button style="offerPageCancelButton" onClick={openLeaveModal} disabled={isBusy}>
+            Opuść ofertę
+          </Button>
         </div>
       );
     } else if (status === "rejected") {
       return (
-        <Button style="offerPageRejectedButton" Icon={<MdClose size={18} />}>
-          Odrzucono
-        </Button>
-      );
-    } else if (status === "accepted") {
-      return (
         <div className="offer-status-btn-wrapper">
-          <Button style="offerPageJoinedButton" Icon={<FaCheck size={18} />}>
-            Dołączono
+          <Button style="offerPageRejectedButton" Icon={<MdClose size={18} />} disabled>
+            Odrzucono
           </Button>
-          <Button style="offerPageCancelButton" onClick={openLeaveModal}>
-            Opuść ofertę
+          <Button style="offerPageCancelButton" onClick={openLeavePendingModal} disabled={isBusy}>
+            Anuluj prośbę
           </Button>
         </div>
       );
@@ -96,14 +88,20 @@ const OfferPageBanner = ({
           >
             Oczekuje na akceptacje
           </Button>
-          <Button style="offerPageCancelButton" onClick={openLeavePendingModal}>
+          <Button style="offerPageCancelButton" onClick={openLeavePendingModal} disabled={isBusy}>
             Anuluj
           </Button>
         </div>
       );
+    } else if (offerData.availability === "Unavailable" || currentPeople >= offerData.maxPeople) {
+      return (
+        <Button style="offerPageRejectedButton" Icon={<MdClose size={18} />} disabled>
+          Zapisy zamknięte
+        </Button>
+      );
     } else {
       return (
-        <Button style="offerPageJoinButton" onClick={joinOffer} disabled={isSaving}>
+        <Button style="offerPageJoinButton" onClick={joinOffer} disabled={isSaving || isBusy}>
           {offerData.mode === "public"
             ? "Dołącz"
             : "Wyślij prośbę o dołączenie"}
@@ -133,14 +131,23 @@ const OfferPageBanner = ({
         location={offerData.location.displayLabel}
         people={`${currentPeople}/${offerData.maxPeople}`}
       />
-      {isLeaveModalOpen && (
-        <ModalBackground closeModal={() => setIsLeaveModalOpen(false)}>
+      {exitAction && (
+        <ModalBackground closeModal={() => setExitAction(null)}>
           <WarningModal
-            headline={leaveModalText}
+            headline={exitAction === "leave"
+              ? "Czy na pewno chcesz opuścić ofertę?"
+              : "Czy na pewno chcesz anulować prośbę o dołączenie?"}
+            paragraph={exitAction === "leave" && isAuthor
+              ? "Organizacja oferty zostanie przekazana innemu uczestnikowi. Jeśli nie ma innych uczestników, oferta zostanie usunięta."
+              : undefined}
             confirmText="Tak, chcę"
             confirmIcon={<BsDoorOpenFill size={20} />}
-            onCancel={() => setIsLeaveModalOpen(false)}
-            onConfirm={leaveOffer}
+            onCancel={() => setExitAction(null)}
+            onConfirm={() => {
+              if (isBusy) return;
+              if (exitAction === "leave") leaveOffer();
+              else cancelOfferRequest();
+            }}
           />
         </ModalBackground>
       )}

@@ -8,12 +8,16 @@ const OfferControlPanel = ({
   openSlots,
   openEditModal,
   openAddPeopleModal,
+  isAuthor = false,
+  isBusy = false,
 }) => {
   return (
     <div className="offer-control-panel-container">
       <OfferActionPanel
         openEditModal={openEditModal}
         openAddPeopleModal={openAddPeopleModal}
+        isAuthor={isAuthor}
+        isBusy={isBusy}
       />
       <OfferInfoPanel
         creationDate={creationDate}

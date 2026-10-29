@@ -6,7 +6,7 @@ import { FiFlag } from "react-icons/fi";
 import { FiSettings } from "react-icons/fi";
 import { CgUserAdd } from "react-icons/cg";
 
-const OfferActionPanel = ({ openEditModal, openAddPeopleModal }) => {
+const OfferActionPanel = ({ openEditModal, openAddPeopleModal, isAuthor = false, isBusy = false }) => {
   return (
     <div className="offer-action-panel-container">
       <h3>Akcje</h3>
@@ -28,22 +28,28 @@ const OfferActionPanel = ({ openEditModal, openAddPeopleModal }) => {
         >
           Zgłoś
         </Button>
-        <Button
-          style="actionSettingsButton"
-          width={100}
-          Icon={<FiSettings size={20} />}
-          onClick={openEditModal}
-        >
-          Edytuj ofertę
-        </Button>
-        <Button
-          style="actionAddPeopleButton"
-          width={100}
-          Icon={<CgUserAdd size={20} />}
-          onClick={openAddPeopleModal}
-        >
-          Prośby o dołączenie
-        </Button>
+        {isAuthor && (
+          <>
+            <Button
+              style="actionSettingsButton"
+              width={100}
+              Icon={<FiSettings size={20} />}
+              onClick={openEditModal}
+              disabled={isBusy}
+            >
+              Edytuj ofertę
+            </Button>
+            <Button
+              style="actionAddPeopleButton"
+              width={100}
+              Icon={<CgUserAdd size={20} />}
+              onClick={openAddPeopleModal}
+              disabled={isBusy}
+            >
+              Prośby o dołączenie
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );

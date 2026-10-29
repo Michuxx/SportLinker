@@ -7,8 +7,9 @@ import BackgroundModal from "../../../../component-items/modal/ModalBackground";
 import WarningModal from "../../../../warningModal/WarningModal";
 import { parseApiDate } from "../../../../../utils/dateTime";
 
-const OfferMemberCard = ({ member, offerAuthorId, kickPlayer }) => {
+const OfferMemberCard = ({ member, offerAuthorId, kickPlayer, isAuthor = false, isBusy = false }) => {
   const [isKickModalOpen, setIsKickModalOpen] = useState(false);
+  const isOfferAuthor = String(member.id) === String(offerAuthorId);
   const dateObj = parseApiDate(member.joinDate);
   const normalizedDate = dateObj.toLocaleDateString("pl-PL");
 
@@ -18,19 +19,20 @@ const OfferMemberCard = ({ member, offerAuthorId, kickPlayer }) => {
         <Avatar size={3} image={member.image} />
         <div className="member-info-wrapper">
           <p className="member-name">{member.name}</p>
-          {member.id === offerAuthorId ? (
+          {isOfferAuthor ? (
             <p className="author-member">Organizator</p>
           ) : (
             <p className="member-join-date">{normalizedDate}</p>
           )}
         </div>
       </div>
-      {member.id !== offerAuthorId && (
+      {isAuthor && !isOfferAuthor && (
         <div className="member-delete-btn">
           <Button
             style="deleteButton"
             Icon={<FaRegTrashAlt size={20} />}
             onClick={() => setIsKickModalOpen(true)}
+            disabled={isBusy}
           ></Button>
         </div>
       )}
@@ -41,7 +43,7 @@ const OfferMemberCard = ({ member, offerAuthorId, kickPlayer }) => {
             headline={`Czy na pewno chcesz wyrzucić ${member.name}?`}
             confirmText="Wyrzuć"
             confirmIcon={<FaRegTrashAlt size={20} />}
-            onConfirm={() => kickPlayer(member.id)}
+            onConfirm={() => !isBusy && kickPlayer(member.id)}
           />
         </BackgroundModal>
       )}

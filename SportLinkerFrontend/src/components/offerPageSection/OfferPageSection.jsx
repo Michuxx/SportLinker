@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import OfferPageBanner from "./offerPageBanner/OfferPageBanner";
 import "./offerPageSection.css";
 import OfferPageContent from "./offerPageContent/OfferPageContent";
@@ -16,15 +16,25 @@ import { useToast } from "../../context/ToastContext";
 import { prepareOfferUpdate } from "../../utils/offerUpdate";
 import { applyOfferJoin } from "../../utils/offerJoin";
 import { normalizeOfferRequests, applyOfferRequestDecision, rollbackOfferRequestAcceptance } from "../../utils/offerRequests";
+import { applyOfferExit, rollbackOfferExit } from "../../utils/offerParticipation";
+
+const participationMessages = {
+  delete: { success: "Uczestnik został usunięty z oferty.", error: "Nie udało się usunąć uczestnika." },
+  leave: { success: "Opuszczono ofertę.", error: "Nie udało się opuścić oferty." },
+  cancel: { success: "Prośba o dołączenie została anulowana.", error: "Nie udało się anulować prośby." },
+};
 
 const OfferPageSection = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { showToast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
   const updateControllerRef = useRef(null);
   const joinControllerRef = useRef(null);
   const requestActionControllerRef = useRef(null);
+  const participationControllerRef = useRef(null);
+  const [participationAction, setParticipationAction] = useState(null);
   const [requestAction, setRequestAction] = useState(null);
   const [isJoining, setIsJoining] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -69,6 +79,7 @@ const OfferPageSection = () => {
   }, [id, isAddPeopleModalOpen, requestsReloadCount, showToast]);
 
   const handleOpenRequestsModal = () => {
+    if (participationControllerRef.current) return;
     setIsRequestsLoading(true);
     setRequestsError(null);
     setIsAddPeopleModalOpen(true);
@@ -89,6 +100,7 @@ const OfferPageSection = () => {
     setIsSaving(false);
     setIsJoining(false);
     setRequestAction(null);
+    setParticipationAction(null);
 
     const fetchOffer = async () => {
       try {
@@ -121,6 +133,7 @@ const OfferPageSection = () => {
       updateControllerRef.current?.abort();
       joinControllerRef.current?.abort();
       requestActionControllerRef.current?.abort();
+      participationControllerRef.current?.abort();
     };
   }, [id, user?.id, reloadCount]);
 
@@ -133,6 +146,7 @@ const OfferPageSection = () => {
   const isAuthor = Boolean(
     user?.id && String(offerData?.authorId) === String(user.id),
   );
+  const isOfferBusy = isSaving || isJoining || Boolean(requestAction) || Boolean(participationAction);
 
   const [errors, setErrors] = useState({
     title: "",
@@ -156,6 +170,7 @@ const OfferPageSection = () => {
   });
 
   const handleOpenEditModal = () => {
+    if (isOfferBusy) return;
     setEditData({
       title: offerData.title,
       description: offerData.description,
@@ -209,7 +224,7 @@ const OfferPageSection = () => {
   };
 
   const handleSubmit = async () => {
-    if (isSaving || updateControllerRef.current || isJoining || requestActionControllerRef.current) return;
+    if (isSaving || updateControllerRef.current || isJoining || requestActionControllerRef.current || participationControllerRef.current) return;
     const newErrors = {};
     let isValid = true;
 
@@ -326,7 +341,7 @@ const OfferPageSection = () => {
   };
 
   const joinOffer = async () => {
-    if (isJoining || joinControllerRef.current || isSaving || isMember || isAuthor) return;
+    if (isJoining || joinControllerRef.current || isSaving || isMember || isAuthor || participationControllerRef.current || requestActionControllerRef.current) return;
     if (!user?.id) {
       showToast({
         severity: "error",
@@ -371,15 +386,55 @@ const OfferPageSection = () => {
     }
   };
 
-  const kickPlayer = (memberId) => {
-    setOfferData((prev) => ({
-      ...prev,
-      members: offerData.members.filter((member) => member.id !== memberId),
-    }));
+  const changeParticipation = async (action, targetUserId = user?.id) => {
+    if (!offerData || !user?.id || participationControllerRef.current
+      || updateControllerRef.current || joinControllerRef.current || requestActionControllerRef.current) return;
+    if (action === "delete" && (!isAuthor || String(targetUserId) === String(offerData.authorId))) return;
+    if (action === "leave" && !isMember) return;
+    if (action === "cancel" && !["pending", "rejected"].includes(offerData.status)) return;
+
+    const controller = new AbortController();
+    participationControllerRef.current = controller;
+    setParticipationAction({ action, userId: targetUserId });
+    const previousOffer = offerData;
+    const offerId = offerData.id;
+    const authorLeaving = action === "leave" && isAuthor;
+    setOfferData((prev) => prev?.id === offerId ? applyOfferExit(prev, targetUserId, action) : prev);
+
+    try {
+      if (action === "delete") {
+        await offerService.deleteParticipant(offerId, targetUserId, { signal: controller.signal });
+      } else if (action === "leave") {
+        await offerService.leaveOffer(offerId, { signal: controller.signal });
+      } else {
+        await offerService.cancelOfferRequest(offerId, { signal: controller.signal });
+      }
+      if (controller.signal.aborted) return;
+      showToast({ severity: "success", summary: "Sukces", detail: participationMessages[action].success });
+      if (authorLeaving) navigate("/", { replace: true });
+    } catch (err) {
+      if (!controller.signal.aborted) {
+        setOfferData((prev) => prev?.id === offerId
+          ? rollbackOfferExit(prev, previousOffer, targetUserId, action)
+          : prev);
+        showToast({
+          severity: "error",
+          summary: "Błąd",
+          detail: getErrorMessage(err, participationMessages[action].error),
+        });
+      }
+    } finally {
+      if (participationControllerRef.current === controller) participationControllerRef.current = null;
+      if (!controller.signal.aborted) setParticipationAction(null);
+    }
   };
 
+  const kickPlayer = (memberId) => changeParticipation("delete", memberId);
+  const leaveOffer = () => changeParticipation("leave");
+  const cancelOfferRequest = () => changeParticipation("cancel");
+
   const resolvePlayerRequest = async (request, action) => {
-    if (!request || requestActionControllerRef.current || isRequestsLoading || isSaving) return;
+    if (!request || requestActionControllerRef.current || participationControllerRef.current || isRequestsLoading || isSaving) return;
     if (action === "accept" && openSlots === 0) {
       showToast({ severity: "error", summary: "Brak miejsc", detail: "Oferta ma już komplet graczy." });
       return;
@@ -465,7 +520,9 @@ const OfferPageSection = () => {
         offerData={offerData}
         currentPeople={currentPeople}
         formattedDate={formattedDate}
-        leaveOffer={() => setOfferData((prev) => ({ ...prev, status: null }))}
+        leaveOffer={leaveOffer}
+        cancelOfferRequest={cancelOfferRequest}
+        isBusy={isOfferBusy}
         joinOffer={joinOffer}
         isJoining={isJoining}
         isSaving={isSaving}
@@ -478,6 +535,8 @@ const OfferPageSection = () => {
         openEditModal={handleOpenEditModal}
         openAddPeopleModal={handleOpenRequestsModal}
         kickPlayer={kickPlayer}
+        isAuthor={isAuthor}
+        isBusy={isOfferBusy}
       />
       {isEditModalOpen && (
         <ModalBackground closeModal={() => !isSaving && setIsEditModalOpen(false)}>
