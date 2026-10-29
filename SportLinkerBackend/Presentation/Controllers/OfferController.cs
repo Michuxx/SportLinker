@@ -1,5 +1,6 @@
 using Application.Offers.AcceptPendingRequest;
 using Application.Offers.CreateOffer;
+using Application.Offers.DeleteParticipantFromOffer;
 using Application.Offers.GetOfferDetails;
 using Application.Offers.GetOfferRequests;
 using Application.Offers.JoinToOffer;
@@ -113,6 +114,17 @@ namespace Presentation.Controllers
         [Authorize]
         [HttpPost("requests/reject")]
         public async Task<IActionResult> RejectOfferRequest([FromBody] RejectPendingRequestCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
+            return Ok(result);
+        }
+        [Authorize]
+        [HttpPost("participants/delete")]
+        public async Task<IActionResult> DeleteParticipant([FromBody] DeleteParticipantFromOfferCommand command, CancellationToken cancellationToken)
         {
             var result = await _sender.Send(command, cancellationToken);
             if (!result.IsSuccess)

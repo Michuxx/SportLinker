@@ -91,6 +91,18 @@ namespace Domain.Entities
             return false;
         }
 
+        public Result<bool> DeleteParticipant(int userId)
+        {
+            var participant = Participants.FirstOrDefault(x => x.UserId == userId);
+            if(participant is null)
+            {
+                return Result<bool>.Failure(OfferErrors.OfferParticipantNotFound);
+            }
+
+            Participants.Remove(participant);
+            return Result<bool>.Success(true);
+        }
+
         public Result<bool> JoinToOffer(int userId)
         {
             if (Availability == AvailabilityEnum.Unavailable)
@@ -190,6 +202,7 @@ namespace Domain.Entities
 
             return Result<bool>.Success(true);
         }
+
     }
 
 }

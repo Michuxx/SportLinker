@@ -10,6 +10,9 @@ namespace Domain.Errors
         public static readonly Error OfferRequestNotFound = new(
             "OFFER_REQUEST_NOT_FOUND",
             "Zapytanie o dołączenie nie istnieje.");
+        public static readonly Error OfferParticipantNotFound = new(
+            "OFFER_PARTICIPANT_NOT_FOUND",
+            "Uczestnik nie istnieje.");
         public static readonly Error NotAuthorOfOffer = new(
             "NOT_AUTHOR_OF_OFFER",
             "Osoba nie jest autorem oferty.");
@@ -37,5 +40,8 @@ namespace Domain.Errors
         public static readonly Error WrongRequestStatus = new(
             "WRONG_REQUEST_STATUS",
             "Uzytkownik ma zły status");
+        public static readonly Error WrongPersonToDelete = new(
+            "WRONG_PERSON_TO_DELETE",
+            "Zły użytkownik do usunięcia");
     }
 }
