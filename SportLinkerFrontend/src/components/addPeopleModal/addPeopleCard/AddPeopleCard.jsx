@@ -10,7 +10,11 @@ const AddPeopleCard = ({
   openSlots,
   rejectPlayerRequest,
   acceptPlayerRequest,
+  requestAction = null,
+  isSaving = false,
 }) => {
+  const isProcessing = requestAction && String(requestAction.userId) === String(request.id);
+  const isBusy = Boolean(requestAction) || isSaving;
   return (
     <div className="add-people-card-container">
       <div className="add-people-user-wrapper">
@@ -23,12 +27,18 @@ const AddPeopleCard = ({
           onClick={() => acceptPlayerRequest(request)}
           Icon={<FaCheck size={20} />}
           style="acceptButton"
-        />
+          disabled={isBusy || openSlots === 0}
+        >
+          {isProcessing && requestAction.action === "accept" ? "Akceptowanie..." : ""}
+        </Button>
         <Button
           Icon={<MdClose size={20} />}
           onClick={() => rejectPlayerRequest(request.id)}
           style="rejectButton"
-        />
+          disabled={isBusy}
+        >
+          {isProcessing && requestAction.action === "reject" ? "Odrzucanie..." : ""}
+        </Button>
       </div>
     </div>
   );

@@ -1,7 +1,9 @@
+using Application.Offers.AcceptPendingRequest;
 using Application.Offers.CreateOffer;
 using Application.Offers.GetOfferDetails;
 using Application.Offers.GetOfferRequests;
 using Application.Offers.JoinToOffer;
+using Application.Offers.RejectPendingRequest;
 using Application.Offers.UpdateOffer;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -93,6 +95,30 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetOfferRequests([FromQuery] GetOfferRequestsQuery query, CancellationToken cancellationToken)
         {
             var result = await _sender.Send(query, cancellationToken);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPost("requests/accept")]
+        public async Task<IActionResult> AcceptOfferRequest([FromBody] AcceptPendingRequestCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPost("requests/reject")]
+        public async Task<IActionResult> RejectOfferRequest([FromBody] RejectPendingRequestCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
             return Ok(result);
         }
     }

@@ -152,6 +152,24 @@ namespace Domain.Entities
             return result;
         }
 
+        public Result<bool> RejectParticipantFromRequest(int userId)
+        {
+            var offerRequest = OfferRequests.FirstOrDefault(x => x.UserId == userId);
+
+            if (offerRequest is null)
+            {
+                return Result<bool>.Failure(OfferErrors.OfferRequestNotFound);
+            }
+
+            if (offerRequest.Status != RequestStatusEnum.Pending)
+            {
+                return Result<bool>.Failure(OfferErrors.WrongRequestStatus);
+            }
+
+            offerRequest.Status = RequestStatusEnum.Rejected;
+            return Result<bool>.Success(true);
+        }
+
         private Result<bool> AddParticipant(int userId)
         {
             if (Participants.Any(p => p.UserId == userId))

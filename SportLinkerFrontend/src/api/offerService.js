@@ -1,6 +1,20 @@
 import apiClient from "./apiClient";
 
 export const offerService = {
+  async acceptOfferRequest(offerId, userId, { signal } = {}) {
+    await apiClient.post("/Offer/requests/accept", {
+      userId: Number(userId),
+      offerId: Number(offerId),
+    }, { signal });
+  },
+
+  async rejectOfferRequest(offerId, userId, { signal } = {}) {
+    await apiClient.post("/Offer/requests/reject", {
+      userId: Number(userId),
+      offerId: Number(offerId),
+    }, { signal });
+  },
+
   /** Pobiera prośby o dołączenie podczas otwierania modalu. */
   async getOfferRequests(offerId, { signal } = {}) {
     const response = await apiClient.get("/Offer/requests", {

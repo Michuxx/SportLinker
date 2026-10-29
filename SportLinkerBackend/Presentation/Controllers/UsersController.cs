@@ -1,4 +1,3 @@
-using Application.Abstractions;
 using Application.Users.CreateUser;
 using Application.Users.Dtos;
 using Application.Users.GetUserData;
@@ -8,6 +7,7 @@ using Application.Users.UpdateFavouriteSports;
 using Application.Users.UpdateUserData;
 using Application.Users.UpdateUserImage;
 using Application.Users.UserRefreshToken;
+using Domain.Abstractions;
 using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

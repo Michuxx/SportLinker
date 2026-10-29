@@ -15,7 +15,7 @@ import useAuth from "../../hooks/useAuth";
 import { useToast } from "../../context/ToastContext";
 import { prepareOfferUpdate } from "../../utils/offerUpdate";
 import { applyOfferJoin } from "../../utils/offerJoin";
-import { normalizeOfferRequests } from "../../utils/offerRequests";
+import { normalizeOfferRequests, applyOfferRequestDecision, rollbackOfferRequestAcceptance } from "../../utils/offerRequests";
 
 const OfferPageSection = () => {
   const { id } = useParams();
@@ -24,6 +24,8 @@ const OfferPageSection = () => {
   const [isSaving, setIsSaving] = useState(false);
   const updateControllerRef = useRef(null);
   const joinControllerRef = useRef(null);
+  const requestActionControllerRef = useRef(null);
+  const [requestAction, setRequestAction] = useState(null);
   const [isJoining, setIsJoining] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddPeopleModalOpen, setIsAddPeopleModalOpen] = useState(false);
@@ -86,6 +88,7 @@ const OfferPageSection = () => {
     setIsAddPeopleModalOpen(false);
     setIsSaving(false);
     setIsJoining(false);
+    setRequestAction(null);
 
     const fetchOffer = async () => {
       try {
@@ -117,6 +120,7 @@ const OfferPageSection = () => {
       controller.abort();
       updateControllerRef.current?.abort();
       joinControllerRef.current?.abort();
+      requestActionControllerRef.current?.abort();
     };
   }, [id, user?.id, reloadCount]);
 
@@ -205,7 +209,7 @@ const OfferPageSection = () => {
   };
 
   const handleSubmit = async () => {
-    if (isSaving || updateControllerRef.current || isJoining) return;
+    if (isSaving || updateControllerRef.current || isJoining || requestActionControllerRef.current) return;
     const newErrors = {};
     let isValid = true;
 
@@ -374,42 +378,67 @@ const OfferPageSection = () => {
     }));
   };
 
-  const rejectPlayerRequest = (playerId) => {
-    setOfferData((prev) => ({
-      ...prev,
-      requests: offerData.requests.filter((req) => req.id !== playerId),
-    }));
-  };
+  const resolvePlayerRequest = async (request, action) => {
+    if (!request || requestActionControllerRef.current || isRequestsLoading || isSaving) return;
+    if (action === "accept" && openSlots === 0) {
+      showToast({ severity: "error", summary: "Brak miejsc", detail: "Oferta ma już komplet graczy." });
+      return;
+    }
 
-  const acceptPlayerRequest = (player) => {
-    if (openSlots > 0) {
-      setOfferData((prev) => {
-        const updatedMembers = [
-          ...prev.members,
-          {
-            id: player.id,
-            playerId: player.playerId,
-            name: player.name,
-            image: player.image,
-            joinDate: new Date().toISOString(),
-          },
-        ];
+    const controller = new AbortController();
+    requestActionControllerRef.current = controller;
+    setRequestAction({ userId: request.id, action });
+    const offerId = offerData.id;
+    const previousOffer = offerData;
+    const joinDate = new Date().toISOString();
+    if (action === "accept") {
+      setOfferData((prev) => prev?.id === offerId
+        ? applyOfferRequestDecision(prev, request, action, joinDate)
+        : prev);
+    }
+    try {
+      if (action === "accept") {
+        await offerService.acceptOfferRequest(offerId, request.id, { signal: controller.signal });
+      } else {
+        await offerService.rejectOfferRequest(offerId, request.id, { signal: controller.signal });
+      }
+      if (controller.signal.aborted) return;
 
-        const updatedRequests = prev.requests.filter(
-          (req) => req.id !== player.id
-        );
-
-        const isFull = updatedMembers.length === Number(prev.maxPeople);
-
-        return {
-          ...prev,
-          members: updatedMembers,
-          requests: updatedRequests,
-          availability: isFull ? "Unavailable" : "Available",
-        };
+      if (action === "reject") {
+        setOfferData((prev) => prev?.id === offerId
+          ? applyOfferRequestDecision(prev, request, action, joinDate)
+          : prev);
+      }
+      showToast({
+        severity: "success",
+        summary: "Sukces",
+        detail: action === "accept" ? "Prośba o dołączenie została zaakceptowana." : "Prośba o dołączenie została odrzucona.",
       });
+    } catch (err) {
+      if (!controller.signal.aborted) {
+        if (action === "accept") {
+          setOfferData((prev) => prev?.id === offerId
+            ? rollbackOfferRequestAcceptance(prev, previousOffer, request)
+            : prev);
+        }
+        showToast({
+          severity: "error",
+          summary: "Błąd",
+          detail: getErrorMessage(err, action === "accept"
+            ? "Nie udało się zaakceptować prośby."
+            : "Nie udało się odrzucić prośby."),
+        });
+      }
+    } finally {
+      if (requestActionControllerRef.current === controller) requestActionControllerRef.current = null;
+      if (!controller.signal.aborted) setRequestAction(null);
     }
   };
+
+  const rejectPlayerRequest = (playerId) => resolvePlayerRequest(
+    offerData.requests.find((request) => String(request.id) === String(playerId)), "reject",
+  );
+  const acceptPlayerRequest = (request) => resolvePlayerRequest(request, "accept");
 
   if (isLoading || loadedId !== id) {
     return (
@@ -464,12 +493,14 @@ const OfferPageSection = () => {
         </ModalBackground>
       )}
       {isAddPeopleModalOpen && (
-        <ModalBackground closeModal={() => setIsAddPeopleModalOpen(false)}>
+        <ModalBackground closeModal={() => !requestAction && setIsAddPeopleModalOpen(false)}>
           <AddPeopleModal
             requests={offerData.requests}
             isLoading={isRequestsLoading}
             error={requestsError}
             retryRequests={retryRequests}
+            requestAction={requestAction}
+            isSaving={isSaving}
             openSlots={openSlots}
             rejectPlayerRequest={rejectPlayerRequest}
             acceptPlayerRequest={acceptPlayerRequest}

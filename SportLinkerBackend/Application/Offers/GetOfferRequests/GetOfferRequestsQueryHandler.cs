@@ -25,7 +25,8 @@ namespace Application.Offers.GetOfferRequests
                 FROM OfferRequests r
                 INNER JOIN Users u 
                 ON u.Id = r.UserId
-                WHERE r.OfferId = @OfferId;
+                WHERE r.OfferId = @OfferId
+                AND r.Status = 'Pending';
                 """;
 
             var command = new CommandDefinition(

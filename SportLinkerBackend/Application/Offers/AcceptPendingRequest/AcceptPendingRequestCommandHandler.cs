@@ -6,13 +6,13 @@ using Domain.Errors;
 
 namespace Application.Offers.AcceptPendingRequest
 {
-    public sealed class AcceptPendingRequestCommandHandler : ICommandHandler<AcceptPendingRequestCommand, Result<bool>>
+    public sealed class RejectPendingRequestCommandHandler : ICommandHandler<AcceptPendingRequestCommand, Result<bool>>
     {
         private readonly IOfferRepository _offerRepository;
         private readonly ICurrentUser _currentUser;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AcceptPendingRequestCommandHandler(ICurrentUser currentUser, IOfferRepository offerRepository, IUnitOfWork unitOfWork)
+        public RejectPendingRequestCommandHandler(ICurrentUser currentUser, IOfferRepository offerRepository, IUnitOfWork unitOfWork)
         {
             _offerRepository = offerRepository;
             _currentUser = currentUser;

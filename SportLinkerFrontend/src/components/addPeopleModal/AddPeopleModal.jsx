@@ -12,6 +12,8 @@ const AddPeopleModal = ({
   isLoading = false,
   error = null,
   retryRequests,
+  requestAction = null,
+  isSaving = false,
 }) => {
   return (
     <div className="add-people-container">
@@ -32,6 +34,8 @@ const AddPeopleModal = ({
               key={request.id}
               rejectPlayerRequest={rejectPlayerRequest}
               acceptPlayerRequest={acceptPlayerRequest}
+              requestAction={requestAction}
+              isSaving={isSaving}
             />
           ))
         ) : (
