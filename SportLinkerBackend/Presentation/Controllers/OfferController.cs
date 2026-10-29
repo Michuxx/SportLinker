@@ -1,9 +1,11 @@
 using Application.Offers.AcceptPendingRequest;
+using Application.Offers.CancelRequest;
 using Application.Offers.CreateOffer;
 using Application.Offers.DeleteParticipantFromOffer;
 using Application.Offers.GetOfferDetails;
 using Application.Offers.GetOfferRequests;
 using Application.Offers.JoinToOffer;
+using Application.Offers.LeaveOffer;
 using Application.Offers.RejectPendingRequest;
 using Application.Offers.UpdateOffer;
 using MediatR;
@@ -122,9 +124,34 @@ namespace Presentation.Controllers
             }
             return Ok(result);
         }
+
         [Authorize]
         [HttpPost("participants/delete")]
         public async Task<IActionResult> DeleteParticipant([FromBody] DeleteParticipantFromOfferCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPost("leave")]
+        public async Task<IActionResult> LeaveFromOffer([FromBody] LeaveOfferCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPost("requests/cancel")]
+        public async Task<IActionResult> CancelRequests([FromBody] CancelRequestCommand command, CancellationToken cancellationToken)
         {
             var result = await _sender.Send(command, cancellationToken);
             if (!result.IsSuccess)

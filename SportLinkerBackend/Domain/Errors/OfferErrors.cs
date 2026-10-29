@@ -16,6 +16,9 @@ namespace Domain.Errors
         public static readonly Error NotAuthorOfOffer = new(
             "NOT_AUTHOR_OF_OFFER",
             "Osoba nie jest autorem oferty.");
+        public static readonly Error UserIsAuthor = new(
+            "USER_IS_AUTHOR",
+            "Ta osoba nie może zostać autorem oferty");
         public static readonly Error CapacityTooLow = new(
             "CAPACITY_TOO_LOW",
             "Obecnie jest więcej osób niż podane maksimum");

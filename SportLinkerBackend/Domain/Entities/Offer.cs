@@ -78,22 +78,69 @@ namespace Domain.Entities
             return Result<bool>.Success(true);
         }
 
-        public bool TransferAuthorship(int newAuthorId)
+        public Result<bool> TransferAuthorship(int newAuthorId)
         {
-            if (newAuthorId <= 0) return false;
             if (newAuthorId != AuthorId)
             {
                 bool isParticipant = Participants.Any(p => p.UserId == newAuthorId);
-                if (!isParticipant) return false;
+                if (!isParticipant) return Result<bool>.Failure(OfferErrors.OfferParticipantNotFound);
                 AuthorId = newAuthorId;
-                return true;
+                return Result<bool>.Success(true);
             }
-            return false;
+            return Result<bool>.Failure(OfferErrors.UserIsAuthor);
+        }
+
+        public Result<bool> LeaveOffer(int userId)
+        {
+            var participant = Participants.FirstOrDefault(x => x.UserId == userId);
+            if (participant is null)
+            {
+                return Result<bool>.Failure(OfferErrors.OfferParticipantNotFound);
+            }
+
+            var remainingParticipants = Participants
+                .Where(p => p.UserId != userId)
+                .ToList();
+
+            if (userId == AuthorId && remainingParticipants.Count > 0)
+            {
+                int index = Random.Shared.Next(remainingParticipants.Count);
+                var randomParticipantId = remainingParticipants[index].UserId;
+                var result = TransferAuthorship(randomParticipantId);
+
+                if (!result.IsSuccess)
+                {
+                    return result;
+                }
+
+                Participants.Remove(participant);
+                return result;
+            }
+            Participants.Remove(participant);
+            return Result<bool>.Success(true);
+        }
+
+        public Result<bool> CancelRequest(int userId)
+        {
+            var request = OfferRequests.FirstOrDefault(x => x.UserId == userId);
+            if (request is null)
+            {
+                return Result<bool>.Failure(OfferErrors.OfferRequestNotFound);
+            }
+
+            OfferRequests.Remove(request);
+            return Result<bool>.Success(true);
         }
 
         public Result<bool> DeleteParticipant(int userId)
         {
+            if (userId == AuthorId)
+            {
+                return Result<bool>.Failure(OfferErrors.WrongPersonToDelete);
+            }
+
             var participant = Participants.FirstOrDefault(x => x.UserId == userId);
+
             if(participant is null)
             {
                 return Result<bool>.Failure(OfferErrors.OfferParticipantNotFound);

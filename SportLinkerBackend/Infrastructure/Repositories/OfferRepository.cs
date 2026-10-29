@@ -26,5 +26,10 @@ namespace Infrastructure.Repositories
                 .Include(o => o.OfferRequests)
                 .FirstOrDefaultAsync(x => x.Id == offerId);
         }
+
+        public void DeleteOffer(Offer offer)
+        {
+            _dbContext.Remove(offer);
+        }
     }
 }

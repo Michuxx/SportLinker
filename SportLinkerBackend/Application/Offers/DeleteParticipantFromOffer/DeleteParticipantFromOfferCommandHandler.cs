@@ -32,12 +32,8 @@ namespace Application.Offers.DeleteParticipantFromOffer
                 return Result<bool>.Failure(OfferErrors.NotAuthorOfOffer);
             }
 
-            if(command.UserId == offer.AuthorId)
-            {
-                return Result<bool>.Failure(OfferErrors.WrongPersonToDelete);
-            }
-
             var result = offer.DeleteParticipant(command.UserId);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return result;
         }
     }

@@ -6,5 +6,6 @@ namespace Domain.Abstractions.Interfaces
     {
         void AddOffer(Offer offer);
         Task<Offer?> GetOfferByIdAsync(int offerId);
+        void DeleteOffer(Offer offer);
     }
 }
