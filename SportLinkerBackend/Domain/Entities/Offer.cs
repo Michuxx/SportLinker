@@ -1,6 +1,7 @@
 ﻿using Domain.Abstractions;
 using Domain.Enums;
 using Domain.Errors;
+using Domain.Events;
 
 namespace Domain.Entities
 {
@@ -23,6 +24,18 @@ namespace Domain.Entities
         public User Author { get; private set; } = default!;
         public ICollection<OfferParticipant> Participants { get; set; } = new List<OfferParticipant>();
         public ICollection<OfferRequest> OfferRequests { get; set; } = new List<OfferRequest>();
+        private readonly List<DomainEvent> _domainEvents = new List<DomainEvent>();
+        private void RaiseDomainEvent(DomainEvent domainEvent)
+        {
+            _domainEvents.Add(domainEvent);
+        }
+
+        public ICollection<DomainEvent> DequeueDomainEvents()
+        {
+            var events = _domainEvents.ToArray();
+            _domainEvents.Clear();
+            return events;
+        }
         public static Offer CreateOffer(string title, string description, LevelEnum level, DateTime planningDate, int maxPeople, ModeEnum modeEnum, int sportId, Location location, int userId)
         {
             var offer = new Offer
@@ -38,8 +51,9 @@ namespace Domain.Entities
                 AuthorId = userId
             };
 
-            var OfferParticipant = new OfferParticipant(offer.Id, userId);
-            offer.Participants.Add(OfferParticipant);
+            var offerParticipant = new OfferParticipant(offer.Id, userId);
+            offer.Participants.Add(offerParticipant);
+            offer.RaiseDomainEvent(new OfferCreated(userId));
 
             return offer;
         }
@@ -104,9 +118,12 @@ namespace Domain.Entities
 
             if (userId == AuthorId && remainingParticipants.Count > 0)
             {
-                int index = Random.Shared.Next(remainingParticipants.Count);
-                var randomParticipantId = remainingParticipants[index].UserId;
-                var result = TransferAuthorship(randomParticipantId);
+                var newAuthor = remainingParticipants
+                    .OrderBy(p => p.JoinDate)
+                    .ThenBy(p => p.UserId)
+                    .First();
+
+                var result = TransferAuthorship(newAuthor.UserId);
 
                 if (!result.IsSuccess)
                 {
@@ -164,21 +181,12 @@ namespace Domain.Entities
 
             if (Mode == ModeEnum.Private)
             {
-                OfferRequest offerRequest = new OfferRequest(Id, userId);
-
-                if (OfferRequests.Any(r => r.UserId == userId))
-                {
-                    return Result<bool>.Failure(OfferErrors.AlreadySentRequestToOffer);
-                }
-
-                OfferRequests.Add(offerRequest);
+                return SendOfferRequest(userId);
             }
             else
             {
                 return AddParticipant(userId);
             }
-
-            return Result<bool>.Success(true);
         }
 
         public Result<bool> AddParticipantFromRequest(int userId)
@@ -241,7 +249,10 @@ namespace Domain.Entities
                 return Result<bool>.Failure(OfferErrors.MaximumCapacityOfOffer);
             }
 
-            Participants.Add(new OfferParticipant(Id, userId));
+            OfferParticipant newParticipant = new OfferParticipant(Id, userId);
+            Participants.Add(newParticipant);
+            RaiseDomainEvent(new ParticipantJoined(Id, userId));
+
             if (Participants.Count >= MaxPeople)
             {
                 Availability = AvailabilityEnum.Unavailable;
@@ -249,6 +260,21 @@ namespace Domain.Entities
 
             return Result<bool>.Success(true);
         }
+
+        private Result<bool> SendOfferRequest(int userId)
+        {
+            OfferRequest offerRequest = new OfferRequest(Id, userId);
+
+            if (OfferRequests.Any(r => r.UserId == userId))
+            {
+                return Result<bool>.Failure(OfferErrors.AlreadySentRequestToOffer);
+            }
+
+            OfferRequests.Add(offerRequest);
+            RaiseDomainEvent(new OfferRequestSent(Id, userId));
+            return Result<bool>.Success(true);
+        }
+
 
     }
 

@@ -96,6 +96,12 @@ namespace Domain.Entities
                 _ => throw new ArgumentOutOfRangeException(nameof(imageType), $"Nieobsługiwany typ zdjęcia: {imageType}")
             };
         }
+
+        public void RecordOfferCreated() => Statistics.IncrementCreatedOffers();
+
+        public void RecordOfferJoined() => Statistics.IncrementJoinedOffers();
+
+        public void RecordOfferRequestSent() => Statistics.IncrementInvitations();
     }
 }
 
