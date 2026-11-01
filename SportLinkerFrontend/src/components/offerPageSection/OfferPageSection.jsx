@@ -17,6 +17,8 @@ import { prepareOfferUpdate } from "../../utils/offerUpdate";
 import { applyOfferJoin } from "../../utils/offerJoin";
 import { normalizeOfferRequests, applyOfferRequestDecision, rollbackOfferRequestAcceptance } from "../../utils/offerRequests";
 import { applyOfferExit, rollbackOfferExit } from "../../utils/offerParticipation";
+import { getOfferErrorType } from "../../utils/offerError";
+import OfferPageError from "./offerPageError/OfferPageError";
 
 const participationMessages = {
   delete: { success: "Uczestnik został usunięty z oferty.", error: "Nie udało się usunąć uczestnika." },
@@ -113,11 +115,7 @@ const OfferPageSection = () => {
       } catch (err) {
         if (!controller.signal.aborted) {
           setOfferData(null);
-          setError(
-            err.response?.status === 404
-              ? "Nie znaleziono oferty."
-              : getErrorMessage(err, "Nie udało się pobrać danych oferty."),
-          );
+          setError(getOfferErrorType(err));
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -505,12 +503,10 @@ const OfferPageSection = () => {
 
   if (error || !offerData) {
     return (
-      <div className="offer-page-section-container offer-page-state" role="alert">
-        <p>{error || "Nie znaleziono oferty."}</p>
-        <button type="button" onClick={() => setReloadCount((count) => count + 1)}>
-          Spróbuj ponownie
-        </button>
-      </div>
+      <OfferPageError
+        type={error || "notFound"}
+        onRetry={() => setReloadCount((count) => count + 1)}
+      />
     );
   }
 
