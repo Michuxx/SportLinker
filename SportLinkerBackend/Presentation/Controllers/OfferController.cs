@@ -12,6 +12,7 @@ using Application.Offers.UpdateOffer;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Application.Users.SentOfferRequests;
 
 
 namespace Presentation.Controllers
@@ -162,7 +163,7 @@ namespace Presentation.Controllers
             return Ok(result);
         }
         [Authorize]
-        [HttpPost("requests/delete")]
+        [HttpDelete("requests/delete")]
         public async Task<IActionResult> DeleteRejectionRequest([FromBody] DeleteRejectionRequestCommand command, CancellationToken cancellationToken)
         {
             var result = await _sender.Send(command, cancellationToken);
@@ -172,6 +173,9 @@ namespace Presentation.Controllers
             }
             return Ok(result);
         }
+
+        
+
     }
 }
 

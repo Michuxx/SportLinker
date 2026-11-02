@@ -4,31 +4,41 @@ using Application.Abstractions.Data;
 using Application.Users.Dtos;
 using Dapper;
 
-namespace Application.Users.GetUserRequestsQuery
+namespace Application.Users.SentOfferRequests
 {
-    public sealed class GetUserRequestsQueryHandler : IQueryHandler<GetUserRequestsQuery, List<UserRequestsDto>>
+    public sealed class SentOfferRequestsQueryHandler : IQueryHandler<SentOfferRequestsQuery, List<SentOfferRequestDto>>
     {
         private readonly ICurrentUser _currentUser;
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-        public GetUserRequestsQueryHandler(ICurrentUser currentUser, ISqlConnectionFactory sqlConnectionFactory)
+        public SentOfferRequestsQueryHandler(ICurrentUser currentUser, ISqlConnectionFactory sqlConnectionFactory)
         {
             _currentUser = currentUser;
             _sqlConnectionFactory = sqlConnectionFactory;
         }
-        public async Task<List<UserRequestsDto>> Handle(GetUserRequestsQuery request, CancellationToken cancellationToken)
+        public async Task<List<SentOfferRequestDto>> Handle(SentOfferRequestsQuery request, CancellationToken cancellationToken)
         {
             var userId = _currentUser.UserId;
+
             using var connection = _sqlConnectionFactory.CreateConnection();
 
             const string sql = """
+            WITH UserRequests AS (
+                SELECT
+                    Id,
+                    OfferId,
+                    Status,
+                    RequestDate
+                FROM OfferRequests
+                WHERE UserId = @UserId
+            )
             SELECT
                 r.Id AS RequestId,
                 r.OfferId,
                 r.Status,
-                o.Title AS OfferTitle,
+                o.Title,
                 o.PlanningDate AS [Date],
                 o.MaxPeople,
+                o.Availability,
                 s.Name AS Sport,
                 l.City,
                 l.Country,
@@ -39,36 +49,29 @@ namespace Application.Users.GetUserRequestsQuery
                 l.State,
                 l.Street,
                 l.Type,
-                u.Id AS UserId,
-                u.PersonalData_Name AS UserName,
                 (
                     SELECT COUNT(*)
                     FROM OfferParticipants p
                     WHERE p.OfferId = o.Id
                 ) AS CurrentPeople
-            FROM OfferRequests r
+            FROM UserRequests r
             INNER JOIN Offers o ON o.Id = r.OfferId
             INNER JOIN Sports s ON s.Id = o.SportId
-            INNER JOIN Locations l ON l.Id = o.LocationId
-            INNER JOIN Users u ON u.Id = r.UserId
-            WHERE o.AuthorId = @UserId
-            ORDER BY r.RequestDate DESC, r.Id DESC;
+            INNER JOIN Locations l ON l.Id = o.LocationId;
             """;
 
             var command = new CommandDefinition(
-           sql,
-           new { UserId = userId },
-           cancellationToken: cancellationToken);
+                sql,
+                new { UserId = userId },
+                cancellationToken: cancellationToken);
 
             var requests = (
-                await connection.QueryAsync<UserRequestsDto>(command)
+                await connection.QueryAsync<SentOfferRequestDto>(command)
             ).ToList();
 
             foreach (var item in requests)
             {
-                item.Date = DateTime.SpecifyKind(
-                    item.Date,
-                    DateTimeKind.Utc);
+                item.Date = DateTime.SpecifyKind(item.Date, DateTimeKind.Utc);
             }
 
             return requests;

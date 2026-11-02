@@ -2,8 +2,9 @@ using Application.Users.CreateUser;
 using Application.Users.Dtos;
 using Application.Users.GetUserData;
 using Application.Users.GetUserOffers;
-using Application.Users.GetUserRequestsQuery;
+using Application.Users.GetUserRequests;
 using Application.Users.LoginUser;
+using Application.Users.SentOfferRequests;
 using Application.Users.UpdateAboutMe;
 using Application.Users.UpdateFavouriteSports;
 using Application.Users.UpdateUserData;
@@ -154,6 +155,14 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetUserRequests([FromQuery] GetUserRequestsQuery query, CancellationToken cancellationToken)
         {
             List<UserRequestsDto> result = await _sender.Send(query, cancellationToken);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("requests/sent")]
+        public async Task<IActionResult> GetSentOfferRequests([FromQuery] SentOfferRequestsQuery query, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(query, cancellationToken);
             return Ok(result);
         }
     }

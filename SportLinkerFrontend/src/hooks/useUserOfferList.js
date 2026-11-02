@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import userService from "../api/userService";
-import { normalizeUserOffer, normalizeUserRequest } from "../utils/userOfferLists";
+import { normalizeUserOffer, normalizeUserRequest, normalizeSentOfferRequest } from "../utils/userOfferLists";
 
 const useUserOfferList = (userId, type = "offers") => {
   const [state, setState] = useState({ userId: null, items: [], loading: true, error: false });
@@ -13,11 +13,14 @@ const useUserOfferList = (userId, type = "offers") => {
 
     const fetchList = async () => {
       try {
-        const data = type === "requests"
+        const data = type === "sent"
+          ? await userService.getSentOfferRequests({ signal: controller.signal })
+          : type === "requests"
           ? await userService.getUserRequests({ signal: controller.signal })
           : await userService.getUserOffers(userId, { signal: controller.signal });
         if (!controller.signal.aborted) {
-          setState({ userId, items: data.map(type === "requests" ? normalizeUserRequest : normalizeUserOffer), loading: false, error: false });
+          const normalize = type === "sent" ? normalizeSentOfferRequest : type === "requests" ? normalizeUserRequest : normalizeUserOffer;
+          setState({ userId, items: data.map(normalize), loading: false, error: false });
         }
       } catch {
         if (!controller.signal.aborted) setState({ userId, items: [], loading: false, error: true });

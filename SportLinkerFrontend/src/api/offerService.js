@@ -2,7 +2,10 @@ import apiClient from "./apiClient";
 
 export const offerService = {
   async deleteRejectedRequest(offerId, { signal } = {}) {
-    await apiClient.post("/Offer/requests/delete", { offerId: Number(offerId) }, { signal });
+    await apiClient.delete("/Offer/requests/delete", {
+      data: { offerId: Number(offerId) },
+      signal,
+    });
   },
 
   async deleteParticipant(offerId, userId, { signal } = {}) {

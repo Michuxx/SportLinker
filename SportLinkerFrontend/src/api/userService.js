@@ -22,6 +22,11 @@ export const resolveImageUrl = (path) => {
 };
 
 export const userService = {
+  async getSentOfferRequests({ signal } = {}) {
+    const response = await apiClient.get("/Users/requests/sent", { signal });
+    return response.data;
+  },
+
   async getUserOffers(userId, { signal } = {}) {
     const response = await apiClient.get("/Users/UserOffers", {
       params: { UserId: Number(userId) },

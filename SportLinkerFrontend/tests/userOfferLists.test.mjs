@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { normalizeUserOffer, normalizeUserRequest, applyUserRequestDecision, rollbackUserRequestDecision } from "../src/utils/userOfferLists.js";
+import { normalizeUserOffer, normalizeUserRequest, normalizeSentOfferRequest, applyUserRequestDecision, rollbackUserRequestDecision } from "../src/utils/userOfferLists.js";
 
 test("user offers map API enums, sport, location and identity to existing cards", () => {
   const data = { offerId: 14, title: "Tenis", level: "Any", mode: "Public", availability: "Available", sportName: "Tenis", date: "2026-12-01T18:00:00Z", city: "Wrocław", lat: 51.1, long: 17.1, currentPeople: 1, maxPeople: 4 };
@@ -25,6 +25,23 @@ test("request, offer and applicant IDs remain distinct", () => {
   assert.equal(result.offerTitle, "Tenis");
   assert.equal(result.status, "pending");
   assert.equal(result.location.displayLabel, "Wrocław, Hala");
+});
+
+test("sent requests map request and offer IDs, title, availability and request status", () => {
+  const data = { requestId: 6, offerId: 19, title: "Trening", sport: "Tenis", status: "Rejected", availability: "Unavailable", currentPeople: 3, maxPeople: 3, date: "2026-12-01T18:00:00Z", city: "Wrocław", name: "Hala" };
+  const result = normalizeSentOfferRequest(data);
+  assert.equal(result.id, 6);
+  assert.equal(result.offerId, 19);
+  assert.equal(result.title, "Trening");
+  assert.equal(result.sport, "Tenis");
+  assert.equal(result.status, "rejected");
+  assert.equal(result.availability, "closed");
+  assert.equal(result.currentPeople, 3);
+  assert.equal(result.location.displayLabel, "Hala");
+  assert.equal(result.date, data.date);
+  const pending = normalizeSentOfferRequest({ ...data, status: "Pending", availability: "Available" });
+  assert.equal(pending.status, "pending");
+  assert.equal(pending.availability, "open");
 });
 
 const requests = [

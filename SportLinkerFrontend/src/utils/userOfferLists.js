@@ -29,6 +29,14 @@ export const normalizeUserRequest = (data) => ({
   location: normalizeLocation(data),
 });
 
+export const normalizeSentOfferRequest = (data) => ({
+  ...data,
+  id: data.requestId,
+  status: data.status.toLowerCase(),
+  availability: data.availability === "Available" ? "open" : "closed",
+  location: normalizeLocation(data),
+});
+
 export const applyUserRequestDecision = (items, requestId, action) => {
   const request = items.find((item) => String(item.id) === String(requestId));
   if (!request) return items;

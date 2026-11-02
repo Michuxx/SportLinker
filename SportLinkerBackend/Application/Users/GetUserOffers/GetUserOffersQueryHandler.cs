@@ -44,8 +44,7 @@ namespace Application.Users.GetUserOffers
                 FROM Offers o
                 INNER JOIN Locations l ON l.Id = o.LocationId
                 INNER JOIN Sports s ON s.Id = o.SportId
-                WHERE o.AuthorId = @UserId
-                ORDER BY o.PlanningDate, o.Id;
+                WHERE o.AuthorId = @UserId;
                 """;
 
             var command = new CommandDefinition(sql, new { query.UserId });

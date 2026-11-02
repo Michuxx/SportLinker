@@ -5,8 +5,8 @@ const NullStatuses = () => {
     <div className="null-statuses-wrapper">
       <NullComponent
         icon="📆"
-        title="Brak Ofert w których bierzesz udział"
-        text="Nie ma ofert, w których bierzesz udział lub czekasz na zaakceptowanie"
+        title="Brak wysłanych próśb"
+        text="Nie masz żadnych próśb o dołączenie do ofert."
       ></NullComponent>
     </div>
   );

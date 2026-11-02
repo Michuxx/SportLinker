@@ -18,7 +18,7 @@ const InvitationCard = ({ invitation, handleAccept, handleReject, isBusy = false
             style="classicGreenButton"
             onClick={() => handleAccept(invitation.id)}
             Icon={<FaCheck size={24} />}
-            disabled={isBusy || invitation.currentPeople >= invitation.maxPeople}
+            disabled={isBusy}
           >
             Akceptuj
           </Button>

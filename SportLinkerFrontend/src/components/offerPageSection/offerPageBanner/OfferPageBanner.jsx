@@ -74,7 +74,7 @@ const OfferPageBanner = ({
           <Button style="offerPageRejectedButton" Icon={<MdClose size={18} />} disabled>
             Odrzucono
           </Button>
-          <Button style="offerPageCancelButton" onClick={openLeavePendingModal} disabled={isBusy}>
+          <Button style="offerPageCancelButton" onClick={cancelOfferRequest} disabled={isBusy}>
             Usuń prośbę
           </Button>
         </div>

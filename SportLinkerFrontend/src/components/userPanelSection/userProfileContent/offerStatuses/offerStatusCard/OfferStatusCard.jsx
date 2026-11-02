@@ -9,9 +9,8 @@ import { Link } from "react-router";
 
 const OfferStatusCard = ({
   offerApplication,
-  openLeaveModal,
-  openLeavePendingModal,
   handleResignApplication,
+  isBusy = false,
 }) => {
   return (
     <Link
@@ -30,17 +29,12 @@ const OfferStatusCard = ({
               style="classicRedButton"
               onClick={(e) => {
                 e.preventDefault();
-                if (offerApplication.status === "accepted") {
-                  openLeaveModal(offerApplication.id);
-                } else if (offerApplication.status === "pending") {
-                  openLeavePendingModal(offerApplication.id);
-                } else {
-                  handleResignApplication(offerApplication.id);
-                }
+                handleResignApplication(offerApplication.id);
               }}
               Icon={<MdClose size={20} />}
+              disabled={isBusy}
             >
-              Zrezygnuj
+              {offerApplication.status === "rejected" ? "Usuń prośbę" : "Anuluj prośbę"}
             </Button>
           </div>
         </div>
