@@ -1,6 +1,8 @@
 using Application.Users.CreateUser;
 using Application.Users.Dtos;
 using Application.Users.GetUserData;
+using Application.Users.GetUserOffers;
+using Application.Users.GetUserRequestsQuery;
 using Application.Users.LoginUser;
 using Application.Users.UpdateAboutMe;
 using Application.Users.UpdateFavouriteSports;
@@ -138,6 +140,21 @@ namespace Presentation.Controllers
             }
 
             return Ok(new { imageUrl = result.Value });
+        }
+
+        [HttpGet("UserOffers")]
+        public async Task<IActionResult> GetUserOffers([FromQuery] GetUserOffersQuery query, CancellationToken cancellationToken)
+        {
+            List<OfferUser> result = await _sender.Send(query, cancellationToken);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("UserRequests")]
+        public async Task<IActionResult> GetUserRequests([FromQuery] GetUserRequestsQuery query, CancellationToken cancellationToken)
+        {
+            List<UserRequestsDto> result = await _sender.Send(query, cancellationToken);
+            return Ok(result);
         }
     }
 }
