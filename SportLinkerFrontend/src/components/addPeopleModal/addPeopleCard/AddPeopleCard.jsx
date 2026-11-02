@@ -4,6 +4,7 @@ import Tag from "../../component-items/tags/Tag";
 import "./addPeopleCard.css";
 import { FaCheck } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
+import { Link } from "react-router";
 
 const AddPeopleCard = ({
   request,
@@ -17,11 +18,11 @@ const AddPeopleCard = ({
   const isBusy = Boolean(requestAction) || isSaving;
   return (
     <div className="add-people-card-container">
-      <div className="add-people-user-wrapper">
+      <Link className="add-people-user-wrapper" to={`/profile/userInfo/${request.id}`} aria-label={`Zobacz profil: ${request.name}`}>
         <Avatar image={request.image} size={3} />
         <p>{request.name}</p>
         {openSlots === 0 && <Tag styleType="overpopulation" />}
-      </div>
+      </Link>
       <div className="add-people-btn-wrapper">
         <Button
           onClick={() => acceptPlayerRequest(request)}

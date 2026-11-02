@@ -6,6 +6,7 @@ import { useState } from "react";
 import BackgroundModal from "../../../../component-items/modal/ModalBackground";
 import WarningModal from "../../../../warningModal/WarningModal";
 import { parseApiDate } from "../../../../../utils/dateTime";
+import { Link } from "react-router";
 
 const OfferMemberCard = ({ member, offerAuthorId, kickPlayer, isAuthor = false, isBusy = false }) => {
   const [isKickModalOpen, setIsKickModalOpen] = useState(false);
@@ -15,7 +16,7 @@ const OfferMemberCard = ({ member, offerAuthorId, kickPlayer, isAuthor = false, 
 
   return (
     <div className="offer-member-card-container">
-      <div className="member-info-block">
+      <Link className="member-info-block" to={`/profile/userInfo/${member.id}`} aria-label={`Zobacz profil: ${member.name}`}>
         <Avatar size={3} image={member.image} />
         <div className="member-info-wrapper">
           <p className="member-name">{member.name}</p>
@@ -25,7 +26,7 @@ const OfferMemberCard = ({ member, offerAuthorId, kickPlayer, isAuthor = false, 
             <p className="member-join-date">{normalizedDate}</p>
           )}
         </div>
-      </div>
+      </Link>
       {isAuthor && !isOfferAuthor && (
         <div className="member-delete-btn">
           <Button

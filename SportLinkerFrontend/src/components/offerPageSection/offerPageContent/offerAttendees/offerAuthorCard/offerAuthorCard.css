@@ -14,6 +14,19 @@
 .author-info-wrapper {
   display: flex;
   gap: 10px;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 0.5rem;
+}
+
+.author-info-wrapper:hover .author-name {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.author-info-wrapper:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 4px;
 }
 
 .author-info {
