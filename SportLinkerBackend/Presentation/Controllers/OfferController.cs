@@ -7,6 +7,7 @@ using Application.Offers.GetOfferRequests;
 using Application.Offers.JoinToOffer;
 using Application.Offers.LeaveOffer;
 using Application.Offers.RejectPendingRequest;
+using Application.Offers.DeleteRejectionRequest;
 using Application.Offers.UpdateOffer;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -160,6 +161,19 @@ namespace Presentation.Controllers
             }
             return Ok(result);
         }
+        [Authorize]
+        [HttpPost("requests/delete")]
+        public async Task<IActionResult> DeleteRejectionRequest([FromBody] DeleteRejectionRequestCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
+            return Ok(result);
+        }
+
+
     }
 }
 

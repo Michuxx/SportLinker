@@ -9,15 +9,17 @@ import { FaCheck } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 import { Link } from "react-router";
 
-const InvitationCard = ({ invitation, handleAccept, handleReject }) => {
+const InvitationCard = ({ invitation, handleAccept, handleReject, isBusy = false }) => {
   const buttonSelection = () => {
-    if (invitation.currentPeople === invitation.maxPeople) {
+    if (invitation.status !== "pending") return null;
+    if (invitation.currentPeople >= invitation.maxPeople) {
       return (
         <div className="invitation-btn-wrapper">
           <Button
             style="classicRedButton"
             onClick={() => handleReject(invitation.id)}
             Icon={<MdClose size={24} />}
+            disabled={isBusy}
           >
             Odrzuć
           </Button>
@@ -30,6 +32,7 @@ const InvitationCard = ({ invitation, handleAccept, handleReject }) => {
             style="classicGreenButton"
             onClick={() => handleAccept(invitation.id, invitation.offerId)}
             Icon={<FaCheck size={24} />}
+            disabled={isBusy}
           >
             Akceptuj
           </Button>
@@ -37,6 +40,7 @@ const InvitationCard = ({ invitation, handleAccept, handleReject }) => {
             style="classicRedButton"
             onClick={() => handleReject(invitation.id)}
             Icon={<MdClose size={24} />}
+            disabled={isBusy}
           >
             Odrzuć
           </Button>
@@ -51,21 +55,21 @@ const InvitationCard = ({ invitation, handleAccept, handleReject }) => {
         <div className="invitation-card-block">
           <Tag styleType="sport" text={invitation.sport} />
           <Tag styleType={invitation.status} />
-          {invitation.currentPeople === invitation.maxPeople && (
+          {invitation.currentPeople >= invitation.maxPeople && (
             <Tag styleType="overpopulation" />
           )}
         </div>
         <div className="invitation-btn-wrapper">{buttonSelection()}</div>
       </div>
       <div className="invitation-user-info-wrapper">
-        <Avatar size={4} />
+        <Link to={`/profile/userInfo/${invitation.user.id}`} aria-label={`Zobacz profil: ${invitation.user.name}`}><Avatar size={4} /></Link>
         <div className="invitation-join-info">
-          <h2>{invitation.user.name}</h2>
+          <h2><Link className="invitation-user-link" to={`/profile/userInfo/${invitation.user.id}`}>{invitation.user.name}</Link></h2>
           <p>
             Chce dołączyć do{" "}
             <i>
               <Link
-                to={`/offer/${invitation.id}`}
+                to={`/offer/${invitation.offerId}`}
                 style={{ textDecoration: `none`, color: `inherit` }}
               >
                 {invitation.offerTitle}

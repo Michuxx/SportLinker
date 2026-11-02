@@ -237,6 +237,29 @@ namespace Domain.Entities
             return Result<bool>.Success(true);
         }
 
+        public Result<bool> DeleteRejectionFromRequest(int userId)
+        {
+            if(userId == AuthorId)
+            {
+                return Result<bool>.Failure(OfferErrors.CannotDeleteOwnRejection);
+            }
+
+            var offerRequest = OfferRequests.FirstOrDefault(x => x.UserId == userId);
+
+            if (offerRequest is null)
+            {
+                return Result<bool>.Failure(OfferErrors.OfferRequestNotFound);
+            }
+
+            if (offerRequest.Status != RequestStatusEnum.Rejected)
+            {
+                return Result<bool>.Failure(OfferErrors.WrongRequestStatus);
+            }
+
+            OfferRequests.Remove(offerRequest);
+            return Result<bool>.Success(true);
+        }
+
         private Result<bool> AddParticipant(int userId)
         {
             if (Participants.Any(p => p.UserId == userId))
@@ -274,8 +297,6 @@ namespace Domain.Entities
             RaiseDomainEvent(new OfferRequestSent(Id, userId));
             return Result<bool>.Success(true);
         }
-
-
     }
 
 }

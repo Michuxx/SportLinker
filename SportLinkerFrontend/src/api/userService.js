@@ -22,6 +22,19 @@ export const resolveImageUrl = (path) => {
 };
 
 export const userService = {
+  async getUserOffers(userId, { signal } = {}) {
+    const response = await apiClient.get("/Users/UserOffers", {
+      params: { UserId: Number(userId) },
+      signal,
+    });
+    return response.data;
+  },
+
+  async getUserRequests({ signal } = {}) {
+    const response = await apiClient.get("/Users/UserRequests", { signal });
+    return response.data;
+  },
+
   /**
    * Pobiera dane profilowe użytkownika z bazy danych
    * @param {number|string} userId

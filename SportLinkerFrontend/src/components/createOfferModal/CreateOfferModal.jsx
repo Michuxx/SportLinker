@@ -229,6 +229,8 @@ const CreateOfferModal = ({ handleAddOffer, closeModal }) => {
         handleAddOffer({
           ...offerData,
           date: dateString,
+          sport: sportOptions.find((option) => option.value === String(offerData.sport))?.text || "",
+          availability: "open",
           id: createdId,
           sportId: Number(offerData.sport),
           author: user?.name || user?.userName || "Użytkownik",

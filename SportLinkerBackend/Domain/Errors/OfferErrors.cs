@@ -46,5 +46,10 @@ namespace Domain.Errors
         public static readonly Error WrongPersonToDelete = new(
             "WRONG_PERSON_TO_DELETE",
             "Zły użytkownik do usunięcia");
+        public static readonly Error CannotDeleteOwnRejection = new(
+            "CANNOT_DELETE_OWN_REJECTION",
+            "Nie można usunąć własnego odrzucenia");
+
+        
     }
 }

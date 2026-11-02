@@ -3,6 +3,7 @@ import UserDetailedCards from "./UserDetailedCards";
 import UserOffers from "./userOffers/UserOffers";
 
 const UserDetailed = ({
+  userId,
   aboutMe,
   editData,
   onChange,
@@ -44,7 +45,7 @@ const UserDetailed = ({
         errors={errors}
         isOwner={isOwner}
       />
-      <UserOffers isOwner={isOwner} />
+      <UserOffers key={userId} userId={userId} isOwner={isOwner} />
     </div>
   );
 };

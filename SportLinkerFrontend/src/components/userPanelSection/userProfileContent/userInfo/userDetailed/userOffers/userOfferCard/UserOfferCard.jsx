@@ -22,7 +22,7 @@ const UserOfferCard = ({ offer, setSelectedOfferToDelete, isOwner = false }) => 
             sport={offer.sport}
             availability={offer.availability}
           />
-          {isOwner && (
+          {isOwner && setSelectedOfferToDelete && (
             <div className="user-offer-card-btn-wrapper">
               <Button
                 style="deleteButton"

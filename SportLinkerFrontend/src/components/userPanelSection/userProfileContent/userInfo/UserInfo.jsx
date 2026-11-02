@@ -342,6 +342,7 @@ const UserInfo = ({ userId: propUserId }) => {
         isOwner={isOwner}
       />
       <UserDetailed
+        userId={activeUserId}
         isAboutMeEditing={isAboutMeEditing}
         isSportEditing={isSportEditing}
         setIsAboutMeEditing={setIsAboutMeEditing}

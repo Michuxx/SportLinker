@@ -1,135 +1,38 @@
 import { useState } from "react";
 import NullOffers from "./nullOffers/NullOffers";
 import UserOfferCard from "./userOfferCard/UserOfferCard";
-import WarningModal from "../../../../../warningModal/WarningModal";
-import { FaRegTrashAlt } from "react-icons/fa";
 import "./userOffers.css";
 import ModalBackground from "../../../../../component-items/modal/ModalBackground";
 import PageTitle from "../../../../../pageTitle/PageTitle";
 import Button from "../../../../../component-items/button/button";
 import CreateOfferModal from "../../../../../createOfferModal/CreateOfferModal";
+import NullComponent from "../../../../../component-items/nullComponent/NullComponent";
+import useUserOfferList from "../../../../../../hooks/useUserOfferList";
 
-const UserOffers = ({ isOwner = false }) => {
-  const [selectedOfferToDelete, setSelectedOfferToDelete] = useState(null);
+const UserOffers = ({ userId, isOwner = false }) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [offers, setOffers] = useState([
-    {
-      id: 1,
-      title: "Poszukuję partnera do tenisa",
-      sport: "Tenis",
-      level: "intermediate",
-      description:
-        "Szukam osoby do regularnego grania w tenisa. Poziom średniozaawansowany, gra 2-3 razy w tygodniu.",
-      date: "2025-01-20T18:00",
-      location: {
-        long: 19.028552141007275,
-        lat: 50.25532955,
-        country: "Poland",
-        name: "Warsaw",
-        state: "Masovian Voivodeship",
-        displayLabel: "Warsaw, Masovian Voivodeship",
-      },
-      currentPeople: 1,
-      maxPeople: 2,
-      availability: "open",
-      mode: "public",
-    },
-    {
-      id: 2,
-      title: "Turniej badmintona - szukamy graczy",
-      sport: "Badminton",
-      level: "beginner",
-      description:
-        "Organizujemy turniej badmintona dla początkujących. Miła atmosfera gwarantowana!",
-      date: "2025-01-20T18:00",
-      location: {
-        long: 19.028552141007275,
-        lat: 50.25532955,
-        country: "Poland",
-        name: "Warsaw",
-        state: "Masovian Voivodeship",
-        displayLabel: "Warsaw, Masovian Voivodeship",
-      },
-      currentPeople: 1,
-      maxPeople: 2,
-      availability: "open",
-      mode: "public",
-    },
-    {
-      id: 3,
-      title: "Poszukuję partnera do tenisa",
-      sport: "Tenis",
-      level: "expert",
-      description:
-        "Szukam osoby do regularnego grania w tenisa. Poziom średniozaawansowany, gra 2-3 razy w tygodniu.",
-      date: "2025-01-20T18:00",
-      location: {
-        long: 19.028552141007275,
-        lat: 50.25532955,
-        country: "Poland",
-        name: "Warsaw",
-        state: "Masovian Voivodeship",
-        displayLabel: "Warsaw, Masovian Voivodeship",
-      },
-      currentPeople: 1,
-      maxPeople: 2,
-      availability: "closed",
-      mode: "private",
-    },
-  ]);
+  const { items: offers, setItems: setOffers, isLoading, error, reload } = useUserOfferList(userId);
 
-  const handleDeleteOffer = (offerId) => {
-    setOffers((prevOffers) =>
-      prevOffers.filter((offer) => offer.id !== offerId)
-    );
-  };
   return (
     <div className="user-offers-wrapper">
       <div className="profile-offer-header-wrapper">
-        <PageTitle
-          header={isOwner ? "Moje oferty" : "Oferty użytkownika"}
-          label={isOwner ? "Oferty, które utworzyłeś" : "Oferty utworzone przez użytkownika"}
-        />
-        {isOwner && (
-          <Button
-            style="gradientButton"
-            width={20}
-            onClick={() => setIsCreateModalOpen(true)}
-          >
-            Utwórz ofertę
-          </Button>
-        )}
+        <PageTitle header={isOwner ? "Moje oferty" : "Oferty użytkownika"}
+          label={isOwner ? "Oferty, które utworzyłeś" : "Oferty utworzone przez użytkownika"} />
+        {isOwner && <Button style="gradientButton" onClick={() => setIsCreateModalOpen(true)}>Utwórz ofertę</Button>}
       </div>
-      {offers.length > 0 ? (
-        offers.map((offer) => (
-          <UserOfferCard
-            offer={offer}
-            setSelectedOfferToDelete={() => setSelectedOfferToDelete(offer.id)}
-            isOwner={isOwner}
-            key={offer.id}
-          />
-        ))
-      ) : (
-        <NullOffers />
-      )}
-      {selectedOfferToDelete && (
-        <ModalBackground closeModal={() => setSelectedOfferToDelete(null)}>
-          <WarningModal
-            onCancel={() => setSelectedOfferToDelete(null)}
-            onConfirm={() => handleDeleteOffer(selectedOfferToDelete)}
-            headline="Czy na pewno chcesz usunąć tę ofertę?"
-            paragraph="ten proces jest nieodwracalny"
-            confirmText="Usuń"
-            confirmIcon={<FaRegTrashAlt size={20} />}
-          />
-        </ModalBackground>
-      )}
+      {isLoading ? <p className="user-offers-feedback" role="status">Ładowanie ofert...</p> : error ? (
+        <div className="user-offers-feedback" role="alert">
+          <NullComponent icon="🏃" title="Nie udało się pobrać ofert" text="Sprawdź połączenie i spróbuj ponownie.">
+            <Button style="gradientButton" onClick={reload}>Spróbuj ponownie</Button>
+          </NullComponent>
+        </div>
+      ) : offers.length > 0 ? offers.map((offer) => (
+        <UserOfferCard offer={offer} isOwner={isOwner} key={offer.id} />
+      )) : <NullOffers isOwner={isOwner} onCreate={() => setIsCreateModalOpen(true)} />}
       {isCreateModalOpen && (
         <ModalBackground closeModal={() => setIsCreateModalOpen(false)}>
-          <CreateOfferModal 
-            handleAddOffer={(newOffer) => setOffers((prev) => [newOffer, ...prev])}
-            closeModal={() => setIsCreateModalOpen(false)} 
-          />
+          <CreateOfferModal handleAddOffer={(newOffer) => setOffers((prev) => [newOffer, ...prev])}
+            closeModal={() => setIsCreateModalOpen(false)} />
         </ModalBackground>
       )}
     </div>
