@@ -30,19 +30,20 @@ export const normalizeUserRequest = (data) => ({
 });
 
 export const applyUserRequestDecision = (items, requestId, action) => {
-  const request = items.find((item) => item.id === requestId);
-  return items.filter((item) => item.id !== requestId).map((item) =>
-    action === "accept" && item.offerId === request?.offerId
+  const request = items.find((item) => String(item.id) === String(requestId));
+  if (!request) return items;
+  return items.filter((item) => String(item.id) !== String(requestId)).map((item) =>
+    action === "accept" && String(item.offerId) === String(request.offerId)
       ? { ...item, currentPeople: item.currentPeople + 1 }
       : item,
   );
 };
 
 export const rollbackUserRequestDecision = (items, previous, requestId, action) => {
-  const request = previous.find((item) => item.id === requestId);
-  if (!request) return items;
+  const request = previous.find((item) => String(item.id) === String(requestId));
+  if (!request || items.some((item) => String(item.id) === String(requestId))) return items;
   const restored = items.map((item) =>
-    action === "accept" && item.offerId === request.offerId
+    action === "accept" && String(item.offerId) === String(request.offerId)
       ? { ...item, currentPeople: item.currentPeople - 1 }
       : item,
   );

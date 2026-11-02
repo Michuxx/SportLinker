@@ -28,9 +28,9 @@ test("request, offer and applicant IDs remain distinct", () => {
 });
 
 const requests = [
-  { id: 8, offerId: 14, currentPeople: 1 },
-  { id: 9, offerId: 14, currentPeople: 1 },
-  { id: 10, offerId: 15, currentPeople: 2 },
+  { id: 8, offerId: 14, currentPeople: 1, maxPeople: 2 },
+  { id: 9, offerId: 14, currentPeople: 1, maxPeople: 2 },
+  { id: 10, offerId: 15, currentPeople: 2, maxPeople: 5 },
 ];
 
 test("accepting updates all cards of the same offer; rollback restores them", () => {
@@ -39,6 +39,24 @@ test("accepting updates all cards of the same offer; rollback restores them", ()
   assert.deepEqual(rollbackUserRequestDecision(result, requests, 8, "accept"), requests);
   assert.equal(requests.length, 3);
   assert.equal(requests[1].currentPeople, 1);
+  assert.equal(result[0].maxPeople - result[0].currentPeople, 0);
+  assert.equal(result[0].currentPeople >= result[0].maxPeople, true);
+});
+
+test("subsequent acceptances keep other cards in sync and rollback restores only the failed step", () => {
+  const previous = [
+    { id: 1, offerId: 10, currentPeople: 1, maxPeople: 3 },
+    { id: 2, offerId: 10, currentPeople: 1, maxPeople: 3 },
+    { id: 3, offerId: 10, currentPeople: 1, maxPeople: 3 },
+  ];
+  const first = applyUserRequestDecision(previous, "1", "accept");
+  assert.equal(first[0].currentPeople, 2);
+  const second = applyUserRequestDecision(first, 2, "accept");
+  assert.equal(second[0].currentPeople, 3);
+  const restored = rollbackUserRequestDecision(second, first, 2, "accept");
+  assert.deepEqual(restored, first);
+  assert.deepEqual(rollbackUserRequestDecision(restored, first, 2, "accept"), first);
+  assert.equal(applyUserRequestDecision(first, 99, "accept"), first);
 });
 
 test("rejecting removes only that request and rollback restores its position", () => {

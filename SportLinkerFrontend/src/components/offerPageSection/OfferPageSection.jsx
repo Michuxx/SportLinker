@@ -397,6 +397,7 @@ const OfferPageSection = () => {
     const previousOffer = offerData;
     const offerId = offerData.id;
     const authorLeaving = action === "leave" && isAuthor;
+    const deletingRejection = action === "cancel" && previousOffer.status === "rejected";
     setOfferData((prev) => prev?.id === offerId ? applyOfferExit(prev, targetUserId, action) : prev);
 
     try {
@@ -404,11 +405,13 @@ const OfferPageSection = () => {
         await offerService.deleteParticipant(offerId, targetUserId, { signal: controller.signal });
       } else if (action === "leave") {
         await offerService.leaveOffer(offerId, { signal: controller.signal });
+      } else if (deletingRejection) {
+        await offerService.deleteRejectedRequest(offerId, { signal: controller.signal });
       } else {
         await offerService.cancelOfferRequest(offerId, { signal: controller.signal });
       }
       if (controller.signal.aborted) return;
-      showToast({ severity: "success", summary: "Sukces", detail: participationMessages[action].success });
+      showToast({ severity: "success", summary: "Sukces", detail: deletingRejection ? "Odrzucona prośba została usunięta." : participationMessages[action].success });
       if (authorLeaving) navigate("/", { replace: true });
     } catch (err) {
       if (!controller.signal.aborted) {
@@ -418,7 +421,7 @@ const OfferPageSection = () => {
         showToast({
           severity: "error",
           summary: "Błąd",
-          detail: getErrorMessage(err, participationMessages[action].error),
+          detail: getErrorMessage(err, deletingRejection ? "Nie udało się usunąć odrzuconej prośby." : participationMessages[action].error),
         });
       }
     } finally {

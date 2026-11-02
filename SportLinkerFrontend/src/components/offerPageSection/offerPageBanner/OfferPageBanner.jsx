@@ -75,7 +75,7 @@ const OfferPageBanner = ({
             Odrzucono
           </Button>
           <Button style="offerPageCancelButton" onClick={openLeavePendingModal} disabled={isBusy}>
-            Anuluj prośbę
+            Usuń prośbę
           </Button>
         </div>
       );
@@ -136,7 +136,9 @@ const OfferPageBanner = ({
           <WarningModal
             headline={exitAction === "leave"
               ? "Czy na pewno chcesz opuścić ofertę?"
-              : "Czy na pewno chcesz anulować prośbę o dołączenie?"}
+              : offerData.status === "rejected"
+                ? "Czy na pewno chcesz usunąć odrzuconą prośbę?"
+                : "Czy na pewno chcesz anulować prośbę o dołączenie?"}
             paragraph={exitAction === "leave" && isAuthor
               ? "Organizacja oferty zostanie przekazana innemu uczestnikowi. Jeśli nie ma innych uczestników, oferta zostanie usunięta."
               : undefined}

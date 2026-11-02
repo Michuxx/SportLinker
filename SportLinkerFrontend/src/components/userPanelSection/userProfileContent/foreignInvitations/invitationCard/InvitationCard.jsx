@@ -12,27 +12,13 @@ import { Link } from "react-router";
 const InvitationCard = ({ invitation, handleAccept, handleReject, isBusy = false }) => {
   const buttonSelection = () => {
     if (invitation.status !== "pending") return null;
-    if (invitation.currentPeople >= invitation.maxPeople) {
-      return (
-        <div className="invitation-btn-wrapper">
-          <Button
-            style="classicRedButton"
-            onClick={() => handleReject(invitation.id)}
-            Icon={<MdClose size={24} />}
-            disabled={isBusy}
-          >
-            Odrzuć
-          </Button>
-        </div>
-      );
-    } else {
       return (
         <div className="invitation-btn-wrapper">
           <Button
             style="classicGreenButton"
-            onClick={() => handleAccept(invitation.id, invitation.offerId)}
+            onClick={() => handleAccept(invitation.id)}
             Icon={<FaCheck size={24} />}
-            disabled={isBusy}
+            disabled={isBusy || invitation.currentPeople >= invitation.maxPeople}
           >
             Akceptuj
           </Button>
@@ -46,7 +32,6 @@ const InvitationCard = ({ invitation, handleAccept, handleReject, isBusy = false
           </Button>
         </div>
       );
-    }
   };
 
   return (

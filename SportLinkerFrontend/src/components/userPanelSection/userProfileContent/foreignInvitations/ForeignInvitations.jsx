@@ -24,9 +24,12 @@ const ForeignInvitations = () => {
 
   const resolveRequest = async (requestId, action) => {
     if (controllerRef.current || isLoading) return;
-    const request = invitations.find((item) => item.id === requestId);
+    const request = invitations.find((item) => String(item.id) === String(requestId));
     if (!request || request.status !== "pending") return;
-    if (action === "accept" && request.currentPeople >= request.maxPeople) return;
+    if (action === "accept" && request.currentPeople >= request.maxPeople) {
+      showToast({ severity: "error", summary: "Brak miejsc", detail: "Oferta ma już komplet graczy." });
+      return;
+    }
 
     const controller = new AbortController();
     controllerRef.current = controller;
