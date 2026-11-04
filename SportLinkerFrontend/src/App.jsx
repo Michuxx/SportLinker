@@ -4,6 +4,7 @@ import Profile from "./components/Pages/Profile";
 import UserInfo from "./components/userPanelSection/userProfileContent/userInfo/UserInfo";
 import ForeignInvitations from "./components/userPanelSection/userProfileContent/foreignInvitations/ForeignInvitations";
 import OfferStatuses from "./components/userPanelSection/userProfileContent/offerStatuses/OfferStatuses";
+import JoinedOffers from "./components/userPanelSection/userProfileContent/joinedOffers/JoinedOffers";
 import Offer from "./components/Pages/Offer";
 import Settings from "./components/Pages/Settings";
 import AccountSettings from "./components/settingsSection/accountSettings/AccountSettings";
@@ -33,6 +34,7 @@ function App() {
         <Route path="userInfo/:id" element={<UserInfo />} />
         <Route path="foreignInvitations" element={<ForeignInvitations />} />
         <Route path="offerStatuses" element={<OfferStatuses />} />
+        <Route path="joinedOffers" element={<JoinedOffers />} />
         <Route path="friendInvitations" element={<FriendInvitations />} />
       </Route>
       <Route path="user-not-found" element={<UserNotFound />} />

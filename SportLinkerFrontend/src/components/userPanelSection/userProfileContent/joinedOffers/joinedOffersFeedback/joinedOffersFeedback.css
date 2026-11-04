@@ -1,0 +1,27 @@
+.joined-offers-feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 1.5rem;
+  color: #4b5563;
+  text-align: center;
+}
+
+.joined-offers-loading-icon {
+  color: #4f46e5;
+  animation: joined-offers-spin 1s linear infinite;
+}
+
+@keyframes joined-offers-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .joined-offers-loading-icon {
+    animation: none;
+  }
+}

@@ -1,0 +1,14 @@
+.joined-offers-wrapper {
+  width: 100%;
+  min-width: 0;
+}
+
+.joined-offers-header {
+  margin-bottom: 1.5rem;
+}
+
+.joined-offers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

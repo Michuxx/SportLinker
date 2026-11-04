@@ -37,6 +37,35 @@ export const normalizeSentOfferRequest = (data) => ({
   location: normalizeLocation(data),
 });
 
+const joinedOfferLevels = {
+  0: "beginner",
+  1: "intermediate",
+  2: "expert",
+  3: "any",
+  beginner: "beginner",
+  intermediate: "intermediate",
+  expert: "expert",
+  any: "any",
+};
+
+const joinedOfferAvailability = {
+  0: "open",
+  1: "closed",
+  available: "open",
+  unavailable: "closed",
+};
+
+export const normalizeJoinedOffer = (data) => ({
+  ...data,
+  id: data.offerId,
+  title: data.offerName,
+  description: data.offerDescription,
+  date: data.offerDate,
+  level: joinedOfferLevels[String(data.level).toLowerCase()],
+  availability: joinedOfferAvailability[String(data.availability).toLowerCase()],
+  location: normalizeLocation(data),
+});
+
 export const applyUserRequestDecision = (items, requestId, action) => {
   const request = items.find((item) => String(item.id) === String(requestId));
   if (!request) return items;

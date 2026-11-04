@@ -5,6 +5,7 @@ import { LuUser } from "react-icons/lu";
 import { FiMail } from "react-icons/fi";
 import { LuMailQuestion } from "react-icons/lu";
 import { MdGroupAdd } from "react-icons/md";
+import { FiUsers } from "react-icons/fi";
 import Navbar from "../component-items/navbar/Navbar";
 import useAuth from "../../hooks/useAuth";
 
@@ -40,6 +41,17 @@ const UserPanelSection = () => {
           <div className="user-menu-option-wrapper">
             <LuUser size={24} />
             Mój profil
+          </div>
+        </NavLink>
+        <NavLink
+          to="joinedOffers"
+          className={({ isActive }) =>
+            `nav-user-menu-option ${isActive ? "active-nav-user-menu-option" : "inactive-nav-user-menu-option"}`
+          }
+        >
+          <div className="user-menu-option-wrapper">
+            <FiUsers size={24} />
+            Dołączone oferty
           </div>
         </NavLink>
         <NavLink

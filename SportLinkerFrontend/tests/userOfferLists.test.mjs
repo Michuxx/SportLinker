@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { normalizeUserOffer, normalizeUserRequest, normalizeSentOfferRequest, applyUserRequestDecision, rollbackUserRequestDecision } from "../src/utils/userOfferLists.js";
+import { normalizeUserOffer, normalizeUserRequest, normalizeSentOfferRequest, normalizeJoinedOffer, applyUserRequestDecision, rollbackUserRequestDecision } from "../src/utils/userOfferLists.js";
 
 test("user offers map API enums, sport, location and identity to existing cards", () => {
   const data = { offerId: 14, title: "Tenis", level: "Any", mode: "Public", availability: "Available", sportName: "Tenis", date: "2026-12-01T18:00:00Z", city: "Wrocław", lat: 51.1, long: 17.1, currentPeople: 1, maxPeople: 4 };
@@ -49,6 +49,67 @@ const requests = [
   { id: 9, offerId: 14, currentPeople: 1, maxPeople: 2 },
   { id: 10, offerId: 15, currentPeople: 2, maxPeople: 5 },
 ];
+
+test("joined offers map dedicated DTO fields, sport, level and availability to cards", () => {
+  const data = {
+    offerId: 42,
+    offerName: "Wieczorny trening",
+    offerDescription: "Spotkanie w hali",
+    offerDate: "2026-12-01T18:00:00Z",
+    currentPeople: 2,
+    maxPeople: 4,
+    sport: "Siatkówka",
+    level: "Intermediate",
+    availability: "Available",
+    city: "Wrocław",
+    country: "Poland",
+    name: "Hala",
+    street: "Sportowa",
+    displayLabel: "Wrocław, ul. Sportowa, Hala",
+    lat: 51.1,
+    long: 17.1,
+  };
+  const original = structuredClone(data);
+  const result = normalizeJoinedOffer(data);
+  assert.equal(result.id, 42);
+  assert.equal(result.title, data.offerName);
+  assert.equal(result.description, data.offerDescription);
+  assert.equal(result.date, data.offerDate);
+  assert.equal(result.currentPeople, 2);
+  assert.equal(result.maxPeople, 4);
+  assert.equal(result.location.displayLabel, data.displayLabel);
+  assert.equal(result.location.lat, 51.1);
+  assert.equal(result.location.long, 17.1);
+  assert.equal(result.sport, "Siatkówka");
+  assert.equal(result.level, "intermediate");
+  assert.equal(result.availability, "open");
+  for (const field of ["mode", "status"]) {
+    assert.equal(result[field], undefined);
+  }
+  assert.deepEqual(data, original);
+});
+
+test("joined offers map every API level and unavailable offers to existing tag types", () => {
+  for (const [level, expected] of [["Beginner", "beginner"], ["Intermediate", "intermediate"], ["Expert", "expert"], ["Any", "any"]]) {
+    const result = normalizeJoinedOffer({ offerId: 1, level, availability: "Unavailable" });
+    assert.equal(result.level, expected);
+    assert.equal(result.availability, "closed");
+  }
+});
+
+test("joined offer locations support city-only data and absent labels", () => {
+  assert.equal(normalizeJoinedOffer({ offerId: 1, city: "Katowice" }).location.displayLabel, "Katowice");
+  assert.equal(normalizeJoinedOffer({ offerId: 2 }).location.displayLabel, "Nie podano lokalizacji");
+});
+
+test("joined offer tags support numeric enums and case-insensitive enum names", () => {
+  for (const [level, expected] of [[0, "beginner"], [1, "intermediate"], [2, "expert"], [3, "any"], ["Beginner", "beginner"], ["any", "any"]]) {
+    assert.equal(normalizeJoinedOffer({ level }).level, expected);
+  }
+  for (const [availability, expected] of [[0, "open"], [1, "closed"], ["Available", "open"], ["Unavailable", "closed"], ["available", "open"]]) {
+    assert.equal(normalizeJoinedOffer({ availability }).availability, expected);
+  }
+});
 
 test("accepting updates all cards of the same offer; rollback restores them", () => {
   const result = applyUserRequestDecision(requests, 8, "accept");

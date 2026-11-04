@@ -1,0 +1,30 @@
+.null-joined-offers {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.null-joined-offers-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(to right, #3b82f6, #4f46e5);
+  color: #fff;
+  font-family: "Poppins-SemiBold", sans-serif;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.null-joined-offers-link:hover {
+  background: linear-gradient(to right, #2563eb, #4338ca);
+  box-shadow: 0 4px 12px rgb(79 70 229 / 0.2);
+}
+
+.null-joined-offers-link:focus-visible {
+  outline: 3px solid #818cf8;
+  outline-offset: 3px;
+}

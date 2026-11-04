@@ -22,6 +22,11 @@ export const resolveImageUrl = (path) => {
 };
 
 export const userService = {
+  async getJoinedOffers({ signal } = {}) {
+    const response = await apiClient.get("/Users/joinedOffers", { signal });
+    return response.data;
+  },
+
   async getSentOfferRequests({ signal } = {}) {
     const response = await apiClient.get("/Users/requests/sent", { signal });
     return response.data;
