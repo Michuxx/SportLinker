@@ -2,6 +2,7 @@
 using Application.Abstractions.Data;
 using Application.Users.Dtos;
 using Dapper;
+using MediatR;
 using System.Data;
 
 namespace Application.Users.GetUserOffers
@@ -49,6 +50,14 @@ namespace Application.Users.GetUserOffers
 
             var command = new CommandDefinition(sql, new { query.UserId });
             var offers = await connection.QueryAsync<OfferUser>(command);
+
+            foreach (var item in offers)
+            {
+                item.Date = DateTime.SpecifyKind(
+                    item.Date,
+                    DateTimeKind.Utc);
+            }
+
             return offers.ToList();
         }
     }

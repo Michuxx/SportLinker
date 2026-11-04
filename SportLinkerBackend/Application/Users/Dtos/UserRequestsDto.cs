@@ -9,9 +9,9 @@ namespace Application.Users.Dtos
         public RequestStatusEnum Status { get; set; }
         public string OfferTitle { get; set; } = default!;
         public string Sport { get; set; } = default!;
+        public DateTime Date { get; set; }
         public string? City { get; set; }
         public string? Country { get; set; }
-        public DateTime Date { get; set; }
         public string? DisplayLabel =>
             !string.IsNullOrWhiteSpace(City)
             && !string.IsNullOrWhiteSpace(Name)

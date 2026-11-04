@@ -1,5 +1,6 @@
 using Application.Users.CreateUser;
 using Application.Users.Dtos;
+using Application.Users.GetJoinedOffers;
 using Application.Users.GetUserData;
 using Application.Users.GetUserOffers;
 using Application.Users.GetUserRequests;
@@ -163,6 +164,14 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetSentOfferRequests([FromQuery] SentOfferRequestsQuery query, CancellationToken cancellationToken)
         {
             var result = await _sender.Send(query, cancellationToken);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("joinedOffers")]
+        public async Task<IActionResult> GetJoinedOffers([FromQuery] GetJoinedOffersQuery query, CancellationToken cancellationToken)
+        {
+            List<JoinedOffersDto> result = await _sender.Send(query, cancellationToken);
             return Ok(result);
         }
     }
