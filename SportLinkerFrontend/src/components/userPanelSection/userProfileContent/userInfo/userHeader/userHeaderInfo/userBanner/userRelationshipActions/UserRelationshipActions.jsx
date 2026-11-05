@@ -1,4 +1,4 @@
-import { FiCheck, FiClock, FiLoader, FiUserPlus, FiUsers, FiX } from "react-icons/fi";
+import { FiCheck, FiClock, FiLoader, FiUserMinus, FiUserPlus, FiUsers, FiX } from "react-icons/fi";
 import "./userRelationshipActions.css";
 
 const UserRelationshipActions = ({ relationship, isPending = false, onAction }) => {
@@ -18,14 +18,24 @@ const UserRelationshipActions = ({ relationship, isPending = false, onAction }) 
         </button>
       )}
       {relationship === "friends" && (
-        <span className="user-relationship-status user-relationship-friends" role="status">
-          <FiUsers aria-hidden="true" />Jesteście znajomymi
-        </span>
+        <>
+          <span className="user-relationship-status user-relationship-friends" role="status">
+            <FiUsers aria-hidden="true" />Jesteście znajomymi
+          </span>
+          <button type="button" className="user-relationship-button user-relationship-reject" disabled={isPending} onClick={() => onAction("delete")}>
+            <FiUserMinus aria-hidden="true" />Usuń znajomego
+          </button>
+        </>
       )}
       {relationship === "requestsent" && (
-        <span className="user-relationship-status" role="status">
-          <FiClock aria-hidden="true" />Zaproszenie wysłane
-        </span>
+        <>
+          <span className="user-relationship-status" role="status">
+            <FiClock aria-hidden="true" />Zaproszenie wysłane
+          </span>
+          <button type="button" className="user-relationship-button user-relationship-reject" disabled={isPending} onClick={() => onAction("cancel")}>
+            <FiX aria-hidden="true" />Anuluj
+          </button>
+        </>
       )}
       {relationship === "requestreceived" && (
         <>

@@ -1,5 +1,6 @@
 using Application.Friends.AcceptFriendRequest;
 using Application.Friends.CancelFriendRequest;
+using Application.Friends.DeleteFriend;
 using Application.Friends.RejectFriendRequest;
 using Application.Friends.SendFriendRequest;
 using Application.Sports.Dtos;
@@ -59,6 +60,17 @@ namespace Presentation.Controllers
 
         [HttpPost("cancel")]
         public async Task<IActionResult> CancelFriendRequest([FromBody] CancelFriendRequestCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteFriend([FromBody] DeleteFriendCommand command, CancellationToken cancellationToken)
         {
             var result = await _sender.Send(command, cancellationToken);
             if (!result.IsSuccess)

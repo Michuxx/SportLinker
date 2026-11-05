@@ -8,6 +8,8 @@ const successMessages = {
   send: "Zaproszenie do znajomych zostało wysłane.",
   accept: "Zaproszenie zostało zaakceptowane. Jesteście znajomymi!",
   reject: "Zaproszenie do znajomych zostało odrzucone.",
+  cancel: "Zaproszenie do znajomych zostało anulowane.",
+  delete: "Użytkownik został usunięty ze znajomych.",
 };
 
 const useFriendActions = ({ userId, viewerId, userInfo, setUserInfo }) => {
@@ -35,9 +37,9 @@ const useFriendActions = ({ userId, viewerId, userInfo, setUserInfo }) => {
     controllerRef.current = controller;
     setIsPending(true);
     try {
-      await friendService[action](body, { signal: controller.signal });
+      const result = await friendService[action](body, { signal: controller.signal });
       if (controller.signal.aborted) return;
-      setUserInfo((previous) => applyFriendAction(previous, action));
+      setUserInfo((previous) => applyFriendAction(previous, action, result));
       showToast({ severity: "success", summary: "Znajomi", detail: successMessages[action] });
     } catch (error) {
       if (controller.signal.aborted) return;
