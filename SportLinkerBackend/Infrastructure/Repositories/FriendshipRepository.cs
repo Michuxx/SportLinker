@@ -22,18 +22,32 @@ internal sealed class FriendshipRepository(ApplicationDbContext dbContext)
             cancellationToken);
     }
 
-    public void Add(Friendship friendship) =>
+    public void AddFriendship(Friendship friendship) =>
         dbContext.Friendships.Add(friendship);
-
-    public void Remove(Friendship friendship) =>
+    public void RemoveFriendship(Friendship friendship) =>
         dbContext.Friendships.Remove(friendship);
+    public void AddFriendRequest(FriendRequest friendRequest) =>
+        dbContext.FriendRequests.Add(friendRequest);
+    public void RemoveFriendRequest(FriendRequest friendRequest) =>
+        dbContext.FriendRequests.Remove(friendRequest);
 
     public Task<FriendRequest?> GetFriendRequestByReceiverIdAsync(
         int receiverId,
+        int senderId,
+        CancellationToken cancellationToken = default)
+    {
+        return dbContext.FriendRequests.FirstOrDefaultAsync(r => 
+            (r.SenderId == senderId && r.ReceiverId == receiverId)
+            || (r.SenderId == receiverId && r.ReceiverId == senderId),
+            cancellationToken);
+    }
+
+    public Task<FriendRequest?> GetFriendRequestByIdAsync(
+        int friendRequestId,
         CancellationToken cancellationToken = default)
     {
         return dbContext.FriendRequests.FirstOrDefaultAsync(
-            r => r.ReceiverId == receiverId,
+            r => r.Id == friendRequestId,
             cancellationToken);
     }
 }

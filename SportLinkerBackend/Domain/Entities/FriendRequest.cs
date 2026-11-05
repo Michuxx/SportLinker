@@ -3,7 +3,16 @@
     public class FriendRequest
     {
         public int Id { get; set; }
-        public int SenderId { get; set; }
-        public int ReceiverId { get; set; }
+        public int SenderId { get; private set; }
+        public int ReceiverId { get; private set; }
+
+        public static FriendRequest Create(int senderId, int receiverId)
+        {
+            return new FriendRequest
+            {
+                SenderId = senderId,
+                ReceiverId = receiverId
+            };
+        }
     }
 }
