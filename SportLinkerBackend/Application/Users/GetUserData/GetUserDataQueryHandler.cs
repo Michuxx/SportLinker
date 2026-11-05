@@ -37,7 +37,70 @@ namespace Application.Users.GetUserData
                 l.City,
                 l.Country,
                 l.State,
-                l.Name
+                l.Name,
+                CASE
+                WHEN @ViewerId IS NULL
+                    THEN 'Anonymous'
+
+                WHEN u.Id = @ViewerId
+                    THEN 'Self'
+
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM Friendships f
+                    WHERE
+                        (f.FirstUserId = @ViewerId AND f.SecondUserId = u.Id)
+                        OR
+                        (f.FirstUserId = u.Id AND f.SecondUserId = @ViewerId)
+                    )
+                    THEN 'Friends'
+
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM FriendRequests r
+                    WHERE r.SenderId = @ViewerId
+                      AND r.ReceiverId = u.Id
+                    )
+                    THEN 'RequestSent'
+
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM FriendRequests r
+                    WHERE r.SenderId = u.Id
+                      AND r.ReceiverId = @ViewerId
+                    )
+                    THEN 'RequestReceived'
+
+                ELSE 'None'
+            END AS Relationship,
+
+            CASE
+                WHEN @ViewerId IS NULL OR u.Id = @ViewerId
+                    THEN NULL
+
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM Friendships f
+                    WHERE
+                        (f.FirstUserId = @ViewerId AND f.SecondUserId = u.Id)
+                        OR
+                        (f.FirstUserId = u.Id AND f.SecondUserId = @ViewerId)
+                )
+                    THEN NULL
+
+                ELSE (
+                    SELECT TOP (1) r.Id
+                    FROM FriendRequests r
+                    WHERE
+                        (r.SenderId = @ViewerId AND r.ReceiverId = u.Id)
+                        OR
+                        (r.SenderId = u.Id AND r.ReceiverId = @ViewerId)
+                    ORDER BY
+                        CASE WHEN r.SenderId = @ViewerId THEN 0 ELSE 1 END,
+                        r.Id DESC
+                )
+            END AS FriendRequestId
+
             FROM Users u
             LEFT JOIN Locations l ON u.LocationId = l.Id
             WHERE u.Id = @UserId;
@@ -48,7 +111,7 @@ namespace Application.Users.GetUserData
             WHERE fus.UserId = @UserId;
             """;
 
-            using var multi = await connection.QueryMultipleAsync(sql, new { query.userId });
+            using var multi = await connection.QueryMultipleAsync(sql, new { query.UserId, query.ViewerId });
 
             var userDto = await multi.ReadSingleOrDefaultAsync<UserDataDto>();
             if (userDto is null)

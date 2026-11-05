@@ -14,6 +14,9 @@ const UserHeader = ({
   changeBackgroundImage,
   backgroundImage,
   isOwner = false,
+  relationship,
+  isFriendActionPending,
+  onFriendAction,
 }) => {
   const displayName = userName || name || "Użytkownik";
 
@@ -22,6 +25,9 @@ const UserHeader = ({
       <UserBanner
         bannerImage={backgroundImage}
         changeBackgroundImage={isOwner ? changeBackgroundImage : undefined}
+        relationship={relationship}
+        isFriendActionPending={isFriendActionPending}
+        onFriendAction={onFriendAction}
       />
       <div className="user-header-info-wrapper">
         <div className="user-header-detailed-wrapper">

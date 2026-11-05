@@ -1,0 +1,141 @@
+.user-relationship-actions {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: calc(100% - 2.5rem);
+  padding: 0.125rem;
+  border: 1px solid rgb(255 255 255 / 0.65);
+  border-radius: 0.8125rem;
+  background: rgb(255 255 255 / 0.94);
+  box-shadow: 0 4px 16px rgb(15 23 42 / 0.15);
+  cursor: default;
+}
+
+.user-relationship-button,
+.user-relationship-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 0.625rem;
+  font-family: "Poppins-Medium", sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+}
+
+.user-relationship-button {
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-relationship-button svg,
+.user-relationship-status svg {
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.user-relationship-primary {
+  background: #2563eb;
+  color: #fff;
+}
+
+.user-relationship-primary:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.user-relationship-accept {
+  background: #16a34a;
+  color: #fff;
+}
+
+.user-relationship-accept:hover:not(:disabled) {
+  background: #15803d;
+}
+
+.user-relationship-reject {
+  background: #fff1f2;
+  color: #be123c;
+  border-color: #fecdd3;
+}
+
+.user-relationship-reject:hover:not(:disabled) {
+  background: #ffe4e6;
+}
+
+.user-relationship-status {
+  color: #475569;
+  background: #f1f5f9;
+}
+
+.user-relationship-friends {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.user-relationship-button:focus-visible {
+  outline: 3px solid #a5b4fc;
+  outline-offset: 2px;
+}
+
+.user-relationship-button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.user-relationship-progress {
+  display: inline-flex;
+  color: #475569;
+  padding: 0.25rem;
+}
+
+.user-relationship-progress svg {
+  animation: user-relationship-spin 0.8s linear infinite;
+}
+
+.user-relationship-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes user-relationship-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 480px) {
+  .user-relationship-actions {
+    right: 0.75rem;
+    bottom: 4rem;
+    max-width: calc(100% - 1.5rem);
+  }
+
+  .user-relationship-button,
+  .user-relationship-status {
+    font-size: 0.8rem;
+    padding: 0.6rem 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .user-relationship-progress svg {
+    animation: none;
+  }
+
+  .user-relationship-button {
+    transition: none;
+  }
+}

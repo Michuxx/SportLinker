@@ -70,9 +70,21 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("getUserData")]
-        public async Task<IActionResult> GetUserData([FromQuery] GetUserDataQuery query, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetUserData([FromQuery] int userId, CancellationToken cancellationToken)
         {
-            Result<UserDataDto> result = await _sender.Send(query, cancellationToken);
+            int? viewerId = null;
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                if (!int.TryParse(User.FindFirst("id")?.Value, out var id)
+                    || id <= 0)
+                {
+                    return Unauthorized();
+                }
+
+                viewerId = id;
+            }
+
+            Result<UserDataDto> result = await _sender.Send(new GetUserDataQuery(userId, viewerId), cancellationToken);
             if (!result.IsSuccess)
             {
                 return BadRequest(new { message = result.Error });

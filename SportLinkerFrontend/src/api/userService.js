@@ -50,9 +50,10 @@ export const userService = {
    * @param {number|string} userId
    * @returns {Promise<any>}
    */
-  async getUserData(userId) {
+  async getUserData(userId, { signal } = {}) {
     const response = await apiClient.get("/users/getUserData", {
       params: { userId },
+      signal,
     });
     return response.data;
   },

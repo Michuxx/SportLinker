@@ -4,7 +4,7 @@ using Domain.Abstractions;
 
 namespace Application.Users.GetUserData
 {
-    public record GetUserDataQuery(int userId) : IQuery<Result<UserDataDto>>
+    public record GetUserDataQuery(int UserId, int? ViewerId) : IQuery<Result<UserDataDto>>
     {
 
     }

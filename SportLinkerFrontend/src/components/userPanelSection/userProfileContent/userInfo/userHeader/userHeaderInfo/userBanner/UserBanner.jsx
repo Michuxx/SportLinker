@@ -3,8 +3,9 @@ import "./userBanner.css";
 import { LuCamera } from "react-icons/lu";
 import { resolveImageUrl } from "../../../../../../../api/userService";
 import { useToast } from "../../../../../../../context/ToastContext";
+import UserRelationshipActions from "./userRelationshipActions/UserRelationshipActions";
 
-const UserBanner = ({ image, bannerImage, changeBackgroundImage }) => {
+const UserBanner = ({ image, bannerImage, changeBackgroundImage, relationship, isFriendActionPending, onFriendAction }) => {
   const fileInputRef = useRef(null);
   const [preview, setPreview] = useState(null);
   const [hasError, setHasError] = useState(false);
@@ -89,6 +90,8 @@ const UserBanner = ({ image, bannerImage, changeBackgroundImage }) => {
           </div>
         </div>
       )}
+
+      <UserRelationshipActions relationship={relationship} isPending={isFriendActionPending} onAction={onFriendAction} />
 
       <input
         type="file"

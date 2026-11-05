@@ -1,11 +1,13 @@
 import "./userInfo.css";
 import UserHeader from "./userHeader/UserHeader";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router";
 import UserDetailed from "./userDetailed/UserDetailed";
 import useAuth from "../../../../hooks/useAuth";
 import userService from "../../../../api/userService";
 import { useToast } from "../../../../context/ToastContext";
+import useFriendActions from "../../../../hooks/useFriendActions";
+import { normalizeProfileRelationship } from "../../../../utils/profileRelationship";
 
 const normalizeFavouriteSports = (sports, referenceSports = []) => {
   if (!Array.isArray(sports)) return [];
@@ -44,6 +46,16 @@ const UserInfo = ({ userId: propUserId }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const fetchControllerRef = useRef(null);
+  const viewerId = user?.id;
+  const profileKey = `${activeUserId}:${viewerId || "anonymous"}`;
+  const isCurrentProfile = userInfo?.profileKey === profileKey;
+  const { isPending: isFriendActionPending, handleAction: handleFriendAction } = useFriendActions({
+    userId: activeUserId,
+    viewerId,
+    userInfo: isCurrentProfile ? userInfo : null,
+    setUserInfo,
+  });
 
   const [isAboutMeEditing, setIsAboutMeEditing] = useState(false);
   const [isSportEditing, setIsSportEditing] = useState(false);
@@ -60,6 +72,9 @@ const UserInfo = ({ userId: propUserId }) => {
   });
 
   const fetchUserData = useCallback(async () => {
+    fetchControllerRef.current?.abort();
+    const controller = new AbortController();
+    fetchControllerRef.current = controller;
     if (!activeUserId) {
       setIsLoading(false);
       return;
@@ -67,10 +82,13 @@ const UserInfo = ({ userId: propUserId }) => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await userService.getUserData(activeUserId);
+      const data = await userService.getUserData(activeUserId, { signal: controller.signal });
+      if (controller.signal.aborted) return;
       const normalizedSports = normalizeFavouriteSports(data.favouriteSports);
       setUserInfo({
         ...data,
+        profileKey,
+        relationship: normalizeProfileRelationship(data.relationship),
         favouriteSports: normalizedSports,
       });
       setEditData({
@@ -78,6 +96,7 @@ const UserInfo = ({ userId: propUserId }) => {
         aboutMe: data.aboutMe || "",
       });
     } catch (err) {
+      if (controller.signal.aborted) return;
       const responseData = err.response?.data;
       const errorObj = responseData?.message;
       const errorCode =
@@ -107,12 +126,13 @@ const UserInfo = ({ userId: propUserId }) => {
           : "Wystąpił błąd podczas pobierania danych profilu.",
       );
     } finally {
-      setIsLoading(false);
+      if (!controller.signal.aborted) setIsLoading(false);
     }
-  }, [activeUserId, navigate]);
+  }, [activeUserId, profileKey, navigate]);
 
   useEffect(() => {
     fetchUserData();
+    return () => fetchControllerRef.current?.abort();
   }, [fetchUserData]);
 
   const cancelHandle = (setEditingFalse) => {
@@ -291,7 +311,7 @@ const UserInfo = ({ userId: propUserId }) => {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || (!isCurrentProfile && !error)) {
     return (
       <div className="user-info-wrapper user-info-loading">
         <div className="user-info-spinner" />
@@ -300,7 +320,7 @@ const UserInfo = ({ userId: propUserId }) => {
     );
   }
 
-  if (error && !userInfo) {
+  if (error) {
     return (
       <div className="user-info-wrapper user-info-error">
         <p>{error}</p>
@@ -311,7 +331,7 @@ const UserInfo = ({ userId: propUserId }) => {
     );
   }
 
-  if (!userInfo) {
+  if (!userInfo || !isCurrentProfile) {
     return null;
   }
 
@@ -340,6 +360,9 @@ const UserInfo = ({ userId: propUserId }) => {
           isOwner ? handleChangeBackgroundImage : undefined
         }
         isOwner={isOwner}
+        relationship={userInfo.relationship}
+        isFriendActionPending={isFriendActionPending}
+        onFriendAction={handleFriendAction}
       />
       <UserDetailed
         userId={activeUserId}

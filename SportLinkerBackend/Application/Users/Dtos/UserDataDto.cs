@@ -1,11 +1,12 @@
 ﻿using Application.Sports.Dtos;
-using Domain.Enums;
 
 namespace Application.Users.Dtos
 {
     public class UserDataDto
     {
         public string UserName { get; set; } = default!;
+        public ProfileRelationship Relationship { get; set; }
+        public int? FriendRequestId { get; set; }
         public string Email { get; set; } = default!;
         public string? BirthDate { get; set; }
         public string? Gender { get; set; }
