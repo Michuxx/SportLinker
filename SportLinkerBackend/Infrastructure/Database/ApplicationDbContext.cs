@@ -21,6 +21,8 @@ namespace Infrastructure.Database
         public DbSet<Offer> Offers { get; set; }
         public DbSet<OfferParticipant> OfferParticipants { get; set; }
         public DbSet<OfferRequest> OfferRequests { get; set; }
+        public DbSet<Friendship> Friendships { get; set; }
+        public DbSet<FriendRequest> FriendRequests { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
