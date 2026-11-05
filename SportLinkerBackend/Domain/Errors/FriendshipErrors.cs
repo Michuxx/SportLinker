@@ -15,6 +15,9 @@ public static class FriendshipErrors
     public static readonly Error FriendRequestNotFound = new(
         "FRIEND_REQUEST_NOT_FOUND",
         "Prośba o dodanie do znajomych nie została znaleziona.");
+    public static readonly Error FriendshipNotFound = new(
+        "FRIENDSHIP_NOT_FOUND",
+        "Znajomość nie została znaleziona.");
 
     public static readonly Error AlreadyFriends = new(
         "FRIENDSHIP_ALREADY_EXISTS",

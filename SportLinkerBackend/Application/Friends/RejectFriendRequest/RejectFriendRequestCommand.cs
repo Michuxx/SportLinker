@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions;
 using Domain.Abstractions;
 
-namespace Application.Friends.RejectFriendFrequest
+namespace Application.Friends.RejectFriendRequest
 {
     public sealed record RejectFriendRequestCommand(int FriendRequestId) : ICommand<Result<bool>>
     {

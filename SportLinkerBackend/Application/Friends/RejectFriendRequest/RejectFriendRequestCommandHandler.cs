@@ -1,11 +1,9 @@
 ﻿using Application.Abstractions;
-using Application.Friends.AcceptFriendRequest;
 using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
-using Domain.Entities;
 using Domain.Errors;
 
-namespace Application.Friends.RejectFriendFrequest
+namespace Application.Friends.RejectFriendRequest
 {
     public sealed class RejectFriendRequestCommandHandler : ICommandHandler<RejectFriendRequestCommand, Result<bool>>
     {
