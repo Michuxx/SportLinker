@@ -2,6 +2,7 @@ using Application.Users.CreateUser;
 using Application.Users.Dtos;
 using Application.Users.GetJoinedOffers;
 using Application.Users.GetUserData;
+using Application.Users.GetUserFriendInvitations;
 using Application.Users.GetUserOffers;
 using Application.Users.GetUserRequests;
 using Application.Users.LoginUser;
@@ -185,6 +186,18 @@ namespace Presentation.Controllers
         {
             List<JoinedOffersDto> result = await _sender.Send(query, cancellationToken);
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("friendInvitations")]
+        public async Task<IActionResult> GetUserFriendInvitations([FromQuery] GetUserFriendInvitationsQuery query, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(query, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
+            return Ok(result.Value);
         }
     }
 }

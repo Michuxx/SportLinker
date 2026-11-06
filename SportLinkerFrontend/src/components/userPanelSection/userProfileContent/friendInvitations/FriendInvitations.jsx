@@ -1,46 +1,30 @@
-import { useState } from "react";
+import useAuth from "../../../../hooks/useAuth";
+import useFriendInvitations from "../../../../hooks/useFriendInvitations";
 import FriendInvitation from "./friendInvitation/FriendInvitation";
 import "./friendInvitations.css";
 import NullFriends from "./nullFriends/NullFriends";
+import FriendInvitationsFeedback from "./friendInvitationsFeedback/FriendInvitationsFeedback";
 
 const FriendInvitations = () => {
-  const [friendInvitations, setFriendInvitations] = useState([
-    {
-      id: 3,
-      userId: 701,
-      name: "Bolek",
-      img: null,
-      date: "2025-01-20T18:00",
-    },
-    {
-      id: 4,
-      userId: 34,
-      name: "Lolek",
-      img: null,
-      date: "2025-01-20T18:00",
-    },
-    {
-      id: 9,
-      userId: 230,
-      name: "Smrodek",
-      img: null,
-      date: "2025-01-20T18:00",
-    },
-  ]);
-
-  const cancelInvitation = (id) => {
-    setFriendInvitations((prev) => [...prev.filter((inv) => inv.id !== id)]);
-  };
+  const { user } = useAuth();
+  const { invitations, isLoading, error, pendingId, resolveInvitation, reload } = useFriendInvitations(user?.id);
 
   return (
     <div className="friend-invitations-wrapper">
-      {friendInvitations?.length <= 0 ? (
+      {!user?.id ? <FriendInvitationsFeedback type="login" />
+        : isLoading ? <FriendInvitationsFeedback type="loading" />
+        : error ? <FriendInvitationsFeedback type="error" onRetry={reload} />
+        : invitations.length === 0 ? (
         <NullFriends />
       ) : (
-        friendInvitations.map((invitation) => (
+        invitations.map((invitation) => (
           <FriendInvitation
             invitation={invitation}
-            cancelInvitation={cancelInvitation}
+            key={invitation.friendRequestId}
+            isBusy={pendingId !== null}
+            isPending={pendingId === invitation.friendRequestId}
+            onAccept={() => resolveInvitation(invitation.friendRequestId, "accept")}
+            onReject={() => resolveInvitation(invitation.friendRequestId, "reject")}
           />
         ))
       )}

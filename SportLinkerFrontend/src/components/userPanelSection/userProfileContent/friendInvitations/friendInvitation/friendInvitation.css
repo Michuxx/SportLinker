@@ -20,3 +20,36 @@
   align-items: center;
   gap: 1rem;
 }
+
+.friend-invitation-profile-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.friend-invitation-profile-link:hover {
+  text-decoration: underline;
+}
+
+.friend-invitation-info-wrapper > a {
+  flex-shrink: 0;
+}
+
+.friend-invitation-info {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.friend-invitation-btn {
+  flex-wrap: wrap;
+}
+
+.friend-invitation-btn [role="status"] {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 640px) {
+  .friend-invitation-wrapper {
+    flex-direction: column;
+  }
+}
