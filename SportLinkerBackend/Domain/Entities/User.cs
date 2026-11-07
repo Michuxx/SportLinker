@@ -21,6 +21,8 @@ namespace Domain.Entities
         public ICollection<Offer> Offers { get; set; } = new List<Offer>();
         public ICollection<OfferParticipant> OfferParticipants { get; set; } = new List<OfferParticipant>();
         public ICollection<OfferRequest> OfferRequests { get; set; } = new List<OfferRequest>();
+        public ICollection<ConversationParticipant> ConversationParticipants { get; set; } = new List<ConversationParticipant>();
+        public ICollection<Message> Messages { get; set; } = new List<Message>();
         public void ChangeEmail(string newEmail)
         {
             if (string.IsNullOrWhiteSpace(newEmail))

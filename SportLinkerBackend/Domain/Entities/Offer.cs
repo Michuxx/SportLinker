@@ -22,6 +22,7 @@ namespace Domain.Entities
         public Location Location { get; set; } = default!;
         public int AuthorId { get; private set; }
         public User Author { get; private set; } = default!;
+        public Conversation Conversation { get; set; } = default!;
         public ICollection<OfferParticipant> Participants { get; set; } = new List<OfferParticipant>();
         public ICollection<OfferRequest> OfferRequests { get; set; } = new List<OfferRequest>();
         private readonly List<DomainEvent> _domainEvents = new List<DomainEvent>();
