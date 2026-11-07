@@ -1,4 +1,5 @@
 using Application.Abstractions.Behaviors;
+using Application.Messages.Policies;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +19,8 @@ namespace Application
             services.AddAutoMapper(cfg => cfg.AddMaps(assembly));
 
             services.AddValidatorsFromAssembly(assembly);
+
+            services.AddScoped<IPrivateMessagingPolicy, PrivateMessagingPolicy>();
 
             return services;
         }

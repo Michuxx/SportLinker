@@ -22,6 +22,71 @@ namespace Infrastructure.Database.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Entities.Conversation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PrivateConversationPairKey")
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
+                    b.Property<int?>("RelatedOfferId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PrivateConversationPairKey")
+                        .IsUnique()
+                        .HasFilter("[PrivateConversationPairKey] IS NOT NULL");
+
+                    b.HasIndex("RelatedOfferId")
+                        .IsUnique()
+                        .HasFilter("[RelatedOfferId] IS NOT NULL");
+
+                    b.ToTable("Conversations");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ConversationParticipant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ConversationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("JoinedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LeftAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("ConversationId", "UserId")
+                        .IsUnique()
+                        .HasFilter("[LeftAt] IS NULL");
+
+                    b.ToTable("ConversationParticipants");
+                });
+
             modelBuilder.Entity("Domain.Entities.FavouriteUserSport", b =>
                 {
                     b.Property<int>("Id")
@@ -140,6 +205,41 @@ namespace Infrastructure.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid>("ClientMessageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ConversationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SendAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SenderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SenderId", "ClientMessageId")
+                        .IsUnique()
+                        .HasFilter("[SenderId] IS NOT NULL");
+
+                    b.HasIndex("ConversationId", "SendAt", "Id");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Domain.Entities.Offer", b =>
@@ -338,6 +438,35 @@ namespace Infrastructure.Database.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Conversation", b =>
+                {
+                    b.HasOne("Domain.Entities.Offer", "Offer")
+                        .WithOne("Conversation")
+                        .HasForeignKey("Domain.Entities.Conversation", "RelatedOfferId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Offer");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ConversationParticipant", b =>
+                {
+                    b.HasOne("Domain.Entities.Conversation", "Conversation")
+                        .WithMany("Participants")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("ConversationParticipants")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.FavouriteUserSport", b =>
                 {
                     b.HasOne("Domain.Entities.Sport", "Sport")
@@ -410,6 +539,24 @@ namespace Infrastructure.Database.Migrations
 
                     b.Navigation("Coordinates")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Message", b =>
+                {
+                    b.HasOne("Domain.Entities.Conversation", "Conversation")
+                        .WithMany("Messages")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "Sender")
+                        .WithMany("Messages")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Domain.Entities.Offer", b =>
@@ -601,6 +748,13 @@ namespace Infrastructure.Database.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Entities.Conversation", b =>
+                {
+                    b.Navigation("Messages");
+
+                    b.Navigation("Participants");
+                });
+
             modelBuilder.Entity("Domain.Entities.Location", b =>
                 {
                     b.Navigation("Offers");
@@ -610,6 +764,9 @@ namespace Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Domain.Entities.Offer", b =>
                 {
+                    b.Navigation("Conversation")
+                        .IsRequired();
+
                     b.Navigation("OfferRequests");
 
                     b.Navigation("Participants");
@@ -624,7 +781,11 @@ namespace Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
+                    b.Navigation("ConversationParticipants");
+
                     b.Navigation("FavouriteUserSports");
+
+                    b.Navigation("Messages");
 
                     b.Navigation("OfferParticipants");
 

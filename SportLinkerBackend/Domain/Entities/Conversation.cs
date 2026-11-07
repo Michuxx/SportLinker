@@ -63,7 +63,7 @@ namespace Domain.Entities
         {
             if (Participants.Any(p => p.UserId == userId && p.LeftAt == null))
             {
-                return Result<bool>.Failure(MessageErrors.ALREADY_PARTICIPANT_CONVERSATION);
+                return Result<bool>.Failure(MessageErrors.AlreadyParticipantConversation);
             }
 
             var participant = ConversationParticipant.Create(Id, userId);
@@ -75,17 +75,17 @@ namespace Domain.Entities
         {
             if(string.IsNullOrWhiteSpace(content))
             {
-                return Result<bool>.Failure(MessageErrors.INVALID_MESSAGE_CONTENT);
+                return Result<bool>.Failure(MessageErrors.InvalidMessageContent);
             }
 
             if(clientMessageId == Guid.Empty)
             {
-                return Result<bool>.Failure(MessageErrors.INVALID_CLIENT_MESSAGE_ID);
+                return Result<bool>.Failure(MessageErrors.InvalidClientMessageId);
             }
 
             if(Type == ConversationType.Group && RelatedOfferId is null)
             {
-                return Result<bool>.Failure(MessageErrors.GROUP_CONVERSATION_NO_OFFER);
+                return Result<bool>.Failure(MessageErrors.GroupConversationNoOffer);
             }
 
             var isActiveParticipant = Participants.Any(p => 
@@ -94,7 +94,7 @@ namespace Domain.Entities
 
             if (!isActiveParticipant)
             {
-                return Result<bool>.Failure(MessageErrors.PARTICIPANT_NOT_FOUND);
+                return Result<bool>.Failure(MessageErrors.ParticipantNotFound);
             }
 
             var message = Message.Create(Id, senderId, content, clientMessageId);
@@ -107,7 +107,7 @@ namespace Domain.Entities
             var participants = Participants.Where(p => p.UserId == userId).ToList();
             if (participants.Count == 0)
             {
-                return Result<bool>.Failure(MessageErrors.PARTICIPANT_NOT_FOUND);
+                return Result<bool>.Failure(MessageErrors.ParticipantNotFound);
             }
 
             foreach (var participant in participants)
@@ -123,10 +123,35 @@ namespace Domain.Entities
             var participant = Participants.FirstOrDefault(p => p.UserId == userId && p.LeftAt == null);
             if (participant is null)
             {
-                return Result<bool>.Failure(MessageErrors.PARTICIPANT_NOT_FOUND);
+                return Result<bool>.Failure(MessageErrors.ParticipantNotFound);
             }
             
             participant.Leave();
+            return Result<bool>.Success(true);
+        }
+
+        public Result<bool> RestorePrivateParticipants(
+            int senderId,
+            int receiverId)
+        {
+            foreach (var userId in new[] { senderId, receiverId })
+            {
+                var isActive = Participants.Any(
+                    p => p.UserId == userId && p.LeftAt == null);
+
+                if (isActive)
+                {
+                    continue;
+                }
+
+                var result = AddParticipant(userId);
+
+                if (!result.IsSuccess)
+                {
+                    return result;
+                }
+            }
+
             return Result<bool>.Success(true);
         }
     }

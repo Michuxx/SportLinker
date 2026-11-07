@@ -34,6 +34,7 @@ namespace Infrastructure
             services.AddScoped<IImageStorageService, ImageStorageService>();
             services.AddScoped<IOfferRepository, OfferRepository>();
             services.AddScoped<IFriendshipRepository, FriendshipRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
 
             services.AddSingleton<IJwtProvider, JwtProvider>();
             services.AddSingleton<ICurrentUser, CurrentUser>();

@@ -10,7 +10,7 @@ namespace Infrastructure.Database.Configurations
         {
             builder.HasKey(m => m.Id);
             builder.Property(m => m.ConversationId).IsRequired();
-            builder.Property(m => m.SenderId).IsRequired();
+            builder.Property(m => m.SenderId);
             builder.Property(m => m.Content).IsRequired();
             builder.Property(m => m.ClientMessageId).IsRequired();
 
