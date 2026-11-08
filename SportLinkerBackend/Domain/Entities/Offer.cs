@@ -132,9 +132,11 @@ namespace Domain.Entities
                 }
 
                 Participants.Remove(participant);
+                RaiseDomainEvent(new OfferLeave(Id, userId));
                 return result;
             }
             Participants.Remove(participant);
+            RaiseDomainEvent(new OfferLeave(Id, userId));
             return Result<bool>.Success(true);
         }
 
@@ -165,6 +167,7 @@ namespace Domain.Entities
             }
 
             Participants.Remove(participant);
+            RaiseDomainEvent(new OfferLeave(Id, userId));
             return Result<bool>.Success(true);
         }
 

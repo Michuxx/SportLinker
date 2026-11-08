@@ -18,4 +18,9 @@ namespace Domain.Events
     public sealed record OfferInvitationSent(
         int OfferId,
         int UserId) : DomainEvent;
+
+    public sealed record OfferLeave(
+        int OfferId,
+        int UserId
+        ) : DomainEvent;
 }
