@@ -11,5 +11,6 @@ namespace Domain.Abstractions.Interfaces
             CancellationToken cancellationToken);
         void AddConversation(Conversation conversation);
         Task<Conversation?> GetConversationById(int conversationId, CancellationToken cancellationToken);
+        Task<Conversation?> GetConversationByOfferIdAsync(int offerId, CancellationToken cancellationToken);
     }
 }

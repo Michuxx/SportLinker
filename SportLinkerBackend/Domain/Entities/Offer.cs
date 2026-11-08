@@ -54,7 +54,7 @@ namespace Domain.Entities
 
             var offerParticipant = new OfferParticipant(offer.Id, userId);
             offer.Participants.Add(offerParticipant);
-            offer.RaiseDomainEvent(new OfferCreated(userId));
+            offer.RaiseDomainEvent(new OfferCreated(userId, offer));
 
             return offer;
         }

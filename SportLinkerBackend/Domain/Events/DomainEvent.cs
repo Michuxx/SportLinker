@@ -1,8 +1,12 @@
-﻿namespace Domain.Events
+﻿using Domain.Entities;
+
+namespace Domain.Events
 {
     public abstract record DomainEvent;
 
-    public sealed record OfferCreated(int AuthorId) : DomainEvent;
+    public sealed record OfferCreated(
+        int AuthorId,
+        Offer Offer) : DomainEvent;
 
     public sealed record ParticipantJoined(
         int OfferId,

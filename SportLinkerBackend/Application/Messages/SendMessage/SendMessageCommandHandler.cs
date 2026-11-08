@@ -71,7 +71,7 @@ namespace Application.Messages.SendMessage
                         MessageErrors.ClientMessageIdConflict);
             }
 
-                var result = conversation.SendMessage(senderId, command.Content, command.ClientMessageId);
+            var result = conversation.SendMessage(senderId, command.Content, command.ClientMessageId);
 
             if (!result.IsSuccess)
             {

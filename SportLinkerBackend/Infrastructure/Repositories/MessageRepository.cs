@@ -47,5 +47,12 @@ namespace Infrastructure.Repositories
         {
             _context.Conversations.Add(conversation);
         }
+
+        public async Task<Conversation?> GetConversationByOfferIdAsync(int offerId, CancellationToken cancellationToken)
+        {
+            return await _context.Conversations
+                .Include(c => c.Participants)
+                .FirstOrDefaultAsync(x => x.RelatedOfferId == offerId, cancellationToken);
+        }   
     }
 }
