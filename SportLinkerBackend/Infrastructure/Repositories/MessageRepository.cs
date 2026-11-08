@@ -22,6 +22,13 @@ namespace Infrastructure.Repositories
                 cancellationToken);
         }
 
+        public async Task<Conversation?> GetConversationById(int conversationId, CancellationToken cancellationToken)
+        {
+            return await _context.Conversations
+                .Include(c => c.Participants)
+                .FirstOrDefaultAsync(x => x.Id == conversationId, cancellationToken);
+        }
+
         public Task<Message?> GetByClientMessageIdAsync(
             int senderId,
             Guid clientMessageId,

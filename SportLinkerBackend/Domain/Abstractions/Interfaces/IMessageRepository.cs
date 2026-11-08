@@ -10,5 +10,6 @@ namespace Domain.Abstractions.Interfaces
             Guid clientMessageId,
             CancellationToken cancellationToken);
         void AddConversation(Conversation conversation);
+        Task<Conversation?> GetConversationById(int conversationId, CancellationToken cancellationToken);
     }
 }

@@ -154,5 +154,44 @@ namespace Domain.Entities
 
             return Result<bool>.Success(true);
         }
+
+        public Result<int> GetPrivateRecipientIdFromSenderId(int senderId)
+        {
+            if (Type != ConversationType.Private)
+            {
+                return Result<int>.Failure(MessageErrors.NotPrivateConversation);
+            }
+
+            if(PrivateConversationPairKey is null)
+            {
+                return Result<int>.Failure(MessageErrors.NotPrivateConversation);
+            }
+
+            var parts = PrivateConversationPairKey?.Split(':');
+
+            if (parts is null
+                || parts.Length != 2
+                || !int.TryParse(parts[0], out var firstUserId)
+                || !int.TryParse(parts[1], out var secondUserId)
+                || firstUserId <= 0
+                || secondUserId <= 0
+                || firstUserId >= secondUserId)
+            {
+                return Result<int>.Failure(
+                    MessageErrors.InvalidPrivateConversationKey);
+            }
+
+            if (senderId == firstUserId)
+            {
+                return Result<int>.Success(secondUserId);
+            }
+
+            if (senderId == secondUserId)
+            {
+                return Result<int>.Success(firstUserId);
+            }
+
+            return Result<int>.Failure(MessageErrors.ParticipantNotFound);
+        }
     }
 }

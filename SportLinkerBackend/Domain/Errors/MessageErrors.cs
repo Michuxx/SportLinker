@@ -37,5 +37,13 @@ namespace Domain.Errors
         public static readonly Error CannotSendMessageToYourself = new(
             "CANNOT_SEND_MESSAGE_TO_YOURSELF",
             "Nie możesz wysyłać wiadomości do siebie.");
+
+        public static readonly Error NotPrivateConversation = new(
+            "NOT_PRIVATE_CONVERSATION",
+            "Nie można wysłać wiadomości do tej rozmowy, ponieważ nie jest to rozmowa prywatna.");
+
+        public static readonly Error InvalidPrivateConversationKey = new(
+            "INVALID_PRIVATE_CONVERSATION_KEY",
+            "Nieprawidłowy klucz rozmowy prywatnej.");
     }
 }
