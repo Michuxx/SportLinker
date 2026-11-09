@@ -6,10 +6,11 @@ using Domain.Abstractions.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Errors;
+using Microsoft.VisualBasic;
 
 namespace Application.Messages.CreatePrivateConversation
 {
-    public sealed class CreatePrivateConversationCommandHandler : ICommandHandler<CreatePrivateConversationCommand, Result<bool>>
+    public sealed class CreatePrivateConversationCommandHandler : ICommandHandler<CreatePrivateConversationCommand, Result<int>>
     {
         private readonly ICurrentUser _currentUser;
         private readonly IMessageRepository _messageRepository;
@@ -28,23 +29,25 @@ namespace Application.Messages.CreatePrivateConversation
             _privateMessagingPolicy = privateMessagingPolicy;
         }
 
-        public async Task<Result<bool>> Handle(CreatePrivateConversationCommand command, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(CreatePrivateConversationCommand command, CancellationToken cancellationToken)
         {
             var senderId = _currentUser.UserId;
 
             if(senderId == command.ReceiverId)
             {
-                return Result<bool>.Failure(MessageErrors.CannotSendMessageToYourself);
+                return Result<int>.Failure(MessageErrors.CannotSendMessageToYourself);
             }
 
             var friendshipResult = await _privateMessagingPolicy.CheckAsync(senderId, command.ReceiverId, cancellationToken);
 
             if (!friendshipResult.IsSuccess)
             {
-                return friendshipResult;
+                return Result<int>.Failure(friendshipResult.Error);
             }
 
             string pairKey = $"{Math.Min(senderId, command.ReceiverId)}:{Math.Max(senderId, command.ReceiverId)}";
+
+            Conversation conversation;
 
             var existingMessage = await _messageRepository
                 .GetByClientMessageIdAsync(
@@ -60,8 +63,8 @@ namespace Application.Messages.CreatePrivateConversation
                     && existingMessage.Content == command.Content;
 
                 return isSameOperation
-                    ? Result<bool>.Success(true)
-                    : Result<bool>.Failure(
+                    ? Result<int>.Success(existingMessage.Conversation.Id)
+                    : Result<int>.Failure(
                         MessageErrors.ClientMessageIdConflict);
             }
 
@@ -69,11 +72,12 @@ namespace Application.Messages.CreatePrivateConversation
 
             if (existingConversation is not null)
             {
+                conversation = existingConversation;
                 var addingParticipantBackResult = existingConversation.RestorePrivateParticipants(senderId, command.ReceiverId);
 
                 if (!addingParticipantBackResult.IsSuccess)
                 {
-                    return addingParticipantBackResult;
+                    return Result<int>.Failure(addingParticipantBackResult.Error);
                 }
 
                 var sendResult = existingConversation.SendMessage(
@@ -83,7 +87,7 @@ namespace Application.Messages.CreatePrivateConversation
 
                 if (!sendResult.IsSuccess)
                 {
-                    return sendResult;
+                    return Result<int>.Failure(sendResult.Error);
                 }
             }
             else
@@ -96,15 +100,16 @@ namespace Application.Messages.CreatePrivateConversation
 
                 if (!newConversation.IsSuccess)
                 {
-                    return Result<bool>.Failure(newConversation.Error);
+                    return Result<int>.Failure(newConversation.Error);
                 }
 
+                conversation = newConversation.Value!;
                 _messageRepository.AddConversation(newConversation.Value!);
             }
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Result<bool>.Success(true);
+            return Result<int>.Success(conversation.Id);
         }
     }
 }

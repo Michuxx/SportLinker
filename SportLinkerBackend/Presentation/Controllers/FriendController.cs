@@ -1,10 +1,9 @@
 using Application.Friends.AcceptFriendRequest;
 using Application.Friends.CancelFriendRequest;
 using Application.Friends.DeleteFriend;
+using Application.Friends.GetUserFriends;
 using Application.Friends.RejectFriendRequest;
 using Application.Friends.SendFriendRequest;
-using Application.Sports.Dtos;
-using Application.Sports.GetSports;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +21,13 @@ namespace Presentation.Controllers
         public FriendController(ISender sender)
         {
             _sender = sender;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserFriends(CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(new GetUserFriendsQuery(), cancellationToken);
+            return Ok(result);
         }
 
         [HttpPost("accept")]
