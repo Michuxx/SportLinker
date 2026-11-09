@@ -1,110 +1,31 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import useDifferenceDates from "../../../hooks/useDifferenceDates";
 import OnlineAvatar from "../../component-items/avatar/OnlineAvatar";
 import Button from "../../component-items/button/button";
-import "./conversation.css";
-import { HiDotsHorizontal } from "react-icons/hi";
-import Dropdown from "../../component-items/dropdown/Dropdown";
-import { FiFlag } from "react-icons/fi";
-import { GrGroup } from "react-icons/gr";
-import { MdOutlineBlock } from "react-icons/md";
 import ModalBackground from "../../component-items/modal/ModalBackground";
 import ParticipantsModal from "../../participantsModal/ParticipantsModal";
+import { FiRefreshCw, FiTrash2, FiUsers } from "react-icons/fi";
+import "./conversation.css";
 
-const ConversationHeader = ({ chatUser }) => {
-  const [isOpenChatDropdown, setIsOpenChatDropdown] = useState(false);
-  const [isParticipantsModalOpen, setIsParticipantsModalOpen] = useState(false);
-
-  const handleClickOutside = useCallback((event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpenChatDropdown(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [handleClickOutside]);
-
-  const dropdownRef = useRef(null);
-
-  const formattedDate = useDifferenceDates(chatUser.lastTimeOnline);
-
-  const formattedDateText =
-    formattedDate !== 0
-      ? `Ostatnio aktywny ${formattedDate} dni temu`
-      : `Ostatnio dzisiaj online`;
-
-  const privateConversationDropdown = [
-    {
-      style: "classicDropdownOptionButton",
-      // onClick: () => changeLocation("/"),
-      text: "Zablokuj",
-      icon: <MdOutlineBlock size={22} />,
-    },
-    {
-      style: "logoutDropdownOptionButton",
-      // onClick: () => changeLocation("/"),
-      text: "Zgłoś",
-      icon: <FiFlag size={22} />,
-    },
-  ];
-
-  const groupConversationDropdown = [
-    {
-      style: "classicDropdownOptionButton",
-      onClick: () => setIsParticipantsModalOpen(true),
-      text: "Uczestnicy",
-      icon: <GrGroup size={22} />,
-    },
-    {
-      style: "logoutDropdownOptionButton",
-      // onClick: () => changeLocation("/"),
-      text: "Zgłoś",
-      icon: <FiFlag size={22} />,
-    },
-  ];
-
+const ConversationHeader = ({ chatUser, onRefresh, onDeleteHistory, isBusy }) => {
+  const [showParticipants, setShowParticipants] = useState(false);
+  const days = useDifferenceDates(chatUser.lastTimeOnline);
+  const status = chatUser.type === "group" ? "Rozmowa grupowa" : chatUser.isOnline ? "Online" : chatUser.lastTimeOnline ? `Ostatnio aktywny: ${days} dni temu` : "Rozmowa prywatna";
   return (
-    <div className="conversation-header-wrapper" ref={dropdownRef}>
+    <div className="conversation-header-wrapper">
       <div className="avatar-info-wrapper">
-        <OnlineAvatar size={3} isOnline={chatUser.isOnline} />
-        <div className="user-info-header-wrapper">
-          <h3>{`${chatUser.type === "group" ? "Grupa: " : ""} ${
-            chatUser.name
-          }`}</h3>
-          <span>{chatUser.isOnline ? "Online" : formattedDateText}</span>
-        </div>
+        <OnlineAvatar size={3} isOnline={chatUser.isOnline} image={chatUser.imageUrl} />
+        <div className="user-info-header-wrapper"><h3>{chatUser.type === "group" ? "Grupa: " : ""}{chatUser.name}</h3><span>{status}</span></div>
       </div>
       <div className="conversation-btn-wrapper">
-        <Button
-          style="popupSettingsButton"
-          Icon={<HiDotsHorizontal size={25} />}
-          onClick={() => setIsOpenChatDropdown(true)}
-        />
+        {chatUser.participants?.length > 0 && <Button style="popupSettingsButton" Icon={<FiUsers />} onClick={() => setShowParticipants(true)}>Uczestnicy</Button>}
+        {chatUser.id && <>
+          <Button style="popupSettingsButton" Icon={<FiRefreshCw />} onClick={onRefresh} disabled={isBusy}>Odśwież</Button>
+          <Button style="actionWarningButton" Icon={<FiTrash2 />} onClick={onDeleteHistory} disabled={isBusy}>Usuń historię</Button>
+        </>}
       </div>
-      {isOpenChatDropdown && (
-        <div className="conversation-dropdown">
-          <Dropdown
-            options={
-              chatUser.type === "private"
-                ? privateConversationDropdown
-                : groupConversationDropdown
-            }
-            textKey="text"
-            isScrollable={false}
-          />
-        </div>
-      )}
-      {isParticipantsModalOpen && (
-        <ModalBackground closeModal={() => setIsParticipantsModalOpen(false)}>
-          <ParticipantsModal participants={chatUser.participants} />
-        </ModalBackground>
-      )}
+      {showParticipants && <ModalBackground closeModal={() => setShowParticipants(false)}><ParticipantsModal participants={chatUser.participants} /></ModalBackground>}
     </div>
   );
 };
-
 export default ConversationHeader;

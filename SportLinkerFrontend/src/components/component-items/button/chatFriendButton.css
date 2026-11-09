@@ -52,9 +52,3 @@
   text-align: left;
 }
 
-.friend-dropdown {
-  position: absolute;
-  right: 0;
-  top: 4rem;
-  z-index: 11;
-}

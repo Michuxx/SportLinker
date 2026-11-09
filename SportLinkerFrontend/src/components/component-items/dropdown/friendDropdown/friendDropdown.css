@@ -1,0 +1,20 @@
+.friend-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.friend-dropdown {
+  z-index: 1000;
+  width: 12rem;
+  max-width: calc(100vw - 1rem);
+}
+
+.friend-dropdown > button {
+  width: 100%;
+}
+
+.friend-dropdown > button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+}

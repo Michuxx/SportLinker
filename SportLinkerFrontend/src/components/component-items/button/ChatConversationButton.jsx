@@ -10,6 +10,7 @@ const ChatConversationButton = ({
   activeChat,
   id,
   isOnline,
+  image,
 }) => {
   const formattedDate = useDateFormat(date);
 
@@ -22,12 +23,12 @@ const ChatConversationButton = ({
     >
       <div className="chat-profile-wrapper">
         <div className="chat-profile-avatar">
-          <OnlineAvatar size={3} isOnline={isOnline} />
+          <OnlineAvatar size={3} isOnline={isOnline} image={image} />
         </div>
         <div className="chat-profile-info-wrapper">
           <div className="chat-profile-info">
             <h3>{name}</h3>
-            <span>{formattedDate.date}</span>
+            <span>{formattedDate?.date}</span>
           </div>
           <p>{text}</p>
         </div>

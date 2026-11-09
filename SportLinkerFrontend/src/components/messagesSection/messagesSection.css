@@ -7,3 +7,30 @@
   border-radius: 1rem;
   overflow: hidden;
 }
+
+.messaging-feedback, .chat-empty-text {
+  padding: 1.5rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.chat-load-older, .chat-refresh-button {
+  border: 1px solid #dbeafe;
+  border-radius: 0.5rem;
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.chat-load-older {
+  align-self: center;
+  margin: 0.75rem;
+}
+
+.chat-load-older:disabled, .chat-refresh-button:disabled { opacity: 0.6; cursor: wait; }
+.chat-load-older:focus-visible, .chat-refresh-button:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+
+@media (max-width: 768px) {
+  .message-section-wrapper { margin: 1rem; height: auto; min-height: 75vh; flex-direction: column; }
+}

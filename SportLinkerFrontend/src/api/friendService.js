@@ -16,6 +16,10 @@ const sendAction = async (action, body, { signal } = {}) => {
 };
 
 const friendService = {
+  async getFriends({ signal } = {}) {
+    const response = await apiClient.get("/Friend", { signal });
+    return response.data;
+  },
   send: (body, options) => sendAction("send", body, options),
   accept: (body, options) => sendAction("accept", body, options),
   reject: (body, options) => sendAction("reject", body, options),

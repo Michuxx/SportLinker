@@ -49,10 +49,15 @@
 }
 
 .message-content p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   font-size: 0.875rem;
   line-height: 1.625;
   color: #000;
 }
+
+.message-send-error { color: #b91c1c; font-size: 0.8rem; }
+.message-send-error button { color: inherit; background: transparent; border: none; text-decoration: underline; cursor: pointer; padding: 0.25rem; }
 
 .message-date {
   text-align: right;
