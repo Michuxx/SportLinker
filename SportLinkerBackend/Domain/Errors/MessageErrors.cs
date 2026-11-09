@@ -45,5 +45,9 @@ namespace Domain.Errors
         public static readonly Error InvalidPrivateConversationKey = new(
             "INVALID_PRIVATE_CONVERSATION_KEY",
             "Nieprawidłowy klucz rozmowy prywatnej.");
+
+        public static readonly Error ParticipantNotLeft = new(
+            "PARTICIPANT_NOT_LEFT",
+            "Użytkownik nie opuścił jeszcze rozmowy.");
     }
 }

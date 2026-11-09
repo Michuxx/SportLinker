@@ -40,8 +40,9 @@ namespace Infrastructure.Database.Migrations
                     b.Property<int?>("RelatedOfferId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -419,6 +420,9 @@ namespace Infrastructure.Database.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime?>("LastSeenAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("LocationId")
                         .HasColumnType("int");

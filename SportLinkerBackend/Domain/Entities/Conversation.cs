@@ -104,10 +104,18 @@ namespace Domain.Entities
 
         public Result<bool> RemoveParticipants(int userId)
         {
-            var participants = Participants.Where(p => p.UserId == userId).ToList();
+            var participants = Participants
+                .Where(p => p.UserId == userId)
+                .ToList();
+
             if (participants.Count == 0)
             {
                 return Result<bool>.Failure(MessageErrors.ParticipantNotFound);
+            }
+
+            if (participants.Any(p => p.LeftAt is null))
+            {
+                return Result<bool>.Failure(MessageErrors.ParticipantNotLeft);
             }
 
             foreach (var participant in participants)

@@ -9,6 +9,7 @@ namespace Domain.Entities
         public int Id { get; set; }
         public string Email { get; set; } = default!;
         public string PasswordHash { get; set; } = default!;
+        public DateTime? LastSeenAt { get; set; }
         public PersonalData PersonalData { get; set; } = default!;
         public UserImages? Images { get; set; }
         public Phone? Phone { get; set; }

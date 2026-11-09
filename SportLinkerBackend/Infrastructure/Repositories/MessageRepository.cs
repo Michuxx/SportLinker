@@ -48,6 +48,11 @@ namespace Infrastructure.Repositories
             _context.Conversations.Add(conversation);
         }
 
+        public void DeleteConversation(Conversation conversation)
+        {
+            _context.Conversations.Remove(conversation);
+        }
+
         public async Task<Conversation?> GetConversationByOfferIdAsync(int offerId, CancellationToken cancellationToken)
         {
             return await _context.Conversations

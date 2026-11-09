@@ -29,4 +29,8 @@ public static class FriendshipErrors
     public static readonly Error NotRequestReceiver = new(
         "FRIEND_REQUEST_NOT_RECEIVER",
         "Nie jesteś odbiorcą tej prośby o dodanie do znajomych.");  
+
+    public static readonly Error FriendshipStillExists = new(
+        "FRIENDSHIP_STILL_EXISTS",
+        "Nie można usunąć rozmowy, ponieważ znajomość nadal istnieje.");
 }
