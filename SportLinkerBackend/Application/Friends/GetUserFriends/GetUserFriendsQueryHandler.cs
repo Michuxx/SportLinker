@@ -55,7 +55,7 @@ namespace Application.Friends.GetUserFriends
               new
               {
                   CurrentUserId = _currentUser.UserId,
-                  PrivateType = ConversationType.Private
+                  PrivateType = ConversationType.Private.ToString()
               },
               cancellationToken: cancellationToken);
 
