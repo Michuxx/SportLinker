@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import { chatKey } from "../../../utils/messaging";
 import "./conversation.css";
 import NullConversation from "./NullConversation";
 import ConversationHeader from "./ConversationHeader";
@@ -13,12 +14,15 @@ const Conversation = ({ messaging }) => {
   const { activeChat, thread, isSending, isDeleting, sendMessage, retryMessage, deleteHistory, refreshMessages, loadOlder } = messaging;
   return (
     <div className="conversation-wrapper">
-      {!activeChat ? <NullConversation /> : <>
-        <ConversationHeader key={activeChat.id ?? activeChat.recipientUserId} chatUser={activeChat} onRefresh={refreshMessages} onDeleteHistory={() => setConfirmHistory(activeChat.id)} isBusy={isSending || isDeleting || thread.loading || thread.loadingOlder} />
+      {!activeChat ? <NullConversation /> : <Fragment key={chatKey(activeChat)}>
+        <ConversationHeader chatUser={activeChat} onRefresh={refreshMessages} onDeleteHistory={() => setConfirmHistory(activeChat.id)} isBusy={isSending || isDeleting || thread.loading || thread.loadingOlder} />
         <ConversationContent messages={thread.items} thread={thread} onRetry={refreshMessages} onLoadOlder={loadOlder} onRetryMessage={retryMessage} isSending={isSending || isDeleting || activeChat.canSendMessages === false} />
-        <ConversationChatBar key={`${activeChat.type}:${activeChat.recipientUserId ?? activeChat.id}`} sendMessage={sendMessage} disabled={isSending || isDeleting || thread.loading || thread.error || activeChat.canSendMessages === false} />
-        {activeChat.canSendMessages === false && <p className="chat-readonly-text">Możesz przeglądać historię tej rozmowy. Wysyłanie wiadomości jest niedostępne.</p>}
-      </>}
+        {activeChat.canSendMessages === false ? (
+          <p className="chat-readonly-text">Możesz przeglądać historię tej rozmowy. Wysyłanie wiadomości jest niedostępne.</p>
+        ) : (
+          <ConversationChatBar sendMessage={sendMessage} disabled={isSending || isDeleting || thread.loading || thread.error} />
+        )}
+      </Fragment>}
       {confirmHistory && activeChat?.id === confirmHistory && <ModalBackground closeModal={() => setConfirmHistory(null)}>
         <WarningModal onCancel={() => setConfirmHistory(null)} onConfirm={deleteHistory} mainIcon={<FaRegTrashAlt size={80} color="#dc2626" />} headline="Usunąć rozmowę z Twojej historii?" confirmText="Usuń moją historię" confirmIcon={<FaRegTrashAlt />} />
       </ModalBackground>}
