@@ -16,11 +16,13 @@ createRoot(document.getElementById("root")).render(
     <PrimeReactProvider value={value}>
       <ToastProvider>
         <AuthProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/*" element={<App />} />
-            </Routes>
-          </BrowserRouter>
+          <ChatProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/*" element={<App />} />
+              </Routes>
+            </BrowserRouter>
+          </ChatProvider>
         </AuthProvider>
       </ToastProvider>
     </PrimeReactProvider>

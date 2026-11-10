@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
+using Presentation.Hubs;
 
 namespace Presentation
 {
@@ -6,6 +8,8 @@ namespace Presentation
     {
         public static IServiceCollection AddPresentation(this IServiceCollection services)
         {
+            services.AddSignalR();
+            services.AddSingleton<IUserIdProvider, JwtUserIdProvider>();
             return services;
         }
     }
