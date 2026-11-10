@@ -1,11 +1,30 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { chatKey, normalizeFriend, normalizeConversation, normalizeMessage, normalizeMessagesPage, mergeMessages, friendChat } from "../src/utils/messaging.js";
+import { canDeleteConversation, chatKey, normalizeFriend, normalizeConversation, normalizeMessage, normalizeMessagesPage, mergeMessages, friendChat } from "../src/utils/messaging.js";
 import { initialMessagingState, messagingReducer as reduce } from "../src/utils/messagingState.js";
 
 const friend = normalizeFriend({ friendshipId: 99, userId: 12, name: "Anna", imageUrl: "/anna.webp", conversationId: null });
 const chat = normalizeConversation({ id: 8, type: "Private", name: "Anna", recipientUserId: 12, canSendMessages: true });
 const message = { id: "local:uuid", clientMessageId: "uuid", text: "Cześć", timestamp: "2026-11-09T12:00:00Z", senderName: "Ja", isOwnMessage: true, status: "pending" };
+
+test("private deletion is available only after friendship ends, with a successfully loaded friend list", () => {
+  assert.equal(canDeleteConversation(chat, [friend], "ready"), false);
+  assert.equal(canDeleteConversation({ ...chat, canSendMessages: false }, [friend], "ready"), false);
+  assert.equal(canDeleteConversation(chat, [], "ready"), true);
+  for (const status of ["loading", "error", undefined]) assert.equal(canDeleteConversation(chat, [], status), false);
+  assert.equal(canDeleteConversation({ ...chat, recipientUserId: "12" }, [friend], "ready"), false);
+  assert.equal(canDeleteConversation({ ...chat, recipientUserId: null, canSendMessages: false }, [], "ready"), true);
+  assert.equal(canDeleteConversation({ ...chat, recipientUserId: null }, [], "ready"), false);
+});
+
+test("group deletion is available only when group participation no longer allows sending", () => {
+  const group = { id: 8, type: "group", canSendMessages: true };
+  assert.equal(canDeleteConversation(group, [], "ready"), false);
+  assert.equal(canDeleteConversation({ ...group, canSendMessages: false }, [], "loading"), true);
+  assert.equal(canDeleteConversation({ ...group, canSendMessages: undefined }, [], "ready"), false);
+  assert.equal(canDeleteConversation(null, [], "ready"), false);
+  assert.equal(canDeleteConversation({ type: "private", recipientUserId: 12 }, [], "ready"), false);
+});
 
 test("API models map to the existing mock UI shape, including read-only permissions", () => {
   assert.equal(friend.id, 99);

@@ -4,10 +4,11 @@ import OnlineAvatar from "../../component-items/avatar/OnlineAvatar";
 import Button from "../../component-items/button/button";
 import ModalBackground from "../../component-items/modal/ModalBackground";
 import ParticipantsModal from "../../participantsModal/ParticipantsModal";
-import { FiRefreshCw, FiTrash2, FiUsers } from "react-icons/fi";
+import { FiRefreshCw, FiUsers } from "react-icons/fi";
+import ConversationActions from "./conversationActions/ConversationActions";
 import "./conversation.css";
 
-const ConversationHeader = ({ chatUser, images = {}, onRefresh, onDeleteHistory, isBusy }) => {
+const ConversationHeader = ({ chatUser, images = {}, onRefresh, onDeleteHistory, canDeleteHistory, isBusy }) => {
   const [showParticipants, setShowParticipants] = useState(false);
   const days = useDifferenceDates(chatUser.lastTimeOnline);
   const status = chatUser.type === "group" ? "Rozmowa grupowa" : chatUser.isOnline ? "Online" : chatUser.lastTimeOnline ? `Ostatnio aktywny: ${days} dni temu` : "Rozmowa prywatna";
@@ -21,7 +22,7 @@ const ConversationHeader = ({ chatUser, images = {}, onRefresh, onDeleteHistory,
         {chatUser.participants?.length > 0 && <Button style="popupSettingsButton" Icon={<FiUsers />} onClick={() => setShowParticipants(true)}>Uczestnicy</Button>}
         {chatUser.id && <>
           <Button style="popupSettingsButton" Icon={<FiRefreshCw />} onClick={onRefresh} disabled={isBusy}>Odśwież</Button>
-          <Button style="actionWarningButton" Icon={<FiTrash2 />} onClick={onDeleteHistory} disabled={isBusy}>Usuń historię</Button>
+          {canDeleteHistory && <ConversationActions onDelete={onDeleteHistory} disabled={isBusy} />}
         </>}
       </div>
       {showParticipants && <ModalBackground closeModal={() => setShowParticipants(false)}><ParticipantsModal participants={chatUser.participants} /></ModalBackground>}

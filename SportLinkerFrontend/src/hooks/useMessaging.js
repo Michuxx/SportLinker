@@ -3,7 +3,7 @@ import friendService from "../api/friendService";
 import conversationService from "../api/conversationService";
 import { useToast } from "../context/ToastContext";
 import { getErrorMessage } from "../utils/apiErrorHelper";
-import { chatKey, friendChat, normalizeConversation, normalizeFriend, normalizeMessagesPage } from "../utils/messaging";
+import { canDeleteConversation, chatKey, friendChat, normalizeConversation, normalizeFriend, normalizeMessagesPage } from "../utils/messaging";
 import { emptyThread, initialMessagingState, messagingReducer } from "../utils/messagingState";
 import useChatImages from "./useChatImages";
 
@@ -99,6 +99,7 @@ const useMessaging = (user) => {
     const session = sessionRef.current;
     const chat = activeChat;
     if (!chat?.id || !session || session.controller.signal.aborted) return;
+    if (!canDeleteConversation(chat, state.friends, state.lists.friends)) return;
     const key = chatKey(chat);
     if (session.sends.has(key) || session.loads.has(key) || session.mutations.has("history")) return;
     session.mutations.add("history");
@@ -139,6 +140,7 @@ const useMessaging = (user) => {
   };
 
   return {
+    canDeleteHistory: canDeleteConversation(activeChat, state.friends, state.lists.friends),
     images,
     chatPeople: current ? { friends: state.friends, conversations: state.conversations } : { friends: [], conversations: [] },
     listStatuses: current ? state.lists : { friends: "loading", conversations: "loading" },

@@ -2,6 +2,14 @@ import { parseApiDate } from "./dateTime.js";
 
 export const chatKey = (chat) => chat.id ? `conversation:${chat.id}` : `friend:${chat.recipientUserId}`;
 
+export const canDeleteConversation = (chat, friends, friendsStatus) => {
+  if (!chat?.id) return false;
+  if (chat.type === "group") return chat.canSendMessages === false;
+  if (chat.type !== "private" || friendsStatus !== "ready") return false;
+  if (chat.recipientUserId == null) return chat.canSendMessages === false;
+  return !friends.some((friend) => String(friend.userId) === String(chat.recipientUserId));
+};
+
 export const normalizeFriend = (data) => ({
   ...data,
   id: data.friendshipId ?? data.id,

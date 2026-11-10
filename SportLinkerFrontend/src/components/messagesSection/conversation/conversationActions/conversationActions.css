@@ -1,0 +1,17 @@
+.conversation-actions-dropdown {
+  z-index: 1000;
+  width: 13.5rem;
+  max-width: calc(100vw - 1rem);
+}
+
+.conversation-actions-dropdown > button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.conversation-actions-dropdown > button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+}
