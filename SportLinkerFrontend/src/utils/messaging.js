@@ -22,6 +22,7 @@ export const normalizeConversation = (data) => ({
 
 export const normalizeMessage = (data) => ({
   ...data,
+  senderImageUrl: data.senderImageUrl ?? data.imageUrl,
   text: data.content ?? data.text,
   timestamp: data.sendAt ?? data.timestamp,
   status: data.status ?? "sent",

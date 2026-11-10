@@ -7,14 +7,14 @@ import ParticipantsModal from "../../participantsModal/ParticipantsModal";
 import { FiRefreshCw, FiTrash2, FiUsers } from "react-icons/fi";
 import "./conversation.css";
 
-const ConversationHeader = ({ chatUser, onRefresh, onDeleteHistory, isBusy }) => {
+const ConversationHeader = ({ chatUser, images = {}, onRefresh, onDeleteHistory, isBusy }) => {
   const [showParticipants, setShowParticipants] = useState(false);
   const days = useDifferenceDates(chatUser.lastTimeOnline);
   const status = chatUser.type === "group" ? "Rozmowa grupowa" : chatUser.isOnline ? "Online" : chatUser.lastTimeOnline ? `Ostatnio aktywny: ${days} dni temu` : "Rozmowa prywatna";
   return (
     <div className="conversation-header-wrapper">
       <div className="avatar-info-wrapper">
-        <OnlineAvatar size={3} isOnline={chatUser.isOnline} image={chatUser.imageUrl} />
+        <OnlineAvatar size={3} isOnline={chatUser.isOnline} image={chatUser.imageUrl || (chatUser.type === "private" ? images[chatUser.recipientUserId] : null)} />
         <div className="user-info-header-wrapper"><h3>{chatUser.type === "group" ? "Grupa: " : ""}{chatUser.name}</h3><span>{status}</span></div>
       </div>
       <div className="conversation-btn-wrapper">

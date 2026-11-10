@@ -2,7 +2,7 @@ import useDateFormat from "../../../../hooks/useDateFormat";
 import Avatar from "../../../component-items/avatar/Avatar";
 import "./message.css";
 
-const Message = ({ message, onRetry, disabled }) => {
+const Message = ({ message, image, onRetry, disabled }) => {
   const formattedDate = useDateFormat(message.timestamp);
 
   return (
@@ -10,7 +10,7 @@ const Message = ({ message, onRetry, disabled }) => {
       className={`message-wrapper ${message.isOwnMessage ? "own-message" : ""}`}
     >
       <div className="avatar-message-wrapper">
-        <Avatar size={2} />
+        <Avatar size={2} image={message.senderImageUrl || image} />
       </div>
       <div className="message-info-wrapper">
         <p className="message-sender-name">{`${

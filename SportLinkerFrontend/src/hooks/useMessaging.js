@@ -5,6 +5,7 @@ import { useToast } from "../context/ToastContext";
 import { getErrorMessage } from "../utils/apiErrorHelper";
 import { chatKey, friendChat, normalizeConversation, normalizeFriend, normalizeMessagesPage } from "../utils/messaging";
 import { emptyThread, initialMessagingState, messagingReducer } from "../utils/messagingState";
+import useChatImages from "./useChatImages";
 
 const useMessaging = (user) => {
   const userId = user?.id;
@@ -59,6 +60,7 @@ const useMessaging = (user) => {
   const activeChat = current ? state.activeChat : null;
   const activeKey = activeChat ? chatKey(activeChat) : null;
   const thread = state.threads[activeKey] ?? emptyThread();
+  const images = useChatImages({ user, friends: current ? state.friends : [], conversations: current ? state.conversations : [], messages: current ? thread.items : [], activeChat });
   useEffect(() => {
     if (activeChat?.id && !thread.loaded && !thread.loading && !thread.error) loadMessages(activeChat);
   }, [activeChat, thread.loaded, thread.loading, thread.error, loadMessages]);
@@ -72,7 +74,7 @@ const useMessaging = (user) => {
     session.sends.add(key);
     const clientMessageId = retryMessage?.clientMessageId ?? crypto.randomUUID();
     const message = retryMessage ? { ...retryMessage, status: "pending" } : {
-      id: `local:${clientMessageId}`, clientMessageId, senderId: userId, senderName: user.name ?? user.userName ?? "Ja", text: text.trim(), timestamp: new Date().toISOString(), isOwnMessage: true, status: "pending",
+      id: `local:${clientMessageId}`, clientMessageId, senderId: userId, senderName: user.name ?? user.userName ?? "Ja", senderImageUrl: user.profileImage ?? user.imageUrl, text: text.trim(), timestamp: new Date().toISOString(), isOwnMessage: true, status: "pending",
     };
     dispatch({ type: "thread/message", key, message });
     try {
@@ -137,6 +139,7 @@ const useMessaging = (user) => {
   };
 
   return {
+    images,
     chatPeople: current ? { friends: state.friends, conversations: state.conversations } : { friends: [], conversations: [] },
     listStatuses: current ? state.lists : { friends: "loading", conversations: "loading" },
     activeChat, thread, isSending: thread.items.some((item) => item.status === "pending"), isDeleting: state.deletingKey === activeKey && activeKey !== null, removingFriendId: current ? state.removingFriendId : null,

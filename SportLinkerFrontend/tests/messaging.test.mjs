@@ -17,9 +17,11 @@ test("API models map to the existing mock UI shape, including read-only permissi
   assert.equal(normalizeConversation({ type: 1 }).type, "group");
   const mock = { id: 3, type: "private", lastMessage: { name: "Anna", text: "Test", time: message.timestamp } };
   assert.deepEqual(normalizeConversation(mock).lastMessage, mock.lastMessage);
-  const api = normalizeMessage({ id: 1, content: "Test", sendAt: message.timestamp, isOwnMessage: true });
+  const api = normalizeMessage({ id: 1, content: "Test", sendAt: message.timestamp, isOwnMessage: true, senderImageUrl: "/profiles/anna.webp" });
   assert.equal(api.text, "Test");
   assert.equal(api.timestamp, message.timestamp);
+  assert.equal(api.senderImageUrl, "/profiles/anna.webp");
+  assert.equal(normalizeMessage({ imageUrl: "/profiles/legacy.webp" }).senderImageUrl, "/profiles/legacy.webp");
 });
 
 test("selecting a friend uses the conversation ID, never the friendship or user ID", () => {

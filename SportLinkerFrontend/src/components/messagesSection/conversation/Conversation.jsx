@@ -11,12 +11,12 @@ import { FaRegTrashAlt } from "react-icons/fa";
 
 const Conversation = ({ messaging }) => {
   const [confirmHistory, setConfirmHistory] = useState(null);
-  const { activeChat, thread, isSending, isDeleting, sendMessage, retryMessage, deleteHistory, refreshMessages, loadOlder } = messaging;
+  const { activeChat, thread, images, isSending, isDeleting, sendMessage, retryMessage, deleteHistory, refreshMessages, loadOlder } = messaging;
   return (
     <div className="conversation-wrapper">
       {!activeChat ? <NullConversation /> : <Fragment key={chatKey(activeChat)}>
-        <ConversationHeader chatUser={activeChat} onRefresh={refreshMessages} onDeleteHistory={() => setConfirmHistory(activeChat.id)} isBusy={isSending || isDeleting || thread.loading || thread.loadingOlder} />
-        <ConversationContent messages={thread.items} thread={thread} onRetry={refreshMessages} onLoadOlder={loadOlder} onRetryMessage={retryMessage} isSending={isSending || isDeleting || activeChat.canSendMessages === false} />
+        <ConversationHeader chatUser={activeChat} images={images} onRefresh={refreshMessages} onDeleteHistory={() => setConfirmHistory(activeChat.id)} isBusy={isSending || isDeleting || thread.loading || thread.loadingOlder} />
+        <ConversationContent messages={thread.items} images={images} thread={thread} onRetry={refreshMessages} onLoadOlder={loadOlder} onRetryMessage={retryMessage} isSending={isSending || isDeleting || activeChat.canSendMessages === false} />
         {activeChat.canSendMessages === false ? (
           <p className="chat-readonly-text">Możesz przeglądać historię tej rozmowy. Wysyłanie wiadomości jest niedostępne.</p>
         ) : (

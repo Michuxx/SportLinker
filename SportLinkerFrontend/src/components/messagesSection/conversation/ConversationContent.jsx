@@ -3,7 +3,7 @@ import Message from "./message/Message";
 import { useLayoutEffect, useRef } from "react";
 import MessagingFeedback from "../messagingFeedback/MessagingFeedback";
 
-const ConversationContent = ({ messages, thread, onRetry, onLoadOlder, onRetryMessage, isSending }) => {
+const ConversationContent = ({ messages, images = {}, thread, onRetry, onLoadOlder, onRetryMessage, isSending }) => {
   const containerRef = useRef(null);
   const previous = useRef({ first: null, last: null, height: 0, count: 0 });
   const previousScrollTop = useRef(0);
@@ -48,7 +48,7 @@ const ConversationContent = ({ messages, thread, onRetry, onLoadOlder, onRetryMe
         {thread.olderError && <div role="alert">Nie udało się pobrać wiadomości. <button type="button" className="chat-load-older" onClick={loadOlder}>Spróbuj ponownie</button></div>}
       </div>}
       {!thread.loading && !thread.error && messages.length === 0 && <div className="null-messages-conversation"><h4>Brak wcześniejszej konwersacji</h4><p>Napisz pierwszy</p></div>}
-      {messages.map((message) => <Message key={message.clientMessageId ?? message.id} message={message} onRetry={() => onRetryMessage(message)} disabled={isSending} />)}
+      {messages.map((message) => <Message key={message.clientMessageId ?? message.id} message={message} image={message.senderImageUrl || images[message.senderId]} onRetry={() => onRetryMessage(message)} disabled={isSending} />)}
     </div>
   );
 };
