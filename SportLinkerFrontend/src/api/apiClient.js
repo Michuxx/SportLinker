@@ -1,12 +1,9 @@
 import axios from "axios";
-import {
-  getAccessToken,
-  getRefreshToken,
-  setTokens,
-  clearTokens,
-} from "../utils/tokenStorage";
+import { getAccessToken, decodeJwtPayload } from "../utils/tokenStorage";
+import { refreshAccessToken } from "./tokenService";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5139/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5139/api";
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -15,107 +12,84 @@ const apiClient = axios.create({
   },
 });
 
-// Interceptor dołączający token JWT do każdego żądania
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = getAccessToken();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+const getTokenUserId = (token) => {
+  const payload = decodeJwtPayload(token);
+  const userId = payload?.id ?? payload?.sub;
 
-let isRefreshing = false;
-let failedQueue = [];
-
-const processQueue = (error, token = null) => {
-  failedQueue.forEach((promise) => {
-    if (error) {
-      promise.reject(error);
-    } else {
-      promise.resolve(token);
-    }
-  });
-
-  failedQueue = [];
+  return userId == null ? null : String(userId);
 };
 
-// Interceptor odpowiedzi: obsługa 401 i silent refresh token
+const isAuthEndpoint = (url) => {
+  const path = (url ?? "").toLowerCase();
+
+  return (
+    path.includes("/users/login") ||
+    path.includes("/users/register") ||
+    path.includes("/users/refreshtoken")
+  );
+};
+
+// Dołączenie aktualnego tokenu przed wysłaniem żądania.
+apiClient.interceptors.request.use((config) => {
+  const token = getAccessToken();
+  const userId = getTokenUserId(token);
+
+  // Nie ponawiamy żądania poprzedniego użytkownika
+  // po wylogowaniu lub zmianie konta.
+  if (config._retry && config._authUserId !== userId) {
+    throw new axios.CanceledError("Sesja użytkownika zmieniła się.");
+  }
+
+  config._authUserId = userId;
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    delete config.headers.Authorization;
+  }
+
+  return config;
+});
+
+// Jedna próba ponowienia żądania po odpowiedzi 401.
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
+    const request = error.config;
 
-    // Jeśli brak odpowiedzi lub błąd inny niż 401, przekazujemy dalej
-    if (!error.response || error.response.status !== 401 || !originalRequest) {
-      return Promise.reject(error);
+    if (!request || error.response?.status !== 401) {
+      throw error;
     }
 
-    // Endpointy, dla których nie próbujemy odświeżać tokena
-    const isAuthEndpoint =
-      originalRequest.url?.includes("/users/login") ||
-      originalRequest.url?.includes("/users/register") ||
-      originalRequest.url?.includes("/users/refreshToken");
-
-    if (isAuthEndpoint || originalRequest._retry) {
-      clearTokens();
-      window.dispatchEvent(new CustomEvent("auth:unauthorized"));
-      return Promise.reject(error);
+    // Błędne logowanie nie powinno uruchamiać refreshu.
+    // Nie ponawiamy też żądania drugi raz.
+    if (isAuthEndpoint(request.url) || request._retry) {
+      throw error;
     }
 
-    const currentRefreshToken = getRefreshToken();
-    if (!currentRefreshToken) {
-      clearTokens();
-      window.dispatchEvent(new CustomEvent("auth:unauthorized"));
-      return Promise.reject(error);
+    const currentToken = getAccessToken();
+    const currentUserId = getTokenUserId(currentToken);
+
+    if (request._authUserId !== currentUserId) {
+      throw new axios.CanceledError("Sesja użytkownika zmieniła się.");
     }
 
-    if (isRefreshing) {
-      // Jeśli proces odświeżania już trwa, kolejka czeka na nowy token
-      return new Promise((resolve, reject) => {
-        failedQueue.push({ resolve, reject });
-      })
-        .then((newToken) => {
-          originalRequest.headers.Authorization = `Bearer ${newToken}`;
-          return apiClient(originalRequest);
-        })
-        .catch((err) => Promise.reject(err));
-    }
+    request._retry = true;
 
-    originalRequest._retry = true;
-    isRefreshing = true;
+    const rejectedAuthorization = request.headers.Authorization;
 
-    try {
-      // Bezpośrednie wywołanie axios, aby uniknąć pętli w interceptorze
-      const response = await axios.post(`${API_BASE_URL}/users/refreshToken`, {
-        refreshToken: currentRefreshToken,
-      });
+    // SignalR lub inne żądanie HTTP mogło już odświeżyć token.
+    const wasAlreadyRefreshed =
+      currentToken && rejectedAuthorization !== `Bearer ${currentToken}`;
 
-      const { accessUserToken, refreshUserToken } = response.data;
-      setTokens(accessUserToken, refreshUserToken);
+    const token = wasAlreadyRefreshed
+      ? currentToken
+      : await refreshAccessToken();
 
-      // Powiadomienie kontekstu React o zaktualizowanym tokenie
-      window.dispatchEvent(
-        new CustomEvent("auth:token-refreshed", {
-          detail: { token: accessUserToken },
-        })
-      );
+    request.headers.Authorization = `Bearer ${token}`;
 
-      processQueue(null, accessUserToken);
-
-      originalRequest.headers.Authorization = `Bearer ${accessUserToken}`;
-      return apiClient(originalRequest);
-    } catch (refreshError) {
-      processQueue(refreshError, null);
-      clearTokens();
-      window.dispatchEvent(new CustomEvent("auth:unauthorized"));
-      return Promise.reject(refreshError);
-    } finally {
-      isRefreshing = false;
-    }
-  }
+    return apiClient(request);
+  },
 );
 
 export default apiClient;

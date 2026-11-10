@@ -14,6 +14,7 @@ import {
   clearTokens,
   getUserFromToken,
 } from "../utils/tokenStorage";
+import { refreshAccessToken } from "../api/tokenService";
 
 const AuthContext = createContext(null);
 
@@ -62,39 +63,34 @@ export const AuthProvider = ({ children }) => {
         // Jeśli accessToken wygasł lub nie został zdekodowany, ale mamy refreshToken:
         if (savedRefreshToken) {
           try {
-            const data = await authService.refreshToken(savedRefreshToken);
-            const updatedUser = setTokens(
-              data.accessUserToken,
-              data.refreshUserToken,
-            );
-            setToken(data.accessUserToken);
-            const decodedUser = getUserFromToken(data.accessUserToken);
+            const refreshedToken = await refreshAccessToken();
+
+            if (getAccessToken() !== refreshedToken) {
+              return;
+            }
+            const updatedUser = getStoredUser();
+            const decodedUser = getUserFromToken(refreshedToken);
+
+            setToken(refreshedToken);
             setUser({
               ...updatedUser,
               ...(decodedUser || {}),
-              id: updatedUser.id || decodedUser?.id,
             });
+
             return;
           } catch {
-            clearTokens();
+            if (getRefreshToken() !== savedRefreshToken) {
+              return;
+            }
+
             setToken(null);
             setUser(null);
             return;
           }
         }
-
-        // Jeśli w localStorage jest już zapisany user z tokenem:
-        if (stored && savedToken) {
-          setUser(stored);
-          setToken(savedToken);
-          return;
-        }
-
-        if (!stored) {
-          clearTokens();
-          setToken(null);
-          setUser(null);
-        }
+        clearTokens();
+        setToken(null);
+        setUser(null);
       } finally {
         setIsInitialized(true);
       }

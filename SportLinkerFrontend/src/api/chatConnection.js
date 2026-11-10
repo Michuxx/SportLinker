@@ -4,7 +4,7 @@ import {
   LogLevel,
 } from "@microsoft/signalr";
 import apiClient from "./apiClient";
-import { getAccessToken } from "../utils/tokenStorage";
+import { getValidAccessToken } from "./tokenService";
 
 export const createChatConnection = () => {
   const apiUrl = new URL(apiClient.defaults.baseURL, window.location.origin);
@@ -13,7 +13,7 @@ export const createChatConnection = () => {
 
   return new HubConnectionBuilder()
     .withUrl(hubUrl, {
-      accessTokenFactory: () => getAccessToken() ?? "",
+      accessTokenFactory: async () => (await getValidAccessToken()) ?? "",
       transport: HttpTransportType.WebSockets,
     })
     .configureLogging(LogLevel.Information)
