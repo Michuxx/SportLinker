@@ -1,8 +1,11 @@
 ﻿using Application.Abstractions.Events;
+using Application.Messages.IntegrationEvents;
 using Domain.Abstractions;
 using Domain.Entities;
+using Infrastructure.Messaging.Outbox;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace Infrastructure.Database
 {
@@ -26,6 +29,7 @@ namespace Infrastructure.Database
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<ConversationParticipant> ConversationParticipants { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<OutboxMessage> OutboxMessages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
@@ -55,7 +59,43 @@ namespace Infrastructure.Database
                 }
             }
 
-            return await base.SaveChangesAsync(cancellationToken);
+            var newMessages = ChangeTracker
+                .Entries<Message>()
+                .Where(entry => entry.State == EntityState.Added)
+                .Select(entry => entry.Entity)
+                .ToArray();
+
+            if (newMessages.Length == 0)
+            {
+                return await base.SaveChangesAsync(cancellationToken);
+            }
+
+            await using var transaction = await Database.BeginTransactionAsync(cancellationToken);
+
+            var affectedRows = await base.SaveChangesAsync(cancellationToken);
+
+            foreach(var message in newMessages)
+            {
+                var integrationEvent = new MessageSentIntegrationEvent(
+                    MessageId: message.Id,
+                    ConversationId: message.ConversationId,
+                    SenderId: message.SenderId,
+                    ClientMessageId: message.ClientMessageId,
+                    Content: message.Content,
+                    SendAt: message.SendAt);
+
+                var outboxMessage = OutboxMessage.Create(
+                    type: MessageSentIntegrationEvent.EventType,
+                    payload: JsonSerializer.Serialize(integrationEvent),
+                    occurredAt: message.SendAt);
+
+                OutboxMessages.Add(outboxMessage);
+            }
+
+            affectedRows += await base.SaveChangesAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+
+            return affectedRows;
         }
     }
 }
