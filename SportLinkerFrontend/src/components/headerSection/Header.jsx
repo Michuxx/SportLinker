@@ -53,7 +53,8 @@ const Header = () => {
   const userDropdown = [
     {
       style: "classicDropdownOptionButton",
-      onClick: () => changeLocation(user?.id ? `/profile/userInfo/${user.id}` : "/"),
+      onClick: () =>
+        changeLocation(user?.id ? `/profile/userInfo/${user.id}` : "/"),
       text: "Mój profil",
       icon: <LuUser size={22} />,
     },
@@ -86,7 +87,6 @@ const Header = () => {
     <header>
       <div className="header-wrapper">
         <div className="header-logo" onClick={() => navigate("/")}>
-          <Logo />
           <Logotype />
         </div>
         <div className="btn-section" ref={dropdownRef}>

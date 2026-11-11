@@ -1,4 +1,4 @@
-import LogotypeImage from "/logotype.svg";
+import LogotypeImage from "/Logo_01.svg";
 
 const Logotype = () => {
   return (

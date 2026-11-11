@@ -6,6 +6,7 @@ import App from "./App.jsx";
 import { PrimeReactProvider } from "primereact/api";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
+import { ChatProvider } from "./context/ChatContext";
 
 const value = {
   hideOverlaysOnDocumentScrolling: true,
