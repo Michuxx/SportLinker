@@ -27,4 +27,21 @@ public sealed class OutboxMessage
             OccurredAt = occurredAt
         };
     }
+
+    public void RegisterAttempt()
+    {
+        Attempts++;
+        LastError = null;
+    }
+
+    public void MarkAsPublished()
+    {
+        ProcessedAt ??= DateTime.UtcNow;
+        LastError = null;
+    }
+
+    public void RecordFailure(string error)
+    {
+        LastError = error;
+    }
 }

@@ -43,6 +43,7 @@ namespace Infrastructure
             services.AddSingleton<IOutboxPublisher, RabbitMqOutboxPublisher>();
 
             services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.SectionName));
+            services.AddHostedService<OutboxProcessor>();
 
             return services;
         }
