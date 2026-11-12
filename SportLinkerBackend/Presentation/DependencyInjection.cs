@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Application.Abstractions.Messaging;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Presentation.Hubs;
 
@@ -11,6 +12,7 @@ namespace Presentation
         {
             services.AddSignalR();
             services.AddSingleton<IUserIdProvider, JwtUserIdProvider>();
+            services.AddSingleton<IChatNotifier, SignalRChatNotifier>();
             return services;
         }
     }

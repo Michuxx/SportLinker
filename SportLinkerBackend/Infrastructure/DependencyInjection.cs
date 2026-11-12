@@ -37,6 +37,7 @@ namespace Infrastructure
             services.AddScoped<IOfferRepository, OfferRepository>();
             services.AddScoped<IFriendshipRepository, FriendshipRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<MessageSentDispatcher>();
 
             services.AddSingleton<IJwtProvider, JwtProvider>();
             services.AddSingleton<ICurrentUser, CurrentUser>();
@@ -44,6 +45,7 @@ namespace Infrastructure
 
             services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.SectionName));
             services.AddHostedService<OutboxProcessor>();
+            services.AddHostedService<MessageSentConsumer>();
 
             return services;
         }
