@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Presentation.Hubs;
 
+
 namespace Presentation
 {
     public static class DependencyInjection

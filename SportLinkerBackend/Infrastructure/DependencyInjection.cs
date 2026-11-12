@@ -6,6 +6,8 @@ using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
 using Infrastructure.Authentication;
 using Infrastructure.Database;
+using Infrastructure.Messaging.Outbox;
+using Infrastructure.Messaging.RabbitMq;
 using Infrastructure.Repositories;
 using Infrastructure.Security;
 using Infrastructure.Storage;
@@ -38,6 +40,9 @@ namespace Infrastructure
 
             services.AddSingleton<IJwtProvider, JwtProvider>();
             services.AddSingleton<ICurrentUser, CurrentUser>();
+            services.AddSingleton<IOutboxPublisher, RabbitMqOutboxPublisher>();
+
+            services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.SectionName));
 
             return services;
         }
