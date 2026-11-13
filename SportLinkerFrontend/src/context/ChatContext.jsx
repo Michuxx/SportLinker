@@ -1,4 +1,11 @@
-import { createContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 import { HubConnectionState } from "@microsoft/signalr";
 import useAuth from "../hooks/useAuth";
 import { createChatConnection } from "../api/chatConnection";
@@ -15,6 +22,15 @@ export const ChatProvider = ({ children }) => {
   const [connectionError, setConnectionError] = useState(null);
 
   const userId = user?.id;
+
+  const messageListeners = useRef(new Set());
+
+  const subscribeMessages = useCallback((listener) => {
+    messageListeners.current.add(listener);
+    return () => {
+      messageListeners.current.delete(listener);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isInitialized || !isAuthenticated || !userId) {
@@ -77,6 +93,18 @@ export const ChatProvider = ({ children }) => {
       }
     };
 
+    chatConnection.on("MessageReceived", (notification) => {
+      if (disposed) return;
+
+      for (const listener of messageListeners.current) {
+        try {
+          listener(notification);
+        } catch (error) {
+          console.error("Błąd obsługi MessageReceived:", error);
+        }
+      }
+    });
+
     void startConnection();
 
     return () => {
@@ -94,8 +122,9 @@ export const ChatProvider = ({ children }) => {
       connectionState,
       connectionError,
       isConnected: connectionState === HubConnectionState.Connected,
+      subscribeMessages,
     }),
-    [connection, connectionState, connectionError],
+    [connection, connectionState, connectionError, subscribeMessages],
   );
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
