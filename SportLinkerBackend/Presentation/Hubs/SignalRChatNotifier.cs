@@ -19,4 +19,26 @@ public sealed class SignalRChatNotifier(IHubContext<ChatHub> hubContext) : IChat
                 notification,
                 cancellationToken);
     }
+
+    public Task NotifyPresenceChangedAsync(
+    IReadOnlyCollection<int> recipientUserIds,
+    UserPresenceChangedDto notification,
+    CancellationToken cancellationToken)
+    {
+        if (recipientUserIds.Count == 0)
+        {
+            return Task.CompletedTask;
+        }
+
+        var identifiers = recipientUserIds
+            .Select(id => id.ToString(CultureInfo.InvariantCulture))
+            .ToArray();
+
+        return hubContext.Clients
+            .Users(identifiers)
+            .SendAsync(
+                "UserPresenceChanged",
+                notification,
+                cancellationToken);
+    }
 }

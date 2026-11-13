@@ -40,6 +40,7 @@ namespace Infrastructure
             services.AddScoped<IFriendshipRepository, FriendshipRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<MessageSentDispatcher>();
+            services.AddScoped<IUserLastSeenWriter, UserLastSeenWriter>();
 
             services.AddSingleton<IJwtProvider, JwtProvider>();
             services.AddSingleton<ICurrentUser, CurrentUser>();

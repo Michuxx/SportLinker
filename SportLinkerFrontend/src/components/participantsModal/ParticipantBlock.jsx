@@ -1,14 +1,9 @@
-import useDifferenceDates from "../../hooks/useDifferenceDates";
+import useLastActive from "../../hooks/useLastActive";
 import OnlineAvatar from "../component-items/avatar/OnlineAvatar";
 import "./participantsModal.css";
 
 const ParticipantBlock = ({ participant }) => {
-  const formattedDate = useDifferenceDates(participant.lastTimeOnline);
-
-  const formattedDateText =
-    formattedDate !== 0
-      ? `Ostatnio aktywny ${formattedDate} dni temu`
-      : `Ostatnio dzisiaj online`;
+  const lastActive = useLastActive(participant.lastTimeOnline);
 
   return (
     <div className="patricipant-block-wrapper">
@@ -17,7 +12,7 @@ const ParticipantBlock = ({ participant }) => {
       </div>
       <div className="participant-block-info">
         <h5>{participant.name}</h5>
-        <p>{participant.isOnline ? "Online" : formattedDateText}</p>
+        <p>{participant.isOnline ? "Online" : lastActive ?? "Brak danych o aktywności"}</p>
       </div>
     </div>
   );

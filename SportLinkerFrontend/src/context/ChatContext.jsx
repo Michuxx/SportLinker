@@ -24,6 +24,15 @@ export const ChatProvider = ({ children }) => {
   const userId = user?.id;
 
   const messageListeners = useRef(new Set());
+  const presenceListeners = useRef(new Set());
+
+  const subscribePresence = useCallback((listener) => {
+    presenceListeners.current.add(listener);
+
+    return () => {
+      presenceListeners.current.delete(listener);
+    };
+  }, []);
 
   const subscribeMessages = useCallback((listener) => {
     messageListeners.current.add(listener);
@@ -105,6 +114,18 @@ export const ChatProvider = ({ children }) => {
       }
     });
 
+    chatConnection.on("UserPresenceChanged", (notification) => {
+      if (disposed) return;
+
+      for (const listener of presenceListeners.current) {
+        try {
+          listener(notification);
+        } catch (error) {
+          console.error("Błąd obsługi UserPresenceChanged:", error);
+        }
+      }
+    });
+
     void startConnection();
 
     return () => {
@@ -123,8 +144,15 @@ export const ChatProvider = ({ children }) => {
       connectionError,
       isConnected: connectionState === HubConnectionState.Connected,
       subscribeMessages,
+      subscribePresence,
     }),
-    [connection, connectionState, connectionError, subscribeMessages],
+    [
+      connection,
+      connectionState,
+      connectionError,
+      subscribeMessages,
+      subscribePresence,
+    ],
   );
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

@@ -23,7 +23,7 @@ import useChat from "./useChat";
 const useMessaging = (user) => {
   const userId = user?.id;
   const { showToast } = useToast();
-  const { subscribeMessages } = useChat();
+  const { subscribeMessages, subscribePresence } = useChat();
   const [state, dispatch] = useReducer(
     messagingReducer,
     userId,
@@ -108,7 +108,8 @@ const useMessaging = (user) => {
         notification.conversationId <= 0 ||
         !Number.isInteger(notification?.message?.id) ||
         notification.message.id <= 0
-      ) return;
+      )
+        return;
 
       dispatch({
         type: "message/received",
@@ -118,6 +119,23 @@ const useMessaging = (user) => {
       });
     });
   }, [userId, subscribeMessages]);
+
+  useEffect(() => {
+    const session = sessionRef.current;
+
+    if (!userId || !session) return;
+
+    return subscribePresence(() => {
+      if (session !== sessionRef.current || session.controller.signal.aborted) {
+        return;
+      }
+
+      dispatch({
+        type: "presence/changed",
+        userId,
+      });
+    });
+  }, [userId, subscribePresence]);
 
   useEffect(() => {
     const session = sessionRef.current;

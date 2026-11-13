@@ -14,4 +14,5 @@ public interface IFriendshipRepository
     void RemoveFriendship(Friendship friendship);
     void AddFriendRequest(FriendRequest friendRequest);
     void RemoveFriendRequest(FriendRequest friendRequest);
+    Task<List<int>> GetFriendIdsAsync(int userId, CancellationToken cancellationToken);
 }

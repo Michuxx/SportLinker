@@ -1,4 +1,4 @@
-import useDifferenceDates from "../../../hooks/useDifferenceDates";
+import useLastActive from "../../../hooks/useLastActive";
 import OnlineAvatar from "../avatar/OnlineAvatar";
 import FriendDropdown from "../dropdown/friendDropdown/FriendDropdown";
 import "./chatFriendButton.css";
@@ -11,12 +11,7 @@ const ChatFriendButton = ({
   openWarningModal,
   image,
 }) => {
-  const formattedDate = useDifferenceDates(date);
-
-  const formattedDateText =
-    formattedDate !== 0
-      ? `Ostatnio aktywny ${formattedDate} dni temu`
-      : `Ostatnio dzisiaj online`;
+  const lastActive = useLastActive(date);
 
   return (
     <div
@@ -33,7 +28,7 @@ const ChatFriendButton = ({
         <div className="chat-friend-info-wrapper">
           <div className="chat-friend-info">
             <h3>{name}</h3>
-            <span>{isOnline ? "Online" : date ? formattedDateText : "Znajomy"}</span>
+            <span>{isOnline ? "Online" : lastActive ?? "Znajomy"}</span>
           </div>
         </div>
       </div>

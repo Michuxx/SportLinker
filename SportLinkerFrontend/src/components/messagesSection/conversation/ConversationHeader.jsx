@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useDifferenceDates from "../../../hooks/useDifferenceDates";
+import useLastActive from "../../../hooks/useLastActive";
 import OnlineAvatar from "../../component-items/avatar/OnlineAvatar";
 import Button from "../../component-items/button/button";
 import ModalBackground from "../../component-items/modal/ModalBackground";
@@ -10,8 +10,8 @@ import "./conversation.css";
 
 const ConversationHeader = ({ chatUser, images = {}, onRefresh, onDeleteHistory, canDeleteHistory, isBusy }) => {
   const [showParticipants, setShowParticipants] = useState(false);
-  const days = useDifferenceDates(chatUser.lastTimeOnline);
-  const status = chatUser.type === "group" ? "Rozmowa grupowa" : chatUser.isOnline ? "Online" : chatUser.lastTimeOnline ? `Ostatnio aktywny: ${days} dni temu` : "Rozmowa prywatna";
+  const lastActive = useLastActive(chatUser.lastTimeOnline);
+  const status = chatUser.type === "group" ? "Rozmowa grupowa" : chatUser.isOnline ? "Online" : lastActive ?? "Rozmowa prywatna";
   return (
     <div className="conversation-header-wrapper">
       <div className="avatar-info-wrapper">

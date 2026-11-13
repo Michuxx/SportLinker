@@ -50,4 +50,21 @@ internal sealed class FriendshipRepository(ApplicationDbContext dbContext)
             r => r.Id == friendRequestId,
             cancellationToken);
     }
+
+    public Task<List<int>> GetFriendIdsAsync(
+    int userId,
+    CancellationToken cancellationToken)
+    {
+        return dbContext.Friendships
+            .AsNoTracking()
+            .Where(friendship =>
+                friendship.FirstUserId == userId ||
+                friendship.SecondUserId == userId)
+            .Select(friendship =>
+                friendship.FirstUserId == userId
+                    ? friendship.SecondUserId
+                    : friendship.FirstUserId)
+            .Distinct()
+            .ToListAsync(cancellationToken);
+    }
 }

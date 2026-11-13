@@ -63,18 +63,45 @@ export const messagingReducer = (state, action) => {
       action.list === "conversations" && state.activeChat?.id
         ? items.find((item) => item.id === state.activeChat.id)
         : null;
+    const refreshedDraftFriend =
+      action.list === "friends" &&
+      state.activeChat?.type === "private" &&
+      !state.activeChat.id
+        ? items.find(
+            (friend) =>
+              String(friend.userId) ===
+              String(state.activeChat.recipientUserId),
+          )
+        : null;
     return {
       ...state,
       [action.list]: items,
+      lists: { ...state.lists, [action.list]: "ready" },
       removedConversations:
         action.list === "conversations" ? removed : state.removedConversations,
       activeChat: refreshedChat
         ? { ...state.activeChat, ...refreshedChat }
-        : state.activeChat,
-      lists: { ...state.lists, [action.list]: "ready" },
+        : refreshedDraftFriend
+          ? {
+              ...state.activeChat,
+              isOnline: refreshedDraftFriend.isOnline,
+              lastTimeOnline: refreshedDraftFriend.lastTimeOnline,
+            }
+          : state.activeChat,
     };
   }
   if (action.type === "select") return { ...state, activeChat: action.chat };
+
+  if (action.type === "presence/changed") {
+    if (String(action.userId) !== String(state.userId)) {
+      return state;
+    }
+
+    return {
+      ...state,
+      realtimeVersion: state.realtimeVersion + 1,
+    };
+  }
 
   if (action.type === "message/received") {
     if (String(action.userId) !== String(state.userId)) {

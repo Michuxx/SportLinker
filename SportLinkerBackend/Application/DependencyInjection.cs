@@ -1,5 +1,6 @@
 using Application.Abstractions.Behaviors;
 using Application.Messages.Policies;
+using Application.Messages.Presence;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +22,8 @@ namespace Application
             services.AddValidatorsFromAssembly(assembly);
 
             services.AddScoped<IPrivateMessagingPolicy, PrivateMessagingPolicy>();
+            services.AddScoped<UserPresenceNotifications>();
+            services.AddScoped<ConversationTypingAccess>();
 
             return services;
         }

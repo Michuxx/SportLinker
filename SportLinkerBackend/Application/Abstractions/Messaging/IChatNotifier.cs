@@ -8,5 +8,10 @@ namespace Application.Abstractions.Messaging
             int recipientUserId,
             MessageReceivedDto notification,
             CancellationToken cancellationToken);
+
+        Task NotifyPresenceChangedAsync(
+            IReadOnlyCollection<int> recipientUserIds,
+            UserPresenceChangedDto notification,
+            CancellationToken cancellationToken);
     }
 }
