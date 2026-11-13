@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
+using Application.Abstractions.Messaging;
 using Application.Messages.Dtos;
 using Dapper;
 using Domain.Enums;
@@ -11,10 +12,12 @@ namespace Application.Messages.GetUserConversations
     {
         private readonly ICurrentUser _currentUser;
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
-        public GetUserConvesationsQueryHandler(ICurrentUser currentUser, ISqlConnectionFactory sqlConnectionFactory)
+        private readonly IUserPresenceStore _userPresenceStore;
+        public GetUserConvesationsQueryHandler(ICurrentUser currentUser, ISqlConnectionFactory sqlConnectionFactory, IUserPresenceStore userPresenceStore)
         {
             _currentUser = currentUser;
             _sqlConnectionFactory = sqlConnectionFactory;
+            _userPresenceStore = userPresenceStore;
         }
 
         public async Task<List<UserConversationDto>> Handle(GetUserConversationsQuery query, CancellationToken cancellationToken)
@@ -32,11 +35,6 @@ namespace Application.Messages.GetUserConversations
 
                 recipient.Images_ProfileImage AS ImageUrl,
                 recipient.Id AS RecipientUserId,
-
-                CASE
-                    WHEN c.Type = @PrivateType THEN CAST(0 AS bit)
-                    ELSE NULL
-                END AS IsOnline,
 
                 recipient.LastSeenAt AS LastTimeOnline,
 
@@ -162,6 +160,12 @@ namespace Application.Messages.GetUserConversations
 
             foreach (var conversation in conversations)
             {
+                conversation.IsOnline =
+                    conversation.Type == ConversationType.Private
+                    && conversation.RecipientUserId is int recipientId
+                        ? _userPresenceStore.IsOnline(recipientId)
+                        : null;
+
                 if (conversation.LastMessageTime is DateTime messageTime)
                 {
                     conversation.LastMessageTime =

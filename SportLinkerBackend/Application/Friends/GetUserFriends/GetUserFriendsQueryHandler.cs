@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
+using Application.Abstractions.Messaging;
 using Application.Friends.Dtos;
 using Dapper;
 using Domain.Enums;
@@ -11,11 +12,13 @@ namespace Application.Friends.GetUserFriends
     {
         private readonly ICurrentUser _currentUser;
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
+        private readonly IUserPresenceStore _userPresenceStore;
 
-        public GetUserFriendsQueryHandler(ICurrentUser currentUser, ISqlConnectionFactory sqlConnectionFactory)
+        public GetUserFriendsQueryHandler(ICurrentUser currentUser, ISqlConnectionFactory sqlConnectionFactory, IUserPresenceStore userPresenceStore)
         {
             _currentUser = currentUser;
             _sqlConnectionFactory = sqlConnectionFactory;
+            _userPresenceStore = userPresenceStore;
         }
 
         public async Task<List<UserFriendDto>> Handle(GetUserFriendsQuery query, CancellationToken cancellationToken)
@@ -28,7 +31,6 @@ namespace Application.Friends.GetUserFriends
                 u.PersonalData_Name AS Name,
                 u.Images_ProfileImage AS ImageUrl,
                 c.Id AS ConversationId,
-                CAST(0 AS bit) AS IsOnline,
                 u.LastSeenAt AS LastTimeOnline
             FROM Friendships f
             INNER JOIN Users u
@@ -65,6 +67,8 @@ namespace Application.Friends.GetUserFriends
 
             foreach (var friend in friends)
             {
+                friend.IsOnline = _userPresenceStore.IsOnline(friend.UserId);
+
                 if (friend.LastTimeOnline is DateTime lastTimeOnline)
                 {
                     friend.LastTimeOnline = DateTime.SpecifyKind(
