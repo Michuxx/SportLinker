@@ -73,11 +73,6 @@ namespace Domain.Entities
 
         public Result<bool> SendMessage(int senderId, string content, Guid clientMessageId)
         {
-            if(string.IsNullOrWhiteSpace(content))
-            {
-                return Result<bool>.Failure(MessageErrors.InvalidMessageContent);
-            }
-
             if(clientMessageId == Guid.Empty)
             {
                 return Result<bool>.Failure(MessageErrors.InvalidClientMessageId);

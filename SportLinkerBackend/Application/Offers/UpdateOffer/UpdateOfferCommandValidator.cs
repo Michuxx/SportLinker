@@ -1,5 +1,4 @@
-﻿using Domain.Enums;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Application.Offers.UpdateOffer
 {
