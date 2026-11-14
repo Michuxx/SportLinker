@@ -2,10 +2,12 @@ import "./conversation.css";
 import Message from "./message/Message";
 import { useLayoutEffect, useRef } from "react";
 import MessagingFeedback from "../messagingFeedback/MessagingFeedback";
+import ConversationTyping from "./conversationTyping/ConversationTyping";
 
 const ConversationContent = ({
   messages,
   images = {},
+  typingUsers = [],
   thread,
   onRetry,
   onLoadOlder,
@@ -13,7 +15,8 @@ const ConversationContent = ({
   isSending,
 }) => {
   const containerRef = useRef(null);
-  const previous = useRef({ first: null, last: null, height: 0, count: 0 });
+  const previous = useRef({ first: null, last: null, height: 0, count: 0, typingCount: 0 });
+  const isAtBottom = useRef(true);
   const previousScrollTop = useRef(0);
   const loadingOlder = useRef(false);
 
@@ -41,6 +44,7 @@ const ConversationContent = ({
     const container = event.currentTarget;
     const movingUp = container.scrollTop < previousScrollTop.current;
     previousScrollTop.current = container.scrollTop;
+    isAtBottom.current = container.scrollHeight - container.clientHeight - container.scrollTop <= 40;
     if (
       movingUp &&
       container.scrollTop <= 80 &&
@@ -61,16 +65,18 @@ const ConversationContent = ({
       last === previous.current.last
     ) {
       container.scrollTop += container.scrollHeight - previous.current.height;
-    } else if (last !== previous.current.last)
+    } else if (last !== previous.current.last || (typingUsers.length !== previous.current.typingCount && isAtBottom.current))
       container.scrollTop = container.scrollHeight;
     previousScrollTop.current = container.scrollTop;
+    isAtBottom.current = container.scrollHeight - container.clientHeight - container.scrollTop <= 40;
     previous.current = {
       first,
       last,
       height: container.scrollHeight,
       count: messages.length,
+      typingCount: typingUsers.length,
     };
-  }, [messages]);
+  }, [messages, typingUsers.length]);
   return (
     <div
       className="conversation-content-wrapper"
@@ -114,6 +120,7 @@ const ConversationContent = ({
           disabled={isSending}
         />
       ))}
+      <ConversationTyping users={typingUsers} images={images} />
     </div>
   );
 };

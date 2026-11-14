@@ -1,4 +1,5 @@
 using Application.Abstractions.Data;
+using Application.Messages.Dtos;
 using Dapper;
 using Domain.Enums;
 
@@ -7,7 +8,7 @@ namespace Application.Messages.Presence;
 // Odczyt uprawnień do krótkotrwałych powiadomień, bez ładowania historii rozmowy.
 public sealed class ConversationTypingAccess(ISqlConnectionFactory connectionFactory)
 {
-    public async Task<IReadOnlyList<int>> GetRecipientsAsync(
+    public async Task<IReadOnlyList<TypingRecipientDto>> GetRecipientsAsync(
         int conversationId,
         int senderId,
         CancellationToken cancellationToken)
@@ -15,10 +16,14 @@ public sealed class ConversationTypingAccess(ISqlConnectionFactory connectionFac
         using var connection = connectionFactory.CreateConnection();
 
         const string sql = """
-            SELECT DISTINCT recipient.UserId
+            SELECT DISTINCT
+                recipient.UserId,
+                COALESCE(senderUser.PersonalData_Name, N'Użytkownik') AS SenderName
             FROM Conversations c
             INNER JOIN ConversationParticipants recipient
                 ON recipient.ConversationId = c.Id
+            INNER JOIN Users senderUser
+                ON senderUser.Id = @SenderId
             WHERE c.Id = @ConversationId
               AND recipient.LeftAt IS NULL
               AND recipient.UserId <> @SenderId
@@ -46,6 +51,6 @@ public sealed class ConversationTypingAccess(ISqlConnectionFactory connectionFac
             PrivateType = ConversationType.Private.ToString()
         }, cancellationToken: cancellationToken);
 
-        return (await connection.QueryAsync<int>(command)).ToList();
+        return (await connection.QueryAsync<TypingRecipientDto>(command)).ToList();
     }
 }

@@ -19,6 +19,7 @@ import {
 } from "../utils/messagingState";
 import useChatImages from "./useChatImages";
 import useChat from "./useChat";
+import useConversationTyping from "./useConversationTyping";
 
 const useMessaging = (user) => {
   const userId = user?.id;
@@ -190,12 +191,14 @@ const useMessaging = (user) => {
   const activeChat = current ? state.activeChat : null;
   const activeKey = activeChat ? chatKey(activeChat) : null;
   const thread = state.threads[activeKey] ?? emptyThread();
+  const typing = useConversationTyping(activeChat);
   const images = useChatImages({
     user,
     friends: current ? state.friends : [],
     conversations: current ? state.conversations : [],
     messages: current ? thread.items : [],
     activeChat,
+    typingUsers: typing.typingUsers,
   });
   useEffect(() => {
     if (activeChat?.id && !thread.loaded && !thread.loading && !thread.error)
@@ -362,6 +365,7 @@ const useMessaging = (user) => {
   };
 
   return {
+    ...typing,
     canDeleteHistory: canDeleteConversation(
       activeChat,
       state.friends,

@@ -1,0 +1,59 @@
+.conversation-typing {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+}
+
+.conversation-typing-people {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+
+.conversation-typing-person {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.conversation-typing-bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 3.25rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  border-radius: 1rem 1rem 1rem 0.375rem;
+  background: #e8edf5;
+}
+
+.conversation-typing-bubble i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #64748b;
+  animation: conversation-typing-bounce 1.2s ease-in-out infinite;
+}
+
+.conversation-typing-bubble i:nth-child(2) { animation-delay: 0.15s; }
+.conversation-typing-bubble i:nth-child(3) { animation-delay: 0.3s; }
+
+.conversation-typing-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes conversation-typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30% { transform: translateY(-3px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conversation-typing-bubble i { animation: none; }
+}

@@ -28,14 +28,16 @@ public sealed class ChatHub(
 
         if (recipients.Count == 0) return;
 
-        await Clients.Users(recipients.Select(id => id.ToString(
-                System.Globalization.CultureInfo.InvariantCulture)))
-            .SendAsync("TypingChanged", new
-            {
-                ConversationId = conversationId,
-                UserId = userId,
-                IsTyping = isTyping
-            }, Context.ConnectionAborted);
+        await Clients.Users(recipients.Select(recipient =>
+        recipient.UserId.ToString(
+            System.Globalization.CultureInfo.InvariantCulture)))
+        .SendAsync("TypingChanged", new
+        {
+            ConversationId = conversationId,
+            UserId = userId,
+            SenderName = recipients[0].SenderName,
+            IsTyping = isTyping
+        }, Context.ConnectionAborted);
     }
 
     public override async Task OnConnectedAsync()

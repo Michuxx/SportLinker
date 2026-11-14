@@ -4,10 +4,27 @@ import useChat from "./useChat";
 import useAuth from "./useAuth";
 
 const reducer = (state, action) => {
-  if (action.type === "reset") return { conversationId: action.conversationId, users: [] };
-  if (state.conversationId !== action.conversationId) return state;
-  const users = state.users.filter((id) => id !== action.userId);
-  return { ...state, users: action.isTyping ? [...users, action.userId] : users };
+  if (action.type === "reset") {
+    return {
+      conversationId: action.conversationId,
+      users: [],
+    };
+  }
+
+  if (state.conversationId !== action.conversationId) {
+    return state;
+  }
+
+  if (!action.isTyping) return { ...state, users: state.users.filter((user) => user.userId !== action.userId) };
+  const existing = state.users.find((user) => user.userId === action.userId);
+  if (existing?.senderName === action.senderName) return state;
+  const person = { userId: action.userId, senderName: action.senderName };
+  return {
+    ...state,
+    users: existing
+      ? state.users.map((user) => user.userId === action.userId ? person : user)
+      : [...state.users, person],
+  };
 };
 
 // Sygnały wygasają również wtedy, gdy druga przeglądarka utraci połączenie.
@@ -17,7 +34,10 @@ const useConversationTyping = (chat) => {
   const userId = Number(user?.id);
   const conversationId = chat?.id;
   const enabled = Boolean(conversationId && chat?.canSendMessages !== false);
-  const [state, dispatch] = useReducer(reducer, { conversationId: null, users: [] });
+  const [state, dispatch] = useReducer(reducer, {
+    conversationId: null,
+    users: [],
+  });
   const outgoing = useRef(null);
 
   useEffect(() => {
@@ -31,9 +51,11 @@ const useConversationTyping = (chat) => {
 
     const send = (isTyping) => {
       if (connection.state !== HubConnectionState.Connected) return;
-      void connection.invoke("SetTyping", conversationId, isTyping).catch((error) => {
-        console.warn("SignalR: nie udało się przesłać stanu pisania", error);
-      });
+      void connection
+        .invoke("SetTyping", conversationId, isTyping)
+        .catch((error) => {
+          console.warn("SignalR: nie udało się przesłać stanu pisania", error);
+        });
     };
 
     const stop = () => {
@@ -44,7 +66,10 @@ const useConversationTyping = (chat) => {
     };
 
     const update = (text) => {
-      if (!text.trim()) { stop(); return; }
+      if (!text.trim()) {
+        stop();
+        return;
+      }
       const now = Date.now();
       if (!sending || now - lastSentAt >= 2000) {
         send(true);
@@ -60,22 +85,43 @@ const useConversationTyping = (chat) => {
     const clearUser = (id) => {
       clearTimeout(expiryTimers.get(id));
       expiryTimers.delete(id);
-      dispatch({ type: "changed", conversationId, userId: id, isTyping: false });
+      dispatch({
+        type: "changed",
+        conversationId,
+        userId: id,
+        isTyping: false,
+      });
     };
 
     const receive = (notification) => {
       const id = Number(notification?.userId);
-      if (notification?.conversationId !== conversationId || id === userId || !Number.isInteger(id) || id <= 0) return;
-      clearUser(id);
+      if (
+        notification?.conversationId !== conversationId ||
+        id === userId ||
+        !Number.isInteger(id) ||
+        id <= 0
+      )
+        return;
       if (notification.isTyping === true) {
-        dispatch({ type: "changed", conversationId, userId: id, isTyping: true });
-        expiryTimers.set(id, setTimeout(() => clearUser(id), 4000));
-      }
+        clearTimeout(expiryTimers.get(id));
+        dispatch({
+          type: "changed",
+          conversationId,
+          userId: id,
+          senderName: notification.senderName || "Użytkownik",
+          isTyping: true,
+        });
+        expiryTimers.set(
+          id,
+          setTimeout(() => clearUser(id), 4000),
+        );
+      } else clearUser(id);
     };
 
     connection.on("TypingChanged", receive);
     const unsubscribe = subscribeMessages((notification) => {
-      if (notification.conversationId === conversationId) clearUser(Number(notification.message?.senderId));
+      if (notification.conversationId === conversationId)
+        clearUser(Number(notification.message?.senderId));
     });
 
     return () => {
@@ -85,13 +131,30 @@ const useConversationTyping = (chat) => {
       unsubscribe();
       for (const timer of expiryTimers.values()) clearTimeout(timer);
     };
-  }, [connection, isConnected, conversationId, userId, enabled, subscribeMessages]);
+  }, [
+    connection,
+    isConnected,
+    conversationId,
+    userId,
+    enabled,
+    subscribeMessages,
+  ]);
 
-  const updateTyping = useCallback((text) => outgoing.current?.update(text), []);
+  const updateTyping = useCallback(
+    (text) => outgoing.current?.update(text),
+    [],
+  );
   const stopTyping = useCallback(() => outgoing.current?.stop(), []);
-  const typingCount = enabled && isConnected && state.conversationId === conversationId ? state.users.length : 0;
+  const typingUsers =
+    enabled && isConnected && state.conversationId === conversationId
+      ? state.users
+      : [];
 
-  return { typingCount, updateTyping, stopTyping };
+  return {
+    typingUsers,
+    updateTyping,
+    stopTyping,
+  };
 };
 
 export default useConversationTyping;

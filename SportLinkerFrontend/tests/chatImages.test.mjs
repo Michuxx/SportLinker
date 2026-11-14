@@ -40,3 +40,12 @@ test("empty DTO photo fields do not discard an image already known from another 
   });
   assert.equal(result.known[12], "/friend.webp");
 });
+
+test("typing users get their photo before they send their first group message", () => {
+  const result = collectChatImages({ ...base,
+    activeChat: { id: 150, type: "group" },
+    typingUsers: [{ userId: 12, senderName: "Anna" }, { userId: 13, senderName: "Piotr", senderImageUrl: "/piotr.webp" }, { userId: 12, senderName: "Anna" }],
+  });
+  assert.deepEqual(result.ids, ["12", "13", "2"]);
+  assert.equal(result.known[13], "/piotr.webp");
+});

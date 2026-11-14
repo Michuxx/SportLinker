@@ -2,9 +2,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import userService from "../api/userService";
 import { collectChatImages } from "../utils/chatImages";
 
-const useChatImages = ({ user, friends, conversations, messages, activeChat }) => {
+const useChatImages = ({ user, friends, conversations, messages, activeChat, typingUsers = [] }) => {
   const userId = user?.id;
-  const sources = useMemo(() => collectChatImages({ user, friends, conversations, messages, activeChat }), [user, friends, conversations, messages, activeChat]);
+  const sources = useMemo(() => collectChatImages({ user, friends, conversations, messages, activeChat, typingUsers }), [user, friends, conversations, messages, activeChat, typingUsers]);
   const [cache, setCache] = useState({ userId: null, images: {} });
   const sessionRef = useRef(null);
 

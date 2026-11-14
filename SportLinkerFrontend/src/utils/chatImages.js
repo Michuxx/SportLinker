@@ -1,6 +1,6 @@
 const validId = (value) => Number.isInteger(Number(value)) && Number(value) > 0;
 
-export const collectChatImages = ({ user, friends, conversations, messages, activeChat }) => {
+export const collectChatImages = ({ user, friends, conversations, messages, activeChat, typingUsers = [] }) => {
   const ids = new Set();
   const known = {};
   const add = (id, image) => {
@@ -13,6 +13,7 @@ export const collectChatImages = ({ user, friends, conversations, messages, acti
   conversations.filter((chat) => chat.type === "private").forEach((chat) => add(chat.recipientUserId, chat.imageUrl));
   if (activeChat?.type === "private") add(activeChat.recipientUserId, activeChat.imageUrl);
   messages.forEach((message) => add(message.senderId, message.senderImageUrl));
+  typingUsers.forEach((person) => add(person.userId, person.senderImageUrl));
   add(user?.id, user?.profileImage ?? user?.imageUrl);
   return { ids: [...ids].sort(), known };
 };
