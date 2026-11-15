@@ -5,7 +5,7 @@ using Domain.Enums;
 
 namespace Application.Offers.SearchOffers
 {
-    public sealed record SearchOffersQuery(
+    public sealed record SearchOfferQuery(
         int? UserId, 
         string? Search, 
         int? SportId,
@@ -14,7 +14,7 @@ namespace Application.Offers.SearchOffers
         DateTimeOffset? DateToExclusive, 
         int? MinParticipants, 
         int? MaxParticipants,
-        LevelEnum Level = LevelEnum.Any,
+        LevelEnum? Level,
         int Page = 1, 
         int PageSize = 12,
         SortOrderEnum SortOrder = SortOrderEnum.ASC,

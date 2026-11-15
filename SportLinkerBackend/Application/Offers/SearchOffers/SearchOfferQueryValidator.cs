@@ -2,7 +2,7 @@
 
 namespace Application.Offers.SearchOffers
 {
-    public sealed class SearchOfferQueryValidator : AbstractValidator<SearchOffersQuery>
+    public sealed class SearchOfferQueryValidator : AbstractValidator<SearchOfferQuery>
     {
         public SearchOfferQueryValidator()
         {
