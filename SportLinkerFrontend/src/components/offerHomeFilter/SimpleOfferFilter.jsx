@@ -14,7 +14,7 @@ const SimpleOfferFilter = ({ filter, onChangeFilter }) => {
           name="title"
           value={filter.title}
           onChange={(e) => onChangeFilter(e)}
-          placeholder="Szukaj w ofertach..."
+          placeholder="Szukaj w tytułach lub opisach..."
           type="text"
           icon={<IoSearchOutline color="rgb(156 163 175)" size="20px" />}
           width={97}
@@ -34,7 +34,7 @@ const SimpleOfferFilter = ({ filter, onChangeFilter }) => {
       <InputField label="Lokalizacja">
         <Input
           value={filter.location}
-          placeholder="np. Warszawa"
+          placeholder="Fragment miasta lub województwa"
           name="location"
           onChange={(e) => onChangeFilter(e)}
           type="text"
