@@ -50,7 +50,9 @@ namespace Application.Messages.ReadMessage
                 LastReadAt = participant.LastReadAt,
                 JoinedAt = participant.JoinedAt,
                 LeftAt = participant.LeftAt,
-                LastReadMessageSendAt = participant.LastReadMessage?.SendAt
+                LastReadMessageSendAt = participant.LastReadMessage?.SendAt,
+                LastReadMessageClientMessageId = participant.LastReadMessage?.ClientMessageId,
+                LastReadMessageSenderId = participant.LastReadMessage?.SenderId
             };
 
             try

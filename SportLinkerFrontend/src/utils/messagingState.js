@@ -4,6 +4,7 @@ import {
   withConversationPreview,
   sameMessage,
   sortConversations,
+  confirmMessagesFromReads,
 } from "./messaging.js";
 import { compareMessagePositions, isMessageReadBy, mergeReadStates, normalizeReadState, unreadAfterReads } from "./conversationReads.js";
 
@@ -12,18 +13,26 @@ const applyReads = (state, id, incoming, snapshot = false) => {
   const thread = state.threads[key] ?? emptyThread();
   const previous = thread.readStates ?? [];
   const readStates = mergeReadStates(previous, incoming);
+  const items = confirmMessagesFromReads(thread.items, readStates);
   const ownPrevious = previous.some((read) => String(read.userId) === String(state.userId));
-  const messages = snapshot && !ownPrevious ? thread.receivedMessages ?? [] : thread.items;
+  const messages = snapshot && !ownPrevious ? thread.receivedMessages ?? [] : items;
   const revision = state.revision + 1;
-  const update = (chat) => chat?.id === id ? {
-    ...chat, revision,
-    unreadCount: unreadAfterReads(chat, messages, previous, readStates, state.userId),
-  } : chat;
+  const update = (chat) => {
+    if (chat?.id !== id) return chat;
+    const updated = { ...chat, revision,
+      unreadCount: unreadAfterReads(chat, messages, previous, readStates, state.userId) };
+    const preview = chat.lastMessage;
+    const confirmed = preview && items.find((message) => Number.isInteger(message.id) &&
+      message.id !== preview.id && sameMessage(message, preview));
+    return confirmed ? withConversationPreview([updated], updated, confirmed)[0] : updated;
+  };
+  const conversations = sortConversations(state.conversations.map(update));
+  const active = conversations.find((chat) => chat.id === id);
   return {
     ...state, revision,
-    threads: { ...state.threads, [key]: { ...thread, readStates } },
-    conversations: sortConversations(state.conversations.map(update)),
-    activeChat: update(state.activeChat),
+    threads: { ...state.threads, [key]: { ...thread, items, readStates } },
+    conversations,
+    activeChat: state.activeChat?.id === id && active ? { ...state.activeChat, ...active } : update(state.activeChat),
   };
 };
 

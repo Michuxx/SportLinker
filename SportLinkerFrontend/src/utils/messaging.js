@@ -120,6 +120,22 @@ export const mergeMessages = (current, incoming) => {
   );
 };
 
+// Read notifications can arrive before the message's Outbox/RabbitMQ echo.
+// Correlate using the same sender + client ID pair as normal message delivery.
+export const confirmMessagesFromReads = (messages, reads) => {
+  let result = messages;
+  for (const read of reads) {
+    if (!read.lastReadMessageId || !read.lastReadMessageSendAt ||
+        typeof read.lastReadMessageClientMessageId !== "string" || read.lastReadMessageSenderId == null) continue;
+    const local = result.find((message) => !isPersistedMessage(message) &&
+      sameMessage(message, { senderId: read.lastReadMessageSenderId, clientMessageId: read.lastReadMessageClientMessageId }));
+    if (local) result = mergeMessages(result, [{ ...local,
+      id: read.lastReadMessageId, timestamp: read.lastReadMessageSendAt, status: "sent",
+    }]);
+  }
+  return result;
+};
+
 export const withConversationPreview = (conversations, chat, message) => {
   const existing = conversations.find((item) => item.id === chat.id);
   const previous = existing?.lastMessage ?? chat.lastMessage;

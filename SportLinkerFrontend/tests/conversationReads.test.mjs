@@ -45,6 +45,33 @@ test("group readers can stop at different messages; a new receipt moves rather t
   assert.deepEqual(after.get(3).map((reader) => reader.userId).sort(), [13, 14]);
 });
 
+test("a live read confirms the optimistic outgoing message before its delayed Rabbit echo and moves the avatar", () => {
+  const oldMessage = msg(10, { senderId: 2, isOwnMessage: true, clientMessageId: "old" });
+  const oldRead = receipt(10, { userId: 13, participantId: 3 });
+  let state = page(start(), [oldMessage], [oldRead]);
+  state.activeChat = state.conversations[0];
+  const local = msg(20, { id: "local:new", senderId: 2, isOwnMessage: true, clientMessageId: "new", status: "pending" });
+  state = reduce(state, { type: "thread/message", key: "conversation:8", message: local });
+  state = reduce(state, { type: "send/success", key: "conversation:8", chat: state.activeChat, conversationId: 8, message: local });
+  state = read(state, receipt(20, { userId: 13, participantId: 3,
+    lastReadMessageClientMessageId: "NEW", lastReadMessageSenderId: 2 }));
+  const thread = state.threads["conversation:8"];
+  assert.equal(thread.items.at(-1).id, 20);
+  assert.equal(state.conversations[0].lastMessage.id, 20);
+  assert.equal(state.activeChat.lastMessage.id, 20);
+  assert.deepEqual([...getReadReceiptPositions(thread.items, thread.readStates, 2).keys()], [20]);
+  state = receive(state, msg(20, { senderId: 2, isOwnMessage: true, clientMessageId: "new" }));
+  assert.equal(state.threads["conversation:8"].items.length, 2);
+});
+
+test("read message correlation never matches a different sender sharing the same client ID", () => {
+  const local = msg(20, { id: "local:new", senderId: 2, isOwnMessage: true, clientMessageId: "new", status: "sent" });
+  let state = page(start(), [local]);
+  state = read(state, receipt(20, { userId: 13, participantId: 3,
+    lastReadMessageClientMessageId: "new", lastReadMessageSenderId: 7 }));
+  assert.equal(state.threads["conversation:8"].items[0].id, "local:new");
+});
+
 test("an unread or optimistic message does not move the reader's avatar forward", () => {
   const positions = getReadReceiptPositions([msg(1), msg(2), msg(3), msg(4, { id: "local:uuid" })],
     [receipt(2, { userId: 13 })], 2);

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { registerHooks } from "node:module";
 import { createHookHarness } from "./helpers/hookHarness.mjs";
+import { getReadReceiptPositions } from "../src/utils/conversationReads.js";
 
 const root = new URL("../src/hooks/useMessaging.js", import.meta.url).href;
 const bridge = { harness: null, messages: null, reads: null, service: null };
@@ -148,5 +149,38 @@ test("an incoming group message updates its sidebar preview and unread marker wh
   assert.equal(group.unreadCount, 1);
   assert.equal(harness.result.activeChat.id, 8);
   assert.deepEqual(calls, ["friends", "conversations", "history:8"]);
+  harness.dispose();
+});
+
+test("live reader avatar advances on a just-sent message before the sender receives its own message echo", async () => {
+  const calls = [];
+  let sentBody;
+  bridge.service = {
+    async getFriends() { calls.push("friends"); return []; },
+    async getConversations() { calls.push("conversations"); return [{ id: 8, type: "Private", name: "Anna", recipientUserId: 13 }]; },
+    async getMessages() { calls.push("history"); return {
+      items: [{ ...message(10), senderId: 2, isOwnMessage: true }], hasMore: false,
+      readStates: [{ ...receipt(10), participantId: 3, userId: 13 }],
+    }; },
+    async sendMessage(body) { calls.push("send"); sentBody = body; return true; },
+  };
+  const harness = bridge.harness = createHookHarness();
+  const user = { id: 2, name: "Admin" };
+  harness.render = () => useMessaging(user);
+  await harness.flush();
+  harness.result.selectChat(harness.result.chatPeople.conversations[0]);
+  await harness.flush();
+  assert.equal(await harness.result.sendMessage("Nowa wiadomość"), true);
+  await harness.flush();
+  assert.match(harness.result.thread.items.at(-1).id, /^local:/);
+  bridge.reads({ ...receipt(20), userId: 13, participantId: 3,
+    lastReadMessageClientMessageId: sentBody.clientMessageId, lastReadMessageSenderId: 2 });
+  await harness.flush();
+  assert.equal(harness.result.thread.items.at(-1).id, 20);
+  assert.deepEqual([...getReadReceiptPositions(harness.result.thread.items, harness.result.thread.readStates, 2).keys()], [20]);
+  bridge.messages({ conversationId: 8, message: { ...message(20), senderId: 2, isOwnMessage: true, clientMessageId: sentBody.clientMessageId, content: sentBody.content } });
+  await harness.flush();
+  assert.equal(harness.result.thread.items.length, 2);
+  assert.deepEqual(calls, ["friends", "conversations", "history", "send"]);
   harness.dispose();
 });

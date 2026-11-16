@@ -1,4 +1,4 @@
-﻿namespace Application.Messages.Dtos
+namespace Application.Messages.Dtos
 {
     public class ConversationReadDto
     {
@@ -11,6 +11,8 @@
 
         public int? LastReadMessageId { get; set; }
         public DateTime? LastReadMessageSendAt { get; set; }
+        public Guid? LastReadMessageClientMessageId { get; set; }
+        public int? LastReadMessageSenderId { get; set; }
         public DateTime? LastReadAt { get; set; }
     }
 }
