@@ -18,5 +18,7 @@ namespace Application.Messages.Dtos
         public string? LastMessageSenderName { get; set; }
         public string? LastMessageText { get; set; }
         public DateTime? LastMessageTime { get; set; }
+        public int UnreadCount { get; set; }
+        public int? LastReadMessageId { get; set; }
     }
 }

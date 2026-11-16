@@ -18,5 +18,6 @@
     public sealed record MessagesPageDto(
     List<ConversationMessageDto> Items,
     bool HasMore,
-    MessageCursorDto? NextCursor);
+    MessageCursorDto? NextCursor,
+    List<ConversationReadDto> ReadStates);
 }

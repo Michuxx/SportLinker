@@ -78,7 +78,9 @@ namespace Application.Messages.GetUserConversations
                     ELSE COALESCE(sender.PersonalData_Name, N'USUNIĘTY UŻYTKOWNIK')
                 END AS LastMessageSenderName,
                 lastMessage.Content AS LastMessageText,
-                lastMessage.SendAt AS LastMessageTime
+                lastMessage.SendAt AS LastMessageTime,
+                unreadMessages.UnreadCount AS UnreadCount,
+                ownRead.LastReadMessageId AS LastReadMessageId
 
             FROM Conversations c
 
@@ -131,6 +133,50 @@ namespace Application.Messages.GetUserConversations
 
             LEFT JOIN Users sender
                 ON sender.Id = lastMessage.SenderId
+
+                OUTER APPLY (
+                SELECT COUNT(*) AS UnreadCount
+                FROM Messages unreadMessage
+                WHERE unreadMessage.ConversationId = c.Id
+                  AND (
+                      unreadMessage.SenderId IS NULL
+                      OR unreadMessage.SenderId <> @UserId
+                  )
+                  AND EXISTS (
+                      SELECT 1
+                      FROM ConversationParticipants period
+                      LEFT JOIN Messages readMessage
+                          ON readMessage.Id = period.LastReadMessageId
+                          AND readMessage.ConversationId = period.ConversationId
+                      WHERE period.ConversationId = c.Id
+                        AND period.UserId = @UserId
+                        AND unreadMessage.SendAt >= period.JoinedAt
+                        AND (
+                            period.LeftAt IS NULL
+                            OR unreadMessage.SendAt < period.LeftAt
+                        )
+                        AND (
+                            readMessage.Id IS NULL
+                            OR unreadMessage.SendAt > readMessage.SendAt
+                            OR (
+                                unreadMessage.SendAt = readMessage.SendAt
+                                AND unreadMessage.Id > readMessage.Id
+                            )
+                        )
+                  )
+            ) unreadMessages
+
+            OUTER APPLY (
+                SELECT TOP (1)
+                    readMessage.Id AS LastReadMessageId
+                FROM ConversationParticipants period
+                INNER JOIN Messages readMessage
+                    ON readMessage.Id = period.LastReadMessageId
+                    AND readMessage.ConversationId = period.ConversationId
+                WHERE period.ConversationId = c.Id
+                  AND period.UserId = @UserId
+                ORDER BY readMessage.SendAt DESC, readMessage.Id DESC
+            ) ownRead
 
             WHERE EXISTS (
                 SELECT 1

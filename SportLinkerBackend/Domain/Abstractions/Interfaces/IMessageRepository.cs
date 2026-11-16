@@ -13,5 +13,10 @@ namespace Domain.Abstractions.Interfaces
         Task<Conversation?> GetConversationById(int conversationId, CancellationToken cancellationToken);
         Task<Conversation?> GetConversationByOfferIdAsync(int offerId, CancellationToken cancellationToken);
         void DeleteConversation(Conversation conversation);
+        Task<ConversationParticipant?> MarkAsReadAsync(int conversationId, int userId, int messageId, CancellationToken cancellationToken);
+        Task<List<int>> GetReadNotificationRecipientsAsync(
+            int conversationId,
+            int messageId,
+            CancellationToken cancellationToken);
     }
 }

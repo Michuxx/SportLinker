@@ -2,6 +2,7 @@ using Application.Messages.CreatePrivateConversation;
 using Application.Messages.DeleteConversationFromHistory;
 using Application.Messages.GetConversationMessages;
 using Application.Messages.GetUserConversations;
+using Application.Messages.ReadMessage;
 using Application.Messages.SendMessage;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -86,6 +87,26 @@ namespace Presentation.Controllers
         {
             var command = new DeleteConversationFromHistoryCommand(conversationId);
             var result = await _sender.Send(command, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{conversationId:int}/read/{messageId:int}")]
+        public async Task<IActionResult> ReadConversation(
+            [FromRoute] int conversationId,
+            [FromRoute] int messageid,
+            CancellationToken cancellationToken)
+        {
+            var command = new ReadMessageCommand(
+                MessageId: messageid,
+                ConversationId: conversationId);
+
+            var result = await _sender.Send(command, cancellationToken);
+
             if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);

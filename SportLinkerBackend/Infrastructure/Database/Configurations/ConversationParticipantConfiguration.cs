@@ -32,6 +32,15 @@ namespace Infrastructure.Database.Configurations
                         ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc)
                         : null);
 
+            builder.Property(cp => cp.LastReadAt)
+                .HasConversion(
+                    value => value,
+                    value => value.HasValue
+                        ? DateTime.SpecifyKind(
+                            value.Value,
+                            DateTimeKind.Utc)
+                        : null);
+
             builder.HasOne(cp => cp.Conversation)
                 .WithMany(c => c.Participants)
                 .HasForeignKey(cp => cp.ConversationId)
@@ -41,6 +50,11 @@ namespace Infrastructure.Database.Configurations
                 .WithMany(u => u.ConversationParticipants)
                 .HasForeignKey(cp => cp.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(cp => cp.LastReadMessage)
+                .WithMany()
+                .HasForeignKey(cp => cp.LastReadMessageId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

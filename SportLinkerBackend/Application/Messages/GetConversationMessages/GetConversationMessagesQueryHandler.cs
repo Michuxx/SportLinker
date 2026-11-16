@@ -100,6 +100,43 @@ namespace Application.Messages.GetConversationMessages
                   )
               )
             ORDER BY m.SendAt DESC, m.Id DESC;
+
+            SELECT
+                participant.ConversationId,
+                participant.Id AS ParticipantId,
+                participant.UserId,
+                participant.JoinedAt,
+                participant.LeftAt,
+                readMessage.Id AS LastReadMessageId,
+                readMessage.SendAt AS LastReadMessageSendAt,
+                participant.LastReadAt
+            FROM ConversationParticipants participant
+            LEFT JOIN Messages readMessage
+                ON readMessage.Id = participant.LastReadMessageId
+                AND readMessage.ConversationId = participant.ConversationId
+            WHERE participant.ConversationId = @ConversationId
+              AND EXISTS (
+                  SELECT 1
+                  FROM Messages sharedMessage
+                  WHERE sharedMessage.ConversationId = participant.ConversationId
+                    AND sharedMessage.SendAt >= participant.JoinedAt
+                    AND (
+                        participant.LeftAt IS NULL
+                        OR sharedMessage.SendAt < participant.LeftAt
+                    )
+                    AND EXISTS (
+                        SELECT 1
+                        FROM ConversationParticipants viewerPeriod
+                        WHERE viewerPeriod.ConversationId = sharedMessage.ConversationId
+                          AND viewerPeriod.UserId = @UserId
+                          AND sharedMessage.SendAt >= viewerPeriod.JoinedAt
+                          AND (
+                              viewerPeriod.LeftAt IS NULL
+                              OR sharedMessage.SendAt < viewerPeriod.LeftAt
+                          )
+                    )
+              )
+            ORDER BY participant.UserId, participant.JoinedAt, participant.Id;
             """;
 
             var command = new CommandDefinition(
@@ -114,9 +151,26 @@ namespace Application.Messages.GetConversationMessages
                 },
                 cancellationToken: cancellationToken);
 
-            var rows = (await connection
-                .QueryAsync<ConversationMessageDto>(command))
+            using var results = await connection.QueryMultipleAsync(command);
+
+            var rows = (await results
+                .ReadAsync<ConversationMessageDto>())
                 .ToList();
+
+            var readStates = (await results
+                .ReadAsync<ConversationReadDto>())
+                .ToList();
+
+            foreach (var state in readStates)
+            {
+                state.JoinedAt = DateTime.SpecifyKind(
+                    state.JoinedAt,
+                    DateTimeKind.Utc);
+
+                state.LeftAt = AsUtc(state.LeftAt);
+                state.LastReadMessageSendAt = AsUtc(state.LastReadMessageSendAt);
+                state.LastReadAt = AsUtc(state.LastReadAt);
+            }
 
             var hasMore = rows.Count > query.PageSize;
 
@@ -146,6 +200,13 @@ namespace Application.Messages.GetConversationMessages
 
             return Result<MessagesPageDto>.Success(
                 new MessagesPageDto(messages, hasMore, nextCursor));
+        }
+
+        private static DateTime? AsUtc(DateTime? value)
+        {
+            return value.HasValue
+                ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc)
+                : null;
         }
     }
 }

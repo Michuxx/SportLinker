@@ -41,4 +41,27 @@ public sealed class SignalRChatNotifier(IHubContext<ChatHub> hubContext) : IChat
                 notification,
                 cancellationToken);
     }
+
+    public Task NotifyConversationReadAsync(
+        IReadOnlyCollection<int> recipentUserIds,
+        ConversationReadDto notification,
+        CancellationToken cancellationToken)
+    {
+        if(recipentUserIds.Count == 0)
+        {
+            return Task.CompletedTask;
+        }
+
+        var identifiers = recipentUserIds
+            .Select(id => id.ToString(CultureInfo.InvariantCulture))
+            .ToArray();
+
+        return hubContext.Clients
+            .Users(identifiers)
+            .SendAsync(
+                "ConversationRead",
+                notification,
+                cancellationToken
+            );
+    }
 }
