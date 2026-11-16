@@ -4,8 +4,21 @@
   padding-left: 2rem;
   padding-right: 2rem;
   margin-top: 3rem;
+  min-height: 1000px;
 }
 
-.offer-search-sentinel { height: 1px; }
-.offer-filter-error { color: #b91c1c; margin-top: 0.75rem; font-size: 0.875rem; }
-.offer-filter-error button { border: 0; background: transparent; color: inherit; text-decoration: underline; cursor: pointer; }
+.offer-search-sentinel {
+  height: 1px;
+}
+.offer-filter-error {
+  color: #b91c1c;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+}
+.offer-filter-error button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
