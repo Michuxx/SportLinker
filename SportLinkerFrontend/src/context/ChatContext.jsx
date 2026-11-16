@@ -25,6 +25,11 @@ export const ChatProvider = ({ children }) => {
 
   const messageListeners = useRef(new Set());
   const presenceListeners = useRef(new Set());
+  const readListeners = useRef(new Set());
+  const subscribeReads = useCallback((listener) => {
+    readListeners.current.add(listener);
+    return () => readListeners.current.delete(listener);
+  }, []);
 
   const subscribePresence = useCallback((listener) => {
     presenceListeners.current.add(listener);
@@ -114,6 +119,17 @@ export const ChatProvider = ({ children }) => {
       }
     });
 
+    chatConnection.on("ConversationRead", (notification) => {
+      if (disposed) return;
+      for (const listener of readListeners.current) {
+        try {
+          listener(notification);
+        } catch (error) {
+          console.error("Błąd obsługi ConversationRead:", error);
+        }
+      }
+    });
+
     chatConnection.on("UserPresenceChanged", (notification) => {
       if (disposed) return;
 
@@ -144,6 +160,7 @@ export const ChatProvider = ({ children }) => {
       connectionError,
       isConnected: connectionState === HubConnectionState.Connected,
       subscribeMessages,
+      subscribeReads,
       subscribePresence,
     }),
     [
@@ -151,6 +168,7 @@ export const ChatProvider = ({ children }) => {
       connectionState,
       connectionError,
       subscribeMessages,
+      subscribeReads,
       subscribePresence,
     ],
   );

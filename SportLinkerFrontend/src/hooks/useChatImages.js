@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import userService from "../api/userService";
 import { collectChatImages } from "../utils/chatImages";
 
-const useChatImages = ({ user, friends, conversations, messages, activeChat, typingUsers = [] }) => {
+const useChatImages = ({ user, friends, conversations, messages, activeChat, typingUsers = [], lookupIds }) => {
   const userId = user?.id;
   const sources = useMemo(() => collectChatImages({ user, friends, conversations, messages, activeChat, typingUsers }), [user, friends, conversations, messages, activeChat, typingUsers]);
   const [cache, setCache] = useState({ userId: null, images: {} });
@@ -18,7 +18,9 @@ const useChatImages = ({ user, friends, conversations, messages, activeChat, typ
   useEffect(() => {
     const session = sessionRef.current;
     if (!userId || !session || session.controller.signal.aborted) return;
-    for (const id of sources.ids) {
+    // Only API snapshots may request missing profiles. Live events use cached
+    // or supplied photos, without triggering additional GET requests.
+    for (const id of lookupIds ?? sources.ids) {
       if (sources.known[id] || session.requested.has(id)) continue;
       session.requested.add(id);
       const loadImage = async () => {
@@ -34,7 +36,7 @@ const useChatImages = ({ user, friends, conversations, messages, activeChat, typ
       };
       loadImage();
     }
-  }, [userId, sources]);
+  }, [userId, sources, lookupIds]);
 
   return { ...(cache.userId === userId ? cache.images : {}), ...sources.known };
 };

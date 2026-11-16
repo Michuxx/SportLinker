@@ -20,11 +20,12 @@ import {
 import useChatImages from "./useChatImages";
 import useChat from "./useChat";
 import useConversationTyping from "./useConversationTyping";
+import { compareMessagePositions, hasReadMessage, isMessageInReadPeriod, isMessageReadBy, persistedMessage } from "../utils/conversationReads";
 
 const useMessaging = (user) => {
   const userId = user?.id;
   const { showToast } = useToast();
-  const { subscribeMessages, subscribePresence } = useChat();
+  const { subscribeMessages, subscribePresence, subscribeReads } = useChat();
   const [state, dispatch] = useReducer(
     messagingReducer,
     userId,
@@ -85,6 +86,7 @@ const useMessaging = (user) => {
       loads: new Set(),
       sends: new Set(),
       mutations: new Set(),
+      readQueues: new Map(),
     };
     sessionRef.current = session;
     dispatch({ type: "reset", userId });
@@ -117,16 +119,27 @@ const useMessaging = (user) => {
         userId,
         conversationId: notification.conversationId,
         message: normalizeMessage(notification.message),
+        conversation: notification.conversation ? normalizeConversation(notification.conversation) : null,
       });
     });
   }, [userId, subscribeMessages]);
 
   useEffect(() => {
     const session = sessionRef.current;
+    if (!userId || !session) return;
+    return subscribeReads((notification) => {
+      if (session !== sessionRef.current || session.controller.signal.aborted ||
+          !Number.isInteger(notification?.conversationId) || notification.conversationId <= 0) return;
+      dispatch({ type: "conversation/read", userId, read: notification });
+    });
+  }, [userId, subscribeReads]);
+
+  useEffect(() => {
+    const session = sessionRef.current;
 
     if (!userId || !session) return;
 
-    return subscribePresence(() => {
+    return subscribePresence((notification) => {
       if (session !== sessionRef.current || session.controller.signal.aborted) {
         return;
       }
@@ -134,22 +147,23 @@ const useMessaging = (user) => {
       dispatch({
         type: "presence/changed",
         userId,
+        notification,
       });
     });
   }, [userId, subscribePresence]);
 
+  // Presence currently carries only a user ID, so its existing refresh remains
+  // separate. MessageReceived and ConversationRead never trigger this effect.
   useEffect(() => {
     const session = sessionRef.current;
     if (!current || !userId || !session || state.realtimeVersion === 0) return;
-
     const timer = setTimeout(() => {
       if (session.controller.signal.aborted) return;
-      void loadList("conversations", session, state.revision, true);
-      void loadList("friends", session, state.revision, true);
+      void loadList("conversations", session, state.presenceRevision, true);
+      void loadList("friends", session, state.presenceRevision, true);
     }, 150);
-
     return () => clearTimeout(timer);
-  }, [current, userId, state.realtimeVersion, state.revision, loadList]);
+  }, [current, userId, state.realtimeVersion, state.presenceRevision, loadList]);
 
   const loadMessages = useCallback(
     async (chat, older = false) => {
@@ -191,6 +205,45 @@ const useMessaging = (user) => {
   const activeChat = current ? state.activeChat : null;
   const activeKey = activeChat ? chatKey(activeChat) : null;
   const thread = state.threads[activeKey] ?? emptyThread();
+  const markRead = useCallback(async (message) => {
+    const session = sessionRef.current;
+    const id = activeChat?.id;
+    if (!current || !id || !session || session.controller.signal.aborted ||
+        !persistedMessage(message) || isMessageReadBy(thread.readStates, userId, message)) return;
+    let queue = session.readQueues.get(id);
+    if (!queue) {
+      queue = { pending: new Map(), confirmed: new Map(), running: false };
+      session.readQueues.set(id, queue);
+    }
+    const periodId = thread.readStates.find((read) => String(read.userId) === String(userId) &&
+      isMessageInReadPeriod(read, message))?.participantId ?? 0;
+    if ([...queue.confirmed.values()].some((read) => hasReadMessage(read, message))) return;
+    const pending = queue.pending.get(periodId);
+    if (!pending || compareMessagePositions(message, pending) > 0) queue.pending.set(periodId, message);
+    if (queue.running) return;
+    queue.running = true;
+    try {
+      while (queue.pending.size && !session.controller.signal.aborted) {
+        const [targetPeriod, target] = queue.pending.entries().next().value;
+        queue.pending.delete(targetPeriod);
+        if ([...queue.confirmed.values()].some((read) => hasReadMessage(read, target))) continue;
+        const read = await conversationService.markRead(id, target.id, {
+          signal: session.controller.signal, readStates: thread.readStates,
+        });
+        if (session.controller.signal.aborted) return;
+        queue.confirmed.set(read.participantId, read);
+        dispatch({ type: "conversation/read", userId, read });
+      }
+    } catch (error) {
+      queue.pending.clear();
+      if (!session.controller.signal.aborted) showToast({
+        severity: "error", summary: "Odczyt wiadomości",
+        detail: error.code === "INVALID_READ_RESPONSE" ? error.message : getErrorMessage(error, "Nie udało się zapisać odczytu wiadomości."),
+      });
+    } finally {
+      queue.running = false;
+    }
+  }, [activeChat?.id, current, thread.readStates, userId, showToast]);
   const typing = useConversationTyping(activeChat);
   const images = useChatImages({
     user,
@@ -199,6 +252,7 @@ const useMessaging = (user) => {
     messages: current ? thread.items : [],
     activeChat,
     typingUsers: typing.typingUsers,
+    lookupIds: state.imageLookupIds,
   });
   useEffect(() => {
     if (activeChat?.id && !thread.loaded && !thread.loading && !thread.error)
@@ -366,6 +420,13 @@ const useMessaging = (user) => {
 
   return {
     ...typing,
+    markRead,
+    userId,
+    readerNames: Object.fromEntries([
+      ...state.friends.map((friend) => [friend.userId, friend.name]),
+      ...state.conversations.filter((chat) => chat.type === "private").map((chat) => [chat.recipientUserId, chat.name]),
+      ...thread.items.filter((message) => message.senderId != null).map((message) => [message.senderId, message.senderName]),
+    ]),
     canDeleteHistory: canDeleteConversation(
       activeChat,
       state.friends,

@@ -64,8 +64,8 @@ test("pagination preserves both cursor fields and supports old mock arrays", () 
 });
 
 test("server echo replaces local UUID bubble without duplication and sorts by time then ID", () => {
-  const server = normalizeMessage({ id: 50, clientMessageId: "uuid", content: "Cześć", sendAt: message.timestamp, isOwnMessage: true });
-  const merged = mergeMessages([message], [server]);
+  const server = normalizeMessage({ id: 50, senderId: 2, clientMessageId: "uuid", content: "Cześć", sendAt: message.timestamp, isOwnMessage: true });
+  const merged = mergeMessages([{ ...message, senderId: 2 }], [server]);
   assert.equal(merged.length, 1);
   assert.equal(merged[0].id, 50);
   assert.equal(merged[0].status, "sent");

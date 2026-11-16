@@ -1,4 +1,5 @@
 import apiClient from "./apiClient";
+import { normalizeReadState } from "../utils/conversationReads.js";
 
 const confirmed = (response) => {
   if (response.data !== true) {
@@ -35,6 +36,17 @@ const conversationService = {
   },
   async deleteHistory(id, { signal } = {}) {
     return confirmed(await apiClient.delete(`/Conversation/${id}/history`, { signal }));
+  },
+  async markRead(id, messageId, { signal, readStates = [] } = {}) {
+    const response = await apiClient.post(`/Conversation/${id}/read/${messageId}`, null, { signal });
+    const read = normalizeReadState(response.data, readStates);
+    if (response.data?.conversationId !== id || !read || read.lastReadMessageId == null) {
+      const error = new Error("Serwer zwrócił nieprawidłowe dane odczytu wiadomości.");
+      error.code = "INVALID_READ_RESPONSE";
+      error.response = response;
+      throw error;
+    }
+    return read;
   },
 };
 

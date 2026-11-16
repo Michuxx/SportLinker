@@ -65,3 +65,7 @@
   display: flex;
   flex-shrink: 0;
 }
+
+.chat-profile-date { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+.chat-profile-date .chat-unread-dot { width: 8px; height: 8px; border-radius: 50%; background: #fb7185; }
+.unread-chat-profile-btn .chat-profile-info-wrapper p { font-weight: 600; color: #111827; }

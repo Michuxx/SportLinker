@@ -1,4 +1,5 @@
 import { parseApiDate } from "./dateTime.js";
+import { mergeReadStates } from "./conversationReads.js";
 
 export const chatKey = (chat) =>
   chat.id ? `conversation:${chat.id}` : `friend:${chat.recipientUserId}`;
@@ -26,6 +27,7 @@ export const normalizeConversation = (data) => ({
       ? ["private", "group"][data.type]
       : data.type?.toLowerCase(),
   canSendMessages: data.canSendMessages ?? true,
+  unreadCount: Math.max(0, Number(data.unreadCount) || 0),
   lastMessage:
     data.lastMessage ??
     (data.lastMessageText != null
@@ -53,6 +55,7 @@ export const normalizeMessagesPage = (data) => {
     items: items.map(normalizeMessage),
     hasMore: Boolean(data.hasMore),
     cursor: data.nextCursor ?? null,
+    readStates: mergeReadStates([], data.readStates ?? []),
   };
 };
 

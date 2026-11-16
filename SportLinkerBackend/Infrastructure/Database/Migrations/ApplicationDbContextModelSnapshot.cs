@@ -71,6 +71,12 @@ namespace Infrastructure.Database.Migrations
                     b.Property<DateTime>("JoinedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("LastReadAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LastReadMessageId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("LeftAt")
                         .HasColumnType("datetime2");
 
@@ -78,6 +84,8 @@ namespace Infrastructure.Database.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LastReadMessageId");
 
                     b.HasIndex("UserId");
 
@@ -494,6 +502,11 @@ namespace Infrastructure.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.Message", "LastReadMessage")
+                        .WithMany()
+                        .HasForeignKey("LastReadMessageId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("ConversationParticipants")
                         .HasForeignKey("UserId")
@@ -501,6 +514,8 @@ namespace Infrastructure.Database.Migrations
                         .IsRequired();
 
                     b.Navigation("Conversation");
+
+                    b.Navigation("LastReadMessage");
 
                     b.Navigation("User");
                 });

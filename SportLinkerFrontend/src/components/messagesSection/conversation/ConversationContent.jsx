@@ -3,6 +3,8 @@ import Message from "./message/Message";
 import { useLayoutEffect, useRef } from "react";
 import MessagingFeedback from "../messagingFeedback/MessagingFeedback";
 import ConversationTyping from "./conversationTyping/ConversationTyping";
+import useVisibleMessages from "../../../hooks/useVisibleMessages";
+import { getMessageReaders } from "../../../utils/conversationReads";
 
 const ConversationContent = ({
   messages,
@@ -13,12 +15,16 @@ const ConversationContent = ({
   onLoadOlder,
   onRetryMessage,
   isSending,
+  onRead,
+  userId,
+  readerNames = {},
 }) => {
   const containerRef = useRef(null);
   const previous = useRef({ first: null, last: null, height: 0, count: 0, typingCount: 0 });
   const isAtBottom = useRef(true);
   const previousScrollTop = useRef(0);
   const loadingOlder = useRef(false);
+  useVisibleMessages(containerRef, messages, thread.loaded && !thread.loading && !thread.error, onRead, thread.readStates, userId);
 
   const loadOlder = async () => {
     if (
@@ -65,7 +71,9 @@ const ConversationContent = ({
       last === previous.current.last
     ) {
       container.scrollTop += container.scrollHeight - previous.current.height;
-    } else if (last !== previous.current.last || (typingUsers.length !== previous.current.typingCount && isAtBottom.current))
+    } else if ((last !== previous.current.last && (!previous.current.count || isAtBottom.current ||
+      (messages.at(-1)?.isOwnMessage && messages.at(-1)?.status === "pending"))) ||
+      (typingUsers.length !== previous.current.typingCount && isAtBottom.current))
       container.scrollTop = container.scrollHeight;
     previousScrollTop.current = container.scrollTop;
     isAtBottom.current = container.scrollHeight - container.clientHeight - container.scrollTop <= 40;
@@ -118,6 +126,9 @@ const ConversationContent = ({
           image={message.senderImageUrl || images[message.senderId]}
           onRetry={() => onRetryMessage(message)}
           disabled={isSending}
+          readers={getMessageReaders(message, thread.readStates ?? [], userId)}
+          images={images}
+          names={readerNames}
         />
       ))}
       <ConversationTyping users={typingUsers} images={images} />

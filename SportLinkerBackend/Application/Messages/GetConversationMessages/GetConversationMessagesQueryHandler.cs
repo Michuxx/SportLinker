@@ -199,7 +199,7 @@ namespace Application.Messages.GetConversationMessages
             messages.Reverse();
 
             return Result<MessagesPageDto>.Success(
-                new MessagesPageDto(messages, hasMore, nextCursor));
+                new MessagesPageDto(messages, hasMore, nextCursor, readStates));
         }
 
         private static DateTime? AsUtc(DateTime? value)

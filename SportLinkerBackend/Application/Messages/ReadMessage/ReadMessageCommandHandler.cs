@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+using Application.Abstractions;
 using Application.Abstractions.Authentication;
 using Application.Abstractions.Messaging;
 using Application.Messages.Dtos;
@@ -44,6 +44,7 @@ namespace Application.Messages.ReadMessage
             var notification = new ConversationReadDto
             {
                 ConversationId = participant.ConversationId,
+                ParticipantId = participant.Id,
                 UserId = participant.UserId,
                 LastReadMessageId = lastReadMessageId,
                 LastReadAt = participant.LastReadAt,

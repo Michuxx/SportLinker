@@ -12,7 +12,7 @@ const ConversationSidebar = () => {
       {conversations.map((conversation) => (
         <ChatConversationButton key={conversation.id} id={conversation.id} activeChat={activeChat} name={conversation.name} image={conversation.imageUrl || (conversation.type === "private" ? images[conversation.recipientUserId] : null)} date={conversation.lastMessage?.time}
           text={conversation.lastMessage ? `${conversation.lastMessage.name ?? ""}: ${conversation.lastMessage.text}` : "Brak wiadomości"}
-          onClick={() => selectChat(conversation)} isOnline={conversation.isOnline} />
+          onClick={() => selectChat(conversation)} isOnline={conversation.isOnline} unreadCount={conversation.unreadCount} />
       ))}
     </div>
   );

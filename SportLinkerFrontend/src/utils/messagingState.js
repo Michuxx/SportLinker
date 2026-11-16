@@ -4,6 +4,27 @@ import {
   withConversationPreview,
   sameMessage,
 } from "./messaging.js";
+import { compareMessagePositions, isMessageReadBy, mergeReadStates, normalizeReadState, unreadAfterReads } from "./conversationReads.js";
+
+const applyReads = (state, id, incoming, snapshot = false) => {
+  const key = `conversation:${id}`;
+  const thread = state.threads[key] ?? emptyThread();
+  const previous = thread.readStates ?? [];
+  const readStates = mergeReadStates(previous, incoming);
+  const ownPrevious = previous.some((read) => String(read.userId) === String(state.userId));
+  const messages = snapshot && !ownPrevious ? thread.receivedMessages ?? [] : thread.items;
+  const revision = state.revision + 1;
+  const update = (chat) => chat?.id === id ? {
+    ...chat, revision,
+    unreadCount: unreadAfterReads(chat, messages, previous, readStates, state.userId),
+  } : chat;
+  return {
+    ...state, revision,
+    threads: { ...state.threads, [key]: { ...thread, readStates } },
+    conversations: state.conversations.map(update),
+    activeChat: update(state.activeChat),
+  };
+};
 
 export const emptyThread = () => ({
   items: [],
@@ -14,6 +35,8 @@ export const emptyThread = () => ({
   olderError: false,
   hasMore: false,
   cursor: null,
+  readStates: [],
+  receivedMessages: [],
 });
 export const initialMessagingState = (userId) => ({
   userId,
@@ -28,6 +51,8 @@ export const initialMessagingState = (userId) => ({
   removedConversations: [],
   removedFriends: [],
   realtimeVersion: 0,
+  presenceRevision: 0,
+  imageLookupIds: userId ? [String(userId)] : [],
 });
 
 export const messagingReducer = (state, action) => {
@@ -51,12 +76,32 @@ export const messagingReducer = (state, action) => {
       );
     }
     let items = action.items.filter((item) => !removed.includes(item.id));
+    if (action.list === "conversations") {
+      items = items.map((chat) => {
+        const thread = state.threads[`conversation:${chat.id}`] ?? emptyThread();
+        const additional = thread.receivedMessages.filter((message) =>
+          !message.isOwnMessage && String(message.senderId) !== String(state.userId) &&
+          (!chat.lastMessage || compareMessagePositions(message, chat.lastMessage) > 0) &&
+          !isMessageReadBy(thread.readStates, state.userId, message));
+        return { ...chat, unreadBoundary: chat.lastMessage,
+          unreadCount: unreadAfterReads(chat, [], [], thread.readStates, state.userId) + additional.length };
+      });
+    }
     // Keep local changes made while this GET was in flight.
     const local = state[action.list].filter(
       (item) => item.revision > action.revision,
     );
     items = [
-      ...local,
+      ...local.map((item) => {
+        const fetched = items.find((other) => other.id === item.id);
+        return action.list === "conversations" && fetched ? {
+          ...fetched, ...item,
+          ...(item.provisional ? { name: fetched.name, type: fetched.type,
+            recipientUserId: fetched.recipientUserId, canSendMessages: fetched.canSendMessages, provisional: false } : {}),
+          unreadCount: fetched.unreadCount,
+          unreadBoundary: fetched.unreadBoundary,
+        } : item;
+      }),
       ...items.filter((item) => !local.some((other) => other.id === item.id)),
     ];
     const refreshedChat =
@@ -75,6 +120,9 @@ export const messagingReducer = (state, action) => {
         : null;
     return {
       ...state,
+      imageLookupIds: [...new Set([...state.imageLookupIds, ...action.items.map((item) =>
+        action.list === "friends" ? item.userId : item.type === "private" ? item.recipientUserId : null)
+        .filter((id) => id != null).map(String)])],
       [action.list]: items,
       lists: { ...state.lists, [action.list]: "ready" },
       removedConversations:
@@ -92,6 +140,14 @@ export const messagingReducer = (state, action) => {
   }
   if (action.type === "select") return { ...state, activeChat: action.chat };
 
+  if (action.type === "conversation/read") {
+    if (String(action.userId) !== String(state.userId) ||
+        state.removedConversations.includes(action.read.conversationId)) return state;
+    const thread = state.threads[`conversation:${action.read.conversationId}`];
+    const read = normalizeReadState(action.read, thread?.readStates ?? []);
+    return read ? applyReads(state, read.conversationId, [read]) : state;
+  }
+
   if (action.type === "presence/changed") {
     if (String(action.userId) !== String(state.userId)) {
       return state;
@@ -100,6 +156,7 @@ export const messagingReducer = (state, action) => {
     return {
       ...state,
       realtimeVersion: state.realtimeVersion + 1,
+      presenceRevision: state.revision,
     };
   }
 
@@ -118,10 +175,8 @@ export const messagingReducer = (state, action) => {
         thread.items.some((item) => sameMessage(item, action.message)),
     );
 
-    const realtimeVersion = state.realtimeVersion + 1;
-
     if (state.removedConversations.includes(id) && !draftEntry) {
-      return { ...state, realtimeVersion };
+      return state;
     }
 
     const target = state.threads[key] ?? emptyThread();
@@ -133,7 +188,7 @@ export const messagingReducer = (state, action) => {
 
     const threads = {
       ...state.threads,
-      [key]: { ...target, items },
+      [key]: { ...target, items, receivedMessages: mergeMessages(target.receivedMessages ?? [], [action.message]) },
     };
 
     if (draftEntry) {
@@ -154,7 +209,17 @@ export const messagingReducer = (state, action) => {
 
     const revision = state.revision + 1;
 
-    const chat = knownChat ? { ...knownChat, id, revision } : null;
+    const duplicate = target.items.some((message) => sameMessage(message, action.message)) ||
+      knownChat?.lastMessage?.id === action.message.id;
+    const baselineIncludes = knownChat?.unreadBoundary && compareMessagePositions(action.message, knownChat.unreadBoundary) <= 0;
+    const addUnread = !duplicate && !baselineIncludes && !action.message.isOwnMessage &&
+      String(action.message.senderId) !== String(state.userId) &&
+      !isMessageReadBy(target.readStates ?? [], state.userId, action.message);
+    const metadata = action.conversation ?? {
+      type: "unknown", name: "Nowa rozmowa", canSendMessages: false, provisional: true,
+    };
+    const chat = { ...metadata, ...knownChat, id, revision,
+      unreadCount: (knownChat?.unreadCount ?? 0) + (addUnread ? 1 : 0) };
 
     const draftRecipientId = draftEntry
       ? Number(draftEntry[0].slice("friend:".length))
@@ -163,17 +228,14 @@ export const messagingReducer = (state, action) => {
     return {
       ...state,
       revision,
-      realtimeVersion,
       threads,
       removedConversations: state.removedConversations.filter(
         (removedId) => removedId !== id,
       ),
-      activeChat: activeDraft
-        ? { ...activeDraft, id, revision }
+      activeChat: activeDraft || state.activeChat?.id === id
+        ? { ...state.activeChat, ...chat }
         : state.activeChat,
-      conversations: chat
-        ? withConversationPreview(state.conversations, chat, action.message)
-        : state.conversations,
+      conversations: withConversationPreview(state.conversations, chat, action.message),
       friends: state.friends.map((friend) =>
         Number(friend.userId) === draftRecipientId
           ? { ...friend, conversationId: id, revision }
@@ -226,6 +288,9 @@ export const messagingReducer = (state, action) => {
       };
     let result = {
       ...state,
+      imageLookupIds: action.type === "thread/success" ? [...new Set([
+        ...state.imageLookupIds, ...action.page.items.map((message) => message.senderId).filter((id) => id != null).map(String),
+      ])] : state.imageLookupIds,
       threads: { ...state.threads, [action.key]: updated },
     };
     if (
@@ -251,7 +316,9 @@ export const messagingReducer = (state, action) => {
         };
       }
     }
-    return result;
+    return action.type === "thread/success"
+      ? applyReads(result, Number(action.key.slice("conversation:".length)), action.page.readStates ?? [], true)
+      : result;
   }
   if (action.type === "send/success") {
     const revision = state.revision + 1;

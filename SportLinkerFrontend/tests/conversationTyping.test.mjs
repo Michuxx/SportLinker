@@ -17,6 +17,7 @@ const hooks = registerHooks({
       if (specifier.endsWith("/ConversationContent")) return { url: contentUrl, shortCircuit: true };
       if (specifier.endsWith("/conversationTyping/ConversationTyping")) return { url: typingUrl, shortCircuit: true };
       if (specifier.endsWith("/utils/messaging")) return { url: new URL("../src/utils/messaging.js", import.meta.url).href, shortCircuit: true };
+      if (specifier.endsWith("/utils/conversationReads")) return { url: new URL("../src/utils/conversationReads.js", import.meta.url).href, shortCircuit: true };
       return { url: "mock:typing-child", shortCircuit: true };
     }
     return nextResolve(specifier, context);
