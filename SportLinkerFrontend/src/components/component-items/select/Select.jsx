@@ -10,11 +10,13 @@ const Select = ({
   onChange,
   name,
   value,
+  disabled = false,
 }) => {
   return (
     <div className="select-wrapper">
       {icon && <span>{icon}</span>}
       <select
+        disabled={disabled}
         name={name}
         className={
           (icon

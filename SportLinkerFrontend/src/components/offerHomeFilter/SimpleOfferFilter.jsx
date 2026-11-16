@@ -3,16 +3,18 @@ import InputField from "../component-items/inputField/InputField.jsx";
 import Select from "../component-items/select/Select.jsx";
 import "./offerFilter.css";
 import { IoSearchOutline } from "react-icons/io5";
-import { SPORT_OFFERS } from "../../assets/SPORT_OFFERS.js";
+import SearchInput from "../component-items/input/SearchInput.jsx";
 import { GrLocation } from "react-icons/gr";
 
-const SimpleOfferFilter = ({ filter, onChangeFilter }) => {
+const SimpleOfferFilter = ({ filter, onChangeFilter, sports, errors = {} }) => {
   return (
     <>
       <InputField label="Szukaj">
         <Input
           name="title"
           value={filter.title}
+          maxLength={200}
+          error={errors.title}
           onChange={(e) => onChangeFilter(e)}
           placeholder="Szukaj w tytułach lub opisach..."
           type="text"
@@ -26,18 +28,21 @@ const SimpleOfferFilter = ({ filter, onChangeFilter }) => {
           name="sport"
           onChange={(e) => onChangeFilter(e)}
           width={97}
-          options={SPORT_OFFERS}
+          options={sports.options}
+          disabled={sports.loading || sports.error}
           defaultValue="all"
           defaultText="Wszystkie"
         />
       </InputField>
       <InputField label="Lokalizacja">
-        <Input
-          value={filter.location}
-          placeholder="Fragment miasta lub województwa"
+        <SearchInput
+          value={filter.locationQuery}
+          placeholder="Wybierz miasto..."
           name="location"
-          onChange={(e) => onChangeFilter(e)}
-          type="text"
+          setValue={(value) => onChangeFilter({ target: { name: "locationQuery", value } })}
+          onCitySelect={(value) => onChangeFilter({ target: { name: "location", value } })}
+          searchType="city"
+          error={errors.location}
           width={97}
           icon={<GrLocation color="rgb(156 163 175)" size="20px" />}
         />

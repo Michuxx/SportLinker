@@ -15,10 +15,10 @@ namespace Application.Offers.SearchOffers
         int? MinParticipants, 
         int? MaxParticipants,
         LevelEnum? Level,
-        int Page = 1, 
-        int PageSize = 12,
         SortOrderEnum SortOrder = SortOrderEnum.ASC,
-        SortOptionsEnum SortOption = SortOptionsEnum.Players
+        SortOptionsEnum SortOption = SortOptionsEnum.Players,
+        int Page = 1, 
+        int PageSize = 12
         ) : IQuery<OffersPageDto>
     {
     }

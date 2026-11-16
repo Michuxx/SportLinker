@@ -35,3 +35,9 @@
   display: flex;
   gap: 1rem;
 }
+
+@media (max-width: 768px) {
+  .filter-simple-container, .advanced-filter-level-dates, .advanced-filter-people-sorting { flex-direction: column; }
+  .filter-headline-wrapper { align-items: flex-start; flex-direction: column; }
+  .filter-btn-wrapper { flex-wrap: wrap; }
+}

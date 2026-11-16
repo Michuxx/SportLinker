@@ -2,8 +2,8 @@
 {
     public class OfferSearchLocationDto
     {
-        public string? Country { get; init; }
-        public string? State { get; init; }
-        public string? City { get; init; }
+        public string? Country { get; set; }
+        public string? State { get; set; }
+        public string? City { get; set; }
     }
 }

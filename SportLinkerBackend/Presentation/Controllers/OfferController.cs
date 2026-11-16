@@ -2,17 +2,22 @@ using Application.Offers.AcceptPendingRequest;
 using Application.Offers.CancelRequest;
 using Application.Offers.CreateOffer;
 using Application.Offers.DeleteParticipantFromOffer;
+using Application.Offers.DeleteRejectionRequest;
+using Application.Offers.Dtos;
+using Application.Offers.Enums;
 using Application.Offers.GetOfferDetails;
 using Application.Offers.GetOfferRequests;
 using Application.Offers.JoinToOffer;
 using Application.Offers.LeaveOffer;
 using Application.Offers.RejectPendingRequest;
-using Application.Offers.DeleteRejectionRequest;
+using Application.Offers.SearchOffers;
 using Application.Offers.UpdateOffer;
+using Application.Users.SentOfferRequests;
+using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Application.Users.SentOfferRequests;
 
 
 namespace Presentation.Controllers
@@ -174,8 +179,70 @@ namespace Presentation.Controllers
             return Ok(result);
         }
 
-        
+        [AllowAnonymous]
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchOffers(
+            [FromQuery] string? search, 
+            [FromQuery] string? country, 
+            [FromQuery] string? state, 
+            [FromQuery] string? city,
+            [FromQuery] int? sportId,
+            [FromQuery] DateTimeOffset? dateFrom,
+            [FromQuery] DateTimeOffset? dateToExclusive,
+            [FromQuery] int? minParticipants,
+            [FromQuery] int? maxParticipants,
+            [FromQuery] LevelEnum? level,
+            [FromQuery] SortOrderEnum sortOrder,
+            [FromQuery] SortOptionsEnum sortOption,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 12,
+            CancellationToken cancellationToken = default)
+        {
+            int? userId = null;
 
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                if (!int.TryParse(User.FindFirst("id")?.Value, out var id)
+                    || id <= 0)
+                {
+                    return Unauthorized();
+                }
+
+                userId = id;
+            }
+
+            OfferSearchLocationDto? location = null;
+
+            if (!string.IsNullOrWhiteSpace(country)
+                || !string.IsNullOrWhiteSpace(state)
+                || !string.IsNullOrWhiteSpace(city))
+            {
+                location = new OfferSearchLocationDto
+                {
+                    Country = country?.Trim(),
+                    State = state?.Trim(),
+                    City = city?.Trim()
+                };
+            }
+
+            var query = new SearchOfferQuery(
+                userId, 
+                search, 
+                sportId, 
+                location, 
+                dateFrom, 
+                dateToExclusive, 
+                minParticipants, 
+                maxParticipants, 
+                level, 
+                sortOrder, 
+                sortOption,
+                page,
+                pageSize);
+            var result = await _sender.Send(query, cancellationToken);
+
+            return Ok(result);
+        }
     }
 }
 

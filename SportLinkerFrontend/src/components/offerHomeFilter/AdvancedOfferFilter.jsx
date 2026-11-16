@@ -57,8 +57,7 @@ const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
             type="number"
             icon={<GoPeople color="rgb(156, 163, 175)" size={20} />}
             width={97}
-            min={1}
-            max={30}
+            min={0}
             placeholder="np. 1"
             onChange={(e) => onChangeFilter(e)}
             name="minPlayers"
@@ -70,9 +69,8 @@ const AdvancedOfferFilter = ({ filter, onChangeFilter }) => {
             type="number"
             icon={<GoPeople color="rgb(156, 163, 175)" size={20} />}
             width={97}
-            min={1}
+            min={0}
             placeholder="np. 10"
-            max={30}
             onChange={(e) => onChangeFilter(e)}
             name="maxPlayers"
             value={filter.maxPlayers}

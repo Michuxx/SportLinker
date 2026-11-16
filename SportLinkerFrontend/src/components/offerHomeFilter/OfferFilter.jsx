@@ -7,6 +7,8 @@ import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
 import Tag from "../component-items/tags/Tag.jsx";
+import useOfferSports from "../../hooks/useOfferSports";
+import { IoSearchOutline } from "react-icons/io5";
 
 const OfferFilter = ({
   filter,
@@ -14,8 +16,11 @@ const OfferFilter = ({
   isFilterDirty,
   clearFilters,
   activeFiltersCount,
+  errors,
+  onSearch,
 }) => {
   const [showAdvancedFilter, setShowAdvancedFilter] = useState(false);
+  const sports = useOfferSports();
 
   return (
     <div className="filter-wrapper">
@@ -28,6 +33,7 @@ const OfferFilter = ({
           )}
         </div>
         <div className="filter-btn-wrapper">
+          <Button onClick={onSearch} style="gradientButton" Icon={<IoSearchOutline size={20} />}>Szukaj</Button>
           {isFilterDirty && (
             <Button onClick={clearFilters} style="filterClearButton">
               Wyczyść filtry
@@ -44,7 +50,7 @@ const OfferFilter = ({
       </div>
       <div className="filter-input-wrapper">
         <div className="filter-simple-container">
-          <SimpleOfferFilter filter={filter} onChangeFilter={onChangeFilter} />
+          <SimpleOfferFilter filter={filter} onChangeFilter={onChangeFilter} sports={sports} errors={errors} />
         </div>
         <div className="filter-advanced-container">
           {showAdvancedFilter && (
@@ -55,6 +61,7 @@ const OfferFilter = ({
           )}
         </div>
       </div>
+      {sports.error && <p className="offer-filter-error" role="alert">Nie udało się pobrać dyscyplin. <button type="button" onClick={sports.retry}>Spróbuj ponownie</button></p>}
     </div>
   );
 };

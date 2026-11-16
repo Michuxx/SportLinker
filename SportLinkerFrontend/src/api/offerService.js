@@ -1,6 +1,10 @@
 import apiClient from "./apiClient";
 
 export const offerService = {
+  async searchOffers(params, { signal } = {}) {
+    const response = await apiClient.get("/Offer/search", { params, signal });
+    return response.data;
+  },
   async deleteRejectedRequest(offerId, { signal } = {}) {
     await apiClient.delete("/Offer/requests/delete", {
       data: { offerId: Number(offerId) },

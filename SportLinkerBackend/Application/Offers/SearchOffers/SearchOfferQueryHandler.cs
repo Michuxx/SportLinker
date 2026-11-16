@@ -42,6 +42,81 @@ namespace Application.Offers.SearchOffers
             var filters = BuildFilters(query, parameters);
             var orderBy = BuildOrderBy(query);
 
+            const string fromSql = """
+                FROM Offers o
+                INNER JOIN Locations l ON l.Id = o.LocationId
+                INNER JOIN Sports s ON s.Id = o.SportId
+                INNER JOIN Users author ON author.Id = o.AuthorId
+                CROSS APPLY (
+                    SELECT COUNT(*) AS CurrentPeople
+                    FROM OfferParticipants op
+                    WHERE op.OfferId = o.Id
+                ) participants
+                """;
+
+            var sql = $"""
+                SELECT COUNT(*)
+                {fromSql}
+                {filters};
+
+                SELECT
+                    o.Id AS OfferId,
+                    o.Title,
+                    o.Description,
+                    o.SportId,
+                    s.Name AS SportName,
+                    o.Level,
+                    o.PlanningDate AS [Date],
+                    l.City,
+                    l.State,
+                    participants.CurrentPeople,
+                    o.MaxPeople,
+                    o.Mode,
+                    o.AuthorId,
+                    author.PersonalData_Name AS AuthorName,
+                    CASE
+                        WHEN @UserCity IS NOT NULL
+                             AND l.Country = @UserCountry
+                             AND l.State = @UserState
+                             AND l.City = @UserCity
+                            THEN 0
+
+                        WHEN @UserState IS NOT NULL
+                             AND l.Country = @UserCountry
+                             AND l.State = @UserState
+                            THEN 1
+
+                        ELSE 2
+                    END AS LocationPriority
+                {fromSql}
+                {filters}
+                {orderBy}
+                OFFSET @Offset ROWS
+                FETCH NEXT @PageSize ROWS ONLY;
+                """;
+
+            var command = new CommandDefinition(
+                sql,
+                parameters,
+                cancellationToken: cancellationToken);
+
+            using var results = await connection.QueryMultipleAsync(command);
+
+            var totalCount = await results.ReadSingleAsync<int>();
+            var items = (await results.ReadAsync<OfferListItem>()).ToList();
+
+            foreach (var item in items)
+            {
+                item.Date = DateTime.SpecifyKind(
+                    item.Date,
+                    DateTimeKind.Utc);
+            }
+
+            return new OffersPageDto(
+                items,
+                totalCount,
+                query.Page,
+                query.PageSize);
         }
 
         private static string BuildFilters(SearchOfferQuery query, DynamicParameters parameters)
@@ -55,7 +130,7 @@ namespace Application.Offers.SearchOffers
             parameters.Add("Availability", AvailabilityEnum.Available.ToString());
             parameters.Add("Now", DateTime.UtcNow);
 
-            if(query.SportId is int sportId)
+            if (query.SportId is int sportId)
             {
                 conditions.Add("o.SportId = @SportId");
                 parameters.Add("SportId", sportId);
@@ -148,7 +223,7 @@ namespace Application.Offers.SearchOffers
                     {selectedOrder},
                     o.Id ASC
                 """;
-        } 
+        }
 
         private static async Task<OfferSearchLocationDto?> GetUserLocation(int userId, IDbConnection connection, CancellationToken cancellationToken)
         {
