@@ -66,6 +66,30 @@
   flex-shrink: 0;
 }
 
-.chat-profile-date { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
-.chat-profile-date .chat-unread-dot { width: 8px; height: 8px; border-radius: 50%; background: #fb7185; }
+.chat-profile-date { flex-shrink: 0; }
+.chat-profile-last-message {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.chat-profile-last-message p { flex: 1; min-width: 0; margin: 0; }
+.chat-profile-last-message .chat-unread-dot {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #e11d48;
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
 .unread-chat-profile-btn .chat-profile-info-wrapper p { font-weight: 600; color: #111827; }

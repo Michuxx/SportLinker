@@ -38,11 +38,11 @@ const { default: Button } = await import(buttonUrl);
 const { default: useVisibleMessages } = await import(visibilityUrl);
 hooks.deregister();
 
-test("unread conversations have a dot, bold-preview class and accessible description", () => {
+test("unread conversations show their count in the badge and accessible description", () => {
   const unread = renderToStaticMarkup(React.createElement(Button, { name: "Anna", unreadCount: 2, text: "Cześć" }));
   assert.match(unread, /unread-chat-profile-btn/);
-  assert.match(unread, /chat-unread-dot/);
-  assert.match(unread, /Anna, nieprzeczytane wiadomości/);
+  assert.match(unread, /class="chat-unread-dot"[^>]*>2<\/span>/);
+  assert.match(unread, /Anna, nieprzeczytane wiadomości: 2/);
   const seen = renderToStaticMarkup(React.createElement(Button, { name: "Anna", unreadCount: 0 }));
   assert.doesNotMatch(seen, /chat-unread-dot/);
 });

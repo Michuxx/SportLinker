@@ -61,6 +61,14 @@ export const normalizeMessagesPage = (data) => {
 
 const timestamp = (value) => (value ? parseApiDate(value).getTime() || 0 : 0);
 
+export const sortConversations = (conversations) => [...conversations].sort(
+  (a, b) =>
+    Number(b.unreadCount > 0) - Number(a.unreadCount > 0) ||
+    timestamp(b.lastMessage?.time) - timestamp(a.lastMessage?.time) ||
+    (Number(b.lastMessage?.id) || 0) - (Number(a.lastMessage?.id) || 0) ||
+    Number(b.id) - Number(a.id),
+);
+
 const isPersistedMessage = (message) =>
   Number.isInteger(Number(message.id)) && Number(message.id) > 0;
 
@@ -144,12 +152,7 @@ export const withConversationPreview = (conversations, chat, message) => {
     },
   };
 
-  return [updated, ...conversations.filter((item) => item.id !== chat.id)].sort(
-    (a, b) =>
-      timestamp(b.lastMessage?.time) - timestamp(a.lastMessage?.time) ||
-      (Number(b.lastMessage?.id) || 0) - (Number(a.lastMessage?.id) || 0) ||
-      Number(b.id) - Number(a.id),
-  );
+  return sortConversations([updated, ...conversations.filter((item) => item.id !== chat.id)]);
 };
 
 export const friendChat = (friend, conversations) => {

@@ -59,7 +59,7 @@ test("SignalR messages and receipts update locally; opening history is the only 
   await harness.flush();
   assert.equal(harness.result.chatPeople.conversations[0].unreadCount, 1);
   assert.equal(calls.length, 2);
-  harness.result.selectChat(harness.result.chatPeople.conversations[0]);
+  harness.result.selectChat(harness.result.chatPeople.conversations.find((chat) => chat.id === 8));
   await harness.flush();
   assert.deepEqual(calls, ["friends", "conversations", "history"]);
   const pending = harness.result.markRead(harness.result.thread.items[0]);
@@ -105,7 +105,7 @@ test("a valid read acknowledgement clears the initial unread marker without GET;
   const user = { id: 2 };
   harness.render = () => useMessaging(user);
   await harness.flush();
-  harness.result.selectChat(harness.result.chatPeople.conversations[0]);
+  harness.result.selectChat(harness.result.chatPeople.conversations.find((chat) => chat.id === 8));
   await harness.flush();
   await harness.result.markRead(harness.result.thread.items[0]);
   await harness.flush();
@@ -119,5 +119,34 @@ test("a valid read acknowledgement clears the initial unread marker without GET;
   assert.deepEqual(calls, ["friends", "conversations", "history", "read", "read"]);
   await harness.result.markRead(harness.result.thread.items[0]);
   assert.equal(calls.length, 5);
+  harness.dispose();
+});
+
+test("an incoming group message updates its sidebar preview and unread marker while another chat stays open", async () => {
+  const calls = [];
+  bridge.service = {
+    async getFriends() { calls.push("friends"); return []; },
+    async getConversations() { calls.push("conversations"); return [
+      { id: 8, name: "Daro", type: "Private", recipientUserId: 12, unreadCount: 0 },
+      { id: 3, name: "Grupa", type: "Group", unreadCount: 0, lastMessageId: 5,
+        lastMessageText: "Poprzednia", lastMessageTime: message(10).sendAt },
+    ]; },
+    async getMessages(id) { calls.push(`history:${id}`); return { items: [], hasMore: false, readStates: [] }; },
+  };
+  const harness = bridge.harness = createHookHarness();
+  const user = { id: 2 };
+  harness.render = () => useMessaging(user);
+  await harness.flush();
+  harness.result.selectChat(harness.result.chatPeople.conversations.find((chat) => chat.id === 8));
+  await harness.flush();
+  bridge.messages({ conversationId: 3, message: { ...message(15), senderId: 7, senderName: "e", isOwnMessage: false, content: "Nowa wiadomość w grupie" } });
+  await harness.flush();
+  const group = harness.result.chatPeople.conversations[0];
+  assert.equal(group.id, 3);
+  assert.equal(group.lastMessage.text, "Nowa wiadomość w grupie");
+  assert.equal(group.lastMessage.name, "e");
+  assert.equal(group.unreadCount, 1);
+  assert.equal(harness.result.activeChat.id, 8);
+  assert.deepEqual(calls, ["friends", "conversations", "history:8"]);
   harness.dispose();
 });

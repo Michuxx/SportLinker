@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { hasReadMessage, mergeReadStates, getMessageReaders, normalizeReadState } from "../src/utils/conversationReads.js";
+import { hasReadMessage, mergeReadStates, getMessageReaders, normalizeReadState, getReadReceiptPositions } from "../src/utils/conversationReads.js";
 import { initialMessagingState, messagingReducer as reduce } from "../src/utils/messagingState.js";
 import { normalizeConversation, normalizeMessagesPage } from "../src/utils/messaging.js";
 
@@ -26,6 +26,37 @@ test("readers are unique, exclude viewer and sender and respect each participati
   assert.deepEqual(getMessageReaders(msg(3), reads, 2).map((r) => r.userId), [13]);
   assert.deepEqual(getMessageReaders(msg(4), reads, 2).map((r) => r.userId), [14]);
   assert.equal(getMessageReaders(msg(3), [...reads, { ...reads[2], participantId: 5 }], 2).length, 1);
+});
+
+test("each avatar appears only under the newest read message, regardless of array order", () => {
+  const positions = getReadReceiptPositions([msg(3), msg(1), msg(2)], [receipt(3, { userId: 13 })], 2);
+  assert.deepEqual([...positions.keys()], [3]);
+  assert.deepEqual(positions.get(3).map((reader) => reader.userId), [13]);
+});
+
+test("group readers can stop at different messages; a new receipt moves rather than duplicates an avatar", () => {
+  const messages = [msg(1), msg(2), msg(3)];
+  const reads = [receipt(2, { userId: 13, participantId: 2 }), receipt(3, { userId: 14, participantId: 3 })];
+  const before = getReadReceiptPositions(messages, reads, 2);
+  assert.deepEqual(before.get(2).map((reader) => reader.userId), [13]);
+  assert.deepEqual(before.get(3).map((reader) => reader.userId), [14]);
+  const after = getReadReceiptPositions(messages, mergeReadStates(reads, [receipt(3, { userId: 13, participantId: 2 })]), 2);
+  assert.equal(after.has(2), false);
+  assert.deepEqual(after.get(3).map((reader) => reader.userId).sort(), [13, 14]);
+});
+
+test("an unread or optimistic message does not move the reader's avatar forward", () => {
+  const positions = getReadReceiptPositions([msg(1), msg(2), msg(3), msg(4, { id: "local:uuid" })],
+    [receipt(2, { userId: 13 })], 2);
+  assert.deepEqual([...positions.keys()], [2]);
+});
+
+test("loading older pages and separate participation periods do not repeat the same reader's avatar", () => {
+  const reads = [receipt(2, { userId: 13, participantId: 2, leftAt: msg(3).timestamp }),
+    receipt(5, { userId: 13, participantId: 3, joinedAt: msg(4).timestamp })];
+  const positions = getReadReceiptPositions([msg(1), msg(2), msg(3), msg(4), msg(5)], reads, 2);
+  assert.deepEqual([...positions.keys()], [5]);
+  assert.equal(positions.get(5).length, 1);
 });
 
 test("older HTTP snapshots and duplicate receipts cannot regress a live read cursor or reopen a period", () => {
@@ -70,6 +101,29 @@ test("off-screen messages mark the right conversation once; own messages never i
   assert.equal(state.conversations[0].unreadCount, 1);
   assert.equal(state.activeChat.id, 9);
   assert.equal(state.conversations[0].lastMessage.id, 2);
+});
+
+test("initial conversations put unread first, sorted by recency within each group rather than unread count", () => {
+  const rows = [
+    chat({ id: 1, unreadCount: 0, lastMessageId: 5, lastMessageText: "Read", lastMessageTime: msg(5).timestamp }),
+    chat({ id: 2, unreadCount: 99, lastMessageId: 1, lastMessageText: "Old unread", lastMessageTime: msg(1).timestamp }),
+    chat({ id: 3, unreadCount: 1, lastMessageId: 3, lastMessageText: "New unread", lastMessageTime: msg(3).timestamp }),
+    chat({ id: 4, unreadCount: 0 }),
+  ];
+  const state = reduce(initialMessagingState(2), { type: "list/success", list: "conversations", revision: 0, items: rows });
+  assert.deepEqual(state.conversations.map((item) => item.id), [3, 2, 1, 4]);
+  assert.deepEqual(rows.map((item) => item.id), [1, 2, 3, 4]);
+});
+
+test("a read acknowledgement moves a conversation below remaining unread chats without changing selection", () => {
+  let state = { ...initialMessagingState(2), conversations: [
+    chat({ id: 8, unreadCount: 1, lastMessageId: 5, lastMessageText: "Latest", lastMessageTime: msg(5).timestamp }),
+    chat({ id: 9, unreadCount: 1, lastMessageId: 1, lastMessageText: "Older", lastMessageTime: msg(1).timestamp }),
+  ] };
+  state.activeChat = state.conversations[0];
+  state = read(state, receipt(5));
+  assert.deepEqual(state.conversations.map((item) => item.id), [9, 8]);
+  assert.equal(state.activeChat.id, 8);
 });
 
 test("read acknowledgements clear only through their cursor and preserve a newer arrival", () => {

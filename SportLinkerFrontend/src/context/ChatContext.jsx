@@ -9,6 +9,7 @@ import {
 import { HubConnectionState } from "@microsoft/signalr";
 import useAuth from "../hooks/useAuth";
 import { createChatConnection } from "../api/chatConnection";
+import { maintainChatConnection } from "../api/chatConnectionLifecycle";
 
 const ChatContext = createContext(null);
 
@@ -61,52 +62,6 @@ export const ChatProvider = ({ children }) => {
     setConnectionError(null);
     setConnectionState(HubConnectionState.Connecting);
 
-    chatConnection.onreconnecting((error) => {
-      if (disposed) return;
-
-      setConnectionState(HubConnectionState.Reconnecting);
-      setConnectionError(error ?? null);
-    });
-
-    chatConnection.onreconnected(() => {
-      if (disposed) return;
-
-      setConnectionState(HubConnectionState.Connected);
-      setConnectionError(null);
-    });
-
-    chatConnection.onclose((error) => {
-      if (disposed) return;
-
-      setConnection(null);
-      setConnectionState(HubConnectionState.Disconnected);
-      setConnectionError(error ?? null);
-    });
-
-    const startConnection = async () => {
-      try {
-        await chatConnection.start();
-
-        if (disposed) {
-          await chatConnection.stop();
-          return;
-        }
-
-        setConnection(chatConnection);
-        setConnectionState(HubConnectionState.Connected);
-
-        console.info("SignalR: połączono");
-      } catch (error) {
-        if (disposed) return;
-
-        setConnection(null);
-        setConnectionState(HubConnectionState.Disconnected);
-        setConnectionError(error);
-
-        console.error("SignalR: błąd połączenia", error);
-      }
-    };
-
     chatConnection.on("MessageReceived", (notification) => {
       if (disposed) return;
 
@@ -142,14 +97,17 @@ export const ChatProvider = ({ children }) => {
       }
     });
 
-    void startConnection();
+    const stopConnection = maintainChatConnection(chatConnection, ({ connection, state, error }) => {
+      if (disposed) return;
+      setConnection(connection);
+      setConnectionState(state);
+      setConnectionError(error);
+    });
 
     return () => {
       disposed = true;
 
-      void chatConnection.stop().catch((error) => {
-        console.error("SignalR: błąd zamykania połączenia", error);
-      });
+      stopConnection();
     };
   }, [isInitialized, isAuthenticated, userId]);
 

@@ -21,7 +21,7 @@ const ChatConversationButton = ({
         activeChat?.id === id ? "active-chat-profile-btn" : ""
       } chat-profile-btn ${unreadCount > 0 ? "unread-chat-profile-btn" : ""}`}
       onClick={onClick}
-      aria-label={unreadCount > 0 ? `${name}, nieprzeczytane wiadomości` : name}
+      aria-label={unreadCount > 0 ? `${name}, nieprzeczytane wiadomości: ${unreadCount}` : name}
     >
       <div className="chat-profile-wrapper">
         <div className="chat-profile-avatar">
@@ -32,10 +32,12 @@ const ChatConversationButton = ({
             <h3>{name}</h3>
             <div className="chat-profile-date">
               <span>{formattedDate?.date}</span>
-              {unreadCount > 0 && <span className="chat-unread-dot" aria-hidden="true" />}
             </div>
           </div>
-          <p>{text}</p>
+          <div className="chat-profile-last-message">
+            <p>{text}</p>
+            {unreadCount > 0 && <span className="chat-unread-dot" aria-hidden="true">{unreadCount}</span>}
+          </div>
         </div>
       </div>
     </button>

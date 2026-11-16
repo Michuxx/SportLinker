@@ -3,6 +3,7 @@ import {
   mergeMessages,
   withConversationPreview,
   sameMessage,
+  sortConversations,
 } from "./messaging.js";
 import { compareMessagePositions, isMessageReadBy, mergeReadStates, normalizeReadState, unreadAfterReads } from "./conversationReads.js";
 
@@ -21,7 +22,7 @@ const applyReads = (state, id, incoming, snapshot = false) => {
   return {
     ...state, revision,
     threads: { ...state.threads, [key]: { ...thread, readStates } },
-    conversations: state.conversations.map(update),
+    conversations: sortConversations(state.conversations.map(update)),
     activeChat: update(state.activeChat),
   };
 };
@@ -123,7 +124,7 @@ export const messagingReducer = (state, action) => {
       imageLookupIds: [...new Set([...state.imageLookupIds, ...action.items.map((item) =>
         action.list === "friends" ? item.userId : item.type === "private" ? item.recipientUserId : null)
         .filter((id) => id != null).map(String)])],
-      [action.list]: items,
+      [action.list]: action.list === "conversations" ? sortConversations(items) : items,
       lists: { ...state.lists, [action.list]: "ready" },
       removedConversations:
         action.list === "conversations" ? removed : state.removedConversations,

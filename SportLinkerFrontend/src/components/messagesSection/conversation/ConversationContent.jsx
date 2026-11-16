@@ -4,7 +4,7 @@ import { useLayoutEffect, useRef } from "react";
 import MessagingFeedback from "../messagingFeedback/MessagingFeedback";
 import ConversationTyping from "./conversationTyping/ConversationTyping";
 import useVisibleMessages from "../../../hooks/useVisibleMessages";
-import { getMessageReaders } from "../../../utils/conversationReads";
+import { getReadReceiptPositions } from "../../../utils/conversationReads";
 
 const ConversationContent = ({
   messages,
@@ -24,6 +24,7 @@ const ConversationContent = ({
   const isAtBottom = useRef(true);
   const previousScrollTop = useRef(0);
   const loadingOlder = useRef(false);
+  const receiptPositions = getReadReceiptPositions(messages, thread.readStates ?? [], userId);
   useVisibleMessages(containerRef, messages, thread.loaded && !thread.loading && !thread.error, onRead, thread.readStates, userId);
 
   const loadOlder = async () => {
@@ -126,7 +127,7 @@ const ConversationContent = ({
           image={message.senderImageUrl || images[message.senderId]}
           onRetry={() => onRetryMessage(message)}
           disabled={isSending}
-          readers={getMessageReaders(message, thread.readStates ?? [], userId)}
+          readers={receiptPositions.get(message.id) ?? []}
           images={images}
           names={readerNames}
         />

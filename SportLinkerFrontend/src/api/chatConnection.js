@@ -5,6 +5,7 @@ import {
 } from "@microsoft/signalr";
 import apiClient from "./apiClient";
 import { getValidAccessToken } from "./tokenService";
+import { chatRetryDelay } from "./chatConnectionLifecycle";
 
 export const createChatConnection = () => {
   const apiUrl = new URL(apiClient.defaults.baseURL, window.location.origin);
@@ -17,6 +18,8 @@ export const createChatConnection = () => {
       transport: HttpTransportType.WebSockets,
     })
     .configureLogging(LogLevel.Information)
-    .withAutomaticReconnect()
+    .withAutomaticReconnect({
+      nextRetryDelayInMilliseconds: ({ previousRetryCount }) => chatRetryDelay(previousRetryCount),
+    })
     .build();
 };

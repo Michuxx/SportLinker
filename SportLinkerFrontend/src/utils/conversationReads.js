@@ -84,6 +84,26 @@ export const getMessageReaders = (message, reads, userId) => {
   return [...readers.values()];
 };
 
+export const getReadReceiptPositions = (messages, reads, userId) => {
+  const latestByReader = new Map();
+  for (const message of messages) {
+    for (const reader of getMessageReaders(message, reads, userId)) {
+      const key = String(reader.userId);
+      const previous = latestByReader.get(key);
+      if (!previous || compareMessagePositions(message, previous.message) > 0) {
+        latestByReader.set(key, { message, reader });
+      }
+    }
+  }
+  const positions = new Map();
+  for (const { message, reader } of latestByReader.values()) {
+    const readers = positions.get(message.id) ?? [];
+    readers.push(reader);
+    positions.set(message.id, readers);
+  }
+  return positions;
+};
+
 export const unreadAfterReads = (chat, messages, previous, next, userId) => {
   const ownReads = next.filter((read) => String(read.userId) === String(userId));
   if (!ownReads.length) return chat.unreadCount ?? 0;
