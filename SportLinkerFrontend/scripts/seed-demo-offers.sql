@@ -29,7 +29,7 @@ DECLARE @Places TABLE (
     Latitude float NOT NULL,
     Longitude float NOT NULL
 );
-DECLARE @Created TABLE (
+DECLARE @Created TABLE ( 
     Number int PRIMARY KEY,
     OfferId int NOT NULL,
     AuthorId int NOT NULL,
