@@ -1,0 +1,135 @@
+name: sportlinker
+
+x-backend-environment: &backend-environment
+  ASPNETCORE_ENVIRONMENT: Development
+
+  ConnectionStrings__DefaultConnection: >-
+    Server=sqlserver,1433;Database=SportLinker;User Id=sa;Password=${SQL_SA_PASSWORD:?Set SQL_SA_PASSWORD in .env};Encrypt=True;TrustServerCertificate=True
+
+  Jwt__Key: "${JWT_KEY:?Set JWT_KEY in .env}"
+  Jwt__Issuer: SportLinker.Docker
+  Jwt__Audience: SportLinker.Docker
+
+  RabbitMq__HostName: rabbitmq
+  RabbitMq__Port: "5672"
+  RabbitMq__UserName: "${RABBITMQ_USERNAME:?Set RABBITMQ_USERNAME in .env}"
+  RabbitMq__Password: "${RABBITMQ_PASSWORD:?Set RABBITMQ_PASSWORD in .env}"
+
+services:
+  rabbitmq:
+    image: rabbitmq:4-management
+    hostname: sportlinker-rabbitmq
+
+    ports:
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
+
+    environment:
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USERNAME:?Set RABBITMQ_USERNAME in .env}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASSWORD:?Set RABBITMQ_PASSWORD in .env}"
+
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  sqlserver:
+    profiles: ["app"]
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: "${SQL_SA_PASSWORD:?Set SQL_SA_PASSWORD in .env}"
+
+    ports:
+      - "127.0.0.1:14333:1433"
+
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          SQLCMDPASSWORD="$$MSSQL_SA_PASSWORD"
+          /opt/mssql-tools18/bin/sqlcmd
+          -S localhost -U sa -C -b -Q "SELECT 1" -o /dev/null
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  migrations:
+    profiles: ["app"]
+
+    build:
+      context: ./SportLinkerBackend
+      dockerfile: WebApi/Dockerfile
+      target: migrations
+
+    environment: *backend-environment
+
+    command:
+      - database
+      - update
+      - --project
+      - Infrastructure/Infrastructure.csproj
+      - --startup-project
+      - WebApi/WebApi.csproj
+      - --configuration
+      - Release
+
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+    restart: "no"
+
+  backend:
+    profiles: ["app"]
+
+    build:
+      context: ./SportLinkerBackend
+      dockerfile: WebApi/Dockerfile
+      target: final # dla migrations: migrations
+
+    environment:
+      <<: *backend-environment
+      ASPNETCORE_HTTP_PORTS: "8080"
+
+    volumes:
+      - uploads:/app/wwwroot
+      - backend-logs:/logs
+
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+      rabbitmq:
+        condition: service_healthy
+
+  frontend:
+    profiles: ["app"]
+
+    build:
+      context: ./SportLinkerFrontend
+      args:
+        VITE_API_URL: /api
+
+    ports:
+      - "127.0.0.1:8088:80"
+
+    depends_on:
+      backend:
+        condition: service_started
+
+volumes:
+  rabbitmq-data:
+  sqlserver-data:
+  uploads:
+  backend-logs:

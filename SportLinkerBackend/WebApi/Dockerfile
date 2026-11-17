@@ -30,6 +30,14 @@ RUN dotnet publish "WebApi/WebApi.csproj" \
     --no-restore \
     /p:UseAppHost=false
 
+FROM build AS migrations
+
+RUN dotnet tool install \
+    --tool-path /tools \
+    dotnet-ef \
+    --version 10.0.12
+
+ENTRYPOINT ["/tools/dotnet-ef"]
 
 FROM base AS final
 WORKDIR /app

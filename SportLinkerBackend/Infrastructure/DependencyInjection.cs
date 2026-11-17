@@ -7,6 +7,7 @@ using Domain.Abstractions;
 using Domain.Abstractions.Interfaces;
 using Infrastructure.Authentication;
 using Infrastructure.Database;
+using Infrastructure.Database.Seeding;
 using Infrastructure.Messaging.Outbox;
 using Infrastructure.Messaging.Presence;
 using Infrastructure.Messaging.RabbitMq;
@@ -26,7 +27,18 @@ namespace Infrastructure
             string connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new ArgumentNullException("Brak connection stringa 'Database' w appsettings.json");
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options
+                    .UseSqlServer(connectionString)
+                    .UseSeeding((context, _) =>
+                    {
+                        context.Database.ExecuteSqlRaw(SportsSeeder.Sql);
+                    })
+                    .UseAsyncSeeding(async (context, _, cancellationToken) =>
+                    {
+                        await context.Database.ExecuteSqlRawAsync(
+                            SportsSeeder.Sql,
+                            cancellationToken);
+                    }));
 
             services.AddHttpContextAccessor();
 
